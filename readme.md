@@ -224,7 +224,7 @@ Let's encode our first experiment with CF4J. In this experiment, we will compare
 
 CF4J has been designed using the packages structure shown in the following figure:
 
-IMAGEN AQUI
+![Package structure](http://rs.etsisi.upm.es/cf4j/images/cf4j-packages.png "Package structure")
 
 The `cf4j` package is the root of the package tree; it contains the main classes to load, read and manipulate the CF information.
 
