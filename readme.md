@@ -13,9 +13,33 @@ A Java's Collaborative Filtering library to carry out experiments in research of
 
 ## Installation
 
-Maven...
+### For Maven
 
-If you do not want to user Maven, CF4J has been packetized in a `.jar` file. You can find this file into the `dist/` directory. To use the library, you must import this file to your java's project. If you are using Eclipse, copy the file to your project directory, make right click on the file and select `Build Path > Add to Build Path`.
+Add the following lines to the dependencies section in the `pom.xml` of the Maven's project.
+
+```xml
+<dependency>
+    <groupId>com.github.ferortega</groupId>
+    <artifactId>cf4j-recsys</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+### For Gradle
+
+```
+compile group: 'com.github.ferortega', name: 'cf4j-recsys', version: '1.0.0'
+```
+
+### For SBT
+
+```
+libraryDependencies += "com.github.ferortega" % "cf4j-recsys" % "1.0.0"
+```
+
+### For other types of project
+
+CF4J has been packetized in a `.jar` file. You can find this file into the `dist/` directory. To use the library, you must import this file to your java's project. If you are using Eclipse, copy the file to your project directory, make right click on the file and select `Build Path > Add to Build Path`.
 
 ## Getting Started
 
