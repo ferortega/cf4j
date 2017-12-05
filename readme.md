@@ -10,6 +10,7 @@ A Java's Collaborative Filtering library to carry out experiments in research of
 4. [Main Classes](#main-classes)
 5. [Customize CF4J](#customize-cf4j)
 6. [Examples](#examples)
+7. [Datasets](#datasets)
 
 ## Installation
 
@@ -646,3 +647,7 @@ public static void main (String [] args) {
 	System.out.println("- Precision: " + Kernel.gi().getQualityMeasure("Precision"));
 }
 ```
+
+## Datasets
+
+You can find awesome datasets to use with CF4J at this site: [http://shuaizhang.tech/2017/03/15/Datasets-For-Recommender-System/](http://shuaizhang.tech/2017/03/15/Datasets-For-Recommender-System/).
