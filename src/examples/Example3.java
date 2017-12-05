@@ -16,7 +16,7 @@ public class Example3 {
 
 	// --- PARAMETERS DEFINITION ------------------------------------------------------------------
 
-	private static String dataset = "MovieLens1M.txt";
+	private static String dataset = "datasets/movielens/ratings.dat"; 
 	private static double testItems = 0.2; // 20% test items
 	private static double testUsers = 0.2; // 20% test users
 
