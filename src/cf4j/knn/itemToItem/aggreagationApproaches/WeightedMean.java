@@ -35,8 +35,8 @@ public class WeightedMean implements TestUsersPartible {
 		this.maxSim = Double.MIN_VALUE;
 		this.minSim = Double.MAX_VALUE;
 		
-		for (TestUser testUser : Kernel.gi().getTestUsers()) {
-			for (double m : testUser.getSimilarities()) {
+		for (TestItem testItem : Kernel.gi().getTestItems()) {
+			for (double m : testItem.getSimilarities()) {
 				if (!Double.isInfinite(m)) {
 					if (m < this.minSim) this.minSim = m;
 					if (m > this.maxSim) this.maxSim = m;
