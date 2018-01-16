@@ -196,7 +196,7 @@ public class Kernel implements Serializable {
 				String [] s = line.split("::");
 				int userCode = Integer.parseInt(s[0]);
 				int itemCode = Integer.parseInt(s[1]);
-				double rating = Integer.parseInt(s[2]);
+				double rating = Double.parseDouble(s[2]);
 
 				// Update stats
 				if (itemCode < this.minItemCode) this.minItemCode = itemCode;
