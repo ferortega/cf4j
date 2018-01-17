@@ -255,9 +255,9 @@ public class Kernel implements Serializable {
 				// Splitting ratings into test & training ratings
 				TreeSet <Integer> training = new TreeSet <Integer> ();
 				TreeSet <Integer> test = new TreeSet <Integer> ();
-				for (int item_code : usersRatings.get(userCode).keySet()) {
-					if (testItemsTest.contains(item_code)) test.add(item_code);
-					else training.add(item_code);
+				for (int itemCode : usersRatings.get(userCode).keySet()) {
+					if (testItemsTest.contains(itemCode)) test.add(itemCode);
+					else training.add(itemCode);
 				}
 
 				// Setting training ratings arrays
@@ -278,12 +278,18 @@ public class Kernel implements Serializable {
 					i++;
 				}
 
-				// New test user instance
-				user = new TestUser(userCode, userIndex, itemsArray, ratingsArray, testUserIndex, testItemsArray, testRatingsArray);
+				// If user did not have rated any test item, discard him
+				if (test.size() == 0) {
+					user = new User(userCode, userIndex, itemsArray, ratingsArray);
+					
+				// It not, create new testUser instance
+				} else {
+					user = new TestUser(userCode, userIndex, itemsArray, ratingsArray, testUserIndex, testItemsArray, testRatingsArray);
 
-				// Add user to test users
-				this.testUsers[testUserIndex] = (TestUser) user;
-				testUserIndex++;
+					// Add user to test users
+					this.testUsers[testUserIndex] = (TestUser) user;
+					testUserIndex++;
+				}
 
 			// Is training user
 			} else {
@@ -310,6 +316,14 @@ public class Kernel implements Serializable {
 		}
 
 		this.ratingAverage /= averageCount;
+		
+		// Remove gaps from testUser array
+		TestUser [] testUsersTemp = new TestUser [testUserIndex];
+		for (int i = 0; i < testUserIndex; i++) {
+			testUsersTemp[i] = this.testUsers[i];
+		}
+		this.testUsers = testUsersTemp;
+		
 
 		System.out.println("\nGenerating items sets...");
 
@@ -352,12 +366,18 @@ public class Kernel implements Serializable {
 					i++;
 				}
 
-				// New test item instance
-				item = new TestItem(itemCode, itemIndex, usersArray, ratingsArray, testItemIndex, testUsersArray, testRatingsArray);
+				// If item did not have received any rating, discard it
+				if (test.size() == 0) {
+					item = new Item(itemCode, itemIndex, usersArray, ratingsArray);
+					
+				// It not, create new testUser instance
+				} else {
+					item = new TestItem(itemCode, itemIndex, usersArray, ratingsArray, testItemIndex, testUsersArray, testRatingsArray);
 
-				// Add item to test items
-				this.testItems[testItemIndex] = (TestItem) item;
-				testItemIndex++;
+					// Add item to test items
+					this.testItems[testItemIndex] = (TestItem) item;
+					testItemIndex++;
+				}
 
 			// Is training item
 			} else {
@@ -379,6 +399,13 @@ public class Kernel implements Serializable {
 			this.items[itemIndex] = item;
 			itemIndex++;
 		}
+		
+		// Remove gaps from testItems array
+		TestItem [] testItemsTemp = new TestItem [testItemIndex];
+		for (int i = 0; i < testItemIndex; i++) {
+			testItemsTemp[i] = this.testItems[i];
+		}
+		this.testItems = testItemsTemp;
 
 		System.out.println("\n'" + filename + "' dataset loaded succesfully");
 	}
