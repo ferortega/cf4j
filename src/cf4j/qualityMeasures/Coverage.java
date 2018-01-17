@@ -1,10 +1,6 @@
 package cf4j.qualityMeasures;
 
-import java.util.HashSet;
-
-import cf4j.Kernel;
 import cf4j.TestUser;
-import cf4j.User;
 
 /**
  * <p>This class calculates the Coverage of the recommender system. The coverage is the capacity of
@@ -31,28 +27,18 @@ public class Coverage extends QualityMeasure {
 	@Override
 	public double getMeasure (TestUser testUser) {
 		
-		int [] neighbors = testUser.getNeighbors();
+		double [] predictions = testUser.getPredictions();
 		
-		// Get items rated by the knn
-		HashSet <Integer> recommended = new HashSet <Integer> ();
-		for (int n = 0; n < neighbors.length; n++) {
-			if (neighbors[n] == -1) break;
-			
-			int userIndex = neighbors[n];
-			User neighbor = Kernel.gi().getUsers()[userIndex];
-			
-			for (int itemCode : neighbor.getItems()) {
-				recommended.add(itemCode);
+		int count = 0;
+		
+		for (int i = 0; i < predictions.length; i++) {
+			double prediction = predictions[i];
+			if (!Double.isNaN(prediction)) {
+				count++;
 			}
 		}
-		
-		// Delete items rated by the user
-		for (int itemCode : testUser.getItems()) {
-			recommended.remove(itemCode);
-		}
-		
-		double coverage = (double) recommended.size() / 
-				(double) (Kernel.getInstance().getNumberOfItems() - testUser.getNumberOfRatings());
+
+		double coverage = (double) count / (double) testUser.getNumberOfTestRatings();
 		
 		return coverage;
 	}
