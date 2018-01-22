@@ -436,6 +436,8 @@ The `FactorizationPrediction` class will generate the predictions for the test r
 
 The final developer is free to implement any other methods that it needs to their experiments. The `Partible` interface (and its descendants `UsersPartible`, `TestUsersPartible`, `ItemsPartible` and `TestItemsPartible`) is an useful method to iterate over the arrays of users and items. However, there is certain situations in which this iteration is no plausible. The usage of `Partible` interface is not mandatory, is recommendable. Any experiment can be carry out using only the `Kernel` class and the map attributes of the `User` and `Item` classes.
 
+By default, division between test and training users and items is made randomly. However, the `DatasetSplitters` class includes some built-in methods to define how this division is made. This division is made using lambda functions, so final developer can define their own lambda functions to split dataset based on his/her rules.
+
 ## Examples
 
 ### User-to-user vs item-to-item

@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.function.BiFunction;
 
 
 /**
@@ -151,22 +152,36 @@ public class Kernel implements Serializable {
 	 * <p>Generates a kernel form a text file. The lines of the file must have the following format:</p>
 	 * <p>userCode::itemCode::rating</p>
 	 * @param filename File with the ratings
-	 * @param testUsersPorcent Percentage of users that will be of test
-	 * @param testItemsPorcent Percentage of items that will be of test
+	 * @param testUsersPercent Percentage of users that will be of test
+	 * @param testItemsPercent Percentage of items that will be of test
 	 */
-	public void open (String filename, double testUsersPorcent, double testItemsPorcent) {
-		this.open(filename, testUsersPorcent, testItemsPorcent, DEFAULT_SPARATOR);
+	public void open (String filename, double testUsersPercent, double testItemsPercent) {
+		this.open(filename, testUsersPercent, testItemsPercent, DEFAULT_SPARATOR);
 	}
-
+	
 	/**
 	 * <p>Generates a kernel form a text file. The lines of the file must have the following format:</p>
 	 * <p>userCode::itemCode::rating</p>
 	 * @param filename File with the ratings
-	 * @param testUsersPorcent Percentage of users that will be of test
+	 * @param testUsersPercent Percentage of users that will be of test
 	 * @param testItemsPercent Percentage of items that will be of test
 	 * @param separator Separator char between file fields
 	 */
-	public void open (String filename, double testUsersPorcent, double testItemsPercent, String separator) {
+	public void open (String filename, double testUsersPercent, double testItemsPercent, String separator) {
+		this.open(filename, DatasetSplitters.random(testUsersPercent), DatasetSplitters.random(testItemsPercent), separator);
+	}
+	
+	/**
+	 * <p>Generates a kernel form a text file. The lines of the file must have the following format:</p>
+	 * <p>userCode::itemCode::rating</p>
+	 * @param filename File with the ratings
+	 * @param testUserFilter Lambda function that receives the user code and the user ratings and return true if the user is a test user and false otherwise
+	 * @param testItemFilter Lambda function that receives the item code and the item ratings and return true if the item is a test item and false otherwise
+	 * @param separator Separator char between file fields
+	 * @see DatasetSplitters
+	 */
+	public void open (String filename, BiFunction <Integer, Map <Integer, Double>, Boolean> testUserFilter, 
+			BiFunction <Integer, Map <Integer, Double>, Boolean> testItemFilter, String separator) {
 
 		System.out.println("\nLoading dataset...");
 
@@ -209,6 +224,7 @@ public class Kernel implements Serializable {
 				// Store rating
 				if (!usersRatings.containsKey(userCode)) usersRatings.put(userCode, new TreeMap <Integer, Double> ());
 				usersRatings.get(userCode).put(itemCode, rating);
+				
 				if (!itemsRatings.containsKey(itemCode)) itemsRatings.put(itemCode, new TreeMap <Integer, Double> ());
 				itemsRatings.get(itemCode).put(userCode, rating);
 			}
@@ -226,13 +242,15 @@ public class Kernel implements Serializable {
 		// Setting test users
 		TreeSet <Integer> testUsersSet = new TreeSet <Integer> ();
 		for (int userCode : usersRatings.keySet()) {
-			if (Math.random() < testUsersPorcent) testUsersSet.add(userCode);
+			Map <Integer, Double> ratings = usersRatings.get(userCode);
+			if (testUserFilter.apply(userCode, ratings)) testUsersSet.add(userCode);
 		}
 
 		// Setting test items
 		TreeSet <Integer> testItemsTest = new TreeSet <Integer> ();
 		for (int itemCode : itemsRatings.keySet()) {
-			if (Math.random() < testItemsPercent) testItemsTest.add(itemCode);
+			Map <Integer, Double> ratings = itemsRatings.get(itemCode);
+			if (testItemFilter.apply(itemCode, ratings)) testItemsTest.add(itemCode);
 		}
 
 		System.out.println("\nGenerating users sets...");
