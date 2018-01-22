@@ -208,7 +208,7 @@ public class Kernel implements Serializable {
 				if (numLines % 10000000 == 0) System.out.println(numLines + " ratings");
 
 				// Parse line
-				String [] s = line.split("::");
+				String [] s = line.split(separator);
 				int userCode = Integer.parseInt(s[0]);
 				int itemCode = Integer.parseInt(s[1]);
 				double rating = Double.parseDouble(s[2]);
