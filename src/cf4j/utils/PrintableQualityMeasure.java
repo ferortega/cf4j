@@ -3,7 +3,8 @@ package cf4j.utils;
 /**
  * Class responsible for abstracting the storage and representation of the results. Used to save those
  * results in which test an integer parameter (number of neighbors, number of recommendations, etc..)
- * over different data series (similarity metrics, for example).
+ * over different data series (similarity metrics, for example). This class also store results of
+ * Repeated random sub-sampling validation averaging the error values of N experiments.
  *
  * @author Fernando Ortega
  */
@@ -22,12 +23,17 @@ public class PrintableQualityMeasure {
 	/**
 	 * Errors values
 	 */
-	private double [][] errors;
+	private double [][][] errors;
 
 	/**
 	 * Error Name
 	 */
 	private String name;
+	
+	/**
+	 * Number of repetitions of the experiment
+	 */
+	private int repetitions;
 
 	/**
 	 * Class constructor. Initializes parameters.
@@ -36,12 +42,38 @@ public class PrintableQualityMeasure {
 	 * @param series Series of data included
 	 */
 	public PrintableQualityMeasure (String name, int [] variables, String [] series) {
+		this(name, variables, series, 1);
+	}
+	
+	/**
+	 * Class constructor. Initializes parameters.
+	 * @param name Error Name
+	 * @param variables Values taken by the parameter variable
+	 * @param series Series of data included
+	 * @param repetitions Number of repetitions of the experiment
+	 */
+	public PrintableQualityMeasure (String name, int [] variables, String [] series, int repetitions) {
 		this.name = name;
 		this.variables = variables;
 		this.series = series;
-		this.errors = new double [this.variables.length][this.series.length];
+		this.repetitions = repetitions;
+		this.errors = new double [repetitions][this.variables.length][this.series.length];
 	}
 
+	/**
+	 * This method indicates the error for specific parameters
+	 * @param repetition Repetition number (from 1 to N)
+	 * @param variable Parameter variable value
+	 * @param serie Data series in which the error occurred
+	 * @param error Error value
+	 */
+	public void putError (int repetition, int variable, String serie, double error) {
+		int ri = repetition - 1;
+		int vi = 0; while (variable != this.variables[vi]) vi++;
+		int si = 0; while (!serie.equals(this.series[si])) si++;
+		this.errors[ri][vi][si] = error;
+	}
+	
 	/**
 	 * This method indicates the error for specific parameters
 	 * @param variable Parameter variable value
@@ -49,21 +81,41 @@ public class PrintableQualityMeasure {
 	 * @param error Error value
 	 */
 	public void putError (int variable, String serie, double error) {
-		int vi = 0; while (variable != this.variables[vi]) vi++;
-		int si = 0; while (!serie.equals(this.series[si])) si++;
-		this.errors[vi][si] = error;
+		this.putError(1, variable, serie, error);	
 	}
 
 	/**
 	 * This method retrieves the error value that was made with specific parameters
+	 * @param repetition Repetition number (from 1 to N)
 	 * @param variable Parameter variable value
 	 * @param serie Data series in which the error occurred
 	 * @return Valor Error value
 	 */
-	public double getError (int variable, String serie) {
+	public double getError (int repetition, int variable, String serie) {
+		int ri = repetition - 1;
 		int vi = 0; while (variable != this.variables[vi]) vi++;
 		int si = 0; while (!serie.equals(this.series[si])) si++;
-		return this.errors[vi][si];
+		return this.errors[ri][vi][si];
+	}
+	
+	/**
+	 * This method retrieves the averaged error value that was made with specific 
+	 * parameters across all repetitions
+	 * @param variable Parameter variable value
+	 * @param serie Data series in which the error occurred
+	 * @return Valor Error value
+	 */
+	public double getAveragedError (int variable, String serie) {
+		int vi = 0; while (variable != this.variables[vi]) vi++;
+		int si = 0; while (!serie.equals(this.series[si])) si++;
+		
+		double error = 0;
+		for (int ri = 0; ri < this.repetitions; ri++) {
+			error += this.errors[ri][vi][si];
+		}
+		error /= repetitions;
+			
+		return error;
 	}
 
 	/**
@@ -75,10 +127,10 @@ public class PrintableQualityMeasure {
 		String s = "\n" + this.name;
 		for (String serie : this.series) s += separator + serie;
 		s += "\n";
-		for (int i = 0; i < this.variables.length; i++) {
-			s += this.variables[i];
-			for (int j = 0; j < this.series.length; j++) {
-				s += separator + this.errors[i][j];
+		for (int variable : this.variables) {
+			s += variable;
+			for (String serie : this.series) {
+				s += separator + this.getAveragedError(variable, serie);
 			}
 			s+= "\n";
 		}
