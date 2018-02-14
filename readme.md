@@ -22,7 +22,7 @@ Add the following lines to the dependencies section in the `pom.xml` of the Mave
 <dependency>
     <groupId>com.github.ferortega</groupId>
     <artifactId>cf4j-recsys</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
@@ -40,7 +40,7 @@ libraryDependencies += "com.github.ferortega" % "cf4j-recsys" % "1.0.0"
 
 ### For other types of project
 
-CF4J has been packetized in a `.jar` file. You can find this file into the `dist/` directory. To use the library, you must import this file to your java's project. If you are using Eclipse, copy the file to your project directory, make right click on the file and select `Build Path > Add to Build Path`.
+CF4J has been packetized in a `.jar` file. You can find this file into the release section of github. You can also packetize your own jar file using `mvn package`. To use the library, you must import this file to your java's project. If you are using Eclipse, copy the file to your project directory, make right click on the file and select `Build Path > Add to Build Path`.
 
 ## Getting Started
 
