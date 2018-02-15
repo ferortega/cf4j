@@ -3,6 +3,9 @@
 .project
 .settings
 .class
+
+dependency-reduced-pom.xml
+
 bin/
 doc/
 src/debug/
