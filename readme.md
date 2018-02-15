@@ -499,6 +499,15 @@ public static void main (String [] args) {
 }
 ```
 
+This example has been included into the library's repository. You can find it on the class `examples.Example1`. To execute it using the command line tool you must use the following commands:
+
+```
+mvn package
+cd src/examples
+javac -cp ../../target/cf4j-recsys-1.1.0.jar Example2.java
+java -classpath ../../target/cf4j-recsys-1.1.0.jar:../ examples.Example2
+```
+
 ### Similarity metrics comparison
 
 In this example we compare the similarity metrics COR, MSD, Jaccard and JMSD using the quality measures MAE, Coverage, Precision, Recall and F1.
@@ -594,6 +603,15 @@ public static void main (String [] args) {
 }
 ```
 
+This example has been included into the library's repository. You can find it on the class `examples.Example2`. To execute it using the command line tool you must use the following commands:
+
+```
+mvn package
+cd src/examples
+javac -cp ../../target/cf4j-recsys-1.1.0.jar Example2.java
+java -classpath ../../target/cf4j-recsys-1.1.0.jar:../ examples.Example2
+```
+
 ### PMF vs NNMF
 
 In this example we compare MAE and Precision of PMF and NNMF.
@@ -648,6 +666,15 @@ public static void main (String [] args) {
 	Processor.getInstance().testUsersProcess(new PrecisionRecall(numRecommendations, threshold));
 	System.out.println("- Precision: " + Kernel.gi().getQualityMeasure("Precision"));
 }
+```
+
+This example has been included into the library's repository. You can find it on the class `examples.Example3`. To execute it using the command line tool you must use the following commands:
+
+```
+mvn package
+cd src/examples
+javac -cp ../../target/cf4j-recsys-1.1.0.jar Example3.java
+java -classpath ../../target/cf4j-recsys-1.1.0.jar:../ examples.Example3
 ```
 
 ## Datasets
