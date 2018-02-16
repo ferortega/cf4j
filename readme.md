@@ -40,7 +40,11 @@ libraryDependencies += "com.github.ferortega" % "cf4j-recsys" % "1.0.0"
 
 ### For other types of project
 
-CF4J has been packetized in a `.jar` file. You can find this file into the release section of github. You can also packetize your own jar file using `mvn package`. To use the library, you must import this file to your java's project. If you are using Eclipse, copy the file to your project directory, make right click on the file and select `Build Path > Add to Build Path`.
+To use the library in other type of project, you must add the `jar` packetized version of CF4J to your project's classpath. For example, if you are using Eclipse, copy the file to your project directory, make right click on the file and select `Build Path > Add to Build Path`.
+
+You can find the `jar` packetized version of CF4J into the release section of github.
+
+You can also packetize your own `jar` file . To do that, clone the repository using `git clone git@github.com:ferortega/cf4j.git` and packetize it with `mvn package`. You must have [`git-lfs`](https://git-lfs.github.com/) installed if you want to download test datasets.
 
 ## Getting Started
 
