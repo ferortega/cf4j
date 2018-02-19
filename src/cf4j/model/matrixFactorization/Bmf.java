@@ -18,7 +18,7 @@ import cf4j.utils.Methods;
  *
  * @author Fernando Ortega
  */
-public class Nnmf implements FactorizationModel {
+public class Bmf implements FactorizationModel {
 
 	private final static String USER_GAMMA_KEY = "nnmf-user-gamma";
 	private final static String ITEM_E_PLUS_KEY = "nnmf-item-e+";
@@ -62,7 +62,7 @@ public class Nnmf implements FactorizationModel {
 	 * @param beta Amount of evidence that the algorithm requires to deduce that a group
 	 * 	of users likes an item
 	 */
-	public Nnmf (int numFactors, int numIters, double alpha, double beta) {
+	public Bmf (int numFactors, int numIters, double alpha, double beta) {
 		this(numFactors, numIters, alpha, beta, DEFAULT_R);
 	}
 
@@ -76,7 +76,7 @@ public class Nnmf implements FactorizationModel {
 	 * 	of users likes an item
 	 * @param r Parameter of the binomial distribution (fixed to 4)
 	 */
-	public Nnmf (int numFactors, int numIters, double alpha, double beta, double r) {
+	public Bmf (int numFactors, int numIters, double alpha, double beta, double r) {
 
 		this.numFactors = numFactors;
 		this.numIters = numIters;
@@ -257,7 +257,7 @@ public class Nnmf implements FactorizationModel {
 
 			int numUsers = Kernel.gi().getNumberOfUsers();
 			int numItems = Kernel.gi().getNumberOfItems();
-			int numFactors = Nnmf.this.numFactors;
+			int numFactors = Bmf.this.numFactors;
 
 			this.gamma = new double [numUsers][numFactors];
 			this.ePlus = new double [numItems][numFactors];
@@ -270,15 +270,15 @@ public class Nnmf implements FactorizationModel {
 			// Init gamma
 			for (int i = 0; i < this.gamma.length; i++) {
 				for (int j = 0; j < this.gamma[i].length; j++) {
-					this.gamma[i][j] = Nnmf.this.alpha;
+					this.gamma[i][j] = Bmf.this.alpha;
 				}
 			}
 
 			// Init E+ & E-
 			for (int i = 0; i < this.ePlus.length; i++) {
 				for (int j = 0; j < this.ePlus[i].length; j++) {
-					this.ePlus[i][j] = Nnmf.this.beta;
-					this.eMinus[i][j] = Nnmf.this.beta;
+					this.ePlus[i][j] = Bmf.this.beta;
+					this.eMinus[i][j] = Bmf.this.beta;
 				}
 			}
 		}
@@ -288,8 +288,8 @@ public class Nnmf implements FactorizationModel {
 
 			Item item = Kernel.gi().getItems()[itemIndex];
 
-			double [] ePlus = Nnmf.this.getItemEPlus(itemIndex);
-			double [] eMinus = Nnmf.this.getItemEMinus(itemIndex);
+			double [] ePlus = Bmf.this.getItemEPlus(itemIndex);
+			double [] eMinus = Bmf.this.getItemEMinus(itemIndex);
 
 			int userIndex = 0;
 
@@ -298,9 +298,9 @@ public class Nnmf implements FactorizationModel {
 				// Arrays of ref codes are sorted
 				while (Kernel.gi().getUsers()[userIndex].getUserCode() < item.getUsers()[u]) userIndex++;
 
-				double [] gamma = Nnmf.this.getUserGamma(userIndex);
+				double [] gamma = Bmf.this.getUserGamma(userIndex);
 
-				double [] lambda = new double [Nnmf.this.numFactors];
+				double [] lambda = new double [Bmf.this.numFactors];
 
 				double rating = (item.getRatings()[u] - Kernel.gi().getMinRating())
 						/ (Kernel.gi().getMaxRating() - Kernel.gi().getMinRating());
@@ -308,25 +308,25 @@ public class Nnmf implements FactorizationModel {
 				double acc = 0;
 
 				// Compute lambda
-				for (int k = 0; k < Nnmf.this.numFactors; k++) {
+				for (int k = 0; k < Bmf.this.numFactors; k++) {
 					lambda[k] = Math.exp(
 						Gamma.digamma(gamma[k]) +
-						Nnmf.this.r * rating * Gamma.digamma(ePlus[k]) +
-						Nnmf.this.r * (1 - rating) * Gamma.digamma(eMinus[k]) -
-						Nnmf.this.r * Gamma.digamma(ePlus[k] + eMinus[k])
+						Bmf.this.r * rating * Gamma.digamma(ePlus[k]) +
+						Bmf.this.r * (1 - rating) * Gamma.digamma(eMinus[k]) -
+						Bmf.this.r * Gamma.digamma(ePlus[k] + eMinus[k])
 					);
 
 					acc += lambda[k];
 				}
 
 				// Update model
-				for (int k = 0; k < Nnmf.this.numFactors; k++) {
+				for (int k = 0; k < Bmf.this.numFactors; k++) {
 
 					double l = lambda[k] / acc;
 
 					// Update E+ & E-
-					this.ePlus[itemIndex][k] += l * Nnmf.this.r * rating;
-					this.eMinus[itemIndex][k] += l * Nnmf.this.r * (1 - rating);
+					this.ePlus[itemIndex][k] += l * Bmf.this.r * rating;
+					this.eMinus[itemIndex][k] += l * Bmf.this.r * (1 - rating);
 
 					// Update gamma: user must be block to avoid concurrency problems
 					int lockIndex = userIndex % this.locks.length;
@@ -340,12 +340,12 @@ public class Nnmf implements FactorizationModel {
 		@Override
 		public void afterRun() {
 			for (int userIndex = 0; userIndex < Kernel.gi().getNumberOfUsers(); userIndex++) {
-				Nnmf.this.setUserGamma(userIndex, this.gamma[userIndex]);
+				Bmf.this.setUserGamma(userIndex, this.gamma[userIndex]);
 			}
 
 			for (int itemIndex = 0; itemIndex < Kernel.gi().getNumberOfItems(); itemIndex++) {
-				Nnmf.this.setItemEPlus(itemIndex, this.ePlus[itemIndex]);
-				Nnmf.this.setItemEMinus(itemIndex, this.eMinus[itemIndex]);
+				Bmf.this.setItemEPlus(itemIndex, this.ePlus[itemIndex]);
+				Bmf.this.setItemEMinus(itemIndex, this.eMinus[itemIndex]);
 			}
 		}
 	}

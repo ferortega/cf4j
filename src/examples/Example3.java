@@ -2,14 +2,14 @@ package examples;
 
 import cf4j.Kernel;
 import cf4j.Processor;
-import cf4j.model.matrixFactorization.Nnmf;
+import cf4j.model.matrixFactorization.Bmf;
 import cf4j.model.matrixFactorization.Pmf;
 import cf4j.model.predictions.FactorizationPrediction;
 import cf4j.qualityMeasures.MAE;
 import cf4j.qualityMeasures.Precision;
 
 /**
- * Compare MAE and Precision of PMF and NNMF.
+ * Compare MAE and Precision of PMF and BMF.
  * @author Fernando Ortega
  */
 public class Example3 {
@@ -27,10 +27,10 @@ public class Example3 {
 	private static int pmf_numIters = 50;
 	private static double pmf_lambda = 0.055;
 
-	private static int nnmf_numTopics = 6;
-	private static int nnmf_numIters = 50;
-	private static double nnmf_alpha = 0.8;
-	private static double nnmf_beta = 5;
+	private static int bmf_numTopics = 6;
+	private static int bmf_numIters = 50;
+	private static double bmf_alpha = 0.8;
+	private static double bmf_beta = 5;
 
 	// --------------------------------------------------------------------------------------------
 
@@ -55,13 +55,13 @@ public class Example3 {
 		System.out.println("- Precision: " + Kernel.gi().getQualityMeasure("Precision"));
 
 
-		// NNMF
-		Nnmf nnmf = new Nnmf (nnmf_numTopics, nnmf_numIters, nnmf_alpha, nnmf_beta);
-		nnmf.train();
+		// BMF
+		Bmf bmf = new Bmf (bmf_numTopics, bmf_numIters, bmf_alpha, bmf_beta);
+		bmf.train();
 
-		Processor.getInstance().testUsersProcess(new FactorizationPrediction(nnmf));
+		Processor.getInstance().testUsersProcess(new FactorizationPrediction(bmf));
 
-		System.out.println("\nPMF:");
+		System.out.println("\nBMF:");
 
 		Processor.getInstance().testUsersProcess(new MAE());
 		System.out.println("- MAE: " + Kernel.gi().getQualityMeasure("MAE"));
