@@ -783,9 +783,9 @@ public class Kernel implements Serializable {
 	/**
 	 * Get a test item by his index
 	 * @param testItemIndex Index of the test item to retrieve
-	 * @return Item or null
+	 * @return TestItem or null
 	 */
-	public Item getTestItemByIndex (int testItemIndex) {
+	public TestItem getTestItemByIndex (int testItemIndex) {
 		if (testItemIndex >= this.getNumberOfTestItems()) return null;
 		else return this.testItems[testItemIndex];
 	}
@@ -825,9 +825,9 @@ public class Kernel implements Serializable {
 	/**
 	 * Get a test user by his index
 	 * @param testUserIndex Index of the test user to retrieve
-	 * @return User or null
+	 * @return TestUser or null
 	 */
-	public User getTestUserByIndex (int testUserIndex) {
+	public TestUser getTestUserByIndex (int testUserIndex) {
 		if (testUserIndex <= this.getNumberOfTestUsers()) return null;
 		else return this.testUsers[testUserIndex];
 	}
