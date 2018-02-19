@@ -10,7 +10,8 @@ A Java's Collaborative Filtering library to carry out experiments in research of
 4. [Main Classes](#main-classes)
 5. [Customize CF4J](#customize-cf4j)
 6. [Examples](#examples)
-7. [Datasets](#datasets)
+7. [Algorithm List](#algorithm-list)
+8. [Datasets](#datasets)
 
 ## Installation
 
@@ -60,7 +61,7 @@ Let's encode our first experiment with CF4J. In this experiment, we will compare
 	Kernel.getInstance().open(dbName, testUsers, testItems, "::");
 	```
 
-2. Now, we will build a loop to test both similarity metrics. Each similarity metric will compute the similarity of the `TestUser` wich any existing `User`. We will use the `Processor` class to speed-up the execution of these similarity metrics.
+2. Now, we will build a loop to test both similarity metrics. Each similarity metric will compute the similarity of the `TestUser` which any existing `User`. We will use the `Processor` class to speed-up the execution of these similarity metrics.
 
 	```Java
 	String dbName = "datasets/movielens/ratings.dat";
@@ -259,12 +260,12 @@ The `cf4j` package is the root of the package tree; it contains the main classes
 
 The `cf4j.model` package includes the implementations of model based CF methods. In this version, we have included the following matrix factorization based CF implementations:
 
-* Hernando, A., Bobadilla, J., &amp; Ortega, F. (2016). A non negative matrix factorization for collaborative filtering recommender systems on a Bayesian probabilistic model. Knowledge-Based Systems, 97, 188-202 (`NNMF` class).
-* Koren, Y., Bell, R., &amp; Volinsky, C. (2009). Matrix factorization techniques for recommender systems. Computer, (8), 30-37 (`PMF` class).
+* Hernando, A., Bobadilla, J., &amp; Ortega, F. (2016). A non negative matrix factorization for collaborative filtering recommender systems on a Bayesian probabilistic model. Knowledge-Based Systems, 97, 188-202 (`Bmf` class).
+* Koren, Y., Bell, R., &amp; Volinsky, C. (2009). Matrix factorization techniques for recommender systems. Computer, 42 (8), 30-37 (`Pmf` class).
 
 Other models will be easily added into this package.
 
-The `cf4j.knn` package contains all the required clases to compute recommendations using memory based CF. It includes both user-to-user (`cf4j.knn.userToUser` package) and item-to-item (`cf4j.knn.itemToItem` package) approaches. Memory based CF algorithm is defined as:
+The `cf4j.knn` package contains all the required classes to compute recommendations using memory based CF. It includes both user-to-user (`cf4j.knn.userToUser` package) and item-to-item (`cf4j.knn.itemToItem` package) approaches. Memory based CF algorithm is defined as:
 
 1. Compute similarity between each pair of users.
 2. Find the k users most similar to the active one (k nearest neighbors)
@@ -287,7 +288,7 @@ Furthermore, different published similarity metrics have been included:
 * Ahn, H. J. (2008). A new similarity measure for collaborative filtering to alleviate the new user cold-starting problem, Information Sciences, 178, 37-51 (`MetricPIP` class).
 * Bobadilla, J., Ortega, F., &amp; Hernando, A. (2012). A collaborative filtering similarity measure based on singularities, Information Processing and Management, 48 (2), 204-217 (`MetricSingularities` class).
 
-To find neighbors, an efficient method sort method has been included in the `Neighbors` class.
+To find neighbors, an efficient sort method has been included in the `Neighbors` class.
 
 To compute predictions, different aggregation approaches has been coded:
 
@@ -616,9 +617,9 @@ javac -cp ../../target/cf4j-recsys-1.1.0.jar Example2.java
 java -classpath ../../target/cf4j-recsys-1.1.0.jar:../ examples.Example2
 ```
 
-### PMF vs NNMF
+### PMF vs BMF
 
-In this example we compare MAE and Precision of PMF and NNMF.
+In this example we compare MAE and Precision of PMF and BMF.
 
 ```Java
 private static String dataset = "MovieLens1M.txt";
@@ -632,10 +633,10 @@ private static int pmf_numTopics = 15;
 private static int pmf_numIters = 50;
 private static double pmf_lambda = 0.055;
 
-private static int nnmf_numTopics = 6;
-private static int nnmf_numIters = 50;
-private static double nnmf_alpha = 0.8;
-private static double nnmf_beta = 5;
+private static int bmf_numTopics = 6;
+private static int bmf_numIters = 50;
+private static double bmf_alpha = 0.8;
+private static double bmf_beta = 5;
 
 public static void main (String [] args) {
 
@@ -653,21 +654,21 @@ public static void main (String [] args) {
 	Processor.getInstance().testUsersProcess(new MAE());
 	System.out.println("- MAE: " + Kernel.gi().getQualityMeasure("MAE"));
 
-	Processor.getInstance().testUsersProcess(new PrecisionRecall(numRecommendations, threshold));
+	Processor.getInstance().testUsersProcess(new Precision(numRecommendations, threshold));
 	System.out.println("- Precision: " + Kernel.gi().getQualityMeasure("Precision"));
 
-	// NNMF
-	Nnmf nnmf = new Nnmf (nnmf_numTopics, nnmf_numIters, nnmf_alpha, nnmf_beta);
-	nnmf.train();
+	// BMF
+	Bmf bmf = new Bmf (bmf_numTopics, bmf_numIters, bmf_alpha, bmf_beta);
+	bmf.train();
 
-	Processor.getInstance().testUsersProcess(new FactorizationPrediction(nnmf));
+	Processor.getInstance().testUsersProcess(new FactorizationPrediction(bmf));
 
-	System.out.println("\nPMF:");
+	System.out.println("\nBMF:");
 
 	Processor.getInstance().testUsersProcess(new MAE());
 	System.out.println("- MAE: " + Kernel.gi().getQualityMeasure("MAE"));
 
-	Processor.getInstance().testUsersProcess(new PrecisionRecall(numRecommendations, threshold));
+	Processor.getInstance().testUsersProcess(new Precision(numRecommendations, threshold));
 	System.out.println("- Precision: " + Kernel.gi().getQualityMeasure("Precision"));
 }
 ```
@@ -680,6 +681,46 @@ cd src/examples
 javac -cp ../../target/cf4j-recsys-1.1.0.jar Example3.java
 java -classpath ../../target/cf4j-recsys-1.1.0.jar:../ examples.Example3
 ```
+
+## Algorithm List
+
+In this section we include the full list of algorithms implemented in the library and a link to the paper in which it is explained.
+
+* KNN based CF (both user-to-user and item-to-item approaches):
+
+  + Similarity metrics:
+
+    - Pearson Correlation ([link](https://www.sciencedirect.com/science/article/pii/S0950705113001044))
+    - Pearson Correlation Constrained ([link](https://www.sciencedirect.com/science/article/pii/S0950705113001044))
+    - Cosine ([link](https://www.sciencedirect.com/science/article/pii/S0950705113001044))
+    - Adjusted Cosine ([link](https://www.sciencedirect.com/science/article/pii/S0950705113001044))
+    - Jaccard Index ([link](https://www.sciencedirect.com/science/article/pii/S0950705113001044))
+    - MSD ([link](https://www.sciencedirect.com/science/article/pii/S0950705113001044))
+    - Spearman Rank ([link](https://www.sciencedirect.com/science/article/pii/S0950705113001044))
+    - JSMD ([link](https://www.sciencedirect.com/science/article/pii/S0950705110000444))
+    - CJMSD (http://onlinelibrary.wiley.com/doi/10.1002/int.21556/full)
+    - Singularities ([link](https://www.sciencedirect.com/science/article/pii/S0306457311000409))
+    - PIP ([link](https://www.sciencedirect.com/science/article/pii/S0020025507003751))
+
+  + Aggregation approaches:
+
+    - Mean ([link](http://ieeexplore.ieee.org/abstract/document/1423975/))
+    - WeightedMean ([link](http://ieeexplore.ieee.org/abstract/document/1423975/))
+    - Deviation from Mean ([link](http://ieeexplore.ieee.org/abstract/document/1423975/))
+
+* Model based CF:
+
+  + Matrix factorization:
+
+    - PMF ([link](https://dl.acm.org/citation.cfm?id=1608614))
+    - BMF ([link](https://www.sciencedirect.com/science/article/pii/S0950705115005006))
+
+* Quality measures:
+
+    + MAE ([link](https://www.sciencedirect.com/science/article/pii/S0957417411008049))
+    + Coverage ([link](https://www.sciencedirect.com/science/article/pii/S0957417411008049))
+    + Precision & Recall ([link](https://www.sciencedirect.com/science/article/pii/S0957417411008049))
+    + F1 ([link](https://www.sciencedirect.com/science/article/pii/S0957417411008049))
 
 ## Datasets
 
