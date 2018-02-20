@@ -698,7 +698,7 @@ In this section we include the full list of algorithms implemented in the librar
     - MSD ([link](https://www.sciencedirect.com/science/article/pii/S0950705113001044))
     - Spearman Rank ([link](https://www.sciencedirect.com/science/article/pii/S0950705113001044))
     - JSMD ([link](https://www.sciencedirect.com/science/article/pii/S0950705110000444))
-    - CJMSD (http://onlinelibrary.wiley.com/doi/10.1002/int.21556/full)
+    - CJMSD ([link](http://onlinelibrary.wiley.com/doi/10.1002/int.21556/full))
     - Singularities ([link](https://www.sciencedirect.com/science/article/pii/S0306457311000409))
     - PIP ([link](https://www.sciencedirect.com/science/article/pii/S0020025507003751))
 
