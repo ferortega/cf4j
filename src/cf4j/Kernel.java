@@ -807,7 +807,7 @@ public class Kernel implements Serializable {
 	 * @return User or null
 	 */
 	public User getUserByIndex (int userIndex) {
-		if (userIndex <= this.getNumberOfUsers()) return null;
+		if (userIndex >= this.getNumberOfUsers()) return null;
 		else return this.users[userIndex];
 	}
 
