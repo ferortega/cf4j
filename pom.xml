@@ -39,33 +39,57 @@
 	</dependencies>
 	<properties>
 		<src.dir>src/cf4j</src.dir>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<maven.compiler.source>1.8</maven.compiler.source>
   </properties>
 	<build>
 		<sourceDirectory>${src.dir}</sourceDirectory>
 		<plugins>
-			<!-- Shade plugin -->
+
+			<!-- Compiler Plugin to set JDK Compiler Configuration -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.7.0</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+
+			<!-- JavaDoc Plugin to generate a JAR containing documentation from the project. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>attach-javadoc</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Shade plugin to generate a JAR containg dependencies -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.3</version>
+				<version>3.1.0</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
 						<goals>
 							<goal>shade</goal>
 						</goals>
-						<configuration>
-							<transformers>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>com.mkyong.core.utils.App</mainClass>
-								</transformer>
-							</transformers>
-						</configuration>
 					</execution>
 				</executions>
+				<configuration>
+					<createDependencyReducedPom>false</createDependencyReducedPom>
+					<createSourcesJar>true</createSourcesJar>
+					<shadeSourcesContent>false</shadeSourcesContent>
+				</configuration>
 			</plugin>
+
 		</plugins>
   </build>
 	<profiles>
