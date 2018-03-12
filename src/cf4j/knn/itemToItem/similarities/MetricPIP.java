@@ -70,7 +70,7 @@ public class MetricPIP extends ItemsSimilarities {
 
 				// Calculamos la popularity
 				int userCode = activeItem.getUsers()[u];
-				User user = Kernel.gi().getTestUserByCode(userCode);
+				User user = Kernel.gi().getUserByCode(userCode);
 				double userAvg = user.getRatingAverage();
 				
 				double popularity = 1;
