@@ -807,7 +807,7 @@ public class Kernel implements Serializable {
 	 * @return User or null
 	 */
 	public User getUserByIndex (int userIndex) {
-		if (userIndex <= this.getNumberOfUsers()) return null;
+		if (userIndex >= this.getNumberOfUsers()) return null;
 		else return this.users[userIndex];
 	}
 
@@ -828,7 +828,7 @@ public class Kernel implements Serializable {
 	 * @return TestUser or null
 	 */
 	public TestUser getTestUserByIndex (int testUserIndex) {
-		if (testUserIndex <= this.getNumberOfTestUsers()) return null;
+		if (testUserIndex >= this.getNumberOfTestUsers()) return null;
 		else return this.testUsers[testUserIndex];
 	}
 }
