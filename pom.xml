@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.github.ferortega</groupId>
 	<artifactId>cf4j-recsys</artifactId>
-	<version>1.1.0</version>
+	<version>1.1.1</version>
 	<packaging>jar</packaging>
 	<name>cf4j-recsys</name>
 	<description>A Java's Collaborative Filtering library to carry out experiments in research of Collaborative Filtering based Recommender Systems. The library has been designed from researchers to researchers.</description>
