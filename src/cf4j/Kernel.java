@@ -328,9 +328,11 @@ public class Kernel implements Serializable {
 			// Add user to training users
 			this.users[userIndex] = user;
 			userIndex++;
-
-			this.ratingAverage += user.getRatingAverage() * user.getNumberOfRatings();
-			averageCount += user.getNumberOfRatings();
+ 
+			if (user.getNumberOfRatings() > 0) {
+				this.ratingAverage += user.getRatingAverage() * user.getNumberOfRatings();
+				averageCount += user.getNumberOfRatings();
+			}	
 		}
 
 		this.ratingAverage /= averageCount;
