@@ -2,7 +2,6 @@ package examples;
 
 import cf4j.Kernel;
 import cf4j.Processor;
-import cf4j.qualityMeasures.MAE;
 import cf4j.utils.PrintableQualityMeasure;
 
 /**
