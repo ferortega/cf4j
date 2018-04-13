@@ -94,6 +94,15 @@ public class TestUser extends User {
 	public int [] getTestItems() {
 		return this.testItems;
 	}
+	
+	/**
+	 * Returns the test item code at index position. 
+	 * @param index Index.
+	 * @return Test item code at index. 
+	 */
+	public int getTestItemAt(int index) {
+		return this.getTestItems()[index];
+	}
 
 	/**
 	 * Get the ratings of the test items. The indexes of this array overlaps
@@ -102,6 +111,15 @@ public class TestUser extends User {
 	 */
 	public double [] getTestRatings() {
 		return this.testRatings;
+	}
+	
+	/**
+	 * Returns the test rating at index position. 
+	 * @param index Index.
+	 * @return Test rating at index. 
+	 */
+	public double getTestRatingAt(int index) {
+		return this.getTestRatings()[index];
 	}
 	
 	/**

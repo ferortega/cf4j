@@ -93,6 +93,15 @@ public class TestItem extends Item {
 	public int [] getTestUsers() {
 		return this.testUsers;
 	}
+	
+	/**
+	 * Returns the test user code at index position. 
+	 * @param index Index.
+	 * @return Test user code at index. 
+	 */
+	public int getTestUserAt(int index) {
+		return this.getTestUsers()[index];
+	}
 
 	/**
 	 * Get the test ratings of the test users to the item. The indexes of this 
@@ -101,6 +110,15 @@ public class TestItem extends Item {
 	 */
 	public double [] getTestRatings() {
 		return this.testRatings;
+	}
+	
+	/**
+	 * Returns the test rating at index position. 
+ 	 * @param index Index.
+	 * @return Test rating at index. 
+	 */
+	public double getTestRatingAt(int index) {
+		return this.getTestRatings()[index];
 	}
 	
 	/**

@@ -140,6 +140,15 @@ public class Item implements Serializable {
 	public int [] getUsers() {
 		return this.users;
 	}
+	
+	/**
+	 * Returns the user code at index position. 
+	 * @param index Index.
+	 * @return User code at index. 
+	 */
+	public int getUserAt(int index) {
+		return this.getUsers()[index];
+	}
 
 	/**
 	 * Get the ratings of the users to the item. The indexes of the array overlaps
@@ -148,6 +157,15 @@ public class Item implements Serializable {
 	 */
 	public double [] getRatings() {
 		return this.ratings;
+	}
+	
+	/**
+	 * Returns the rating at index position. 
+	 * @param index Index.
+	 * @return Rating at index. 
+	 */
+	public double getRatingAt(int index) {
+		return this.getRatings()[index];
 	}
 	
 	/**

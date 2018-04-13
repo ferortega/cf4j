@@ -140,6 +140,15 @@ public class User implements Serializable {
 	public int[] getItems() {
 		return this.items;
 	}
+	
+	/**
+	 * Returns the item code at index position. 
+	 * @param index Index.
+	 * @return Item code at index. 
+	 */
+	public int getItemAt(int index) {
+		return this.getItems()[index];
+	}
 
 	/**
 	 * Returns the ratings given by the user to the items. The indexes of the 
@@ -148,6 +157,15 @@ public class User implements Serializable {
 	 */
 	public double [] getRatings() {
 		return this.ratings;
+	}
+	
+	/**
+	 * Returns the rating at index position. 
+	 * @param index Index.
+	 * @return Rating at index. 
+	 */
+	public double getRatingAt(int index) {
+		return this.getRatings()[index];
 	}
 	
 	/**
