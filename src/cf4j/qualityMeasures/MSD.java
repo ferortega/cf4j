@@ -15,7 +15,7 @@ public class MSD extends QualityMeasure {
 	private final static String NAME = "MSD";
 
 	/**
-	 * Constructor of MAE
+	 * Constructor of MSD
 	 */
 	public MSD () {
 		super(NAME);
