@@ -20,9 +20,9 @@ import cf4j.utils.Methods;
  */
 public class Bmf implements FactorizationModel {
 
-	private final static String USER_GAMMA_KEY = "nnmf-user-gamma";
-	private final static String ITEM_E_PLUS_KEY = "nnmf-item-e+";
-	private final static String ITEM_E_MINUS_KEY = "nnmf-item-e-";
+	private final static String USER_GAMMA_KEY = "bmf-user-gamma";
+	private final static String ITEM_E_PLUS_KEY = "bmf-item-e+";
+	private final static String ITEM_E_MINUS_KEY = "bmf-item-e-";
 
 	private final static double DEFAULT_R = 4;
 
@@ -108,7 +108,7 @@ public class Bmf implements FactorizationModel {
 	 * Estimate the latent model factors
 	 */
 	public void train () {
-		System.out.println("\nProcessing NNMF...");
+		System.out.println("\nProcessing BMF...");
 
 		for (int iter = 1; iter <= this.numIters; iter++) {
 			Processor.getInstance().itemsProcess(new UpdateModel(), false);
