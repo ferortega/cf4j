@@ -163,7 +163,7 @@ public class PrintableQualityMeasure {
 	 */
 	public void putError (int n, String variable, String serie, double error) {
 		int ri = n - 1;
-		int vi = 0; while (variable != this.variables[vi]) vi++;
+		int vi = 0; while (!variable.equals(this.variables[vi])) vi++;
 		int si = 0; while (!serie.equals(this.series[si])) si++;
 		this.errors[ri][vi][si] = error;
 	}
