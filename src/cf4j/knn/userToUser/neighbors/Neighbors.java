@@ -1,7 +1,7 @@
 package cf4j.knn.userToUser.neighbors;
 
 import cf4j.TestUsersPartible;
-import cf4j.data.Kernel;
+import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.utils.Methods;
 
@@ -34,7 +34,7 @@ public class Neighbors implements TestUsersPartible {
 
 	@Override
 	public void run (int testUserIndex) {
-		TestUser testUser = Kernel.getInstance().getTestUsers()[testUserIndex];
+		TestUser testUser = DataModel.getInstance().getTestUsers()[testUserIndex];
 		double [] similarities = testUser.getSimilarities();
 		int [] neighbors = Methods.findTopN(similarities, this.k);
 		testUser.setNeighbors(neighbors);

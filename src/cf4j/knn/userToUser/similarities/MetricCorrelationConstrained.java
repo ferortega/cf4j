@@ -3,7 +3,7 @@ package cf4j.knn.userToUser.similarities;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import cf4j.data.Kernel;
+import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.data.User;
 
@@ -32,7 +32,7 @@ public class MetricCorrelationConstrained extends UsersSimilarities {
 	 */
 	public MetricCorrelationConstrained () {
 		ArrayList <Double> ratings = new ArrayList <Double> ();
-		for (User user : Kernel.gi().getUsers()) {
+		for (User user : DataModel.gi().getUsers()) {
 			for (double rating : user.getRatings()) {
 				ratings.add(rating);
 			}

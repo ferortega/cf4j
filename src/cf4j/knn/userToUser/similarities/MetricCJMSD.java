@@ -1,6 +1,6 @@
 package cf4j.knn.userToUser.similarities;
 
-import cf4j.data.Kernel;
+import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.data.User;
 
@@ -21,7 +21,7 @@ public class MetricCJMSD extends UsersSimilarities {
 	@Override
 	public void beforeRun () {
 		super.beforeRun();
-		this.maxDiff = Kernel.gi().getMaxRating() - Kernel.gi().getMinRating();
+		this.maxDiff = DataModel.gi().getMaxRating() - DataModel.gi().getMinRating();
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class MetricCJMSD extends UsersSimilarities {
 
 		// Return similarity
 		double jaccard = (double) common / (double) (activeUser.getNumberOfRatings() + targetUser.getNumberOfRatings() - common);
-		double coverage = (double) (targetUser.getNumberOfRatings() - common) / (double) Kernel.gi().getNumberOfItems();
+		double coverage = (double) (targetUser.getNumberOfRatings() - common) / (double) DataModel.gi().getNumberOfItems();
 		return coverage * jaccard * (1d - (msd / common));
 	}
 }

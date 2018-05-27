@@ -7,7 +7,7 @@ import org.apache.commons.math3.special.Gamma;
 import cf4j.ItemsPartible;
 import cf4j.Processor;
 import cf4j.data.Item;
-import cf4j.data.Kernel;
+import cf4j.data.DataModel;
 import cf4j.data.User;
 import cf4j.utils.Methods;
 
@@ -85,12 +85,12 @@ public class Bmf implements FactorizationModel {
 		this.r = r;
 
 		// Users initialization
-		for (int u = 0; u < Kernel.gi().getNumberOfUsers(); u++) {
+		for (int u = 0; u < DataModel.gi().getNumberOfUsers(); u++) {
 			this.setUserGamma(u, this.random(this.numFactors));
 		}
 
 		// Items initialization
-		for (int i = 0; i < Kernel.gi().getNumberOfItems(); i++) {
+		for (int i = 0; i < DataModel.gi().getNumberOfItems(); i++) {
 			this.setItemEPlus(i, this.random(this.numFactors));
 			this.setItemEMinus(i, this.random(this.numFactors));
 		}
@@ -160,7 +160,7 @@ public class Bmf implements FactorizationModel {
 	 * @return User gamma
 	 */
 	public double [] getUserGamma (int userIndex) {
-		User user = Kernel.gi().getUsers()[userIndex];
+		User user = DataModel.gi().getUsers()[userIndex];
 		return (double []) user.get(USER_GAMMA_KEY);
 	}
 
@@ -170,7 +170,7 @@ public class Bmf implements FactorizationModel {
 	 * @param gamma User gamma
 	 */
 	private void setUserGamma (int userIndex, double [] gamma) 	{
-		User user = Kernel.gi().getUsers()[userIndex];
+		User user = DataModel.gi().getUsers()[userIndex];
 		user.put(USER_GAMMA_KEY, gamma);
 	}
 
@@ -180,7 +180,7 @@ public class Bmf implements FactorizationModel {
 	 * @return Item E+
 	 */
 	public double [] getItemEPlus (int itemIndex) {
-		Item item = Kernel.gi().getItems()[itemIndex];
+		Item item = DataModel.gi().getItems()[itemIndex];
 		return ((double []) item.get(ITEM_E_PLUS_KEY)).clone();
 	}
 
@@ -190,7 +190,7 @@ public class Bmf implements FactorizationModel {
 	 * @param ePlus Item E+
 	 */
 	private void setItemEPlus (int itemIndex, double [] ePlus) {
-		Item item = Kernel.gi().getItems()[itemIndex];
+		Item item = DataModel.gi().getItems()[itemIndex];
 		item.put(ITEM_E_PLUS_KEY, ePlus);
 	}
 
@@ -200,7 +200,7 @@ public class Bmf implements FactorizationModel {
 	 * @return Item E-
 	 */
 	public double [] getItemEMinus (int itemIndex) {
-		Item item = Kernel.gi().getItems()[itemIndex];
+		Item item = DataModel.gi().getItems()[itemIndex];
 		return ((double []) item.get(ITEM_E_MINUS_KEY)).clone();
 	}
 
@@ -210,7 +210,7 @@ public class Bmf implements FactorizationModel {
 	 * @param eMinus Item E-
 	 */
 	private void setItemEMinus (int itemIndex, double [] eMinus) 	{
-		Item item = Kernel.gi().getItems()[itemIndex];
+		Item item = DataModel.gi().getItems()[itemIndex];
 		item.put(ITEM_E_MINUS_KEY, eMinus);
 	}
 
@@ -225,8 +225,8 @@ public class Bmf implements FactorizationModel {
 		double [] b = this.getItemFactors(itemIndex);
 		double prediction = Methods.dotProduct(a, b);
 
-		double max = Kernel.gi().getMaxRating();
-		double min = Kernel.gi().getMinRating();
+		double max = DataModel.gi().getMaxRating();
+		double min = DataModel.gi().getMinRating();
 
 		return prediction * (max - min) + min;
 	}
@@ -255,8 +255,8 @@ public class Bmf implements FactorizationModel {
 				this.locks[i] = new ReentrantLock();
 			}
 
-			int numUsers = Kernel.gi().getNumberOfUsers();
-			int numItems = Kernel.gi().getNumberOfItems();
+			int numUsers = DataModel.gi().getNumberOfUsers();
+			int numItems = DataModel.gi().getNumberOfItems();
 			int numFactors = Bmf.this.numFactors;
 
 			this.gamma = new double [numUsers][numFactors];
@@ -286,7 +286,7 @@ public class Bmf implements FactorizationModel {
 		@Override
 		public void run (int itemIndex) {
 
-			Item item = Kernel.gi().getItems()[itemIndex];
+			Item item = DataModel.gi().getItems()[itemIndex];
 
 			double [] ePlus = Bmf.this.getItemEPlus(itemIndex);
 			double [] eMinus = Bmf.this.getItemEMinus(itemIndex);
@@ -296,14 +296,14 @@ public class Bmf implements FactorizationModel {
 			for (int u = 0; u < item.getNumberOfRatings(); u++) {
 
 				// Arrays of ref codes are sorted
-				while (Kernel.gi().getUsers()[userIndex].getUserCode() < item.getUsers()[u]) userIndex++;
+				while (DataModel.gi().getUsers()[userIndex].getUserCode() < item.getUsers()[u]) userIndex++;
 
 				double [] gamma = Bmf.this.getUserGamma(userIndex);
 
 				double [] lambda = new double [Bmf.this.numFactors];
 
-				double rating = (item.getRatings()[u] - Kernel.gi().getMinRating())
-						/ (Kernel.gi().getMaxRating() - Kernel.gi().getMinRating());
+				double rating = (item.getRatings()[u] - DataModel.gi().getMinRating())
+						/ (DataModel.gi().getMaxRating() - DataModel.gi().getMinRating());
 
 				double acc = 0;
 
@@ -339,11 +339,11 @@ public class Bmf implements FactorizationModel {
 
 		@Override
 		public void afterRun() {
-			for (int userIndex = 0; userIndex < Kernel.gi().getNumberOfUsers(); userIndex++) {
+			for (int userIndex = 0; userIndex < DataModel.gi().getNumberOfUsers(); userIndex++) {
 				Bmf.this.setUserGamma(userIndex, this.gamma[userIndex]);
 			}
 
-			for (int itemIndex = 0; itemIndex < Kernel.gi().getNumberOfItems(); itemIndex++) {
+			for (int itemIndex = 0; itemIndex < DataModel.gi().getNumberOfItems(); itemIndex++) {
 				Bmf.this.setItemEPlus(itemIndex, this.ePlus[itemIndex]);
 				Bmf.this.setItemEMinus(itemIndex, this.eMinus[itemIndex]);
 			}

@@ -1,7 +1,7 @@
 package cf4j.knn.itemToItem.similarities;
 
 import cf4j.data.Item;
-import cf4j.data.Kernel;
+import cf4j.data.DataModel;
 import cf4j.data.TestItem;
 
 /**
@@ -19,7 +19,7 @@ public class MetricMSD extends ItemsSimilarities{
 	@Override
 	public void beforeRun () {		
 		super.beforeRun();
-		this.maxDiff = Kernel.gi().getMaxRating() - Kernel.gi().getMinRating();
+		this.maxDiff = DataModel.gi().getMaxRating() - DataModel.gi().getMinRating();
 	}
 
 	@Override

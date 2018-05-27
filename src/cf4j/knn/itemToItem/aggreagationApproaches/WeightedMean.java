@@ -2,7 +2,7 @@ package cf4j.knn.itemToItem.aggreagationApproaches;
 
 import cf4j.TestUsersPartible;
 import cf4j.data.Item;
-import cf4j.data.Kernel;
+import cf4j.data.DataModel;
 import cf4j.data.TestItem;
 import cf4j.data.TestUser;
 
@@ -35,7 +35,7 @@ public class WeightedMean implements TestUsersPartible {
 		this.maxSim = Double.MIN_VALUE;
 		this.minSim = Double.MAX_VALUE;
 		
-		for (TestItem testItem : Kernel.gi().getTestItems()) {
+		for (TestItem testItem : DataModel.gi().getTestItems()) {
 			for (double m : testItem.getSimilarities()) {
 				if (!Double.isInfinite(m)) {
 					if (m < this.minSim) this.minSim = m;
@@ -48,7 +48,7 @@ public class WeightedMean implements TestUsersPartible {
 	@Override
 	public void run (int testUserIndex) {
 
-		TestUser testUser = Kernel.gi().getTestUsers()[testUserIndex];
+		TestUser testUser = DataModel.gi().getTestUsers()[testUserIndex];
 				
 		int numRatings = testUser.getNumberOfTestRatings();
 		double [] predictions = new double [numRatings];
@@ -56,7 +56,7 @@ public class WeightedMean implements TestUsersPartible {
 		for (int testItemIndex = 0; testItemIndex < numRatings; testItemIndex++) {
 			
 			int itemCode = testUser.getTestItems()[testItemIndex];
-			TestItem item = Kernel.gi().getTestItemByCode(itemCode);
+			TestItem item = DataModel.gi().getTestItemByCode(itemCode);
 			
 			double [] similarities = item.getSimilarities();
 			int [] neighbors = item.getNeighbors();
@@ -67,7 +67,7 @@ public class WeightedMean implements TestUsersPartible {
 				if (neighbors[n] == -1) break; // Neighbors array are filled with -1 when no more neighbors exists
 				
 				int itemIndex = neighbors[n];
-				Item neighbor = Kernel.gi().getItems()[itemIndex];
+				Item neighbor = DataModel.gi().getItems()[itemIndex];
 				int neighborCode = neighbor.getItemCode();
 				
 								

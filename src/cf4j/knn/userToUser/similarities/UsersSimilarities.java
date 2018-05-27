@@ -1,7 +1,7 @@
 package cf4j.knn.userToUser.similarities;
 
 import cf4j.TestUsersPartible;
-import cf4j.data.Kernel;
+import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.data.User;
 
@@ -34,13 +34,13 @@ abstract public class UsersSimilarities implements TestUsersPartible {
 
 	@Override
 	public void run (int testUserIndex) {
-		TestUser activeUser = Kernel.gi().getTestUsers()[testUserIndex];
+		TestUser activeUser = DataModel.gi().getTestUsers()[testUserIndex];
 		
-		int numUsers = Kernel.gi().getNumberOfUsers();
+		int numUsers = DataModel.gi().getNumberOfUsers();
 		double [] similarities = new double [numUsers];
 		
 		for (int u = 0; u < similarities.length; u++) {
-			User targetUser = Kernel.gi().getUsers()[u];
+			User targetUser = DataModel.gi().getUsers()[u];
 			if (activeUser.getUserCode() == targetUser.getUserCode()) {
 				similarities[u] = Double.NEGATIVE_INFINITY;
 			} else { 

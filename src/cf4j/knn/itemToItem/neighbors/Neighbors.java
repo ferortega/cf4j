@@ -1,7 +1,7 @@
 package cf4j.knn.itemToItem.neighbors;
 
 import cf4j.TestItemsPartible;
-import cf4j.data.Kernel;
+import cf4j.data.DataModel;
 import cf4j.data.TestItem;
 import cf4j.utils.Methods;
 
@@ -34,7 +34,7 @@ public class Neighbors implements TestItemsPartible {
 
 	@Override
 	public void run (int testItemIndex) {
-		TestItem testItem = Kernel.gi().getTestItems()[testItemIndex];
+		TestItem testItem = DataModel.gi().getTestItems()[testItemIndex];
 		double [] similarities = testItem.getSimilarities();
 		int [] neighbors = Methods.findTopN(similarities, this.k);
 		testItem.setNeighbors(neighbors);

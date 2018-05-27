@@ -1,6 +1,6 @@
 package cf4j;
 
-import cf4j.data.Kernel;
+import cf4j.data.DataModel;
 
 /**
  * <p>Class that manages the execution of processes. To use this class, you must have previously 
@@ -95,7 +95,7 @@ public class Processor {
 	 * @param verbose Print execution info
 	 */
 	public void usersProcess (UsersPartible usersPartible, boolean verbose) {	
-		int numUsers = Kernel.getInstance().getNumberOfUsers();
+		int numUsers = DataModel.getInstance().getNumberOfUsers();
 		PartibleThreads.runThreads(usersPartible, this.threads, numUsers, verbose);	
 	}
 	
@@ -115,7 +115,7 @@ public class Processor {
 	 * @param verbose Print execution info
 	 */
 	public void testUsersProcess (TestUsersPartible testUsersPartible, boolean verbose) {	
-		int numTestUsers = Kernel.getInstance().getNumberOfTestUsers();
+		int numTestUsers = DataModel.getInstance().getNumberOfTestUsers();
 		PartibleThreads.runThreads(testUsersPartible, this.threads, numTestUsers, verbose);	
 	}
 	
@@ -135,7 +135,7 @@ public class Processor {
 	 * @param verbose Print execution info
 	 */
 	public void itemsProcess (ItemsPartible itemsPartible, boolean verbose) {	
-		int numItems = Kernel.getInstance().getNumberOfItems();
+		int numItems = DataModel.getInstance().getNumberOfItems();
 		PartibleThreads.runThreads(itemsPartible, this.threads, numItems, verbose);	
 	}
 	
@@ -155,7 +155,7 @@ public class Processor {
 	 * @param verbose Print execution info
 	 */
 	public void testItemsProcess (TestItemsPartible testItemsPartible, boolean verbose) {	
-		int numTestItems = Kernel.getInstance().getNumberOfTestItems();
+		int numTestItems = DataModel.getInstance().getNumberOfTestItems();
 		PartibleThreads.runThreads(testItemsPartible, this.threads, numTestItems, verbose);	
 	}
 }

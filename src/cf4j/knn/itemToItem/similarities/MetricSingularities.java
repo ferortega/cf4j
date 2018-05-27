@@ -3,7 +3,7 @@ package cf4j.knn.itemToItem.similarities;
 import java.util.HashSet;
 
 import cf4j.data.Item;
-import cf4j.data.Kernel;
+import cf4j.data.DataModel;
 import cf4j.data.TestItem;
 import cf4j.data.User;
 
@@ -54,21 +54,21 @@ public class MetricSingularities extends ItemsSimilarities{
 		this.notRelevantRatings = new HashSet <Double> ();
 		for (double r : notRelevantRatings)  this.notRelevantRatings.add(r);
 		
-		this.maxDiff = Kernel.gi().getMaxRating() - Kernel.gi().getMinRating();
+		this.maxDiff = DataModel.gi().getMaxRating() - DataModel.gi().getMinRating();
 	}
 
 	@Override
 	public void beforeRun () {
 		super.beforeRun();
 		
-		double numItems = Kernel.gi().getNumberOfItems();
+		double numItems = DataModel.gi().getNumberOfItems();
 
 		// To store users singularity
-		this.singularityOfRelevantRatings = new double [Kernel.gi().getNumberOfUsers()];
-		this.singularityOfNotRelevantRatings = new double [Kernel.gi().getNumberOfUsers()];
+		this.singularityOfRelevantRatings = new double [DataModel.gi().getNumberOfUsers()];
+		this.singularityOfNotRelevantRatings = new double [DataModel.gi().getNumberOfUsers()];
 
-		for (int u = 0; u < Kernel.gi().getNumberOfUsers(); u++) {
-			User user = Kernel.gi().getUsers()[u];
+		for (int u = 0; u < DataModel.gi().getNumberOfUsers(); u++) {
+			User user = DataModel.gi().getUsers()[u];
 
 			int numberOfRelevantRatings = 0;
 			int numberOfNotReleavantRatings = 0;
@@ -103,7 +103,7 @@ public class MetricSingularities extends ItemsSimilarities{
 				
 				// Get the ratings
 				int userCode = activeItem.getUsers()[u];
-				int userIndex = Kernel.getInstance().getUserIndex(userCode);
+				int userIndex = DataModel.getInstance().getUserIndex(userCode);
 				double activeItemRating = activeItem.getRatings()[u];
 				double targetItemRating = targetItem.getRatings()[v];
 

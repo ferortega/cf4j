@@ -1,7 +1,7 @@
 package examples;
 
 import cf4j.Processor;
-import cf4j.data.Kernel;
+import cf4j.data.DataModel;
 import cf4j.model.matrixFactorization.Bmf;
 import cf4j.model.matrixFactorization.Pmf;
 import cf4j.model.predictions.FactorizationPrediction;
@@ -37,7 +37,7 @@ public class Example3 {
 	public static void main (String [] args) {
 
 		// Load the database
-		Kernel.getInstance().open(dataset, testUsers, testItems, "::");
+		DataModel.getInstance().open(dataset, testUsers, testItems, "::");
 
 
 		// PMF
@@ -49,10 +49,10 @@ public class Example3 {
 		System.out.println("\nPMF:");
 
 		Processor.getInstance().testUsersProcess(new MAE());
-		System.out.println("- MAE: " + Kernel.gi().getQualityMeasure("MAE"));
+		System.out.println("- MAE: " + DataModel.gi().getQualityMeasure("MAE"));
 
 		Processor.getInstance().testUsersProcess(new Precision(numRecommendations, threshold));
-		System.out.println("- Precision: " + Kernel.gi().getQualityMeasure("Precision"));
+		System.out.println("- Precision: " + DataModel.gi().getQualityMeasure("Precision"));
 
 
 		// BMF
@@ -64,9 +64,9 @@ public class Example3 {
 		System.out.println("\nBMF:");
 
 		Processor.getInstance().testUsersProcess(new MAE());
-		System.out.println("- MAE: " + Kernel.gi().getQualityMeasure("MAE"));
+		System.out.println("- MAE: " + DataModel.gi().getQualityMeasure("MAE"));
 
 		Processor.getInstance().testUsersProcess(new Precision(numRecommendations, threshold));
-		System.out.println("- Precision: " + Kernel.gi().getQualityMeasure("Precision"));
+		System.out.println("- Precision: " + DataModel.gi().getQualityMeasure("Precision"));
 	}
 }

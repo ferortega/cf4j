@@ -25,7 +25,7 @@ import java.util.function.BiFunction;
  * it, we must use the getInstance() method.</p>
  * @author Fernando Ortega
  */
-public class Kernel implements Serializable {
+public class DataModel implements Serializable {
 
 	private static final long serialVersionUID = 20171018L;
 
@@ -34,7 +34,7 @@ public class Kernel implements Serializable {
 	/**
 	 * Class instance (Singleton pattern)
 	 */
-	private static Kernel instance = null;
+	private static DataModel instance = null;
 
 	/**
 	 * Users array
@@ -99,31 +99,31 @@ public class Kernel implements Serializable {
 	/**
 	 * Kernel constructor.
 	 */
-	private Kernel () { }
+	private DataModel () { }
 
 	/**
 	 * Gets the single instance of the class.
 	 * @return Single instance
 	 */
-	public static Kernel getInstance() {
-		if (Kernel.instance == null)
-			Kernel.instance = new Kernel();
-		return Kernel.instance;
+	public static DataModel getInstance() {
+		if (DataModel.instance == null)
+			DataModel.instance = new DataModel();
+		return DataModel.instance;
 	}
 
 	/**
 	 * Gets the single instance of the class.
 	 * @return Single instance
 	 */
-	public static Kernel gi () {
-		return Kernel.getInstance();
+	public static DataModel gi () {
+		return DataModel.getInstance();
 	}
 
 	/**
 	 * Destroy the single instance of the class
 	 */
 	public static void destroyInstance() {
-		Kernel.instance = null;
+		DataModel.instance = null;
 		System.gc();
 	}
 
@@ -488,7 +488,7 @@ public class Kernel implements Serializable {
 		System.out.println("\nLoading kernel...");
 		try {
 			ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(filename)));
-			Kernel.instance = (Kernel) ois.readObject();
+			DataModel.instance = (DataModel) ois.readObject();
 			System.out.println("\nKernel loaded successfully");
 			ois.close();
 		} catch (Exception e) {

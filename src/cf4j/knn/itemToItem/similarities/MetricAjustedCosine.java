@@ -1,7 +1,7 @@
 package cf4j.knn.itemToItem.similarities;
 
 import cf4j.data.Item;
-import cf4j.data.Kernel;
+import cf4j.data.DataModel;
 import cf4j.data.TestItem;
 import cf4j.data.User;
 
@@ -25,7 +25,7 @@ public class MetricAjustedCosine extends ItemsSimilarities {
 				v++;
 			} else {
 				int userCode = activeItem.getUsers()[u];
-				User user = Kernel.gi().getUserByCode(userCode);
+				User user = DataModel.gi().getUserByCode(userCode);
 				double avg = user.getRatingAverage();
 				
 				double fa = activeItem.getRatings()[u] - avg;

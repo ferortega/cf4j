@@ -1,7 +1,7 @@
 package cf4j.knn.userToUser.aggregationApproaches;
 
 import cf4j.TestUsersPartible;
-import cf4j.data.Kernel;
+import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.data.User;
 
@@ -34,7 +34,7 @@ public class DeviationFromMean implements TestUsersPartible {
 		this.maxSim = Double.MIN_VALUE;
 		this.minSim = Double.MAX_VALUE;
 		
-		for (TestUser testUser : Kernel.gi().getTestUsers()) {
+		for (TestUser testUser : DataModel.gi().getTestUsers()) {
 			for (double m : testUser.getSimilarities()) {
 				if (!Double.isInfinite(m)) {
 					if (m < this.minSim) this.minSim = m;
@@ -47,7 +47,7 @@ public class DeviationFromMean implements TestUsersPartible {
 	@Override
 	public void run (int testUserIndex) {
 
-		TestUser testUser = Kernel.gi().getTestUsers()[testUserIndex];
+		TestUser testUser = DataModel.gi().getTestUsers()[testUserIndex];
 
 		int [] neighbors = testUser.getNeighbors();
 		double [] similarities = testUser.getSimilarities();
@@ -64,7 +64,7 @@ public class DeviationFromMean implements TestUsersPartible {
 				if (neighbors[n] == -1) break; // Neighbors array are filled with -1 when no more neighbors exists
 				
 				int userIndex = neighbors[n];
-				User neighbor = Kernel.gi().getUsers()[userIndex];
+				User neighbor = DataModel.gi().getUsers()[userIndex];
 				
 				int i = neighbor.getItemIndex(itemCode);
 				if (i != -1) {
@@ -82,8 +82,8 @@ public class DeviationFromMean implements TestUsersPartible {
 			else {
 				double deviation = predictions[testItemIndex] / sumSimilarities;
 				double prediction = testUser.getRatingAverage() + deviation;
-				prediction = Math.min(prediction, Kernel.gi().getMaxRating());
-				prediction = Math.max(prediction, Kernel.gi().getMinRating());
+				prediction = Math.min(prediction, DataModel.gi().getMaxRating());
+				prediction = Math.max(prediction, DataModel.gi().getMinRating());
 
 				predictions[testItemIndex] = prediction;
 			}

@@ -1,7 +1,7 @@
 package cf4j.knn.userToUser.aggregationApproaches;
 
 import cf4j.TestUsersPartible;
-import cf4j.data.Kernel;
+import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.data.User;
 
@@ -24,7 +24,7 @@ public class Mean implements TestUsersPartible {
 	@Override
 	public void run (int testUserIndex) {
 
-		TestUser testUser = Kernel.gi().getTestUsers()[testUserIndex];
+		TestUser testUser = DataModel.gi().getTestUsers()[testUserIndex];
 		
 		int [] neighbors = testUser.getNeighbors();
 		
@@ -40,7 +40,7 @@ public class Mean implements TestUsersPartible {
 				if (neighbors[n] == -1) break; // Neighbors array are filled with -1 when no more neighbors exists
 				
 				int userIndex = neighbors[n];
-				User neighbor = Kernel.gi().getUsers()[userIndex];
+				User neighbor = DataModel.gi().getUsers()[userIndex];
 				
 				int i = neighbor.getItemIndex(itemCode);
 				if (i != -1) {

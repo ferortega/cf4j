@@ -1,7 +1,7 @@
 package cf4j.qualityMeasures;
 
 import cf4j.TestUsersPartible;
-import cf4j.data.Kernel;
+import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 
 /**
@@ -33,13 +33,13 @@ public abstract class QualityMeasure implements TestUsersPartible {
 
 	@Override
 	public void run (int testUserIndex) {
-		TestUser testUser = Kernel.gi().getTestUsers()[testUserIndex];
+		TestUser testUser = DataModel.gi().getTestUsers()[testUserIndex];
 		double measure = this.getMeasure(testUser);
 		testUser.put(qualityMeasureName, measure);
 	}
 
 	@Override
 	public void afterRun() {
-		Kernel.getInstance().putUsersAverage(qualityMeasureName);
+		DataModel.getInstance().putUsersAverage(qualityMeasureName);
 	}
 }

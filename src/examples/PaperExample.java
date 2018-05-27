@@ -1,7 +1,7 @@
 package examples;
 
 import cf4j.Processor;
-import cf4j.data.Kernel;
+import cf4j.data.DataModel;
 import cf4j.utils.PrintableQualityMeasure;
 
 /**
@@ -18,7 +18,7 @@ public class PaperExample {
 		double testUsers = 0.20; // 20% of test users
 		double testItems = 0.20; // 20% of test items
 
-		Kernel.getInstance().open(dbPath, testUsers, testItems, "::");
+		DataModel.getInstance().open(dbPath, testUsers, testItems, "::");
 
 		String [] similarityMetrics = {"COR", "JMSD"};
 		int [] numberOfNeighbors = {50, 100, 150, 200, 250, 300, 350, 400};
@@ -47,7 +47,7 @@ public class PaperExample {
 
 				// Compute MAE
 				Processor.getInstance().testUsersProcess(new cf4j.qualityMeasures.MAE());
-				mae.putError(k, sm, Kernel.gi().getQualityMeasure("MAE"));
+				mae.putError(k, sm, DataModel.gi().getQualityMeasure("MAE"));
 			}
 		}
 

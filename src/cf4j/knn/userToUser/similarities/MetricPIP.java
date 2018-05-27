@@ -1,7 +1,7 @@
 package cf4j.knn.userToUser.similarities;
 
 import cf4j.data.Item;
-import cf4j.data.Kernel;
+import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.data.User;
 
@@ -33,8 +33,8 @@ public class MetricPIP extends UsersSimilarities {
 	 * Constructor of the similarity metric
 	 */
 	public MetricPIP () {
-		this.max = Kernel.gi().getMaxRating();
-		this.min = Kernel.gi().getMinRating();
+		this.max = DataModel.gi().getMaxRating();
+		this.min = DataModel.gi().getMinRating();
 		
 		this.median = (max + min) / 2d;
 	}
@@ -70,7 +70,7 @@ public class MetricPIP extends UsersSimilarities {
 
 				// Compute popularity
 				int itemCode = activeUser.getItems()[i];
-				Item item = Kernel.gi().getItemByCode(itemCode);
+				Item item = DataModel.gi().getItemByCode(itemCode);
 				double itemAvg = item.getRatingAverage();
 				
 				double popularity = 1;

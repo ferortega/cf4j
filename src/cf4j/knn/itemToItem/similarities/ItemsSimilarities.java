@@ -2,7 +2,7 @@ package cf4j.knn.itemToItem.similarities;
 
 import cf4j.TestItemsPartible;
 import cf4j.data.Item;
-import cf4j.data.Kernel;
+import cf4j.data.DataModel;
 import cf4j.data.TestItem;
 
 /**
@@ -36,13 +36,13 @@ abstract public class ItemsSimilarities implements TestItemsPartible {
 	@Override
 	public void run (int testItemIndex) {
 		
-		TestItem activeItem = Kernel.getInstance().getTestItems()[testItemIndex];
+		TestItem activeItem = DataModel.getInstance().getTestItems()[testItemIndex];
 		
-		int numItems = Kernel.gi().getNumberOfItems();		
+		int numItems = DataModel.gi().getNumberOfItems();		
 		double [] similarities = new double [numItems];
 		
 		for (int i = 0; i < numItems; i++) {
-			Item targetItem = Kernel.gi().getItems()[i];
+			Item targetItem = DataModel.gi().getItems()[i];
 			if (activeItem.getItemCode() == targetItem.getItemCode()) {
 				similarities[i] = Double.NEGATIVE_INFINITY;
 			} else { 

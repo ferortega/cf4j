@@ -1,7 +1,7 @@
 package cf4j.model.predictions;
 
 import cf4j.TestUsersPartible;
-import cf4j.data.Kernel;
+import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.model.matrixFactorization.FactorizationModel;
 
@@ -25,13 +25,13 @@ public class FactorizationPrediction implements TestUsersPartible {
 
 	@Override
 	public void run (int testUserIndex) {
-		TestUser user = Kernel.gi().getTestUsers()[testUserIndex];
+		TestUser user = DataModel.gi().getTestUsers()[testUserIndex];
 
 		double [] predictions = new double [user.getNumberOfTestRatings()];
 
 		for (int i = 0; i < user.getNumberOfTestRatings(); i++) {
 			int itemCode = user.getTestItems()[i];
-			int itemIndex = Kernel.gi().getItemIndex(itemCode);
+			int itemIndex = DataModel.gi().getItemIndex(itemCode);
 
 			int userIndex = user.getUserIndex();
 
