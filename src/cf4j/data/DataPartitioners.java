@@ -8,7 +8,7 @@ import java.util.function.BiFunction;
  * <p>This class contains different built-in lambda functions to split dataset into test and training sets</p>
  * @author Fernando Ortega
  */
-public class DatasetSplitters {
+public class DataPartitioners {
 
 	/**
 	 * Divides the set based on a random probability. If a random is lower than the probability, the element

@@ -168,7 +168,7 @@ public class DataModel implements Serializable {
 	 * @param separator Separator char between file fields
 	 */
 	public void open (String filename, double testUsersPercent, double testItemsPercent, String separator) {
-		this.open(filename, DatasetSplitters.random(testUsersPercent), DatasetSplitters.random(testItemsPercent), separator);
+		this.open(filename, DataPartitioners.random(testUsersPercent), DataPartitioners.random(testItemsPercent), separator);
 	}
 	
 	/**
@@ -178,7 +178,7 @@ public class DataModel implements Serializable {
 	 * @param testUserFilter Lambda function that receives the user code and the user ratings and return true if the user is a test user and false otherwise
 	 * @param testItemFilter Lambda function that receives the item code and the item ratings and return true if the item is a test item and false otherwise
 	 * @param separator Separator char between file fields
-	 * @see DatasetSplitters
+	 * @see DataPartitioners
 	 */
 	public void open (String filename, BiFunction <Integer, Map <Integer, Double>, Boolean> testUserFilter, 
 			BiFunction <Integer, Map <Integer, Double>, Boolean> testItemFilter, String separator) {
