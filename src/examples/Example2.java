@@ -11,6 +11,7 @@ import cf4j.qualityMeasures.MAE;
 import cf4j.qualityMeasures.Precision;
 import cf4j.qualityMeasures.Recall;
 import cf4j.utils.PrintableQualityMeasure;
+import cf4j.utils.Range;
 
 /**
  * In this example we compare the similarity metrics COR, MSD, Jaccard and JMSD using
@@ -26,8 +27,8 @@ public class Example2 {
 	private static double testItems = 0.2; // 20% test items
 	private static double testUsers = 0.2; // 20% test users
 
-	private static int [] numberOfNeighbors = {50, 100, 150, 200, 250, 300, 350, 400, 450, 500};
-	private static int [] numberOfRecommendations = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	private static int [] numberOfNeighbors = Range.ofIntegers(50, 50, 10);
+	private static int [] numberOfRecommendations = Range.ofIntegers(1, 1, 10);
 
 	private static double precisionRecallThreshold = 5;
 	private static int precisionRecallK = 200;

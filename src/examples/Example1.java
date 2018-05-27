@@ -4,6 +4,7 @@ import cf4j.Kernel;
 import cf4j.Processor;
 import cf4j.qualityMeasures.MAE;
 import cf4j.utils.PrintableQualityMeasure;
+import cf4j.utils.Range;
 
 /**
  * In this example we compare MAE using JMSD similarity metric for user to user and item to items
@@ -19,8 +20,8 @@ public class Example1 {
 	private static double testItems = 0.2; // 20% test items
 	private static double testUsers = 0.2; // 20% test users
 
-	private static int [] numberOfNeighbors = {50, 100, 150, 200, 250, 300, 350, 400, 450, 500};
-
+	private static int [] numberOfNeighbors = Range.ofIntegers(50, 50, 10);
+	
 	// --------------------------------------------------------------------------------------------
 
 	public static void main (String [] args) {
