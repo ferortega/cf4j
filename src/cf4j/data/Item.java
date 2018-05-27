@@ -1,4 +1,4 @@
-package cf4j;
+package cf4j.data;
 
 import java.io.Serializable;
 import java.util.HashMap;

@@ -1,7 +1,7 @@
 package examples;
 
-import cf4j.Kernel;
 import cf4j.Processor;
+import cf4j.data.Kernel;
 import cf4j.knn.userToUser.aggregationApproaches.*;
 import cf4j.knn.userToUser.neighbors.*;
 import cf4j.knn.userToUser.similarities.*;

@@ -1,8 +1,8 @@
 package cf4j.knn.itemToItem.similarities;
 
-import cf4j.Item;
-import cf4j.Kernel;
-import cf4j.TestItem;
+import cf4j.data.Item;
+import cf4j.data.Kernel;
+import cf4j.data.TestItem;
 
 /**
  * Implements traditional MSD as CF similarity metric for items. The returned value is 1 - MSD.

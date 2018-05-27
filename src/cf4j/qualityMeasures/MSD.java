@@ -1,6 +1,6 @@
 package cf4j.qualityMeasures;
 
-import cf4j.TestUser;
+import cf4j.data.TestUser;
 
 /**
  * <p>This class calculates the MSD (Mean Square Difference) of the recommender system. The MSD is the

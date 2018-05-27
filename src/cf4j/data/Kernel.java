@@ -1,4 +1,4 @@
-package cf4j;
+package cf4j.data;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

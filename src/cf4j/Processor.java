@@ -1,5 +1,7 @@
 package cf4j;
 
+import cf4j.data.Kernel;
+
 /**
  * <p>Class that manages the execution of processes. To use this class, you must have previously 
  * loaded kernel.</p>

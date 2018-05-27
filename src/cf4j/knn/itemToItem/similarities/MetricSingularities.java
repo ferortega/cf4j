@@ -2,10 +2,10 @@ package cf4j.knn.itemToItem.similarities;
 
 import java.util.HashSet;
 
-import cf4j.Item;
-import cf4j.Kernel;
-import cf4j.TestItem;
-import cf4j.User;
+import cf4j.data.Item;
+import cf4j.data.Kernel;
+import cf4j.data.TestItem;
+import cf4j.data.User;
 
 /**
  * This class implements the singularities CF similarity metric. The similarity metric 

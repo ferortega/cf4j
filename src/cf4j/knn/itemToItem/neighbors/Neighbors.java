@@ -1,8 +1,8 @@
 package cf4j.knn.itemToItem.neighbors;
 
-import cf4j.Kernel;
-import cf4j.TestItem;
 import cf4j.TestItemsPartible;
+import cf4j.data.Kernel;
+import cf4j.data.TestItem;
 import cf4j.utils.Methods;
 
 /**

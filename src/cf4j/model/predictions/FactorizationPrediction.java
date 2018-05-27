@@ -1,8 +1,8 @@
 package cf4j.model.predictions;
 
-import cf4j.Kernel;
-import cf4j.TestUser;
 import cf4j.TestUsersPartible;
+import cf4j.data.Kernel;
+import cf4j.data.TestUser;
 import cf4j.model.matrixFactorization.FactorizationModel;
 
 /**

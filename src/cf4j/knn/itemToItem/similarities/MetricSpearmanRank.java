@@ -1,7 +1,7 @@
 package cf4j.knn.itemToItem.similarities;
 
-import cf4j.Item;
-import cf4j.TestItem;
+import cf4j.data.Item;
+import cf4j.data.TestItem;
 
 /**
  * Implements traditional Sepearman Rank as CF similarity metric for the items.

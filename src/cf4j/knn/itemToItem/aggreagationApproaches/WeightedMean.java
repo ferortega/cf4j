@@ -1,10 +1,10 @@
 package cf4j.knn.itemToItem.aggreagationApproaches;
 
-import cf4j.Item;
-import cf4j.Kernel;
-import cf4j.TestItem;
-import cf4j.TestUser;
 import cf4j.TestUsersPartible;
+import cf4j.data.Item;
+import cf4j.data.Kernel;
+import cf4j.data.TestItem;
+import cf4j.data.TestUser;
 
 /**
  * <p>This class computes the prediction of the test users' test items. The results are 

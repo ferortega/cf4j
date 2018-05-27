@@ -1,4 +1,4 @@
-package cf4j;
+package cf4j.data;
 
 import java.util.List;
 import java.util.Map;

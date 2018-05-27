@@ -1,4 +1,4 @@
-package cf4j;
+package cf4j.data;
 
 import cf4j.utils.Methods;
 

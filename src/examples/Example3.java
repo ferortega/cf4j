@@ -1,7 +1,7 @@
 package examples;
 
-import cf4j.Kernel;
 import cf4j.Processor;
+import cf4j.data.Kernel;
 import cf4j.model.matrixFactorization.Bmf;
 import cf4j.model.matrixFactorization.Pmf;
 import cf4j.model.predictions.FactorizationPrediction;

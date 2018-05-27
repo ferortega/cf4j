@@ -4,11 +4,11 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.math3.special.Gamma;
 
-import cf4j.Item;
 import cf4j.ItemsPartible;
-import cf4j.Kernel;
 import cf4j.Processor;
-import cf4j.User;
+import cf4j.data.Item;
+import cf4j.data.Kernel;
+import cf4j.data.User;
 import cf4j.utils.Methods;
 
 /**

@@ -1,9 +1,9 @@
 package cf4j.knn.userToUser.similarities;
 
-import cf4j.Item;
-import cf4j.Kernel;
-import cf4j.TestUser;
-import cf4j.User;
+import cf4j.data.Item;
+import cf4j.data.Kernel;
+import cf4j.data.TestUser;
+import cf4j.data.User;
 
 /**
  * Implements traditional Adjusted Cosine as CF similarity metric.

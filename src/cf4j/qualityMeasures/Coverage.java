@@ -1,6 +1,6 @@
 package cf4j.qualityMeasures;
 
-import cf4j.TestUser;
+import cf4j.data.TestUser;
 
 /**
  * <p>This class calculates the Coverage of the recommender system. The coverage is the capacity of
