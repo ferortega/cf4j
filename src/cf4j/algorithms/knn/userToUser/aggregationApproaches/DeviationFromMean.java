@@ -1,9 +1,9 @@
 package cf4j.algorithms.knn.userToUser.aggregationApproaches;
 
+import cf4j.algorithms.TestPredictions;
 import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.data.User;
-import cf4j.process.TestUsersPartible;
 
 /**
  * <p>This class computes the prediction of the test users' test items. The results are 
@@ -17,7 +17,7 @@ import cf4j.process.TestUsersPartible;
  * 
  * @author Fernando Ortega
  */
-public class DeviationFromMean implements TestUsersPartible {
+public class DeviationFromMean extends TestPredictions {
 
 	/**
 	 * Minimum similarity computed
@@ -31,6 +31,8 @@ public class DeviationFromMean implements TestUsersPartible {
 
 	@Override
 	public void beforeRun() {
+		super.beforeRun();
+		
 		this.maxSim = Double.MIN_VALUE;
 		this.minSim = Double.MAX_VALUE;
 		
@@ -44,54 +46,45 @@ public class DeviationFromMean implements TestUsersPartible {
 		}
 	}
 
-	@Override
-	public void run (int testUserIndex) {
-
-		TestUser testUser = DataModel.gi().getTestUsers()[testUserIndex];
-
+	/**
+	 * Compute predictions using deviation from mean.
+	 * @param testUser User to get the prediction.
+	 * @param itemCode Item to be predicted.
+	 * @return Prediction value or Double.NaN if it can not be computed.
+	 */
+	public double predict(TestUser testUser, int itemCode) {
+		
 		int [] neighbors = testUser.getNeighbors();
 		double [] similarities = testUser.getSimilarities();
-
-		int numRatings = testUser.getNumberOfTestRatings();
-		double [] predictions = new double [numRatings];
 		
-		for (int testItemIndex = 0; testItemIndex < numRatings; testItemIndex++) {
+		double deviation = 0;
+		double sumSimilarities = 0;
+		
+		for (int n = 0; n < neighbors.length; n++) {
+			if (neighbors[n] == -1) break; // Neighbors array are filled with -1 when no more neighbors exists
 			
-			int itemCode = testUser.getTestItems()[testItemIndex];
-			double sumSimilarities = 0;
+			int userIndex = neighbors[n];
+			User neighbor = DataModel.gi().getUsers()[userIndex];
 			
-			for (int n = 0; n < neighbors.length; n++) {
-				if (neighbors[n] == -1) break; // Neighbors array are filled with -1 when no more neighbors exists
-				
-				int userIndex = neighbors[n];
-				User neighbor = DataModel.gi().getUsers()[userIndex];
-				
-				int i = neighbor.getItemIndex(itemCode);
-				if (i != -1) {
-					double similarity = similarities[userIndex];
-					double sim = (similarity - this.minSim) / (this.maxSim - this.minSim);
+			int i = neighbor.getItemIndex(itemCode);
+			if (i != -1) {
+				double similarity = similarities[userIndex];
+				double sim = (similarity - this.minSim) / (this.maxSim - this.minSim);
 
-					predictions[testItemIndex] += sim * (neighbor.getRatings()[i] - neighbor.getRatingAverage());
-					sumSimilarities += sim;
-				}
-			}
-			
-			if (sumSimilarities == 0) {
-				predictions[testItemIndex] = Double.NaN;
-			} 
-			else {
-				double deviation = predictions[testItemIndex] / sumSimilarities;
-				double prediction = testUser.getRatingAverage() + deviation;
-				prediction = Math.min(prediction, DataModel.gi().getMaxRating());
-				prediction = Math.max(prediction, DataModel.gi().getMinRating());
-
-				predictions[testItemIndex] = prediction;
+				deviation += sim * (neighbor.getRatings()[i] - neighbor.getRatingAverage());
+				sumSimilarities += sim;
 			}
 		}
 		
-		testUser.setPredictions(predictions);
+		if (sumSimilarities == 0) {
+			return Double.NaN;
+		} 
+		else {
+			deviation /= sumSimilarities;
+			double prediction = testUser.getRatingAverage() + deviation;
+			prediction = Math.min(prediction, DataModel.gi().getMaxRating());
+			prediction = Math.max(prediction, DataModel.gi().getMinRating());
+			return prediction;
+		}
 	}
-
-	@Override
-	public void afterRun() { }
 }
