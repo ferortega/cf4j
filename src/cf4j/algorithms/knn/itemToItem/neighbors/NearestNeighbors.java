@@ -1,8 +1,6 @@
 package cf4j.algorithms.knn.itemToItem.neighbors;
 
-import cf4j.data.DataModel;
 import cf4j.data.TestItem;
-import cf4j.process.TestItemsPartible;
 import cf4j.utils.Methods;
 
 /**
@@ -14,33 +12,20 @@ import cf4j.utils.Methods;
  * 
  * @author Fernando Ortega
  */
-public class Neighbors implements TestItemsPartible {
+public class NearestNeighbors extends ItemNeighbors {
 
-	/**
-	 * Number of neighbors to be calculated
-	 */
-	int k;
-	
 	/**
 	 * Class constructor
 	 * @param k Number of neighbors to calculate
 	 */
-	public Neighbors (int k) {
-		this.k = k;
+	public NearestNeighbors (int k) {
+		super(k);
 	}
 	
 	@Override
-	public void beforeRun() { }
-
-	@Override
-	public void run (int testItemIndex) {
-		TestItem testItem = DataModel.gi().getTestItems()[testItemIndex];
+	public int [] neighbors (TestItem testItem) {
 		double [] similarities = testItem.getSimilarities();
-		int [] neighbors = Methods.findTopN(similarities, this.k);
-		testItem.setNeighbors(neighbors);
+		int [] neighbors = Methods.findTopN(similarities, super.k);
+		return neighbors;
 	}
-
-	@Override
-	public void afterRun() { }
-
 }

@@ -60,7 +60,7 @@ public class Example1 {
 		for (int k : numberOfNeighbors) {
 
 			// Compute neighbors
-			Processor.getInstance().testItemsProcess(new cf4j.algorithms.knn.itemToItem.neighbors.Neighbors(k));
+			Processor.getInstance().testItemsProcess(new cf4j.algorithms.knn.itemToItem.neighbors.NearestNeighbors(k));
 
 			// Compute predictions using DFM
 			Processor.getInstance().testUsersProcess(new cf4j.algorithms.knn.itemToItem.aggreagationApproaches.WeightedMean());
