@@ -14,7 +14,7 @@ import cf4j.data.User;
  * 
  * @author Fernando Ortega
  */
-public class Singularities extends UsersSimilarities{
+public class Singularities extends UserSimilarities{
 
 	/**
 	 * Maximum difference between the ratings

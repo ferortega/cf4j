@@ -11,7 +11,7 @@ import cf4j.data.User;
  * 
  * @author Fernando Ortega
  */
-public class JMSD extends UsersSimilarities {
+public class JMSD extends UserSimilarities {
 
 	/**
 	 * Maximum difference between the ratings

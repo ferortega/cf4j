@@ -12,7 +12,7 @@ import cf4j.data.User;
  * 
  * @author Fernando Ortega
  */
-public class PIP extends UsersSimilarities {
+public class PIP extends UserSimilarities {
 
 	/**
 	 * Median of the ratings of the dataset

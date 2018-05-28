@@ -10,7 +10,7 @@ import cf4j.data.User;
  * 
  * @author Fernando Ortega
  */
-public class AjustedCosine extends UsersSimilarities {
+public class AjustedCosine extends UserSimilarities {
 
 	@Override
 	public double similarity (TestUser activeUser, User targetUser) {	

@@ -8,7 +8,7 @@ import cf4j.data.User;
  * 
  * @author Fernando Ortega
  */
-public class Jaccard extends UsersSimilarities {
+public class Jaccard extends UserSimilarities {
 
 	@Override
 	public double similarity (TestUser activeUser, User targetUser) {		
