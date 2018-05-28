@@ -1,18 +1,19 @@
-package cf4j.knn.userToUser.similarities;
+package cf4j.knn.itemToItem.similarities;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
+import cf4j.data.Item;
 import cf4j.data.DataModel;
-import cf4j.data.TestUser;
+import cf4j.data.TestItem;
 import cf4j.data.User;
 
 /**
- * Implements traditional Pearson Correlation Constrained as CF similarity metric.
+ * This class implements the Constrained Correlation as CF similarity metric for items.
  * 
  * @author Fernando Ortega
  */
-public class MetricCorrelationConstrained extends UsersSimilarities {
+public class CorrelationConstrained extends ItemsSimilarities{
 
 	/**
 	 * Median of the ratings of the dataset
@@ -23,14 +24,14 @@ public class MetricCorrelationConstrained extends UsersSimilarities {
 	 * Constructor of the similarity metric
 	 * @param median Median of the ratings of the dataset
 	 */
-	public MetricCorrelationConstrained (double median) {
+	public CorrelationConstrained (double median) {
 		this.median = median;
 	}
 	
 	/**
 	 * Constructor of the similarity metric. Median is computed automatically (high CPU cost).
 	 */
-	public MetricCorrelationConstrained () {
+	public CorrelationConstrained () {
 		ArrayList <Double> ratings = new ArrayList <Double> ();
 		for (User user : DataModel.gi().getUsers()) {
 			for (double rating : user.getRatings()) {
@@ -47,31 +48,31 @@ public class MetricCorrelationConstrained extends UsersSimilarities {
 	}
 	
 	@Override
-	public double similarity (TestUser activeUser, User targetUser) {		
+	public double similarity (TestItem activeItem, Item targetItem) {
 
-		int i = 0, j = 0, common = 0; 
+		int u = 0, v = 0, common = 0; 
 		double num = 0d, denActive = 0d, denTarget = 0d;
 		
-		while (i < activeUser.getNumberOfRatings() && j < targetUser.getNumberOfRatings()) {
-			if (activeUser.getItems()[i] < targetUser.getItems()[j]) {
-				i++;
-			} else if (activeUser.getItems()[i] > targetUser.getItems()[j]) {
-				j++;
+		while (u < activeItem.getNumberOfRatings() && v < targetItem.getNumberOfRatings()) {
+			if (activeItem.getUsers()[u] < targetItem.getUsers()[v]) {
+				u++;
+			} else if (activeItem.getUsers()[u] > targetItem.getUsers()[v]) {
+				v++;
 			} else {
-				double fa = activeUser.getRatings()[i] - this.median;
-				double ft = targetUser.getRatings()[j] - this.median;
+				double fa = activeItem.getRatings()[u] - this.median;
+				double ft = targetItem.getRatings()[v] - this.median;
 				
 				num += fa * ft;
 				denActive += fa * fa;
 				denTarget += ft * ft;
 				
 				common++;
-				i++;
-				j++;
+				u++;
+				v++;
 			}	
 		}
 
-		// If there is not items in common, similarity does not exists
+		// If there is not ratings in common, similarity does not exists
 		if (common == 0) return Double.NEGATIVE_INFINITY;
 
 		// Denominator can not be zero

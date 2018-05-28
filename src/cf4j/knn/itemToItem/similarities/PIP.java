@@ -12,7 +12,7 @@ import cf4j.data.User;
  * 
  * @author Fernando ortega
  */
-public class MetricPIP extends ItemsSimilarities {
+public class PIP extends ItemsSimilarities {
 
 	/**
 	 * Median of the ratings of the dataset
@@ -32,7 +32,7 @@ public class MetricPIP extends ItemsSimilarities {
 	/**
 	 * Constructor of the similarity metric
 	 */
-	public MetricPIP () {
+	public PIP () {
 		this.max = DataModel.gi().getMaxRating();
 		this.min = DataModel.gi().getMinRating();
 		

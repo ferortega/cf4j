@@ -30,10 +30,10 @@ public class PaperExample {
 
 			// Compute similarity
 			if (sm.equals("COR")) {
-				Processor.getInstance().testUsersProcess(new cf4j.knn.userToUser.similarities.MetricCorrelation());
+				Processor.getInstance().testUsersProcess(new cf4j.knn.userToUser.similarities.Correlation());
 			}
 			else if (sm.equals("JMSD")) {
-				Processor.getInstance().testUsersProcess(new cf4j.knn.userToUser.similarities.MetricJMSD());
+				Processor.getInstance().testUsersProcess(new cf4j.knn.userToUser.similarities.JMSD());
 			}
 
 			// For each value of k

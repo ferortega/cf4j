@@ -4,17 +4,17 @@ import cf4j.data.Item;
 import cf4j.data.TestItem;
 
 /**
- * Implements traditional Sepearman Rank as CF similarity metric for the items.
+ * Implements Cosine as CF similarity metric for the items.
  * 
  * @author Fernando Ortega
  */
-public class MetricSpearmanRank extends ItemsSimilarities{
+public class Cosine extends ItemsSimilarities{
 
 	@Override
 	public double similarity (TestItem activeItem, Item targetItem) {
 
 		int u = 0, v = 0, common = 0; 
-		double num = 0d;
+		double num = 0d, denActive = 0d, denTarget = 0d;
 		
 		while (u < activeItem.getNumberOfRatings() && v < targetItem.getNumberOfRatings()) {
 			if (activeItem.getUsers()[u] < targetItem.getUsers()[v]) {
@@ -22,8 +22,10 @@ public class MetricSpearmanRank extends ItemsSimilarities{
 			} else if (activeItem.getUsers()[u] > targetItem.getUsers()[v]) {
 				v++;
 			} else {
-				double diff = activeItem.getRatings()[u] - targetItem.getRatings()[v];
-				num += diff * diff;
+				num += activeItem.getRatings()[u] * targetItem.getRatings()[v];
+				denActive += activeItem.getRatings()[u] * activeItem.getRatings()[u];
+				denTarget += targetItem.getRatings()[v] * targetItem.getRatings()[v];
+				
 				common++;
 				u++; 
 				v++;
@@ -32,8 +34,8 @@ public class MetricSpearmanRank extends ItemsSimilarities{
 
 		// If there is not ratings in common, similarity does not exists
 		if (common == 0) return Double.NEGATIVE_INFINITY;
-		
+
 		// Return similarity
-		return 1d - ((6d * num) / (common * ((common * common) - 1d)));
+		return num / (Math.sqrt(denActive) * Math.sqrt(denTarget));
 	}
 }

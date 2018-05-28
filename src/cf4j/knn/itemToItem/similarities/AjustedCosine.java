@@ -1,18 +1,20 @@
 package cf4j.knn.itemToItem.similarities;
 
 import cf4j.data.Item;
+import cf4j.data.DataModel;
 import cf4j.data.TestItem;
+import cf4j.data.User;
 
 /**
- * Implements Cosine as CF similarity metric for the items.
+ * Implements traditional Ajusted Cosine as CF similarity metric for the items.
  * 
  * @author Fernando Ortega
  */
-public class MetricCosine extends ItemsSimilarities{
+public class AjustedCosine extends ItemsSimilarities {
 
 	@Override
 	public double similarity (TestItem activeItem, Item targetItem) {
-
+		
 		int u = 0, v = 0, common = 0; 
 		double num = 0d, denActive = 0d, denTarget = 0d;
 		
@@ -22,9 +24,16 @@ public class MetricCosine extends ItemsSimilarities{
 			} else if (activeItem.getUsers()[u] > targetItem.getUsers()[v]) {
 				v++;
 			} else {
-				num += activeItem.getRatings()[u] * targetItem.getRatings()[v];
-				denActive += activeItem.getRatings()[u] * activeItem.getRatings()[u];
-				denTarget += targetItem.getRatings()[v] * targetItem.getRatings()[v];
+				int userCode = activeItem.getUsers()[u];
+				User user = DataModel.gi().getUserByCode(userCode);
+				double avg = user.getRatingAverage();
+				
+				double fa = activeItem.getRatings()[u] - avg;
+				double ft = targetItem.getRatings()[v] - avg;
+				
+				num += fa * ft;
+				denActive += fa * fa;
+				denTarget += ft * ft;
 				
 				common++;
 				u++; 
@@ -35,7 +44,10 @@ public class MetricCosine extends ItemsSimilarities{
 		// If there is not ratings in common, similarity does not exists
 		if (common == 0) return Double.NEGATIVE_INFINITY;
 
+		// Denominator can not be zero
+		if (denActive == 0 || denTarget == 0) return Double.NEGATIVE_INFINITY;
+
 		// Return similarity
-		return num / (Math.sqrt(denActive) * Math.sqrt(denTarget));
+		return num / Math.sqrt(denActive * denTarget);
 	}
 }

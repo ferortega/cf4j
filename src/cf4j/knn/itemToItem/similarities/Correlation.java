@@ -8,7 +8,7 @@ import cf4j.data.TestItem;
  * 
  * @author Fernando Ortega
  */
-public class MetricCorrelation extends ItemsSimilarities{
+public class Correlation extends ItemsSimilarities{
 
 	@Override
 	public double similarity (TestItem activeItem, Item targetItem) {

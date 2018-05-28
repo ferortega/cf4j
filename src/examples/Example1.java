@@ -36,7 +36,7 @@ public class Example1 {
 
 
 		// User to user approach
-		Processor.getInstance().testUsersProcess(new cf4j.knn.userToUser.similarities.MetricJMSD());
+		Processor.getInstance().testUsersProcess(new cf4j.knn.userToUser.similarities.JMSD());
 
 		// For each number of neighbors
 		for (int k : numberOfNeighbors) {
@@ -54,7 +54,7 @@ public class Example1 {
 
 
 		// Item to item approach
-		Processor.getInstance().testItemsProcess(new cf4j.knn.itemToItem.similarities.MetricJMSD());
+		Processor.getInstance().testItemsProcess(new cf4j.knn.itemToItem.similarities.JMSD());
 
 		// For each number of neighbors
 		for (int k : numberOfNeighbors) {

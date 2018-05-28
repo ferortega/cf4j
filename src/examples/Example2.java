@@ -64,16 +64,16 @@ public class Example2 {
 
 			// Compute similarity
 			if (sm.equals("COR")) {
-				Processor.getInstance().testUsersProcess(new MetricCorrelation());
+				Processor.getInstance().testUsersProcess(new Correlation());
 			}
 			else if (sm.equals("MSD")) {
-				Processor.getInstance().testUsersProcess(new MetricMSD());
+				Processor.getInstance().testUsersProcess(new MSD());
 			}
 			else if (sm.equals("JAC")) {
-				Processor.getInstance().testUsersProcess(new MetricJaccard());
+				Processor.getInstance().testUsersProcess(new Jaccard());
 			}
 			else if (sm.equals("JMSD")) {
-				Processor.getInstance().testUsersProcess(new MetricJMSD());
+				Processor.getInstance().testUsersProcess(new JMSD());
 			}
 
 			// For each number of neighbors

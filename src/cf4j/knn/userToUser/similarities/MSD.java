@@ -1,20 +1,32 @@
 package cf4j.knn.userToUser.similarities;
 
+import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.data.User;
 
 /**
- * Implements traditional Cosine as CF similarity metric.
+ * Implements traditional MSD as CF similarity metric. The returned value is 1 - MSD.
  * 
  * @author Fernando Ortega
  */
-public class MetricCosine extends UsersSimilarities {
+public class MSD extends UsersSimilarities {
 
+	/**
+	 * Maximum difference between the ratings
+	 */
+	private double maxDiff;
+	
+	@Override
+	public void beforeRun () {		
+		super.beforeRun();
+		this.maxDiff = DataModel.gi().getMaxRating() - DataModel.gi().getMinRating();
+	}
+	
 	@Override
 	public double similarity (TestUser activeUser, User targetUser) {		
 
 		int i = 0, j = 0, common = 0; 
-		double num = 0d, denActive = 0d, denTarget = 0d;
+		double msd = 0d;
 		
 		while (i < activeUser.getNumberOfRatings() && j < targetUser.getNumberOfRatings()) {
 			if (activeUser.getItems()[i] < targetUser.getItems()[j]) {
@@ -22,9 +34,8 @@ public class MetricCosine extends UsersSimilarities {
 			} else if (activeUser.getItems()[i] > targetUser.getItems()[j]) {
 				j++;
 			} else {
-				num += activeUser.getRatings()[i] * targetUser.getRatings()[j];
-				denActive += activeUser.getRatings()[i] * activeUser.getRatings()[i];
-				denTarget += targetUser.getRatings()[j] * targetUser.getRatings()[j];
+				double diff = (activeUser.getRatings()[i] - targetUser.getRatings()[j]) / this.maxDiff;
+				msd += diff * diff;				
 				
 				common++;
 				i++; 
@@ -36,6 +47,6 @@ public class MetricCosine extends UsersSimilarities {
 		if (common == 0) return Double.NEGATIVE_INFINITY;
 
 		// Return similarity
-		return num / (Math.sqrt(denActive) * Math.sqrt(denTarget));
+		return 1d - (msd / common);
 	}
 }

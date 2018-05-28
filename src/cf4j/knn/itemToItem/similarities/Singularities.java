@@ -14,7 +14,7 @@ import cf4j.data.User;
  * 
  * @author Fernando Ortega
  */
-public class MetricSingularities extends ItemsSimilarities{
+public class Singularities extends ItemsSimilarities{
 
 	/**
 	 * Maximum difference between the ratings
@@ -46,7 +46,7 @@ public class MetricSingularities extends ItemsSimilarities{
 	 * @param relevantRatings Relevant ratings array
 	 * @param notRelevantRatings Not relevant ratings array
 	 */
-	public MetricSingularities (double [] relevantRatings, double [] notRelevantRatings) {
+	public Singularities (double [] relevantRatings, double [] notRelevantRatings) {
 
 		this.relevantRatings = new HashSet <Double> ();
 		for (double r : relevantRatings) this.relevantRatings.add(r);

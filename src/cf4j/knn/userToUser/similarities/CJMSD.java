@@ -5,11 +5,13 @@ import cf4j.data.TestUser;
 import cf4j.data.User;
 
 /**
- * Implements traditional MSD as CF similarity metric. The returned value is 1 - MSD.
+ * Implements the following CF similarity metric: Bobadilla, J., Ortega, F., Hernando, A., 
+ * &amp; Arroyo, A. (2012). A Balanced Memory-Based Collaborative Filtering Similarity 
+ * Measure, International Journal of Intelligent Systems, 27, 939-946.
  * 
  * @author Fernando Ortega
  */
-public class MetricMSD extends UsersSimilarities {
+public class CJMSD extends UsersSimilarities {
 
 	/**
 	 * Maximum difference between the ratings
@@ -17,11 +19,11 @@ public class MetricMSD extends UsersSimilarities {
 	private double maxDiff;
 	
 	@Override
-	public void beforeRun () {		
+	public void beforeRun () {
 		super.beforeRun();
 		this.maxDiff = DataModel.gi().getMaxRating() - DataModel.gi().getMinRating();
 	}
-	
+
 	@Override
 	public double similarity (TestUser activeUser, User targetUser) {		
 
@@ -35,11 +37,9 @@ public class MetricMSD extends UsersSimilarities {
 				j++;
 			} else {
 				double diff = (activeUser.getRatings()[i] - targetUser.getRatings()[j]) / this.maxDiff;
-				msd += diff * diff;				
-				
+				msd += diff * diff;
 				common++;
-				i++; 
-				j++;
+				i++; j++;
 			}	
 		}
 
@@ -47,6 +47,8 @@ public class MetricMSD extends UsersSimilarities {
 		if (common == 0) return Double.NEGATIVE_INFINITY;
 
 		// Return similarity
-		return 1d - (msd / common);
+		double jaccard = (double) common / (double) (activeUser.getNumberOfRatings() + targetUser.getNumberOfRatings() - common);
+		double coverage = (double) (targetUser.getNumberOfRatings() - common) / (double) DataModel.gi().getNumberOfItems();
+		return coverage * jaccard * (1d - (msd / common));
 	}
 }
