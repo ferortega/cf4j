@@ -1,9 +1,9 @@
 package cf4j.knn.userToUser.aggregationApproaches;
 
-import cf4j.TestUsersPartible;
 import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.data.User;
+import cf4j.process.TestUsersPartible;
 
 /**
  * <p>This class computes the prediction of the test users' test items. The results are 

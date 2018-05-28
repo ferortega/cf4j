@@ -1,9 +1,9 @@
 package cf4j.knn.userToUser.similarities;
 
-import cf4j.TestUsersPartible;
 import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.data.User;
+import cf4j.process.TestUsersPartible;
 
 /**
  * <p>This class process the similarity measure between two users. If you want to define your own similarity

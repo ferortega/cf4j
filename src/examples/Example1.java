@@ -1,7 +1,7 @@
 package examples;
 
-import cf4j.Processor;
 import cf4j.data.DataModel;
+import cf4j.process.Processor;
 import cf4j.qualityMeasures.MAE;
 import cf4j.utils.PrintableQualityMeasure;
 import cf4j.utils.Range;

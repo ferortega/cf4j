@@ -1,8 +1,8 @@
 package cf4j.knn.userToUser.neighbors;
 
-import cf4j.TestUsersPartible;
 import cf4j.data.DataModel;
 import cf4j.data.TestUser;
+import cf4j.process.TestUsersPartible;
 
 /**
  * <p>This abstracts class calculates the neighbors of each test user. If you want to compute

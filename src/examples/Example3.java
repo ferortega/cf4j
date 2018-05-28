@@ -1,10 +1,10 @@
 package examples;
 
-import cf4j.Processor;
 import cf4j.data.DataModel;
 import cf4j.model.matrixFactorization.Bmf;
 import cf4j.model.matrixFactorization.Pmf;
 import cf4j.model.predictions.FactorizationPrediction;
+import cf4j.process.Processor;
 import cf4j.qualityMeasures.MAE;
 import cf4j.qualityMeasures.Precision;
 

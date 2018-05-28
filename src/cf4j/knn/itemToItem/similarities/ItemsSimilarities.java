@@ -1,9 +1,9 @@
 package cf4j.knn.itemToItem.similarities;
 
-import cf4j.TestItemsPartible;
 import cf4j.data.Item;
 import cf4j.data.DataModel;
 import cf4j.data.TestItem;
+import cf4j.process.TestItemsPartible;
 
 /**
  * <p>This class process the similarity measure between two items. If you want to define your own similarity

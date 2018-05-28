@@ -1,10 +1,10 @@
 package examples;
 
-import cf4j.Processor;
 import cf4j.data.DataModel;
 import cf4j.knn.userToUser.aggregationApproaches.*;
 import cf4j.knn.userToUser.neighbors.*;
 import cf4j.knn.userToUser.similarities.*;
+import cf4j.process.Processor;
 import cf4j.qualityMeasures.Coverage;
 import cf4j.qualityMeasures.F1;
 import cf4j.qualityMeasures.MAE;

@@ -1,11 +1,11 @@
 package cf4j.model.matrixFactorization;
 
-import cf4j.ItemsPartible;
-import cf4j.Processor;
-import cf4j.UsersPartible;
 import cf4j.data.Item;
 import cf4j.data.DataModel;
 import cf4j.data.User;
+import cf4j.process.ItemsPartible;
+import cf4j.process.Processor;
+import cf4j.process.UsersPartible;
 import cf4j.utils.Methods;
 
 /**

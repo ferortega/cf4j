@@ -1,9 +1,9 @@
 package cf4j.model.predictions;
 
-import cf4j.TestUsersPartible;
 import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.model.matrixFactorization.FactorizationModel;
+import cf4j.process.TestUsersPartible;
 
 /**
  * Compute users predictions using a factorization model

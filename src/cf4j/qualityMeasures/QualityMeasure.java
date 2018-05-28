@@ -1,8 +1,8 @@
 package cf4j.qualityMeasures;
 
-import cf4j.TestUsersPartible;
 import cf4j.data.DataModel;
 import cf4j.data.TestUser;
+import cf4j.process.TestUsersPartible;
 
 /**
  * Abstract class to compute quality measures for test of users. To encode
