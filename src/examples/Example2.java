@@ -80,7 +80,7 @@ public class Example2 {
 			for (int k : numberOfNeighbors) {
 
 				// Compute neighbors
-				Processor.getInstance().testUsersProcess(new Neighbors(k));
+				Processor.getInstance().testUsersProcess(new NearestNeighbors(k));
 
 				// Compute predictions using DFM
 				Processor.getInstance().testUsersProcess(new DeviationFromMean());
@@ -95,7 +95,7 @@ public class Example2 {
 			}
 
 			// For each number of recommendations
-			Processor.getInstance().testUsersProcess(new Neighbors(precisionRecallK));
+			Processor.getInstance().testUsersProcess(new NearestNeighbors(precisionRecallK));
 			Processor.getInstance().testUsersProcess(new DeviationFromMean());
 
 			for (int n : numberOfRecommendations) {

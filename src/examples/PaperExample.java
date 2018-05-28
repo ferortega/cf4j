@@ -40,7 +40,7 @@ public class PaperExample {
 			for (int k : numberOfNeighbors) {
 
 				// Find the neighbors
-				Processor.getInstance().testUsersProcess(new cf4j.knn.userToUser.neighbors.Neighbors(k));
+				Processor.getInstance().testUsersProcess(new cf4j.knn.userToUser.neighbors.NearestNeighbors(k));
 
 				// Compute predictions using DFM
 				Processor.getInstance().testUsersProcess(new cf4j.knn.userToUser.aggregationApproaches.DeviationFromMean());

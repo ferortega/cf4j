@@ -42,7 +42,7 @@ public class Example1 {
 		for (int k : numberOfNeighbors) {
 
 			// Compute neighbors
-			Processor.getInstance().testUsersProcess(new cf4j.knn.userToUser.neighbors.Neighbors(k));
+			Processor.getInstance().testUsersProcess(new cf4j.knn.userToUser.neighbors.NearestNeighbors(k));
 
 			// Compute predictions using Weighted Mean
 			Processor.getInstance().testUsersProcess(new cf4j.knn.userToUser.aggregationApproaches.WeightedMean());
