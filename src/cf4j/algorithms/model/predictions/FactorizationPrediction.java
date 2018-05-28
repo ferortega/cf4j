@@ -1,9 +1,9 @@
 package cf4j.algorithms.model.predictions;
 
+import cf4j.algorithms.TestPredictions;
 import cf4j.algorithms.model.matrixFactorization.FactorizationModel;
 import cf4j.data.DataModel;
 import cf4j.data.TestUser;
-import cf4j.process.TestUsersPartible;
 
 /**
  * Compute users predictions using a factorization model
@@ -12,35 +12,19 @@ import cf4j.process.TestUsersPartible;
  *
  * @author Fernando Ortega
  */
-public class FactorizationPrediction implements TestUsersPartible {
+public class FactorizationPrediction extends TestPredictions {
 
 	protected FactorizationModel model;
 
 	public FactorizationPrediction (FactorizationModel model) {
+		super();
 		this.model = model;
 	}
 
 	@Override
-	public void beforeRun() { }
-
-	@Override
-	public void run (int testUserIndex) {
-		TestUser user = DataModel.gi().getTestUsers()[testUserIndex];
-
-		double [] predictions = new double [user.getNumberOfTestRatings()];
-
-		for (int i = 0; i < user.getNumberOfTestRatings(); i++) {
-			int itemCode = user.getTestItems()[i];
-			int itemIndex = DataModel.gi().getItemIndex(itemCode);
-
-			int userIndex = user.getUserIndex();
-
-			predictions[i] = model.getPrediction(userIndex, itemIndex);
-		}
-
-		user.setPredictions(predictions);
+	public double predict(TestUser testUser, int itemCode) {
+		int itemIndex = DataModel.getInstance().getItemIndex(itemCode);
+		int userIndex = testUser.getUserIndex();
+		return model.getPrediction(userIndex, itemIndex);
 	}
-
-	@Override
-	public void afterRun() { }
 }
