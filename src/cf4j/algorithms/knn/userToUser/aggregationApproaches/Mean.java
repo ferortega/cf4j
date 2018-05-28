@@ -1,9 +1,9 @@
 package cf4j.algorithms.knn.userToUser.aggregationApproaches;
 
+import cf4j.algorithms.TestPredictions;
 import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.data.User;
-import cf4j.process.TestUsersPartible;
 
 /**
  * <p>This class computes the prediction of the test users' test items. The results are 
@@ -16,44 +16,39 @@ import cf4j.process.TestUsersPartible;
  * 
  * @author Fernando Ortega
  */
-public class Mean implements TestUsersPartible {
+public class Mean extends TestPredictions {
 
-	@Override
-	public void beforeRun() { }
-
-	@Override
-	public void run (int testUserIndex) {
-
-		TestUser testUser = DataModel.gi().getTestUsers()[testUserIndex];
+	/**
+	 * Compute predictions using average rating of neighbors.
+	 * @param testUser User to get the prediction.
+	 * @param itemCode Item to be predicted.
+	 * @return Prediction value or Double.NaN if it can not be computed.
+	 */
+	public double predict (TestUser testUser, int itemCode) {
 		
 		int [] neighbors = testUser.getNeighbors();
 		
-		int numRatings = testUser.getNumberOfTestRatings();
-		double [] predictions = new double [numRatings];
+		double prediction = 0;
+		int count = 0;
 		
-		for (int testItemIndex = 0; testItemIndex < numRatings; testItemIndex++) {
+		for (int n = 0; n < neighbors.length; n++) {
+			if (neighbors[n] == -1) break; // Neighbors array are filled with -1 when no more neighbors exists
 			
-			int itemCode = testUser.getTestItems()[testItemIndex];
-			int count = 0;
+			int userIndex = neighbors[n];
+			User neighbor = DataModel.getInstance().getUsers()[userIndex];
 			
-			for (int n = 0; n <neighbors.length; n++) {
-				if (neighbors[n] == -1) break; // Neighbors array are filled with -1 when no more neighbors exists
-				
-				int userIndex = neighbors[n];
-				User neighbor = DataModel.gi().getUsers()[userIndex];
-				
-				int i = neighbor.getItemIndex(itemCode);
-				if (i != -1) {
-					predictions[testItemIndex] += neighbor.getRatings()[i];
-					count++;
-				}
+			int i = neighbor.getItemIndex(itemCode);
+			if (i != -1) {
+				prediction += neighbor.getRatingAt(i);
+				count++;
 			}
-			predictions[testItemIndex] = (count == 0) ? Double.NaN : predictions[testItemIndex] / count;
 		}
-
-		testUser.setPredictions(predictions);
+		
+		if (count == 0) {
+			return Double.NaN;
+		} else {
+			prediction /= count;
+			return prediction;
+		}
 	}
-
-	@Override
-	public void afterRun() { }
 }
