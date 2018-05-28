@@ -8,7 +8,7 @@ import cf4j.data.TestItem;
  * 
  * @author Fernando Ortega
  */
-public class Cosine extends ItemsSimilarities{
+public class Cosine extends ItemSimilarities{
 
 	@Override
 	public double similarity (TestItem activeItem, Item targetItem) {

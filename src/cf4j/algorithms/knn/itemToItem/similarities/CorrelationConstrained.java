@@ -13,7 +13,7 @@ import cf4j.data.User;
  * 
  * @author Fernando Ortega
  */
-public class CorrelationConstrained extends ItemsSimilarities{
+public class CorrelationConstrained extends ItemSimilarities{
 
 	/**
 	 * Median of the ratings of the dataset

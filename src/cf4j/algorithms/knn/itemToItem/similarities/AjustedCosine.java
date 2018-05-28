@@ -10,7 +10,7 @@ import cf4j.data.User;
  * 
  * @author Fernando Ortega
  */
-public class AjustedCosine extends ItemsSimilarities {
+public class AjustedCosine extends ItemSimilarities {
 
 	@Override
 	public double similarity (TestItem activeItem, Item targetItem) {

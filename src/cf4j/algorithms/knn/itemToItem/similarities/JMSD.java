@@ -12,7 +12,7 @@ import cf4j.data.TestItem;
  * 
  * @author Fernando Ortega
  */
-public class JMSD extends ItemsSimilarities{
+public class JMSD extends ItemSimilarities{
 
 	/**
 	 * Maximum difference between the ratings

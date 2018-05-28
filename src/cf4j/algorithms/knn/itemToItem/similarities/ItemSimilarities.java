@@ -17,7 +17,7 @@ import cf4j.process.TestItemsPartible;
  * 
  * @author Fernando Ortega
  */
-abstract public class ItemsSimilarities implements TestItemsPartible {
+abstract public class ItemSimilarities implements TestItemsPartible {
 
 	/**
 	 * <p>Method to calculate the similarity measure between a pair of items.</p>

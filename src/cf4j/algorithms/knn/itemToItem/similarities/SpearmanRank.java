@@ -8,7 +8,7 @@ import cf4j.data.TestItem;
  * 
  * @author Fernando Ortega
  */
-public class SpearmanRank extends ItemsSimilarities{
+public class SpearmanRank extends ItemSimilarities{
 
 	@Override
 	public double similarity (TestItem activeItem, Item targetItem) {
