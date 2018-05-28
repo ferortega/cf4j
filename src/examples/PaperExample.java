@@ -30,20 +30,20 @@ public class PaperExample {
 
 			// Compute similarity
 			if (sm.equals("COR")) {
-				Processor.getInstance().testUsersProcess(new cf4j.knn.userToUser.similarities.Correlation());
+				Processor.getInstance().testUsersProcess(new cf4j.algorithms.knn.userToUser.similarities.Correlation());
 			}
 			else if (sm.equals("JMSD")) {
-				Processor.getInstance().testUsersProcess(new cf4j.knn.userToUser.similarities.JMSD());
+				Processor.getInstance().testUsersProcess(new cf4j.algorithms.knn.userToUser.similarities.JMSD());
 			}
 
 			// For each value of k
 			for (int k : numberOfNeighbors) {
 
 				// Find the neighbors
-				Processor.getInstance().testUsersProcess(new cf4j.knn.userToUser.neighbors.NearestNeighbors(k));
+				Processor.getInstance().testUsersProcess(new cf4j.algorithms.knn.userToUser.neighbors.NearestNeighbors(k));
 
 				// Compute predictions using DFM
-				Processor.getInstance().testUsersProcess(new cf4j.knn.userToUser.aggregationApproaches.DeviationFromMean());
+				Processor.getInstance().testUsersProcess(new cf4j.algorithms.knn.userToUser.aggregationApproaches.DeviationFromMean());
 
 				// Compute MAE
 				Processor.getInstance().testUsersProcess(new cf4j.qualityMeasures.MAE());

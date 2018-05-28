@@ -36,16 +36,16 @@ public class Example1 {
 
 
 		// User to user approach
-		Processor.getInstance().testUsersProcess(new cf4j.knn.userToUser.similarities.JMSD());
+		Processor.getInstance().testUsersProcess(new cf4j.algorithms.knn.userToUser.similarities.JMSD());
 
 		// For each number of neighbors
 		for (int k : numberOfNeighbors) {
 
 			// Compute neighbors
-			Processor.getInstance().testUsersProcess(new cf4j.knn.userToUser.neighbors.NearestNeighbors(k));
+			Processor.getInstance().testUsersProcess(new cf4j.algorithms.knn.userToUser.neighbors.NearestNeighbors(k));
 
 			// Compute predictions using Weighted Mean
-			Processor.getInstance().testUsersProcess(new cf4j.knn.userToUser.aggregationApproaches.WeightedMean());
+			Processor.getInstance().testUsersProcess(new cf4j.algorithms.knn.userToUser.aggregationApproaches.WeightedMean());
 
 			// Get MAE
 			Processor.getInstance().testUsersProcess(new MAE());
@@ -54,16 +54,16 @@ public class Example1 {
 
 
 		// Item to item approach
-		Processor.getInstance().testItemsProcess(new cf4j.knn.itemToItem.similarities.JMSD());
+		Processor.getInstance().testItemsProcess(new cf4j.algorithms.knn.itemToItem.similarities.JMSD());
 
 		// For each number of neighbors
 		for (int k : numberOfNeighbors) {
 
 			// Compute neighbors
-			Processor.getInstance().testItemsProcess(new cf4j.knn.itemToItem.neighbors.Neighbors(k));
+			Processor.getInstance().testItemsProcess(new cf4j.algorithms.knn.itemToItem.neighbors.Neighbors(k));
 
 			// Compute predictions using DFM
-			Processor.getInstance().testUsersProcess(new cf4j.knn.itemToItem.aggreagationApproaches.WeightedMean());
+			Processor.getInstance().testUsersProcess(new cf4j.algorithms.knn.itemToItem.aggreagationApproaches.WeightedMean());
 
 			// Get MAE
 			Processor.getInstance().testUsersProcess(new MAE());
