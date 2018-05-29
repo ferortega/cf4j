@@ -12,6 +12,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.BiFunction;
@@ -189,11 +190,11 @@ public class DataModel implements Serializable {
 		this.minItemCode = Integer.MAX_VALUE;
 		this.maxUserCode = Integer.MIN_VALUE;
 		this.minUserCode = Integer.MAX_VALUE;
-		this.maxRating = Byte.MIN_VALUE;
-		this.minRating = Byte.MAX_VALUE;
+		this.maxRating = Double.MIN_VALUE;
+		this.minRating = Double.MAX_VALUE;
 
-		TreeMap <Integer, TreeMap <Integer, Double>> usersRatings = new TreeMap <Integer, TreeMap <Integer, Double>> ();
-		TreeMap <Integer, TreeMap <Integer, Double>> itemsRatings = new TreeMap <Integer, TreeMap <Integer, Double>> ();
+		TreeMap <Integer, TreeMap <Integer, Double>> userRatings = new TreeMap <Integer, TreeMap <Integer, Double>> ();
+		TreeMap <Integer, TreeMap <Integer, Double>> itemRatings = new TreeMap <Integer, TreeMap <Integer, Double>> ();
 
 		try {
 
@@ -222,11 +223,11 @@ public class DataModel implements Serializable {
 				if (rating > this.maxRating) this.maxRating = rating;
 
 				// Store rating
-				if (!usersRatings.containsKey(userCode)) usersRatings.put(userCode, new TreeMap <Integer, Double> ());
-				usersRatings.get(userCode).put(itemCode, rating);
+				if (!userRatings.containsKey(userCode)) userRatings.put(userCode, new TreeMap <Integer, Double> ());
+				userRatings.get(userCode).put(itemCode, rating);
 				
-				if (!itemsRatings.containsKey(itemCode)) itemsRatings.put(itemCode, new TreeMap <Integer, Double> ());
-				itemsRatings.get(itemCode).put(userCode, rating);
+				if (!itemRatings.containsKey(itemCode)) itemRatings.put(itemCode, new TreeMap <Integer, Double> ());
+				itemRatings.get(itemCode).put(userCode, rating);
 			}
 
 			dataset.close();
@@ -241,58 +242,132 @@ public class DataModel implements Serializable {
 
 		// Setting test users
 		TreeSet <Integer> testUsersSet = new TreeSet <Integer> ();
-		for (int userCode : usersRatings.keySet()) {
-			Map <Integer, Double> ratings = usersRatings.get(userCode);
+		for (int userCode : userRatings.keySet()) {
+			Map <Integer, Double> ratings = userRatings.get(userCode);
 			if (testUserFilter.apply(userCode, ratings)) testUsersSet.add(userCode);
 		}
 
 		// Setting test items
-		TreeSet <Integer> testItemsTest = new TreeSet <Integer> ();
-		for (int itemCode : itemsRatings.keySet()) {
-			Map <Integer, Double> ratings = itemsRatings.get(itemCode);
-			if (testItemFilter.apply(itemCode, ratings)) testItemsTest.add(itemCode);
+		TreeSet <Integer> testItemsSet = new TreeSet <Integer> ();
+		for (int itemCode : itemRatings.keySet()) {
+			Map <Integer, Double> ratings = itemRatings.get(itemCode);
+			if (testItemFilter.apply(itemCode, ratings)) testItemsSet.add(itemCode);
 		}
+		
+		// Generate users test ratings
+		TreeMap <Integer, TreeMap <Integer, Double>> userTestRatings = new TreeMap <Integer, TreeMap <Integer, Double>> ();
+		for (int userCode : testUsersSet) {
+			TreeMap <Integer, Double> itemsRated = userRatings.get(userCode);
+			for (int itemCode : itemsRated.keySet()) {
+				
+				// Is test rating?
+				if (testItemsSet.contains(itemCode)) {
+					if (!userTestRatings.containsKey(userCode)) {
+						userTestRatings.put(userCode, new TreeMap <Integer, Double> ());
+					}
+					
+					double rating = itemsRated.get(itemCode);
+					userTestRatings.get(userCode).put(itemCode, rating);
+				}
+			}
+			
+			// Remove test ratings
+			if (userTestRatings.containsKey(userCode)) {
+				for (int itemCode : userTestRatings.get(userCode).keySet()) {
+					userRatings.get(userCode).remove(itemCode);
+				}
+			}		
+		}
+		
+		// Generate items test ratings
+		TreeMap <Integer, TreeMap <Integer, Double>> itemTestRatings = new TreeMap <Integer, TreeMap <Integer, Double>> ();
+		for (int itemCode : testItemsSet) {
+			TreeMap <Integer, Double> usersRated = itemRatings.get(itemCode);
+			for (int userCode : usersRated.keySet()) {
+				
+				// Is test rating?
+				if (testUsersSet.contains(userCode)) {
+					if (!itemTestRatings.containsKey(itemCode)) {
+						itemTestRatings.put(itemCode, new TreeMap <Integer, Double> ());
+					}
+					
+					double rating = usersRated.get(userCode);
+					itemTestRatings.get(itemCode).put(userCode, rating);
+				}
+			}
+			
+			// Remove test ratings
+			if (itemTestRatings.containsKey(itemCode)) {
+				for (int userCode : itemTestRatings.get(itemCode).keySet()) {
+					itemRatings.get(itemCode).remove(userCode);
+				}
+			}		
+		}
+		
+		// Generate arrays
 
 		System.out.println("\nGenerating users sets...");
+		this.createUsers(userRatings, userTestRatings);
+		
+		System.out.println("\nGenerating items sets...");
+		this.createItems(itemRatings, itemTestRatings);
 
-		int averageCount = 0;
-
-		this.users = new User [usersRatings.size()];
+		System.out.println("\n'" + filename + "' dataset loaded succesfully");
+	}
+	
+	/**
+	 * Create users arrays
+	 * @param userRatings Map containing user training ratings
+	 * @param userTestRatings Map containing user test ratings
+	 */
+	private void createUsers (TreeMap <Integer, TreeMap <Integer, Double>> userRatings, 
+			TreeMap <Integer, TreeMap <Integer, Double>> userTestRatings) {
+		
+		// Dateset average
+		this.ratingAverage = 0;
+		int averageCount = 0;		
+		
+		// Get all user codes
+		Set <Integer> userCodes = new TreeSet <Integer> (); 
+		userCodes.addAll(userRatings.keySet());
+		userCodes.addAll(userTestRatings.keySet());
+		
+		// Create users array
+		this.users = new User [userCodes.size()];
 		int userIndex = 0;
 
-		this.testUsers = new TestUser [testUsersSet.size()];
+		// Create test users array
+		this.testUsers = new TestUser [userTestRatings.size()];
 		int testUserIndex = 0;
 
-		for (int userCode : usersRatings.keySet()) {
+		// Create all users
+		for (int userCode : userCodes) {
 
 			User user;
 
-			// Is test user
-			if (testUsersSet.contains(userCode)) {
+			// User has test ratings
+			if (userTestRatings.containsKey(userCode)) {
 
-				// Splitting ratings into test & training ratings
-				TreeSet <Integer> training = new TreeSet <Integer> ();
-				TreeSet <Integer> test = new TreeSet <Integer> ();
-				for (int itemCode : usersRatings.get(userCode).keySet()) {
-					if (testItemsTest.contains(itemCode)) test.add(itemCode);
-					else training.add(itemCode);
-				}
+				Set <Integer> training = userRatings.get(userCode).keySet();
+				Set <Integer> test = userTestRatings.get(userCode).keySet();
 
-				// Setting training ratings arrays
 				int [] itemsArray = new int [training.size()];
 				double [] ratingsArray = new double [training.size()];
-				int i = 0; for (int itemCode : training) {
+				int i = 0; 
+				
+				for (int itemCode : training) {
 					itemsArray[i] = itemCode;
-					ratingsArray[i] = usersRatings.get(userCode).get(itemCode);
+					ratingsArray[i] = userRatings.get(userCode).get(itemCode);
 					i++;
 				}
 
-				// Settings test ratings arrays
 				int [] testItemsArray = new int [test.size()];
 				double [] testRatingsArray = new double [test.size()];
-				i = 0; for (int itemCode : test) {
+				i = 0; 
+				
+				for (int itemCode : test) {
 					testItemsArray[i] = itemCode;
-					testRatingsArray[i] = usersRatings.get(userCode).get(itemCode);
+					testRatingsArray[i] = userTestRatings.get(userCode).get(itemCode);
 					i++;
 				}
 
@@ -309,15 +384,18 @@ public class DataModel implements Serializable {
 					testUserIndex++;
 				}
 
-			// Is training user
+			// User does not has test ratings
 			} else {
+				
+				Set <Integer> training = userRatings.get(userCode).keySet();
 
-				// Setting rating arrays
-				int [] itemsArray = new int [usersRatings.get(userCode).keySet().size()];
-				double [] ratingsArray = new double [usersRatings.get(userCode).keySet().size()];
-				int i = 0; for (int item_code : usersRatings.get(userCode).keySet()) {
-					itemsArray[i] = item_code;
-					ratingsArray[i] = usersRatings.get(userCode).get(item_code);
+				int [] itemsArray = new int [training.size()];
+				double [] ratingsArray = new double [training.size()];
+				
+				int i = 0; 
+				for (int itemCode : training) {
+					itemsArray[i] = itemCode;
+					ratingsArray[i] = userRatings.get(userCode).get(itemCode);
 					i++;
 				}
 
@@ -328,13 +406,13 @@ public class DataModel implements Serializable {
 			// Add user to training users
 			this.users[userIndex] = user;
 			userIndex++;
- 
-			if (user.getNumberOfRatings() > 0) {
-				this.ratingAverage += user.getRatingAverage() * user.getNumberOfRatings();
-				averageCount += user.getNumberOfRatings();
-			}	
+			
+			// Compute rating average
+			this.ratingAverage += user.getNumberOfRatings() * user.getRatingAverage();
+			averageCount += user.getNumberOfRatings();
 		}
-
+		
+		// Compute rating average
 		this.ratingAverage /= averageCount;
 		
 		// Remove gaps from testUser array
@@ -343,46 +421,57 @@ public class DataModel implements Serializable {
 			testUsersTemp[i] = this.testUsers[i];
 		}
 		this.testUsers = testUsersTemp;
+	}
+	
+	/**
+	 * Create items arrays
+	 * @param itemRatings Map containing item training ratings
+	 * @param itemTestRatings Map containing item test ratings
+	 */
+	private void createItems (TreeMap <Integer, TreeMap <Integer, Double>> itemRatings, 
+			TreeMap <Integer, TreeMap <Integer, Double>> itemTestRatings) {
 		
-
-		System.out.println("\nGenerating items sets...");
-
-		this.items = new Item [itemsRatings.size()];
+		// Get all item codes
+		Set <Integer> itemCodes = new TreeSet <Integer> (); 
+		itemCodes.addAll(itemRatings.keySet());
+		itemCodes.addAll(itemTestRatings.keySet());
+		
+		// Create items array
+		this.items = new Item [itemCodes.size()];
 		int itemIndex = 0;
 
-		this.testItems = new TestItem [testItemsTest.size()];
+		// Create test items array
+		this.testItems = new TestItem [itemTestRatings.size()];
 		int testItemIndex = 0;
 
-		for (int itemCode : itemsRatings.keySet()) {
+		// Create all items
+		for (int itemCode : itemCodes) {
 
 			Item item;
 
-			// Is test item
-			if (testItemsTest.contains(itemCode)) {
+			// Item has test ratings
+			if (itemTestRatings.containsKey(itemCode)) {
+				
+				Set <Integer> training = itemRatings.get(itemCode).keySet();
+				Set <Integer> test = itemTestRatings.get(itemCode).keySet();
 
-				// Splitting ratings into test & training ratings
-				TreeSet <Integer> training = new TreeSet <Integer> ();
-				TreeSet <Integer> test = new TreeSet <Integer> ();
-				for (int userCode : itemsRatings.get(itemCode).keySet()) {
-					if (testUsersSet.contains(userCode)) test.add(userCode);
-					else training.add(userCode);
-				}
-
-				// Setting training ratings arrays
 				int [] usersArray = new int [training.size()];
 				double [] ratingsArray = new double [training.size()];
-				int i = 0; for (int userCode : training) {
+				int i = 0; 
+				
+				for (int userCode : training) {
 					usersArray[i] = userCode;
-					ratingsArray[i] = itemsRatings.get(itemCode).get(userCode);
+					ratingsArray[i] = itemRatings.get(itemCode).get(userCode);
 					i++;
 				}
 
-				// Settings test ratings arrays
 				int [] testUsersArray = new int [test.size()];
 				double [] testRatingsArray = new double [test.size()];
-				i = 0; for (int userCode : test) {
+				i = 0; 
+				
+				for (int userCode : test) {
 					testUsersArray[i] = userCode;
-					testRatingsArray[i] = itemsRatings.get(itemCode).get(userCode);
+					testRatingsArray[i] = itemTestRatings.get(itemCode).get(userCode);
 					i++;
 				}
 
@@ -401,13 +490,16 @@ public class DataModel implements Serializable {
 
 			// Is training item
 			} else {
+				
+				Set <Integer> training = itemRatings.get(itemCode).keySet();
 
-				// Setting rating arrays
-				int [] usersArrays = new int [itemsRatings.get(itemCode).keySet().size()];
-				double [] ratingsArrays = new double [itemsRatings.get(itemCode).keySet().size()];
-				int i = 0; for (int userCode : itemsRatings.get(itemCode).keySet()) {
+				int [] usersArrays = new int [training.size()];
+				double [] ratingsArrays = new double [training.size()];
+				
+				int i = 0; 
+				for (int userCode : training) {
 					usersArrays[i] = userCode;
-					ratingsArrays[i] = itemsRatings.get(itemCode).get(userCode);
+					ratingsArrays[i] = itemRatings.get(itemCode).get(userCode);
 					i++;
 				}
 
@@ -426,8 +518,6 @@ public class DataModel implements Serializable {
 			testItemsTemp[i] = this.testItems[i];
 		}
 		this.testItems = testItemsTemp;
-
-		System.out.println("\n'" + filename + "' dataset loaded succesfully");
 	}
 
 	/**
