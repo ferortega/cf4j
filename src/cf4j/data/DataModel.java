@@ -316,6 +316,119 @@ public class DataModel implements Serializable {
 	}
 	
 	/**
+	 * <p>Generates a kernel form a training and test text file. The lines of the file must have the following format:</p>
+	 * <p>userCode;itemCode;rating</p>
+	 * @param trainingFile File with the training ratings
+	 * @param testFile File with the test ratings
+	 * @param separator Separator char between file fields
+	 */
+	public void open (String trainingFile, String testFile, String separator) {
+
+		System.out.println("\nLoading training dataset...");
+
+		this.maxItemCode = Integer.MIN_VALUE;
+		this.minItemCode = Integer.MAX_VALUE;
+		this.maxUserCode = Integer.MIN_VALUE;
+		this.minUserCode = Integer.MAX_VALUE;
+		this.maxRating = Double.MIN_VALUE;
+		this.minRating = Double.MAX_VALUE;
+
+		TreeMap <Integer, TreeMap <Integer, Double>> userRatings = new TreeMap <Integer, TreeMap <Integer, Double>> ();
+		TreeMap <Integer, TreeMap <Integer, Double>> itemRatings = new TreeMap <Integer, TreeMap <Integer, Double>> ();
+
+		try {
+
+			// Dataset reader
+			BufferedReader dataset = new BufferedReader (new FileReader (new File (trainingFile)));
+
+			String line = ""; int numLines = 0;
+			while ((line = dataset.readLine()) != null) {
+
+				numLines++;
+				if (numLines % 1000000  == 0) System.out.print(".");
+				if (numLines % 10000000 == 0) System.out.println(numLines + " ratings");
+
+				// Parse line
+				String [] s = line.split(separator);
+				int userCode = Integer.parseInt(s[0]);
+				int itemCode = Integer.parseInt(s[1]);
+				double rating = Double.parseDouble(s[2]);
+
+				// Update stats
+				if (itemCode < this.minItemCode) this.minItemCode = itemCode;
+				if (itemCode > this.maxItemCode) this.maxItemCode = itemCode;
+				if (userCode < this.minUserCode) this.minUserCode = userCode;
+				if (userCode > this.maxUserCode) this.maxUserCode = userCode;
+				if (rating < this.minRating) this.minRating = rating;
+				if (rating > this.maxRating) this.maxRating = rating;
+
+				// Store rating
+				if (!userRatings.containsKey(userCode)) userRatings.put(userCode, new TreeMap <Integer, Double> ());
+				userRatings.get(userCode).put(itemCode, rating);
+				
+				if (!itemRatings.containsKey(itemCode)) itemRatings.put(itemCode, new TreeMap <Integer, Double> ());
+				itemRatings.get(itemCode).put(userCode, rating);
+			}
+
+			dataset.close();
+
+		} catch (Exception e) {
+			System.out.println("An error has occurred while loading database");
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
+		System.out.println("\nLoading test dataset...");
+
+		TreeMap <Integer, TreeMap <Integer, Double>> userTestRatings = new TreeMap <Integer, TreeMap <Integer, Double>> ();
+		TreeMap <Integer, TreeMap <Integer, Double>> itemTestRatings = new TreeMap <Integer, TreeMap <Integer, Double>> ();
+
+		try {
+
+			// Dataset reader
+			BufferedReader dataset = new BufferedReader (new FileReader (new File (testFile)));
+
+			String line = ""; int numLines = 0;
+			while ((line = dataset.readLine()) != null) {
+
+				numLines++;
+				if (numLines % 1000000  == 0) System.out.print(".");
+				if (numLines % 10000000 == 0) System.out.println(numLines + " ratings");
+
+				// Parse line
+				String [] s = line.split(separator);
+				int userCode = Integer.parseInt(s[0]);
+				int itemCode = Integer.parseInt(s[1]);
+				double rating = Double.parseDouble(s[2]);
+
+				// Store rating
+				if (!userTestRatings.containsKey(userCode)) userTestRatings.put(userCode, new TreeMap <Integer, Double> ());
+				userTestRatings.get(userCode).put(itemCode, rating);
+				
+				if (!itemTestRatings.containsKey(itemCode)) itemTestRatings.put(itemCode, new TreeMap <Integer, Double> ());
+				itemTestRatings.get(itemCode).put(userCode, rating);
+			}
+
+			dataset.close();
+
+		} catch (Exception e) {
+			System.out.println("An error has occurred while loading database");
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
+		// Generate arrays
+
+		System.out.println("\nGenerating users sets...");
+		this.createUsers(userRatings, userTestRatings);
+		
+		System.out.println("\nGenerating items sets...");
+		this.createItems(itemRatings, itemTestRatings);
+
+		System.out.println("\n'" + trainingFile + " & " + testFile + "' datasets loaded succesfully");
+	}
+	
+	/**
 	 * Create users arrays
 	 * @param userRatings Map containing user training ratings
 	 * @param userTestRatings Map containing user test ratings
