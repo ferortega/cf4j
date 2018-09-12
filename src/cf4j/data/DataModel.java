@@ -521,8 +521,10 @@ public class DataModel implements Serializable {
 			userIndex++;
 			
 			// Compute rating average
-			this.ratingAverage += user.getNumberOfRatings() * user.getRatingAverage();
-			averageCount += user.getNumberOfRatings();
+			if (user.getNumberOfRatings() > 0) {
+				this.ratingAverage += user.getNumberOfRatings() * user.getRatingAverage();
+				averageCount += user.getNumberOfRatings();
+			}
 		}
 		
 		// Compute rating average
