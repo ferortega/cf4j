@@ -33,11 +33,6 @@ public class DataModel implements Serializable {
 	private static String DEFAULT_SPARATOR = ";";
 
 	/**
-	 * Class instance (Singleton pattern)
-	 */
-	private static DataModel instance = null;
-
-	/**
 	 * Users array
 	 */
 	private User [] users;
@@ -63,26 +58,6 @@ public class DataModel implements Serializable {
 	private Map <String, Object> map = new HashMap<String, Object>();
 
 	/**
-	 * Maximum user code
-	 */
-	private int maxUserCode;
-
-	/**
-	 * Minimum user code
-	 */
-	private int minUserCode;
-
-	/**
-	 * Maximum item code
-	 */
-	private int maxItemCode;
-
-	/**
-	 * Minimum item code
-	 */
-	private int minItemCode;
-
-	/**
 	 * Maximum rating
 	 */
 	private double maxRating;
@@ -98,44 +73,13 @@ public class DataModel implements Serializable {
 	private double ratingAverage;
 
 	/**
-	 * Kernel constructor.
-	 */
-	private DataModel () { }
-
-	/**
-	 * Gets the single instance of the class.
-	 * @return Single instance
-	 */
-	public static DataModel getInstance() {
-		if (DataModel.instance == null)
-			DataModel.instance = new DataModel();
-		return DataModel.instance;
-	}
-
-	/**
-	 * Gets the single instance of the class.
-	 * @return Single instance
-	 */
-	public static DataModel gi () {
-		return DataModel.getInstance();
-	}
-
-	/**
-	 * Destroy the single instance of the class
-	 */
-	public static void destroyInstance() {
-		DataModel.instance = null;
-		System.gc();
-	}
-
-	/**
 	 * <p>Generates a kernel form a text file. The lines of the file must have the following format:</p>
 	 * <p>userCode::itemCode::rating</p>
 	 * <p>The dataset is loaded without test items and test users</p>
 	 * @param filename File with the ratings
 	 */
-	public void open (String filename) {
-		this.open(filename, DEFAULT_SPARATOR);
+	public DataModel (String filename) {
+		this(filename, DEFAULT_SPARATOR);
 	}
 
 	/**
@@ -145,8 +89,8 @@ public class DataModel implements Serializable {
 	 * @param filename File with the ratings
 	 * @param separator Separator char between file fields
 	 */
-	public void open (String filename, String separator) {
-		this.open(filename, 0.0, 0.0, separator);
+	public DataModel (String filename, String separator) {
+		this(filename, 0.0, 0.0, separator);
 	}
 
 	/**
@@ -156,8 +100,8 @@ public class DataModel implements Serializable {
 	 * @param testUsersPercent Percentage of users that will be of test
 	 * @param testItemsPercent Percentage of items that will be of test
 	 */
-	public void open (String filename, double testUsersPercent, double testItemsPercent) {
-		this.open(filename, testUsersPercent, testItemsPercent, DEFAULT_SPARATOR);
+	public DataModel (String filename, double testUsersPercent, double testItemsPercent) {
+		this(filename, testUsersPercent, testItemsPercent, DEFAULT_SPARATOR);
 	}
 	
 	/**
@@ -168,8 +112,16 @@ public class DataModel implements Serializable {
 	 * @param testItemsPercent Percentage of items that will be of test
 	 * @param separator Separator char between file fields
 	 */
-	public void open (String filename, double testUsersPercent, double testItemsPercent, String separator) {
-		this.open(filename, DataPartitioners.random(testUsersPercent), DataPartitioners.random(testItemsPercent), separator);
+	public DataModel (String filename, double testUsersPercent, double testItemsPercent, String separator) {
+		this(filename, DataPartitioners.random(testUsersPercent), DataPartitioners.random(testItemsPercent), separator);
+	}
+
+	/**
+	 * Kernel constructor.
+	 */
+	public DataModel (String filename, BiFunction <Integer, Map <Integer, Double>, Boolean> testUserFilter,
+					   BiFunction <Integer, Map <Integer, Double>, Boolean> testItemFilter, String separator) {
+		this.open(filename, testUserFilter, testItemFilter, separator);
 	}
 	
 	/**
@@ -181,7 +133,7 @@ public class DataModel implements Serializable {
 	 * @param separator Separator char between file fields
 	 * @see DataPartitioners
 	 */
-	public void open (String filename, BiFunction <Integer, Map <Integer, Double>, Boolean> testUserFilter, 
+	private void open (String filename, BiFunction <Integer, Map <Integer, Double>, Boolean> testUserFilter,
 			BiFunction <Integer, Map <Integer, Double>, Boolean> testItemFilter, String separator) {
 
 		System.out.println("\nLoading dataset...");
@@ -668,7 +620,7 @@ public class DataModel implements Serializable {
 	 * @param filename File name
 	 * @return True if no error exits or False in other case
 	 */
-	public boolean writeKernel (String filename) {
+	public boolean write (String filename) {
 		System.out.println("\nStoring kernel...");
 		try {
 			ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(filename)));
@@ -689,19 +641,19 @@ public class DataModel implements Serializable {
 	 * @param filename File name
 	 * @return True if no error exits or False in other case
 	 */
-	public boolean readKernel (String filename) {
-		System.out.println("\nLoading kernel...");
+	public static DataModel read (String filename) {
+		System.out.println("\nLoading DataModel...");
+		DataModel dm = null;
 		try {
 			ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(filename)));
-			DataModel.instance = (DataModel) ois.readObject();
-			System.out.println("\nKernel loaded successfully");
+			dm = (DataModel) ois.readObject();
+			System.out.println("\nDataModel loaded successfully");
 			ois.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("An error has occurred while loading kernel");
-			return false;
+			System.out.println("An error has occurred while loading DataModel");
 		}
-		return true;
+		return dm;
 	}
 
 	/**
@@ -771,38 +723,6 @@ public class DataModel implements Serializable {
 	}
 
 	/**
-	 * Returns the maximum user code
-	 * @return Maximum user code
-	 */
-	public int getMaxUserCode() {
-		return this.maxUserCode;
-	}
-
-	/**
-	 * Returns the minimum user code
-	 * @return Minimum user code
-	 */
-	public int getMinUserCode() {
-		return this.minUserCode;
-	}
-
-	/**
-	 * Returns the maximum item code
-	 * @return Maximum item code
-	 */
-	public int getMaxItemCode() {
-		return this.maxItemCode;
-	}
-
-	/**
-	 * Returns the minimum item code
-	 * @return Minimum item code
-	 */
-	public int getMinItemCode() {
-		return this.minItemCode;
-	}
-
-	/**
 	 * Returns the maximum rating
 	 * @return Maximum rating
 	 */
@@ -831,7 +751,7 @@ public class DataModel implements Serializable {
 	 * @param itemCode Item code
 	 * @return Index if the item exists or -1 if not
 	 */
-	public int getItemIndex (int itemCode) {
+	public int getItemIndex (String itemCode) {
 		return this.getIndex(this.items, itemCode);
 	}
 
@@ -840,7 +760,7 @@ public class DataModel implements Serializable {
 	 * @param itemCode Test item code
 	 * @return Index if the item exists or -1 if not
 	 */
-	public int getTestItemIndex (int itemCode) {
+	public int getTestItemIndex (String itemCode) {
 		return this.getIndex(this.testItems, itemCode);
 	}
 
@@ -938,7 +858,7 @@ public class DataModel implements Serializable {
 	 * Get information about the kernel loaded
 	 * @return String with information about the kernel
 	 */
-	public String getKernelInfo () {
+	public String getInfo () {
 		int numRatings = 0;
 		for (User user : this.users) numRatings += user.getNumberOfRatings();
 
@@ -972,8 +892,11 @@ public class DataModel implements Serializable {
 	 * @return Item or null
 	 */
 	public Item getItemByIndex (int itemIndex) {
-		if (itemIndex >= this.getNumberOfItems()) return null;
-		else return this.items[itemIndex];
+		try {
+			return this.items[itemIndex];
+		} catch (IndexOutOfBoundsException e) {
+			return null;
+		}
 	}
 
 	/**
@@ -993,8 +916,11 @@ public class DataModel implements Serializable {
 	 * @return TestItem or null
 	 */
 	public TestItem getTestItemByIndex (int testItemIndex) {
-		if (testItemIndex >= this.getNumberOfTestItems()) return null;
-		else return this.testItems[testItemIndex];
+		try {
+			return this.testItems[testItemIndex];
+		} catch (IndexOutOfBoundsException e) {
+			return null;
+		}
 	}
 
 	/**
@@ -1014,8 +940,11 @@ public class DataModel implements Serializable {
 	 * @return User or null
 	 */
 	public User getUserByIndex (int userIndex) {
-		if (userIndex >= this.getNumberOfUsers()) return null;
-		else return this.users[userIndex];
+		try {
+			return this.getUsers()[userIndex];
+		} catch (IndexOutOfBoundsException e) {
+			return null;
+		}
 	}
 
 	/**
@@ -1035,7 +964,45 @@ public class DataModel implements Serializable {
 	 * @return TestUser or null
 	 */
 	public TestUser getTestUserByIndex (int testUserIndex) {
-		if (testUserIndex >= this.getNumberOfTestUsers()) return null;
-		else return this.testUsers[testUserIndex];
+		try {
+			return this.testUsers[testUserIndex];
+		} catch (IndexOutOfBoundsException e) {
+			return null;
+		}
+	}
+
+
+	public void addRating (String userCode, String itemCode, double rating) {
+		int userIndex = this.getUserIndex(userCode);
+		int itemIndex = this.getItemIndex(itemCode);
+		this.addRating(userIndex, itemIndex, rating);
+	}
+
+	public void addRating (int userIndex, int itemIndex, double rating) {
+		if (rating > this.maxRating) this.maxRating = rating;
+		if (rating < this.minRating) this.minRating = rating;
+
+		User user = this.getUserByIndex(userIndex);
+		Item item = this.getItemByIndex(itemIndex);
+
+		user.addRating(item.getItemCode(), rating);
+		item.addRating(user.getUserCode(), rating);
+	}
+
+	public void addTestRating (String userCode, String itemCode, double rating) {
+		int testUserIndex = this.getTestUserIndex(userCode);
+		int testItemIndex = this.getTestItemIndex(itemCode);
+		this.addTestRating(testUserIndex, testItemIndex, rating);
+	}
+
+	public void addTestRating (int testUserIndex, int testItemIndex, double rating) {
+		if (rating > this.maxRating) this.maxRating = rating;
+		if (rating < this.minRating) this.minRating = rating;
+
+		TestUser user = this.getTestUserByIndex(testUserIndex);
+		TestItem item = this.getTestItemByIndex(testItemIndex);
+
+		user.addTestRating(item.getItemCode(), rating);
+		item.addTestRating(user.getUserCode(), rating);
 	}
 }
