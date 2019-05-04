@@ -1,6 +1,7 @@
 package cf4j.data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,16 +36,16 @@ public class User implements Serializable {
 	 * Map of the user
 	 */
 	private Map <String, Object> map;
-	
+
 	/**
 	 * Items rated by the user
 	 */
-	protected int [] items;
-	
+	protected ArrayList<Integer> items;
+
 	/**
 	 * Ratings of the user to the items
 	 */
-	protected double [] ratings;
+	protected ArrayList<Double> ratings;
 	
 	/**
 	 * Rating average of the user ratings
@@ -55,22 +56,21 @@ public class User implements Serializable {
 	 * Standard deviation of the user ratings
 	 */
 	protected double ratingStandardDeviation;
-	
+
 	/**
 	 * Creates a new instance of an user. This constructor should not be used by developers.
 	 * @param userCode User code
 	 * @param userIndex User index
-	 * @param items Items that the user have rated
-	 * @param ratings Ratings of the user to the items
 	 */
-	public User (int userCode, int userIndex, int [] items, double [] ratings) {
+	public User (int userCode, int userIndex) {
 		this.userCode = userCode;
 		this.itemIndex = userIndex;
 		this.map = new HashMap<String, Object>();
-		this.items = items;
-		this.ratings = ratings;
-		this.ratingAverage = Methods.arrayAverage(ratings);
-		this.ratingStandardDeviation = Methods.arrayStandardDeviation(ratings);
+		this.items = new ArrayList<Integer>();
+		this.ratings = new ArrayList<Double>();
+		//TODO: Metrics?
+		//this.ratingAverage = Methods.arrayAverage(ratings);
+		//this.ratingStandardDeviation = Methods.arrayStandardDeviation(ratings);
 	}
 	
 	/**
@@ -137,7 +137,7 @@ public class User implements Serializable {
 	 * Returns the items codes rated by the user. 
 	 * @return Items codes sorted from low to high. 
 	 */
-	public int[] getItems() {
+	public ArrayList<Integer> getItems() {
 		return this.items;
 	}
 	
@@ -147,7 +147,7 @@ public class User implements Serializable {
 	 * @return Item code at index. 
 	 */
 	public int getItemAt(int index) {
-		return this.getItems()[index];
+		return this.getItems().get(index);
 	}
 
 	/**
@@ -155,7 +155,7 @@ public class User implements Serializable {
 	 * array overlaps with indexes of the getItems() array.
 	 * @return Items ratings.
 	 */
-	public double [] getRatings() {
+	public ArrayList<Double> getRatings() {
 		return this.ratings;
 	}
 	
@@ -165,7 +165,7 @@ public class User implements Serializable {
 	 * @return Rating at index. 
 	 */
 	public double getRatingAt(int index) {
-		return this.getRatings()[index];
+		return this.getRatings().get(index);
 	}
 	
 	/**
@@ -174,7 +174,9 @@ public class User implements Serializable {
 	 * @return Item index if the user has rated the item or -1 if not
 	 */
 	public int getItemIndex (int item_code) {
-		return Methods.getIndex(this.items, item_code);
+		//TODO: Búsqueda dicotómica de arraylist
+		//return Methods.getIndex(this.items, item_code);
+		return 0;
 	}
 
 	/**
@@ -182,6 +184,11 @@ public class User implements Serializable {
 	 * @return Number of ratings
 	 */
 	public int getNumberOfRatings () {
-		return this.ratings.length;
+		return this.ratings.size();
 	}
+
+	public void addRating(int itemCode, double rating){
+		//TODO: addrating
+	}
+
 }

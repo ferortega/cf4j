@@ -1,6 +1,7 @@
 package cf4j.data;
 
 import cf4j.utils.Methods;
+import java.util.ArrayList;
 
 /**
  * <p>A TestUser extends an User given it the following properties:</p>
@@ -23,16 +24,16 @@ public class TestUser extends User {
 	 * Test user index
 	 */
 	protected int testUserIndex;
-	
+
 	/**
 	 * Test items that rated by the user
 	 */
-	protected int [] testItems;
-	
+	protected ArrayList<Integer> testItems;
+
 	/**
 	 * Test ratings of the items
 	 */
-	protected double [] testRatings;
+	protected ArrayList<Double> testRatings;
 	
 	/**
 	 * Test rating average of the user
@@ -43,26 +44,23 @@ public class TestUser extends User {
 	 * Test rating standard deviation of this user
 	 */
 	protected double testRatingStandardDeviation;
-	
+
 	/**
 	 * Creates a new instance of an user. This constructor should not be used by developers.
 	 * @param userCode User code
 	 * @param userIndex User index
-	 * @param items Items that the user have rated
-	 * @param ratings Ratings of the user to the items
 	 * @param testUserIndex Test user index
-	 * @param testItems Test items that the user have rated
-	 * @param testRatings Test ratings of the user to the items
 	 */
-	public TestUser (int userCode, int userIndex, int [] items, double [] ratings, int testUserIndex, int [] testItems, double [] testRatings) {
-		super(userCode, userIndex, items, ratings);
+	public TestUser (int userCode, int userIndex, int testUserIndex) {
+		super(userCode, userIndex);
 		this.testUserIndex = testUserIndex;
-		this.testItems = testItems;
-		this.testRatings = testRatings;
-		this.testRatingAverage = Methods.arrayAverage(testRatings);
-		this.testRatingStandardDeviation = Methods.arrayStandardDeviation(testRatings);
+		this.testItems = new ArrayList<Integer>();
+		this.testRatings = new ArrayList<Double>();
+		//TODO: Metrics?
+		//this.testRatingAverage = Methods.arrayAverage(testRatings);
+		//this.testRatingStandardDeviation = Methods.arrayStandardDeviation(testRatings);
 	}
-	
+
 	/**
 	 * Average of the test ratings
 	 * @return Test rating average
@@ -91,7 +89,7 @@ public class TestUser extends User {
 	 * Get the test items rated by the user
 	 * @return Test items codes sorted from low to high. 
 	 */
-	public int [] getTestItems() {
+	public ArrayList<Integer> getTestItems() {
 		return this.testItems;
 	}
 	
@@ -101,7 +99,7 @@ public class TestUser extends User {
 	 * @return Test item code at index. 
 	 */
 	public int getTestItemAt(int index) {
-		return this.getTestItems()[index];
+		return this.getTestItems().get(index);
 	}
 
 	/**
@@ -109,7 +107,7 @@ public class TestUser extends User {
 	 * with indexes of the getTestItems() array.
 	 * @return Test items ratings
 	 */
-	public double [] getTestRatings() {
+	public ArrayList<Double> getTestRatings() {
 		return this.testRatings;
 	}
 	
@@ -119,7 +117,7 @@ public class TestUser extends User {
 	 * @return Test rating at index. 
 	 */
 	public double getTestRatingAt(int index) {
-		return this.getTestRatings()[index];
+		return this.getTestRatings().get(index);
 	}
 	
 	/**
@@ -128,7 +126,9 @@ public class TestUser extends User {
 	 * @return Test item index if the user has rated the item or -1 if not
 	 */
 	public int getTestItemIndex (int item_code) {
-		return Methods.getIndex(this.testItems, item_code);
+		//TODO: Búsqueda dicotómica de arraylist
+		//return Methods.getIndex(this.testItems, item_code);
+		return 0;
 	}
 	
 	/**
@@ -136,7 +136,7 @@ public class TestUser extends User {
 	 * @return Number of test ratings made
 	 */
 	public int getNumberOfTestRatings () {
-		return this.testRatings.length;
+		return this.testRatings.size();
 	}
 	
 	/**
@@ -192,5 +192,9 @@ public class TestUser extends User {
 	 */
 	public void setPredictions (double [] predictions) {
 		this.put(PREDICTIONS_KEYS, predictions);
+	}
+
+	public void addTestRating(int itemCode, double rating){
+		//TODO: addrating
 	}
 }
