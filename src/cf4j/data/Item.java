@@ -18,7 +18,7 @@ import cf4j.utils.Methods;
  * </ul>
  * @author Fernando Ortega
  */
-public class Item implements Serializable {
+public class Item implements Serializable, Comparable<Item> {
 
 	private static final long serialVersionUID = 20171018L;
 
@@ -189,5 +189,10 @@ public class Item implements Serializable {
 
 	public void addRating(int userCode, double rating){
 		//TODO: addrating
+	}
+
+	@Override
+	public int compareTo(Item o) {
+		return this.itemCode - o.itemCode;
 	}
 }
