@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import cf4j.data.types.DynamicArray;
+import cf4j.data.types.DynamicSortedArray;
 import cf4j.utils.Methods;
 
 /**
@@ -28,11 +30,6 @@ public class User implements Serializable, Comparable<User> {
 	protected int userCode;
 	
 	/**
-	 * User index
-	 */
-	protected int itemIndex;
-	
-	/**
 	 * Map of the user
 	 */
 	private Map <String, Object> map;
@@ -40,12 +37,12 @@ public class User implements Serializable, Comparable<User> {
 	/**
 	 * Items rated by the user
 	 */
-	protected ArrayList<Integer> items;
+	protected DynamicSortedArray<Integer> items;
 
 	/**
 	 * Ratings of the user to the items
 	 */
-	protected ArrayList<Double> ratings;
+	protected DynamicArray<Double> ratings;
 	
 	/**
 	 * Rating average of the user ratings
@@ -60,14 +57,12 @@ public class User implements Serializable, Comparable<User> {
 	/**
 	 * Creates a new instance of an user. This constructor should not be used by developers.
 	 * @param userCode User code
-	 * @param userIndex User index
 	 */
-	public User (int userCode, int userIndex) {
+	public User (int userCode) {
 		this.userCode = userCode;
-		this.itemIndex = userIndex;
 		this.map = new HashMap<String, Object>();
-		this.items = new ArrayList<Integer>();
-		this.ratings = new ArrayList<Double>();
+		this.items = new DynamicSortedArray<Integer>();
+		this.ratings = new DynamicArray<Double>();
 		//TODO: Metrics?
 		//this.ratingAverage = Methods.arrayAverage(ratings);
 		//this.ratingStandardDeviation = Methods.arrayStandardDeviation(ratings);
@@ -115,14 +110,6 @@ public class User implements Serializable, Comparable<User> {
 	public int getUserCode() {
 		return this.userCode;
 	}
-	
-	/**
-	 * Return the user index.
-	 * @return User index
-	 */
-	public int getUserIndex() {
-		return this.itemIndex;
-	}
 
 	/**
 	 * Get the map of the user. It is recommended using put(...) and get(...) instead of
@@ -137,7 +124,7 @@ public class User implements Serializable, Comparable<User> {
 	 * Returns the items codes rated by the user. 
 	 * @return Items codes sorted from low to high. 
 	 */
-	public ArrayList<Integer> getItems() {
+	public DynamicSortedArray<Integer> getItems() {
 		return this.items;
 	}
 	
@@ -155,7 +142,7 @@ public class User implements Serializable, Comparable<User> {
 	 * array overlaps with indexes of the getItems() array.
 	 * @return Items ratings.
 	 */
-	public ArrayList<Double> getRatings() {
+	public DynamicArray<Double> getRatings() {
 		return this.ratings;
 	}
 	
@@ -174,9 +161,7 @@ public class User implements Serializable, Comparable<User> {
 	 * @return Item index if the user has rated the item or -1 if not
 	 */
 	public int getItemIndex (int item_code) {
-		//TODO: Búsqueda dicotómica de arraylist
-		//return Methods.getIndex(this.items, item_code);
-		return 0;
+		return items.get(new Integer(item_code));
 	}
 
 	/**
@@ -188,7 +173,7 @@ public class User implements Serializable, Comparable<User> {
 	}
 
 	public void addRating(int itemCode, double rating){
-		//TODO: addrating
+		ratings.add(items.add(new Integer(itemCode)), new Double(rating));
 	}
 
 	@Override

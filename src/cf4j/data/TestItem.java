@@ -1,5 +1,7 @@
 package cf4j.data;
 
+import cf4j.data.types.DynamicArray;
+import cf4j.data.types.DynamicSortedArray;
 import cf4j.utils.Methods;
 import java.util.ArrayList;
 
@@ -20,19 +22,14 @@ public class TestItem extends Item {
 	private final static String NEIGHBORS_KEY = "neighbors";
 
 	/**
-	 * Test item index
-	 */
-	protected int testItemIndex;
-
-	/**
 	 * Test users that have rated this item
 	 */
-	protected ArrayList<Integer> testUsers;
+	protected DynamicSortedArray<Integer> testUsers;
 
 	/**
 	 * Test ratings of the users
 	 */
-	protected ArrayList<Double> testRatings;
+	protected DynamicArray<Double> testRatings;
 	
 	/**
 	 * Test rating average of the item
@@ -47,14 +44,11 @@ public class TestItem extends Item {
 	/**
 	 * Creates a new instance of a test item. This constructor should not be used by developers.
 	 * @param itemCode Item code
-	 * @param itemIndex Item index
-	 * @param testItemIndex Test item index
 	 */
-	public TestItem (int itemCode, int itemIndex, int testItemIndex) {
-		super(itemCode, itemIndex);
-		this.testItemIndex = testItemIndex;
-		this.testUsers = new ArrayList<Integer>();
-		this.testRatings = new ArrayList<Double>();
+	public TestItem (int itemCode) {
+		super(itemCode);
+		this.testUsers = new DynamicSortedArray<Integer>();
+		this.testRatings = new DynamicArray<Double>();
 		//TODO: Metrics?
 		//this.testRatingAverage = Methods.arrayAverage(testRatings);
 		//this.testRatingStandardDeviation = Methods.arrayStandardDeviation(testRatings);
@@ -77,18 +71,10 @@ public class TestItem extends Item {
 	}
 	
 	/**
-	 * Return the test item index
-	 * @return Test item index
-	 */
-	public int getTestItemIndex() {
-		return this.testItemIndex;
-	}
-	
-	/**
 	 * Get the test users that have rated the item
 	 * @return Test users codes sorted from low to high. 
 	 */
-	public ArrayList<Integer> getTestUsers() {
+	public DynamicSortedArray<Integer> getTestUsers() {
 		return this.testUsers;
 	}
 	
@@ -106,7 +92,7 @@ public class TestItem extends Item {
 	 * array overlaps with indexes of the getTestUsers() array.
 	 * @return Test users ratings
 	 */
-	public ArrayList<Double> getTestRatings() {
+	public DynamicArray<Double> getTestRatings() {
 		return this.testRatings;
 	}
 	
@@ -126,9 +112,7 @@ public class TestItem extends Item {
 	 * 	the item or -1 if not
 	 */
 	public int getTestUserIndex (int user_code) {
-		//TODO: Búsqueda dicotómica de arraylist
-		//return Methods.getIndex(this.testUsers, user_code);
-		return 0;
+		return this.testUsers.get(new Integer(user_code));
 	}
 	
 	/**
@@ -177,6 +161,6 @@ public class TestItem extends Item {
 	}
 
 	public void addTestRating(int userCode, double rating){
-		//TODO: addrating
+		testRatings.add(testUsers.add(new Integer(userCode)), new Double(rating));
 	}
 }

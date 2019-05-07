@@ -1,4 +1,4 @@
-package cf4j.utils;
+package cf4j.data.types;
 
 public class Triplet <F, S, T>{
 

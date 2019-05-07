@@ -1,5 +1,7 @@
 package cf4j.data;
 
+import cf4j.data.types.DynamicSortedArray;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,15 +21,21 @@ public class DataModel implements Serializable {
     /**
      * Stored arrays
      */
-    private ArrayList<User> users;
-    private ArrayList<TestUser> testUsers;
+    private DynamicSortedArray<User> users;
+    private DynamicSortedArray<TestUser> testUsers;
 
-    private ArrayList<Item> items;
-    private ArrayList<TestItem> testItems;
+    private DynamicSortedArray<Item> items;
+    private DynamicSortedArray<TestItem> testItems;
 
-    public DataModel (){}
+    public DataModel (){
+        this.users = new DynamicSortedArray<User>();
+        this.testUsers = new DynamicSortedArray<TestUser>();
+        this.items = new DynamicSortedArray<Item>();
+        this.testItems = new DynamicSortedArray<TestItem>();
+    }
 
     public DataModel (DataSet dataset){
+        this();
         this.loadDataset(dataset);
     }
 
@@ -49,12 +57,12 @@ public class DataModel implements Serializable {
         //Getting User with that id.
         User user = this.getUserByCode(userCode);
         if(user == null) { //If don't exist, create new.
-            user = new User(userCode,0); //<-
+            user = new User(userCode); //<-
         }
         //Getting Item with that id.
         Item item = this.getItem(itemCode);
         if(item != null) {//If don't exist, create new.
-            item = new Item(itemCode,0); //<-
+            item = new Item(itemCode); //<-
         }
 
         user.addRating(itemCode, rating);
@@ -64,12 +72,12 @@ public class DataModel implements Serializable {
         //Getting User with that id.
         TestUser testUser = this.getTestUserByCode(userCode);
         if(testUser == null) { //If don't exist, create new.
-            testUser = new TestUser(userCode,0,0); //<-
+            testUser = new TestUser(userCode); //<-
         }
         //Getting Item with that id.
         TestItem testItem = this.getTestItem(itemCode);
         if(testItem != null) {//If don't exist, create new.
-            testItem = new TestItem(itemCode,0,0); //<-
+            testItem = new TestItem(itemCode); //<-
         }
 
         testUser.addTestRating(itemCode, rating);
@@ -82,12 +90,12 @@ public class DataModel implements Serializable {
         //Getting User with that id.
         TestUser testUser = this.getTestUserByCode(userCode);
         if(testUser == null) { //If don't exist, create new.
-            testUser = new TestUser(userCode,0,0); //<-
+            testUser = new TestUser(userCode); //<-
         }
         //Getting Item with that id.
         TestItem testItem = this.getTestItem(itemCode);
         if(testItem != null) {//If don't exist, create new.
-            testItem = new TestItem(itemCode,0,0); //<-
+            testItem = new TestItem(itemCode); //<-
         }
 
         testUser.addTestRating(itemCode, rating);
@@ -120,17 +128,7 @@ public class DataModel implements Serializable {
      * @return Index if the user exists or -1 if not
      */
     public int getUserIndex (int userCode) {
-        int min = 0, max = users.size() -1;
-        while (min <= max) {
-            int center = ((max - min) / 2) + min;
-            if (users.get(center).getUserCode() == userCode) return center;
-            if (userCode < users.get(center).getUserCode()) {
-                max = center - 1;
-            } else {
-                min = center + 1;
-            }
-        }
-        return -1;
+        return users.get(new User(userCode));
     }
     /**
      * Get an user by his code
@@ -158,17 +156,7 @@ public class DataModel implements Serializable {
      * @return Index if the user exists or -1 if not
      */
     public int getTestUserIndex (int testUserCode) {
-        int min = 0, max = testUsers.size() -1;
-        while (min <= max) {
-            int center = ((max - min) / 2) + min;
-            if (testUsers.get(center).getUserCode() == testUserCode) return center;
-            if (testUserCode < testUsers.get(center).getUserCode()) {
-                max = center - 1;
-            } else {
-                min = center + 1;
-            }
-        }
-        return -1;
+        return testUsers.get(new TestUser(testUserCode));
     }
     /**
      * Get an item by his code
@@ -196,17 +184,7 @@ public class DataModel implements Serializable {
      * @return Index if the item exists or -1 if not
      */
     public int getItemIndex (int itemCode) {
-        int min = 0, max = items.size() -1;
-        while (min <= max) {
-            int center = ((max - min) / 2) + min;
-            if (items.get(center).getItemCode() == itemCode) return center;
-            if (itemCode < items.get(center).getItemCode()) {
-                max = center - 1;
-            } else {
-                min = center + 1;
-            }
-        }
-        return -1;
+        return items.get(new Item(itemCode));
     }
     /**
      * Get a test item by his code
@@ -234,17 +212,7 @@ public class DataModel implements Serializable {
      * @return Index if the item exists or -1 if not
      */
     public int getTestItemIndex (int testItemCode) {
-        int min = 0, max = testItems.size() -1;
-        while (min <= max) {
-            int center = ((max - min) / 2) + min;
-            if (testItems.get(center).getItemCode() == testItemCode) return center;
-            if (testItemCode < testItems.get(center).getItemCode()) {
-                max = center - 1;
-            } else {
-                min = center + 1;
-            }
-        }
-        return -1;
+        return testItems.get(new TestItem(testItemCode));
     }
 
     /**

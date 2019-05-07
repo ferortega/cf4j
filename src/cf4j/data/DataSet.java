@@ -1,6 +1,6 @@
 package cf4j.data;
 
-import cf4j.utils.Triplet;
+import cf4j.data.types.Triplet;
 import java.util.Iterator;
 
 public interface DataSet{
