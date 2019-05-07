@@ -1,6 +1,7 @@
 package examples;
 
 import cf4j.data.DataModel;
+import cf4j.data.RandomSplitDataSet;
 import cf4j.process.Processor;
 import cf4j.qualityMeasures.MAE;
 import cf4j.utils.PrintableQualityMeasure;
@@ -32,8 +33,8 @@ public class Example1 {
 
 
 		// Load the database
-		DataModel.getInstance().open(dataset, testUsers, testItems, "::");
-
+		DataModel dataModel = new DataModel(new RandomSplitDataSet(dataset,testUsers,testItems,"::"));
+		//DataModel.getInstance().open(dataset, testUsers, testItems, "::");
 
 		// User to user approach
 		Processor.getInstance().testUsersProcess(new cf4j.algorithms.knn.userToUser.similarities.JMSD());
@@ -49,7 +50,7 @@ public class Example1 {
 
 			// Get MAE
 			Processor.getInstance().testUsersProcess(new MAE());
-			mae.putError(k, "user-to-user", DataModel.gi().getQualityMeasure("MAE"));
+			mae.putError(k, "user-to-user", dataModel.gi().getQualityMeasure("MAE"));
 		}
 
 
@@ -67,7 +68,7 @@ public class Example1 {
 
 			// Get MAE
 			Processor.getInstance().testUsersProcess(new MAE());
-			mae.putError(k, "item-to-item", DataModel.gi().getQualityMeasure("MAE"));
+			mae.putError(k, "item-to-item", dataModel.gi().getQualityMeasure("MAE"));
 		}
 
 

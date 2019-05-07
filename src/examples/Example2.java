@@ -4,6 +4,7 @@ import cf4j.algorithms.knn.userToUser.aggregationApproaches.*;
 import cf4j.algorithms.knn.userToUser.neighbors.*;
 import cf4j.algorithms.knn.userToUser.similarities.*;
 import cf4j.data.DataModel;
+import cf4j.data.RandomSplitDataSet;
 import cf4j.process.Processor;
 import cf4j.qualityMeasures.Coverage;
 import cf4j.qualityMeasures.F1;
@@ -57,7 +58,7 @@ public class Example2 {
 			= new PrintableQualityMeasure ("F1", numberOfRecommendations, similarityMetrics);
 
 		// Load the database
-		DataModel.getInstance().open(dataset, testUsers, testItems, "::");
+		DataModel dataModel = new DataModel(new RandomSplitDataSet(dataset,testUsers,testItems,"::"));
 
 		// Test each similarity metric
 		for (String sm : similarityMetrics) {
@@ -87,11 +88,11 @@ public class Example2 {
 
 				// Get MAE
 				Processor.getInstance().testUsersProcess(new MAE());
-				mae.putError(k, sm, DataModel.gi().getQualityMeasure("MAE"));
+				mae.putError(k, sm, dataModel.gi().getQualityMeasure("MAE"));
 
 				// Get Coverage
 				Processor.getInstance().testUsersProcess(new Coverage());
-				coverage.putError(k, sm, DataModel.gi().getQualityMeasure("Coverage"));
+				coverage.putError(k, sm, dataModel.gi().getQualityMeasure("Coverage"));
 			}
 
 			// For each number of recommendations
@@ -102,15 +103,15 @@ public class Example2 {
 
 				// Get precision
 				Processor.getInstance().testUsersProcess(new Precision(n, precisionRecallThreshold));
-				precision.putError(n, sm, DataModel.gi().getQualityMeasure("Precision"));
+				precision.putError(n, sm, dataModel.gi().getQualityMeasure("Precision"));
 
 				// Get recall
 				Processor.getInstance().testUsersProcess(new Recall(n, precisionRecallThreshold));
-				recall.putError(n, sm, DataModel.gi().getQualityMeasure("Recall"));
+				recall.putError(n, sm, dataModel.gi().getQualityMeasure("Recall"));
 
 				// Get F1 score
 				Processor.getInstance().testUsersProcess(new F1(n, precisionRecallThreshold));
-				f1.putError(n, sm, DataModel.gi().getQualityMeasure("F1"));
+				f1.putError(n, sm, dataModel.gi().getQualityMeasure("F1"));
 			}
 
 
