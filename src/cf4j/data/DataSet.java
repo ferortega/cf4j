@@ -16,9 +16,8 @@ public interface DataSet{
      */
     public Iterator<DataSetEntry> getTestRatingsIterator();
 
-    //TODO: Permitir que los identificadores sean Strings en todo el código???
-    class DataSetEntry extends Triplet<Integer,Integer,Double>{
-        public DataSetEntry(Integer first, Integer second, Double third) {
+    class DataSetEntry extends Triplet<String,String,Double>{
+        public DataSetEntry(String first, String second, Double third) {
             super(first, second, third);
         }
     };

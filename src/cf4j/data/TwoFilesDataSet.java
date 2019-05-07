@@ -54,8 +54,8 @@ public class TwoFilesDataSet implements DataSet
 
                 // Parse line
                 String[] s = line.split(separator);
-                int userCode = Integer.parseInt(s[0]);
-                int itemCode = Integer.parseInt(s[1]);
+                String userCode = s[0];
+                String itemCode = s[1];
                 double rating = Double.parseDouble(s[2]);
 
                 // Store rating
@@ -74,8 +74,8 @@ public class TwoFilesDataSet implements DataSet
 
                 // Parse line
                 String[] s = line.split(separator);
-                int userCode = Integer.parseInt(s[0]);
-                int itemCode = Integer.parseInt(s[1]);
+                String userCode = s[0];
+                String itemCode = s[1];
                 double rating = Double.parseDouble(s[2]);
 
                 // Store rating

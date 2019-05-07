@@ -65,8 +65,8 @@ public class RandomSplitDataSet implements DataSet
             BufferedReader datasetFile = new BufferedReader (new FileReader(new File(fileName)));
 
             // Test selectors
-            TreeMap<Integer, Boolean> testUsersFiltered = new TreeMap<Integer, Boolean> ();
-            TreeMap<Integer, Boolean> testItemsFiltered = new TreeMap<Integer, Boolean> ();
+            TreeMap<String, Boolean> testUsersFiltered = new TreeMap<String, Boolean> ();
+            TreeMap<String, Boolean> testItemsFiltered = new TreeMap<String, Boolean> ();
 
             String line = ""; int numLines = 0;
             while ((line = datasetFile.readLine()) != null) {
@@ -78,8 +78,8 @@ public class RandomSplitDataSet implements DataSet
 
                 // Parse line
                 String [] s = line.split(separator);
-                int userCode = Integer.parseInt(s[0]);
-                int itemCode = Integer.parseInt(s[1]);
+                String userCode = s[0];
+                String itemCode = s[1];
                 double rating = Double.parseDouble(s[2]);
 
                 //Filtering entries.
@@ -99,7 +99,7 @@ public class RandomSplitDataSet implements DataSet
         }catch (Exception e) {
             System.out.println("An error has occurred while loading database");
             e.printStackTrace();
-            System.exit(1);//TODO: Return status, don't close program.
+            System.exit(1);
         }
     }
 

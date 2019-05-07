@@ -50,7 +50,7 @@ public class DataModel implements Serializable {
         }
     }
 
-    public void addRating (int userCode, int itemCode, double rating) {
+    public void addRating (String userCode, String itemCode, double rating) {
 
         //TODO: REVISAR, Insertar ordenado...
         //Add it to User
@@ -84,7 +84,7 @@ public class DataModel implements Serializable {
         testItem.addTestRating(userCode, rating);
     }
 
-    public void addTestRating (int userCode, int itemCode, double rating) {
+    public void addTestRating (String userCode, String itemCode, double rating) {
 
         //TODO: REVISAR, Insertar ordenado...
         //Getting User with that id.
@@ -107,8 +107,12 @@ public class DataModel implements Serializable {
      * @param userCode Code of the user to retrieve
      * @return User or null
      */
-    public User getUserByCode (int userCode) {
-        return users.get(userCode);
+    public User getUserByCode (String userCode) {
+
+        int index = users.get(new User(userCode));
+        if (index == -1)
+            return null;
+        return users.get(index);
     }
     /**
      * Get an user by his index
@@ -127,7 +131,7 @@ public class DataModel implements Serializable {
      * @param userCode User code
      * @return Index if the user exists or -1 if not
      */
-    public int getUserIndex (int userCode) {
+    public int getUserIndex (String userCode) {
         return users.get(new User(userCode));
     }
     /**
@@ -135,8 +139,11 @@ public class DataModel implements Serializable {
      * @param testUserCode Code of the user to retrieve
      * @return User or null
      */
-    public TestUser getTestUserByCode (int testUserCode) {
-        return testUsers.get(testUserCode);
+    public TestUser getTestUserByCode (String testUserCode) {
+        int index = testUsers.get(new TestUser(testUserCode));
+        if (index == -1)
+            return null;
+        return testUsers.get(index);
     }
     /**
      * Get an user by his index
@@ -155,7 +162,7 @@ public class DataModel implements Serializable {
      * @param testUserCode User code
      * @return Index if the user exists or -1 if not
      */
-    public int getTestUserIndex (int testUserCode) {
+    public int getTestUserIndex (String testUserCode) {
         return testUsers.get(new TestUser(testUserCode));
     }
     /**
@@ -163,8 +170,12 @@ public class DataModel implements Serializable {
      * @param itemCode Code of the item to retrieve
      * @return Item or null
      */
-    public Item getItem (int itemCode) {
-        return items.get(itemCode);
+    public Item getItem (String itemCode) {
+
+        int index = items.get(new Item(itemCode));
+        if (index == -1)
+            return null;
+        return items.get(index);
     }
     /**
      * Get a item by his index
@@ -183,7 +194,7 @@ public class DataModel implements Serializable {
      * @param itemCode Item code
      * @return Index if the item exists or -1 if not
      */
-    public int getItemIndex (int itemCode) {
+    public int getItemIndex (String itemCode) {
         return items.get(new Item(itemCode));
     }
     /**
@@ -191,8 +202,11 @@ public class DataModel implements Serializable {
      * @param itemCode Code of the test item to retrieve
      * @return TestItem or null
      */
-    public TestItem getTestItem (int itemCode) {
-        return testItems.get(itemCode);
+    public TestItem getTestItem (String itemCode) {
+        int index = testItems.get(new TestItem(itemCode));
+        if (index == -1)
+            return null;
+        return testItems.get(index);
     }
     /**
      * Get a test item by his index
@@ -211,7 +225,7 @@ public class DataModel implements Serializable {
      * @param testItemCode Test item code
      * @return Index if the item exists or -1 if not
      */
-    public int getTestItemIndex (int testItemCode) {
+    public int getTestItemIndex (String testItemCode) {
         return testItems.get(new TestItem(testItemCode));
     }
 

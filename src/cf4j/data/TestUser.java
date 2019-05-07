@@ -24,7 +24,7 @@ public class TestUser extends User {
 	/**
 	 * Test items that rated by the user
 	 */
-	protected DynamicSortedArray<Integer> testItems;
+	protected DynamicSortedArray<String> testItems;
 
 	/**
 	 * Test ratings of the items
@@ -45,9 +45,9 @@ public class TestUser extends User {
 	 * Creates a new instance of an user. This constructor should not be used by developers.
 	 * @param userCode User code
 	 */
-	public TestUser (int userCode) {
+	public TestUser (String userCode) {
 		super(userCode);
-		this.testItems = new DynamicSortedArray<Integer>();
+		this.testItems = new DynamicSortedArray<String>();
 		this.testRatings = new DynamicArray<Double>();
 		//TODO: Metrics?
 		//this.testRatingAverage = Methods.arrayAverage(testRatings);
@@ -74,7 +74,7 @@ public class TestUser extends User {
 	 * Get the test items rated by the user
 	 * @return Test items codes sorted from low to high. 
 	 */
-	public DynamicSortedArray<Integer> getTestItems() {
+	public DynamicSortedArray<String> getTestItems() {
 		return this.testItems;
 	}
 	
@@ -83,7 +83,7 @@ public class TestUser extends User {
 	 * @param index Index.
 	 * @return Test item code at index. 
 	 */
-	public int getTestItemAt(int index) {
+	public String getTestItemAt(int index) {
 		return this.getTestItems().get(index);
 	}
 
@@ -110,8 +110,8 @@ public class TestUser extends User {
 	 * @param item_code Item code
 	 * @return Test item index if the user has rated the item or -1 if not
 	 */
-	public int getTestItemIndex (int item_code) {
-		return testItems.get(new Integer(item_code));
+	public int getTestItemIndex (String item_code) {
+		return testItems.get(item_code);
 	}
 	
 	/**
@@ -177,7 +177,7 @@ public class TestUser extends User {
 		this.put(PREDICTIONS_KEYS, predictions);
 	}
 
-	public void addTestRating(int itemCode, double rating){
-		testRatings.add(testItems.add(new Integer(itemCode)), new Double(rating));
+	public void addTestRating(String itemCode, double rating){
+		testRatings.add(testItems.add(itemCode), new Double(rating));
 	}
 }

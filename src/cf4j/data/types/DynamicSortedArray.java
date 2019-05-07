@@ -5,7 +5,6 @@ public class DynamicSortedArray<E> extends DynamicArray<E> {
     /**
      * <p>Adds any element to the array in a ordered way</p>
      * @param element Element to insert inside the sorted array.
-     * @param aDouble
      * @return Position where the element was positioned.
      */
     public int add(E element){

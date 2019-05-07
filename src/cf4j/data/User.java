@@ -27,7 +27,7 @@ public class User implements Serializable, Comparable<User> {
 	/**
 	 * User code
 	 */
-	protected int userCode;
+	protected String userCode;
 	
 	/**
 	 * Map of the user
@@ -37,7 +37,7 @@ public class User implements Serializable, Comparable<User> {
 	/**
 	 * Items rated by the user
 	 */
-	protected DynamicSortedArray<Integer> items;
+	protected DynamicSortedArray<String> items;
 
 	/**
 	 * Ratings of the user to the items
@@ -58,10 +58,10 @@ public class User implements Serializable, Comparable<User> {
 	 * Creates a new instance of an user. This constructor should not be used by developers.
 	 * @param userCode User code
 	 */
-	public User (int userCode) {
+	public User (String userCode) {
 		this.userCode = userCode;
 		this.map = new HashMap<String, Object>();
-		this.items = new DynamicSortedArray<Integer>();
+		this.items = new DynamicSortedArray<String>();
 		this.ratings = new DynamicArray<Double>();
 		//TODO: Metrics?
 		//this.ratingAverage = Methods.arrayAverage(ratings);
@@ -107,7 +107,7 @@ public class User implements Serializable, Comparable<User> {
 	 * Returns the user code.
 	 * @return User code
 	 */
-	public int getUserCode() {
+	public String getUserCode() {
 		return this.userCode;
 	}
 
@@ -124,7 +124,7 @@ public class User implements Serializable, Comparable<User> {
 	 * Returns the items codes rated by the user. 
 	 * @return Items codes sorted from low to high. 
 	 */
-	public DynamicSortedArray<Integer> getItems() {
+	public DynamicSortedArray<String> getItems() {
 		return this.items;
 	}
 	
@@ -133,7 +133,7 @@ public class User implements Serializable, Comparable<User> {
 	 * @param index Index.
 	 * @return Item code at index. 
 	 */
-	public int getItemAt(int index) {
+	public String getItemAt(int index) {
 		return this.getItems().get(index);
 	}
 
@@ -160,8 +160,8 @@ public class User implements Serializable, Comparable<User> {
 	 * @param item_code Item code
 	 * @return Item index if the user has rated the item or -1 if not
 	 */
-	public int getItemIndex (int item_code) {
-		return items.get(new Integer(item_code));
+	public int getItemIndex (String item_code) {
+		return items.get(item_code);
 	}
 
 	/**
@@ -172,12 +172,12 @@ public class User implements Serializable, Comparable<User> {
 		return this.ratings.size();
 	}
 
-	public void addRating(int itemCode, double rating){
-		ratings.add(items.add(new Integer(itemCode)), new Double(rating));
+	public void addRating(String itemCode, double rating){
+		this.ratings.add(this.items.add(itemCode), new Double(rating));
 	}
 
 	@Override
 	public int compareTo(User o) {
-		return this.userCode - o.userCode;
+		return this.userCode.compareTo(o.userCode);
 	}
 }

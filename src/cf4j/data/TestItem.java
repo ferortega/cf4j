@@ -24,7 +24,7 @@ public class TestItem extends Item {
 	/**
 	 * Test users that have rated this item
 	 */
-	protected DynamicSortedArray<Integer> testUsers;
+	protected DynamicSortedArray<String> testUsers;
 
 	/**
 	 * Test ratings of the users
@@ -45,9 +45,9 @@ public class TestItem extends Item {
 	 * Creates a new instance of a test item. This constructor should not be used by developers.
 	 * @param itemCode Item code
 	 */
-	public TestItem (int itemCode) {
+	public TestItem (String itemCode) {
 		super(itemCode);
-		this.testUsers = new DynamicSortedArray<Integer>();
+		this.testUsers = new DynamicSortedArray<String>();
 		this.testRatings = new DynamicArray<Double>();
 		//TODO: Metrics?
 		//this.testRatingAverage = Methods.arrayAverage(testRatings);
@@ -74,7 +74,7 @@ public class TestItem extends Item {
 	 * Get the test users that have rated the item
 	 * @return Test users codes sorted from low to high. 
 	 */
-	public DynamicSortedArray<Integer> getTestUsers() {
+	public DynamicSortedArray<String> getTestUsers() {
 		return this.testUsers;
 	}
 	
@@ -83,7 +83,7 @@ public class TestItem extends Item {
 	 * @param index Index.
 	 * @return Test user code at index. 
 	 */
-	public int getTestUserAt(int index) {
+	public String getTestUserAt(int index) {
 		return this.getTestUsers().get(index);
 	}
 
@@ -111,8 +111,8 @@ public class TestItem extends Item {
 	 * @return Test user index in the test user's item array if the user has rated 
 	 * 	the item or -1 if not
 	 */
-	public int getTestUserIndex (int user_code) {
-		return this.testUsers.get(new Integer(user_code));
+	public int getTestUserIndex (String user_code) {
+		return this.testUsers.get(user_code);
 	}
 	
 	/**
@@ -160,7 +160,7 @@ public class TestItem extends Item {
 		this.put(NEIGHBORS_KEY, neighbors);
 	}
 
-	public void addTestRating(int userCode, double rating){
-		testRatings.add(testUsers.add(new Integer(userCode)), new Double(rating));
+	public void addTestRating(String userCode, double rating){
+		testRatings.add(testUsers.add(userCode), new Double(rating));
 	}
 }
