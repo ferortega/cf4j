@@ -51,8 +51,6 @@ public class DataModel implements Serializable {
     }
 
     public void addRating (String userCode, String itemCode, double rating) {
-
-        //TODO: REVISAR, Insertar ordenado...
         //Add it to User
         //Getting User with that id.
         User user = this.getUserByCode(userCode);
@@ -61,9 +59,8 @@ public class DataModel implements Serializable {
         }
         //Getting Item with that id.
         Item item = this.getItem(itemCode);
-        if(item != null) {//If don't exist, create new.
+        if(item != null) //If don't exist, create new.
             item = new Item(itemCode); //<-
-        }
 
         user.addRating(itemCode, rating);
         item.addRating(userCode, rating);
@@ -71,9 +68,9 @@ public class DataModel implements Serializable {
         //Also to testUsers
         //Getting User with that id.
         TestUser testUser = this.getTestUserByCode(userCode);
-        if(testUser == null) { //If don't exist, create new.
+        if(testUser == null)  //If don't exist, create new.
             testUser = new TestUser(userCode); //<-
-        }
+
         //Getting Item with that id.
         TestItem testItem = this.getTestItem(itemCode);
         if(testItem != null) {//If don't exist, create new.
