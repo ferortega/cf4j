@@ -49,25 +49,25 @@ public class Example3 {
 
 		System.out.println("\nPMF:");
 
-		Processor.getInstance().testUsersProcess(new MAE());
-		System.out.println("- MAE: " + dataModel.gi().getQualityMeasure("MAE"));
-
-		Processor.getInstance().testUsersProcess(new Precision(numRecommendations, threshold));
-		System.out.println("- Precision: " + dataModel.gi().getQualityMeasure("Precision"));
-
-
-		// BMF
-		Bmf bmf = new Bmf (bmf_numTopics, bmf_numIters, bmf_alpha, bmf_beta);
-		bmf.train();
-
-		Processor.getInstance().testUsersProcess(new FactorizationPrediction(bmf));
-
-		System.out.println("\nBMF:");
-
-		Processor.getInstance().testUsersProcess(new MAE());
-		System.out.println("- MAE: " + dataModel.gi().getQualityMeasure("MAE"));
-
-		Processor.getInstance().testUsersProcess(new Precision(numRecommendations, threshold));
-		System.out.println("- Precision: " + dataModel.gi().getQualityMeasure("Precision"));
+//		Processor.getInstance().testUsersProcess(new MAE());
+//		System.out.println("- MAE: " + dataModel.gi().getQualityMeasure("MAE"));
+//
+//		Processor.getInstance().testUsersProcess(new Precision(numRecommendations, threshold));
+//		System.out.println("- Precision: " + dataModel.gi().getQualityMeasure("Precision"));
+//
+//
+//		// BMF
+//		Bmf bmf = new Bmf (bmf_numTopics, bmf_numIters, bmf_alpha, bmf_beta);
+//		bmf.train();
+//
+//		Processor.getInstance().testUsersProcess(new FactorizationPrediction(bmf));
+//
+//		System.out.println("\nBMF:");
+//
+//		Processor.getInstance().testUsersProcess(new MAE());
+//		System.out.println("- MAE: " + dataModel.gi().getQualityMeasure("MAE"));
+//
+//		Processor.getInstance().testUsersProcess(new Precision(numRecommendations, threshold));
+//		System.out.println("- Precision: " + dataModel.gi().getQualityMeasure("Precision"));
 	}
 }

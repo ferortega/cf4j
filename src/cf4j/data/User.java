@@ -32,7 +32,7 @@ public class User implements Serializable, Comparable<User> {
 	/**
 	 * Map of the user
 	 */
-	private Map <String, Object> map;
+	protected DataBank storedData;
 
 	/**
 	 * Items rated by the user
@@ -60,31 +60,16 @@ public class User implements Serializable, Comparable<User> {
 	 */
 	public User (String userCode) {
 		this.userCode = userCode;
-		this.map = new HashMap<String, Object>();
+		this.storedData = new DataBank();
 		this.items = new DynamicSortedArray<String>();
 		this.ratings = new DynamicArray<Double>();
 		//TODO: Metrics?
 		//this.ratingAverage = Methods.arrayAverage(ratings);
 		//this.ratingStandardDeviation = Methods.arrayStandardDeviation(ratings);
 	}
-	
-	/**
-	 * Write a data in the user map.
-	 * @param key Key associated to the value
-	 * @param value Value to be written in the map
-	 * @return Previously value of the key if exists or null
-	 */
-	public synchronized Object put (String key, Object value) {		
-		return map.put(key, value);
-	}
-	
-	/**
-	 * Retrieves a value from a key.
-	 * @param key Key of the saved object
-	 * @return The value associated to the key if exists or null
-	 */
-	public synchronized Object get(String key) {
-		return map.get(key);
+
+	public DataBank GetStoredData (){
+		return storedData;
 	}
 
 	/**
@@ -109,15 +94,6 @@ public class User implements Serializable, Comparable<User> {
 	 */
 	public String getUserCode() {
 		return this.userCode;
-	}
-
-	/**
-	 * Get the map of the user. It is recommended using put(...) and get(...) instead of
-	 * this method.
-	 * @return Map of the user
-	 */
-	public Map<String, Object> getMap() {
-		return map;
 	}
 
 	/**
@@ -172,10 +148,20 @@ public class User implements Serializable, Comparable<User> {
 		return this.ratings.size();
 	}
 
+	/**
+	 * Add/Modify a new rating to the user, associated to a item.
+	 * @param itemCode itemCode which identify the specific item.
+	 * @param rating rated value by user, refering this item.
+	 */
 	public void addRating(String itemCode, double rating){
 		this.ratings.add(this.items.add(itemCode), new Double(rating));
 	}
 
+	/**
+	 * This methods implements the Comparable interface. It allows to be ordered by dynamicSortedArray.
+	 * @param o Other user
+	 * @return 1 0 or -1. If the other element si greater, equal or lesser.
+	 */
 	@Override
 	public int compareTo(User o) {
 		return this.userCode.compareTo(o.userCode);

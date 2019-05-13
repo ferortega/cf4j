@@ -18,27 +18,38 @@ public class DataModel implements Serializable {
 
     private static final long serialVersionUID = 20190503L;
 
-    /**
-     * Stored arrays
-     */
     private DynamicSortedArray<User> users;
     private DynamicSortedArray<TestUser> testUsers;
 
     private DynamicSortedArray<Item> items;
     private DynamicSortedArray<TestItem> testItems;
 
+    private DataBank storedData;
+
+    /**
+     * Default constructor. It doesn't contains any information by itself. You need use loadDataset.
+     */
     public DataModel (){
         this.users = new DynamicSortedArray<User>();
         this.testUsers = new DynamicSortedArray<TestUser>();
         this.items = new DynamicSortedArray<Item>();
         this.testItems = new DynamicSortedArray<TestItem>();
+        this.storedData = new DataBank();
     }
 
+    /**
+     * This constructor initializes the DataModel with the contents the given DataSet.
+     * @param dataset DataSet to be added to the DataModel.
+     */
     public DataModel (DataSet dataset){
         this();
         this.loadDataset(dataset);
     }
 
+    /**
+     * This method load inside the data model the registers found in the DataSet.
+     * @param dataset Dataset eith the information to be added
+     */
     public void loadDataset (DataSet dataset){
         for (Iterator<DataSet.DataSetEntry> it = dataset.getRatingsIterator(); it.hasNext(); ){
             DataSet.DataSetEntry entry = it.next();
@@ -50,20 +61,14 @@ public class DataModel implements Serializable {
         }
     }
 
+    /**
+     * This method adds a single rating to the DataSet.
+     * @param userCode UserCode as string, of the rating.
+     * @param itemCode ItemCode to be rated.
+     * @param rating Rating of the item.
+     */
     public void addRating (String userCode, String itemCode, double rating) {
-        //Add it to User
-        //Getting User with that id.
-        User user = this.getUserByCode(userCode);
-        if(user == null) { //If don't exist, create new.
-            user = new User(userCode); //<-
-        }
-        //Getting Item with that id.
-        Item item = this.getItem(itemCode);
-        if(item != null) //If don't exist, create new.
-            item = new Item(itemCode); //<-
 
-        user.addRating(itemCode, rating);
-        item.addRating(userCode, rating);
 
         //Also to testUsers
         //Getting User with that id.
@@ -81,10 +86,14 @@ public class DataModel implements Serializable {
         testItem.addTestRating(userCode, rating);
     }
 
+    /**
+     * This method adds a single test rating to the DataSet
+     * @param userCode UserCode as string, of the rating.
+     * @param itemCode ItemCode to be rated.
+     * @param rating Rating of the item.
+     */
     public void addTestRating (String userCode, String itemCode, double rating) {
 
-        //TODO: REVISAR, Insertar ordenado...
-        //Getting User with that id.
         TestUser testUser = this.getTestUserByCode(userCode);
         if(testUser == null) { //If don't exist, create new.
             testUser = new TestUser(userCode); //<-
@@ -95,8 +104,18 @@ public class DataModel implements Serializable {
             testItem = new TestItem(itemCode); //<-
         }
 
+        testUser.addRating(itemCode, rating);
         testUser.addTestRating(itemCode, rating);
+        testItem.addRating(userCode, rating);
         testItem.addTestRating(userCode, rating);
+    }
+
+    /**
+     * Getter of the stored data. This data allows you to store general calculation data inside the DataModel.
+     * @return The databank who stores general information.
+     */
+    public DataBank GetStoredData (){
+        return storedData;
     }
 
     /**
@@ -111,6 +130,7 @@ public class DataModel implements Serializable {
             return null;
         return users.get(index);
     }
+
     /**
      * Get an user by his index
      * @param userIndex Index of the user to retrieve
@@ -123,6 +143,7 @@ public class DataModel implements Serializable {
             return null;
         }
     }
+
     /**
      * Get the index of an user at the users array
      * @param userCode User code
@@ -131,6 +152,7 @@ public class DataModel implements Serializable {
     public int getUserIndex (String userCode) {
         return users.get(new User(userCode));
     }
+
     /**
      * Get an user by his code
      * @param testUserCode Code of the user to retrieve
@@ -142,6 +164,7 @@ public class DataModel implements Serializable {
             return null;
         return testUsers.get(index);
     }
+
     /**
      * Get an user by his index
      * @param testUserIndex Index of the user to retrieve
@@ -154,6 +177,7 @@ public class DataModel implements Serializable {
             return null;
         }
     }
+
     /**
      * Get the index of a test user at the test users array
      * @param testUserCode User code
@@ -162,6 +186,7 @@ public class DataModel implements Serializable {
     public int getTestUserIndex (String testUserCode) {
         return testUsers.get(new TestUser(testUserCode));
     }
+
     /**
      * Get an item by his code
      * @param itemCode Code of the item to retrieve
@@ -174,6 +199,7 @@ public class DataModel implements Serializable {
             return null;
         return items.get(index);
     }
+
     /**
      * Get a item by his index
      * @param itemIndex Index of the item to retrieve
@@ -186,6 +212,7 @@ public class DataModel implements Serializable {
             return null;
         }
     }
+
     /**
      * Get the index of a item at the test items array
      * @param itemCode Item code
@@ -194,6 +221,7 @@ public class DataModel implements Serializable {
     public int getItemIndex (String itemCode) {
         return items.get(new Item(itemCode));
     }
+
     /**
      * Get a test item by his code
      * @param itemCode Code of the test item to retrieve
@@ -205,6 +233,7 @@ public class DataModel implements Serializable {
             return null;
         return testItems.get(index);
     }
+
     /**
      * Get a test item by his index
      * @param testItemIndex Index of the test item to retrieve
@@ -217,6 +246,7 @@ public class DataModel implements Serializable {
             return null;
         }
     }
+
     /**
      * Get the index of a test item at the test items array
      * @param testItemCode Test item code

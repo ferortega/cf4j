@@ -123,43 +123,49 @@ public class TestItem extends Item {
 		return this.testRatings.size();
 	}
 	
-	/**
-	 * Return the similarities array of the test item. The similarity process must be 
-	 * executed before use this method.
-	 * @return Similarities array or null
-	 */
-	public double [] getSimilarities () {
-		return (double []) this.get(SIMILARITIES_KEY);
-	}
+//	/**
+//	 * Return the similarities array of the test item. The similarity process must be
+//	 * executed before use this method.
+//	 * @return Similarities array or null
+//	 */
+//	public double [] getSimilarities () {
+//		return (double []) this.get(SIMILARITIES_KEY);
+//	}
+	//Eato debería estar en el KNN?
 	
-	/**
-	 * Set the similarity of this item with the training items. The positions of the
-	 * similarities arrays must overlaps with the positions of the items of the method
-	 * Kernel.getItems().
-	 * @param similarities Similarities array. Higher is more similar.
-	 */
-	public void setSimilarities (double [] similarities) {
-		this.put(SIMILARITIES_KEY, similarities);
-	}
+//	/**
+//	 * Set the similarity of this item with the training items. The positions of the
+//	 * similarities arrays must overlaps with the positions of the items of the method
+//	 * Kernel.getItems().
+//	 * @param similarities Similarities array. Higher is more similar.
+//	 */
+//	public void setSimilarities (double [] similarities) {
+//		this.put(SIMILARITIES_KEY, similarities);
+//	}
 	
-	/**
-	 * Return the neighbors array of the test item. The neighbors process must be executed
-	 * before use this method.
-	 * @return Neighbors array or null
-	 */
-	public int [] getNeighbors () {
-		return (int []) this.get(NEIGHBORS_KEY);
-	}
+//	/**
+//	 * Return the neighbors array of the test item. The neighbors process must be executed
+//	 * before use this method.
+//	 * @return Neighbors array or null
+//	 */
+//	public int [] getNeighbors () {
+//		return (int []) this.get(NEIGHBORS_KEY);
+//	}
 	
-	/**
-	 * Set the items indexes that are neighbors of the item. First positions of the neighbors
-	 * array must be most similar items.
-	 * @param neighbors Items indexes that are neighbors of this item sorted by similarity
-	 */
-	public void setNeighbors (int [] neighbors) {
-		this.put(NEIGHBORS_KEY, neighbors);
-	}
+//	/**
+//	 * Set the items indexes that are neighbors of the item. First positions of the neighbors
+//	 * array must be most similar items.
+//	 * @param neighbors Items indexes that are neighbors of this item sorted by similarity
+//	 */
+//	public void setNeighbors (int [] neighbors) {
+//		this.put(NEIGHBORS_KEY, neighbors);
+//	}
 
+	/**
+	 * Add/Modify a new test rating to the testItem, associated to a user.
+	 * @param userCode userCode which identify the specific user.
+	 * @param rating rated value of the user, refering this item.
+	 */
 	public void addTestRating(String userCode, double rating){
 		testRatings.add(testUsers.add(userCode), new Double(rating));
 	}

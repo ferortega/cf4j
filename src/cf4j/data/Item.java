@@ -13,12 +13,11 @@ import cf4j.utils.Methods;
  * <p>Defines an item. An item is composed by:</p>
  * <ul>
  *  <li>Item code</li>
- *  <li>Item index in the items array</li>
- *  <li>A map where we can save any type of information</li>
+ *  <li>A databank where we can save any type of information</li>
  *  <li>Array of users who have rated the item</li>
  *  <li>Array of ratings that the item have received</li>
  * </ul>
- * @author Fernando Ortega
+ * @author Fernando Ortega, Jesús Mayor
  */
 public class Item implements Serializable, Comparable<Item> {
 
@@ -32,7 +31,7 @@ public class Item implements Serializable, Comparable<Item> {
 	/**
 	 * Map of the item
 	 */
-	protected Map <String, Object> map;
+	protected DataBank storedData;
 
 	/**
 	 * Users that have rated this item
@@ -60,31 +59,13 @@ public class Item implements Serializable, Comparable<Item> {
 	 */
 	public Item (String itemCode) {
 		this.itemCode = itemCode;
-		this.map = new HashMap<String, Object>();
+		this.storedData = new DataBank();
 		this.users = new DynamicSortedArray<String>();
 		this.ratings = new DynamicArray<Double>();
-		//TODO: Metrics?
-		//this.ratingAverage = Methods.arrayAverage(ratings);
-		//this.ratingStandardDeviation = Methods.arrayStandardDeviation(ratings);
 	}
 
-	/**
-	 * Write a data in the item map.
-	 * @param key Key associated to the value
-	 * @param value Value to be written in the map
-	 * @return Previously value of the key if exists or null
-	 */
-	public synchronized Object put (String key, Object value) {		
-		return map.put(key, value);
-	}
-	
-	/**
-	 * Retrieves a value from a key.
-	 * @param key Key of the saved object
-	 * @return The value associated to the key if exists or null
-	 */
-	public synchronized Object get(String key) {
-		return map.get(key);
+	public DataBank GetStoredData (){
+		return storedData;
 	}
 
 	/**
@@ -109,15 +90,6 @@ public class Item implements Serializable, Comparable<Item> {
 	 */
 	public String getItemCode() {
 		return this.itemCode;
-	}
-	
-	/**
-	 * Get the map of the item. It is recommended using put(...) and get(...) instead of
-	 * this method.
-	 * @return Map of the item
-	 */
-	public Map<String, Object> getMap() {
-		return map;
 	}
 	
 	/**
@@ -172,10 +144,20 @@ public class Item implements Serializable, Comparable<Item> {
 		return this.ratings.size();
 	}
 
+	/**
+	 * Add/Modify a new rating to the item, associated to a user.
+	 * @param userCode userCode which identify the specific user.
+	 * @param rating rated value by user, refering this item.
+	 */
 	public void addRating(String userCode, double rating){
 		ratings.add(users.add(userCode), new Double(rating));
 	}
 
+	/**
+	 * This methods implements the Comparable interface. It allows to be ordered by dynamicSortedArray.
+	 * @param o Other item
+	 * @return 1 0 or -1. If the other element si greater, equal or lesser.
+	 */
 	@Override
 	public int compareTo(Item o) {
 		return this.itemCode.compareTo(o.itemCode);

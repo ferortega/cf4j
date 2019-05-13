@@ -60,67 +60,67 @@ public class Example2 {
 		// Load the database
 		DataModel dataModel = new DataModel(new RandomSplitDataSet(dataset,testUsers,testItems,"::"));
 
-		// Test each similarity metric
-		for (String sm : similarityMetrics) {
-
-			// Compute similarity
-			if (sm.equals("COR")) {
-				Processor.getInstance().testUsersProcess(new Correlation());
-			}
-			else if (sm.equals("MSD")) {
-				Processor.getInstance().testUsersProcess(new MSD());
-			}
-			else if (sm.equals("JAC")) {
-				Processor.getInstance().testUsersProcess(new Jaccard());
-			}
-			else if (sm.equals("JMSD")) {
-				Processor.getInstance().testUsersProcess(new JMSD());
-			}
-
-			// For each number of neighbors
-			for (int k : numberOfNeighbors) {
-
-				// Compute neighbors
-				Processor.getInstance().testUsersProcess(new NearestNeighbors(k));
-
-				// Compute predictions using DFM
-				Processor.getInstance().testUsersProcess(new DeviationFromMean());
-
-				// Get MAE
-				Processor.getInstance().testUsersProcess(new MAE());
-				mae.putError(k, sm, dataModel.gi().getQualityMeasure("MAE"));
-
-				// Get Coverage
-				Processor.getInstance().testUsersProcess(new Coverage());
-				coverage.putError(k, sm, dataModel.gi().getQualityMeasure("Coverage"));
-			}
-
-			// For each number of recommendations
-			Processor.getInstance().testUsersProcess(new NearestNeighbors(precisionRecallK));
-			Processor.getInstance().testUsersProcess(new DeviationFromMean());
-
-			for (int n : numberOfRecommendations) {
-
-				// Get precision
-				Processor.getInstance().testUsersProcess(new Precision(n, precisionRecallThreshold));
-				precision.putError(n, sm, dataModel.gi().getQualityMeasure("Precision"));
-
-				// Get recall
-				Processor.getInstance().testUsersProcess(new Recall(n, precisionRecallThreshold));
-				recall.putError(n, sm, dataModel.gi().getQualityMeasure("Recall"));
-
-				// Get F1 score
-				Processor.getInstance().testUsersProcess(new F1(n, precisionRecallThreshold));
-				f1.putError(n, sm, dataModel.gi().getQualityMeasure("F1"));
-			}
-
-
-			// Print results
-			mae.print();
-			coverage.print();
-			precision.print();
-			recall.print();
-			f1.print();
-		}
+//		// Test each similarity metric
+//		for (String sm : similarityMetrics) {
+//
+//			// Compute similarity
+//			if (sm.equals("COR")) {
+//				Processor.getInstance().testUsersProcess(new Correlation());
+//			}
+//			else if (sm.equals("MSD")) {
+//				Processor.getInstance().testUsersProcess(new MSD());
+//			}
+//			else if (sm.equals("JAC")) {
+//				Processor.getInstance().testUsersProcess(new Jaccard());
+//			}
+//			else if (sm.equals("JMSD")) {
+//				Processor.getInstance().testUsersProcess(new JMSD());
+//			}
+//
+//			// For each number of neighbors
+//			for (int k : numberOfNeighbors) {
+//
+//				// Compute neighbors
+//				Processor.getInstance().testUsersProcess(new NearestNeighbors(k));
+//
+//				// Compute predictions using DFM
+//				Processor.getInstance().testUsersProcess(new DeviationFromMean());
+//
+//				// Get MAE
+//				Processor.getInstance().testUsersProcess(new MAE());
+//				mae.putError(k, sm, dataModel.gi().getQualityMeasure("MAE"));
+//
+//				// Get Coverage
+//				Processor.getInstance().testUsersProcess(new Coverage());
+//				coverage.putError(k, sm, dataModel.gi().getQualityMeasure("Coverage"));
+//			}
+//
+//			// For each number of recommendations
+//			Processor.getInstance().testUsersProcess(new NearestNeighbors(precisionRecallK));
+//			Processor.getInstance().testUsersProcess(new DeviationFromMean());
+//
+//			for (int n : numberOfRecommendations) {
+//
+//				// Get precision
+//				Processor.getInstance().testUsersProcess(new Precision(n, precisionRecallThreshold));
+//				precision.putError(n, sm, dataModel.gi().getQualityMeasure("Precision"));
+//
+//				// Get recall
+//				Processor.getInstance().testUsersProcess(new Recall(n, precisionRecallThreshold));
+//				recall.putError(n, sm, dataModel.gi().getQualityMeasure("Recall"));
+//
+//				// Get F1 score
+//				Processor.getInstance().testUsersProcess(new F1(n, precisionRecallThreshold));
+//				f1.putError(n, sm, dataModel.gi().getQualityMeasure("F1"));
+//			}
+//
+//
+//			// Print results
+//			mae.print();
+//			coverage.print();
+//			precision.print();
+//			recall.print();
+//			f1.print();
+//		}
 	}
 }
