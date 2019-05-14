@@ -23,7 +23,7 @@ public class MSD extends UserSimilarities {
 	@Override
 	public void beforeRun () {		
 		super.beforeRun();
-		this.maxDiff = this.dataModel.getMaxRating() - this.dataModel.getMinRating();
+		this.maxDiff = this.dataModel.getStoredData().getDouble(DataModel.MAXRATING_KEY) - this.dataModel.getStoredData().getDouble(DataModel.MINRATING_KEY);
 	}
 	
 	@Override

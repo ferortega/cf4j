@@ -22,15 +22,15 @@ public class DynamicArray<E> {
     public void add(int index, E element) throws IndexOutOfBoundsException{
         if (index >= this.data.length)
             this.increaseCapacity(index + INCREMENT);
-        if (this.size >= this.data.length)
-            this.increaseCapacity(this.size + INCREMENT);
 
         if (index<0 || index>this.size) //Allowing insertion at last position
             throw new IndexOutOfBoundsException("Entered index '" + index + "' is out of bounds.");
 
-        System.arraycopy(this.data,index,this.data,index+1,this.data.length-index); //TODO: copia bien? se pisa?
+        System.arraycopy(this.data,index,this.data,index+1,this.size - index); //TODO: copia bien? se pisa?
         this.data[index] = element;
-        this.size++;
+
+        if (index >= this.size)
+            this.size = index + 1;
     }
 
     /**

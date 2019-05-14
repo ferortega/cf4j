@@ -32,11 +32,13 @@ public class PIP extends ItemSimilarities {
 	/**
 	 * Constructor of the similarity metric
 	 */
-	public PIP () {
-		this.max = DataModel.gi().getMaxRating();
-		this.min = DataModel.gi().getMinRating();
+	public PIP (DataModel dataModel) {
+		super(dataModel);
+
+		this.max = this.dataModel.getStoredData().getDouble(DataModel.MAXRATING_KEY);
+		this.min = this.dataModel.getStoredData().getDouble(DataModel.MINRATING_KEY);
 		
-		this.median = ((double) (DataModel.gi().getMaxRating() + DataModel.gi().getMinRating())) / 2d;
+		this.median = ((double) (this.dataModel.getStoredData().getDouble(DataModel.MAXRATING_KEY) + this.dataModel.getStoredData().getDouble(DataModel.MINRATING_KEY))) / 2d;
 	}
 	
 	@Override
@@ -46,13 +48,13 @@ public class PIP extends ItemSimilarities {
 		double PIP = 0d;
 		
 		while (u < activeItem.getNumberOfRatings() && v < targetItem.getNumberOfRatings()) {
-			if (activeItem.getUsers()[u] < targetItem.getUsers()[v]) {
+			if (activeItem.getUserAt(u).compareTo(targetItem.getUserAt(v)) < 0) {
 				u++;
-			} else if (activeItem.getUsers()[u] > targetItem.getUsers()[v]) {
+			} else if (activeItem.getUserAt(u).compareTo(targetItem.getUserAt(v)) > 0) {
 				v++;
 			} else {
-				double ra = activeItem.getRatings()[u];
-				double rt = targetItem.getRatings()[v];
+				double ra = activeItem.getRatingAt(u);
+				double rt = targetItem.getRatingAt(v);
 
 				// Compute agreement
 				boolean agreement = true;
@@ -69,8 +71,8 @@ public class PIP extends ItemSimilarities {
 				double impact = (agreement) ? im : 1d / im;
 
 				// Calculamos la popularity
-				int userCode = activeItem.getUsers()[u];
-				User user = DataModel.gi().getUserByCode(userCode);
+				String userCode = activeItem.getUserAt(u);
+				User user = this.dataModel.getUserByCode(userCode);
 				double userAvg = user.getRatingAverage();
 				
 				double popularity = 1;

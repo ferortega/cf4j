@@ -1,5 +1,6 @@
 package cf4j.qualityMeasures;
 
+import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.qualityMeasures.QualityMeasure;
 import cf4j.utils.Methods;
@@ -29,20 +30,23 @@ public class Ndcg extends QualityMeasure {
 	 * Constructor of Ndcg
 	 * @param numberOfRecommendations Number of recommendations
 	 */
-	public Ndcg (int numberOfRecommendations) {
-		super(NAME);
+	public Ndcg (DataModel dataModel, int numberOfRecommendations) {
+		super(dataModel, NAME);
 		this.numberOfRecommendations = numberOfRecommendations;
 	}
 
 	@Override
 	public double getMeasure (TestUser testUser) {
-		
-		double [] testRatings = testUser.getTestRatings();
+
+		Double [] testRatings = new Double[testUser.getNumberOfTestRatings()];
+		for (int i = 0; i < testUser.getNumberOfTestRatings(); i++){
+			testRatings[i] = testUser.getRatingAt(i);
+		}
 				
         // Compute DCG
 		
-		double [] predictions = testUser.getPredictions();
-		int [] recommendations = Methods.findTopN(predictions, this.numberOfRecommendations);
+		Double [] predictions = testUser.getStoredData().getDoubleArray(TestUser.PREDICTIONS_KEYS);
+		Integer [] recommendations = Methods.findTopN(predictions, this.numberOfRecommendations);
 		
 		double dcg = 0d;
 		
@@ -55,7 +59,7 @@ public class Ndcg extends QualityMeasure {
 		
 		// Compute IDCG
 		
-		int [] idealRecommendations = Methods.findTopN(testRatings, this.numberOfRecommendations);
+		Integer [] idealRecommendations = Methods.findTopN(testRatings, this.numberOfRecommendations);
 
 		double idcg = 0d;	
 		

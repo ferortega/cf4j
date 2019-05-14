@@ -58,6 +58,10 @@ public class RandomSplitDataSet implements DataSet
      * @param separator Separator char between file fields
      */
     public RandomSplitDataSet (String fileName, double testUsersPercent, double testItemsPercent, String separator) {
+
+        ratings = new ArrayList<DataSetEntry>();
+        testRatings = new ArrayList<DataSetEntry>();
+
         System.out.println("\nLoading dataset...");
 
         try{

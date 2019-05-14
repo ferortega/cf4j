@@ -56,7 +56,7 @@ public class Singularities extends UserSimilarities{
 		this.notRelevantRatings = new HashSet <Double> ();
 		for (double r : notRelevantRatings)  this.notRelevantRatings.add(r);
 		
-		this.maxDiff = dataModel.getMaxRating() - dataModel.getMinRating();
+		this.maxDiff = dataModel.getStoredData().getDouble(DataModel.MAXRATING_KEY) - dataModel.getStoredData().getDouble(DataModel.MINRATING_KEY);
 	}
 
 	@Override

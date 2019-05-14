@@ -1,6 +1,8 @@
 package cf4j.qualityMeasures;
 
+import cf4j.data.DataModel;
 import cf4j.data.TestUser;
+import cf4j.data.types.DynamicArray;
 
 /**
  * <p>This class calculates the MSD (Mean Square Difference) of the recommender system. The MSD is the
@@ -17,22 +19,22 @@ public class MSD extends QualityMeasure {
 	/**
 	 * Constructor of MSD
 	 */
-	public MSD () {
-		super(NAME);
+	public MSD (DataModel dataModel) {
+		super(dataModel, NAME);
 	}
 
 	@Override
 	public double getMeasure (TestUser testUser) {
 		
-		double [] predictions = testUser.getPredictions();
-		double [] ratings = testUser.getTestRatings();
+		Double [] predictions = testUser.getStoredData().getDoubleArray(TestUser.PREDICTIONS_KEYS);
+		DynamicArray<Double> ratings = testUser.getTestRatings();
 		
 		double msd = 0d; 
 		int count = 0;
 		
-		for (int i = 0; i < ratings.length; i++) {
+		for (int i = 0; i < ratings.size(); i++) {
 			if (!Double.isNaN(predictions[i])) {
-				msd += Math.pow(predictions[i] - ratings[i], 2);
+				msd += Math.pow(predictions[i] - ratings.get(i), 2);
 				count++;
 			}
 		}

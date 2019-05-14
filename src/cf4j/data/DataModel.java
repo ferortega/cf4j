@@ -3,7 +3,6 @@ package cf4j.data;
 import cf4j.data.types.DynamicSortedArray;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -17,7 +16,10 @@ import java.util.Iterator;
 public class DataModel implements Serializable {
 
     private static final long serialVersionUID = 20190503L;
-    public  static final String AVERAGE_KEY = "average";
+
+    public static final String AVERAGERATING_KEY = "average_rating";
+    public static final String MAXRATING_KEY = "max_rating";
+    public static final String MINRATING_KEY = "min_rating";
 
 
     private DynamicSortedArray<User> users;
@@ -74,18 +76,21 @@ public class DataModel implements Serializable {
 
         //Also to testUsers
         //Getting User with that id.
-        TestUser testUser = this.getTestUserByCode(userCode);
-        if(testUser == null)  //If don't exist, create new.
-            testUser = new TestUser(userCode); //<-
+        User user = this.getTestUser(userCode);
+        if(user == null)  //If don't exist, create new.
+            user = new User(userCode);
 
         //Getting Item with that id.
-        TestItem testItem = this.getTestItem(itemCode);
-        if(testItem != null) {//If don't exist, create new.
-            testItem = new TestItem(itemCode); //<-
+        Item item = this.getTestItem(itemCode);
+        if(item == null) {//If don't exist, create new.
+            item = new Item(itemCode);
         }
 
-        testUser.addTestRating(itemCode, rating);
-        testItem.addTestRating(userCode, rating);
+        user.addRating(itemCode, rating);
+        item.addRating(userCode, rating);
+
+        this.users.add(user);
+        this.items.add(item);
     }
 
     /**
@@ -96,20 +101,23 @@ public class DataModel implements Serializable {
      */
     public void addTestRating (String userCode, String itemCode, double rating) {
 
-        TestUser testUser = this.getTestUserByCode(userCode);
+        TestUser testUser = this.getTestUser(userCode);
         if(testUser == null) { //If don't exist, create new.
             testUser = new TestUser(userCode); //<-
         }
         //Getting Item with that id.
         TestItem testItem = this.getTestItem(itemCode);
-        if(testItem != null) {//If don't exist, create new.
+        if(testItem == null) {//If don't exist, create new.
             testItem = new TestItem(itemCode); //<-
         }
 
-        testUser.addRating(itemCode, rating);
         testUser.addTestRating(itemCode, rating);
-        testItem.addRating(userCode, rating);
         testItem.addTestRating(userCode, rating);
+
+        users.add(testUser);
+        items.add(testItem);
+        testUsers.add(testUser);
+        testItems.add(testItem);
     }
 
     /**
@@ -160,7 +168,7 @@ public class DataModel implements Serializable {
      * @param testUserCode Code of the user to retrieve
      * @return User or null
      */
-    public TestUser getTestUserByCode (String testUserCode) {
+    public TestUser getTestUser(String testUserCode) {
         int index = testUsers.get(new TestUser(testUserCode));
         if (index == -1)
             return null;

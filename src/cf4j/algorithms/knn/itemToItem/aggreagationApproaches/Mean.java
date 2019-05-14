@@ -20,11 +20,15 @@ import cf4j.data.TestUser;
  */
 public class Mean extends TestPredictions {
 
+	public Mean(DataModel dataModel) {
+		super(dataModel);
+	}
+
 	@Override
-	public double predict (TestUser testUser, int itemCode) {
+	public double predict (TestUser testUser, String itemCode) {
 		
-		TestItem item = DataModel.gi().getTestItemByCode(itemCode);
-		int [] neighbors = item.getNeighbors();
+		TestItem item = this.dataModel.getTestItem(itemCode);
+		Integer [] neighbors = item.getStoredData().getIntegerArray(TestItem.NEIGHBORS_KEY);
 		
 		double prediction = 0;
 		int count = 0;
@@ -33,12 +37,12 @@ public class Mean extends TestPredictions {
 			if (neighbors[n] == -1) break; // Neighbors array are filled with -1 when no more neighbors exists
 			
 			int itemIndex = neighbors[n];
-			Item neighbor = DataModel.gi().getItems()[itemIndex];
-			int neighborCode = neighbor.getItemCode();
+			Item neighbor = this.dataModel.getItemByIndex(itemIndex);
+			String neighborCode = neighbor.getItemCode();
 							
 			int i = testUser.getItemIndex(neighborCode);
 			if (i != -1) {
-				prediction += testUser.getRatings()[i];
+				prediction += testUser.getRatingAt(i);
 				count++;
 			}
 		}

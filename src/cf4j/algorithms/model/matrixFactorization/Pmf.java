@@ -272,7 +272,7 @@ public class Pmf implements FactorizationModel {
 		Double [] factors_i = this.getItemFactors(itemIndex);
 
 		if (this.biases) {
-			double average = this.dataModel.getRatingAverage();
+			double average = this.dataModel.getStoredData().getDouble(DataModel.AVERAGERATING_KEY);
 
 			double bias_u = this.getUserBias(userIndex);
 			double bias_i = this.getItemBias(itemIndex);

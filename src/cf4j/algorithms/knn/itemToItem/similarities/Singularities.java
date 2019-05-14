@@ -55,7 +55,7 @@ public class Singularities extends ItemSimilarities{
 		this.notRelevantRatings = new HashSet <Double> ();
 		for (double r : notRelevantRatings)  this.notRelevantRatings.add(r);
 		
-		this.maxDiff = this.dataModel.getMaxRating() - this.dataModel.getMinRating();
+		this.maxDiff = this.dataModel.getStoredData().getDouble(DataModel.MAXRATING_KEY) - this.dataModel.getStoredData().getDouble(DataModel.MINRATING_KEY);
 	}
 
 	@Override

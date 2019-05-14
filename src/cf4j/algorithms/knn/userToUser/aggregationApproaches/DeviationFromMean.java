@@ -87,8 +87,8 @@ public class DeviationFromMean extends TestPredictions {
 		else {
 			deviation /= sumSimilarities;
 			double prediction = testUser.getRatingAverage() + deviation;
-			prediction = Math.min(prediction, this.dataModel.getMaxRating());
-			prediction = Math.max(prediction, this.dataModel.getMinRating());
+			prediction = Math.min(prediction, this.dataModel.getStoredData().getDouble(DataModel.MAXRATING_KEY));
+			prediction = Math.max(prediction, this.dataModel.getStoredData().getDouble(DataModel.MINRATING_KEY));
 			return prediction;
 		}
 	}

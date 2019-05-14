@@ -232,8 +232,8 @@ public class Bmf implements FactorizationModel {
 		Double [] b = this.getItemFactors(itemIndex);
 		double prediction = Methods.dotProduct(a, b);
 
-		double max = this.dataModel.getMaxRating();
-		double min = this.dataModel.getMinRating();
+		double max = this.dataModel.getStoredData().getDouble(DataModel.MAXRATING_KEY);
+		double min = this.dataModel.getStoredData().getDouble(DataModel.MINRATING_KEY);
 
 		return prediction * (max - min) + min;
 	}
@@ -314,8 +314,8 @@ public class Bmf implements FactorizationModel {
 
 				double [] lambda = new double [Bmf.this.numFactors];
 
-				double rating = (item.getRatings().get(u) - this.dataModel.getMinRating())
-						/ (this.dataModel.getMaxRating() - this.dataModel.getMinRating());
+				double rating = (item.getRatings().get(u) - this.dataModel.getStoredData().getDouble(DataModel.MINRATING_KEY))
+						/ (this.dataModel.getStoredData().getDouble(DataModel.MAXRATING_KEY) - this.dataModel.getStoredData().getDouble(DataModel.MINRATING_KEY));
 
 				double acc = 0;
 

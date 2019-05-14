@@ -1,5 +1,6 @@
 package cf4j.algorithms.knn.userToUser.similarities;
 
+import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.data.User;
 
@@ -10,6 +11,10 @@ import cf4j.data.User;
  */
 public class Cosine extends UserSimilarities {
 
+	public Cosine(DataModel dataModel) {
+		super(dataModel);
+	}
+
 	@Override
 	public double similarity (TestUser activeUser, User targetUser) {		
 
@@ -17,14 +22,14 @@ public class Cosine extends UserSimilarities {
 		double num = 0d, denActive = 0d, denTarget = 0d;
 		
 		while (i < activeUser.getNumberOfRatings() && j < targetUser.getNumberOfRatings()) {
-			if (activeUser.getItems()[i] < targetUser.getItems()[j]) {
+			if (activeUser.getItemAt(i).compareTo(targetUser.getItemAt(j)) < 0) {
 				i++;
-			} else if (activeUser.getItems()[i] > targetUser.getItems()[j]) {
+			} else if (activeUser.getItemAt(i).compareTo(targetUser.getItemAt(j)) > 0) {
 				j++;
 			} else {
-				num += activeUser.getRatings()[i] * targetUser.getRatings()[j];
-				denActive += activeUser.getRatings()[i] * activeUser.getRatings()[i];
-				denTarget += targetUser.getRatings()[j] * targetUser.getRatings()[j];
+				num += activeUser.getRatingAt(i) * targetUser.getRatingAt(j);
+				denActive += activeUser.getRatingAt(i) * activeUser.getRatingAt(i);
+				denTarget += targetUser.getRatingAt(j) * targetUser.getRatingAt(j);
 				
 				common++;
 				i++; 

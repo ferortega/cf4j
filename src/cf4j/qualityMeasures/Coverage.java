@@ -1,5 +1,6 @@
 package cf4j.qualityMeasures;
 
+import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 
 /**
@@ -20,14 +21,14 @@ public class Coverage extends QualityMeasure {
 	/**
 	 * Constructor of Coverage
 	 */
-	public Coverage () {
-		super(NAME);
+	public Coverage (DataModel dataModel) {
+		super(dataModel, NAME);
 	}
 
 	@Override
 	public double getMeasure (TestUser testUser) {
 		
-		double [] predictions = testUser.getPredictions();
+		Double [] predictions = testUser.getStoredData().getDoubleArray(TestUser.PREDICTIONS_KEYS);
 		
 		int count = 0;
 		

@@ -12,6 +12,10 @@ import cf4j.data.User;
  */
 public class AjustedCosine extends ItemSimilarities {
 
+	public AjustedCosine(DataModel dataModel) {
+		super(dataModel);
+	}
+
 	@Override
 	public double similarity (TestItem activeItem, Item targetItem) {
 		
@@ -19,17 +23,17 @@ public class AjustedCosine extends ItemSimilarities {
 		double num = 0d, denActive = 0d, denTarget = 0d;
 		
 		while (u < activeItem.getNumberOfRatings() && v < targetItem.getNumberOfRatings()) {
-			if (activeItem.getUsers()[u] < targetItem.getUsers()[v]) {
+			if (activeItem.getUserAt(u).compareTo(targetItem.getUserAt(v)) < 0) {
 				u++;
-			} else if (activeItem.getUsers()[u] > targetItem.getUsers()[v]) {
+			} else if (activeItem.getUserAt(u).compareTo(targetItem.getUserAt(v)) > 0) {
 				v++;
 			} else {
-				int userCode = activeItem.getUsers()[u];
-				User user = DataModel.gi().getUserByCode(userCode);
+				String userCode = activeItem.getUserAt(u);
+				User user = this.dataModel.getUserByCode(userCode);
 				double avg = user.getRatingAverage();
 				
-				double fa = activeItem.getRatings()[u] - avg;
-				double ft = targetItem.getRatings()[v] - avg;
+				double fa = activeItem.getRatingAt(u) - avg;
+				double ft = targetItem.getRatingAt(v) - avg;
 				
 				num += fa * ft;
 				denActive += fa * fa;

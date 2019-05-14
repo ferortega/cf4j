@@ -1,5 +1,6 @@
 package cf4j.algorithms.knn.itemToItem.similarities;
 
+import cf4j.data.DataModel;
 import cf4j.data.Item;
 import cf4j.data.TestItem;
 
@@ -10,6 +11,10 @@ import cf4j.data.TestItem;
  */
 public class Correlation extends ItemSimilarities{
 
+	public Correlation(DataModel dataModel) {
+		super(dataModel);
+	}
+
 	@Override
 	public double similarity (TestItem activeItem, Item targetItem) {
 
@@ -17,13 +22,13 @@ public class Correlation extends ItemSimilarities{
 		double num = 0d, denActive = 0d, denTarget = 0d;
 		
 		while (u < activeItem.getNumberOfRatings() && v < targetItem.getNumberOfRatings()) {
-			if (activeItem.getUsers()[u] < targetItem.getUsers()[v]) {
+			if ( activeItem.getUserAt(u).compareTo(targetItem.getUserAt(v)) < 0 ){
 				u++;
-			} else if (activeItem.getUsers()[u] > targetItem.getUsers()[v]) {
+			} else if (activeItem.getUserAt(u).compareTo(targetItem.getUserAt(v)) > 0) {
 				v++;
 			} else {
-				double fa = activeItem.getRatings()[u] - activeItem.getRatingAverage();
-				double ft = targetItem.getRatings()[v] - targetItem.getRatingAverage();
+				double fa = activeItem.getRatingAt(u) - activeItem.getRatingAverage();
+				double ft = targetItem.getRatingAt(v) - targetItem.getRatingAverage();
 				
 				num += fa * ft;
 				denActive += fa * fa;

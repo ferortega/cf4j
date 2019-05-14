@@ -85,7 +85,7 @@ public class Methods {
 	 */
 	public static Integer [] findTopN (Double [] values, int n) {
 
-		int [] indexes = new int [n];
+		Integer [] indexes = new Integer [n];
 
 		double [] aux = new double [n];
 
