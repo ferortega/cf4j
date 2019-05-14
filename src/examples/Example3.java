@@ -40,34 +40,35 @@ public class Example3 {
 		// Load the database
 		DataModel dataModel = new DataModel(new RandomSplitDataSet(dataset,testUsers,testItems,"::"));
 
+		Processor processor = new Processor();
 
 		// PMF
-		Pmf pmf = new Pmf (pmf_numTopics, pmf_numIters, pmf_lambda);
+		Pmf pmf = new Pmf (dataModel, pmf_numTopics, pmf_numIters, pmf_lambda);
 		pmf.train();
 
-		Processor.getInstance().testUsersProcess(new FactorizationPrediction(pmf));
+		processor.process(new FactorizationPrediction(dataModel, pmf));
 
 		System.out.println("\nPMF:");
 
-//		Processor.getInstance().testUsersProcess(new MAE());
-//		System.out.println("- MAE: " + dataModel.gi().getQualityMeasure("MAE"));
-//
-//		Processor.getInstance().testUsersProcess(new Precision(numRecommendations, threshold));
-//		System.out.println("- Precision: " + dataModel.gi().getQualityMeasure("Precision"));
-//
-//
-//		// BMF
-//		Bmf bmf = new Bmf (bmf_numTopics, bmf_numIters, bmf_alpha, bmf_beta);
-//		bmf.train();
-//
-//		Processor.getInstance().testUsersProcess(new FactorizationPrediction(bmf));
-//
-//		System.out.println("\nBMF:");
-//
-//		Processor.getInstance().testUsersProcess(new MAE());
-//		System.out.println("- MAE: " + dataModel.gi().getQualityMeasure("MAE"));
-//
-//		Processor.getInstance().testUsersProcess(new Precision(numRecommendations, threshold));
-//		System.out.println("- Precision: " + dataModel.gi().getQualityMeasure("Precision"));
+		processor.process(new MAE(dataModel));
+		System.out.println("- MAE: " + dataModel.getStoredData().getDouble("MAE"));
+
+		processor.process(new Precision(dataModel, numRecommendations, threshold));
+		System.out.println("- Precision: " + dataModel.getStoredData().getDouble("Precision"));
+
+
+		// BMF
+		Bmf bmf = new Bmf (dataModel, bmf_numTopics, bmf_numIters, bmf_alpha, bmf_beta);
+		bmf.train();
+
+		processor.process(new FactorizationPrediction(dataModel, bmf));
+
+		System.out.println("\nBMF:");
+
+		processor.process(new MAE(dataModel));
+		System.out.println("- MAE: " + dataModel.getStoredData().getDouble("MAE"));
+
+		processor.process(new Precision(dataModel, numRecommendations, threshold));
+		System.out.println("- Precision: " + dataModel.getStoredData().getDouble("Precision"));
 	}
 }

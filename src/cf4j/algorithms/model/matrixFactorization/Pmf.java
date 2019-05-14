@@ -3,9 +3,8 @@ package cf4j.algorithms.model.matrixFactorization;
 import cf4j.data.Item;
 import cf4j.data.DataModel;
 import cf4j.data.User;
-import cf4j.process.ItemsPartible;
+import cf4j.process.PartibleThreads;
 import cf4j.process.Processor;
-import cf4j.process.UsersPartible;
 import cf4j.utils.Methods;
 
 /**
@@ -51,12 +50,17 @@ public class Pmf implements FactorizationModel {
 	private boolean biases;
 
 	/**
+	 * Enable dataModel
+	 */
+	private DataModel dataModel;
+
+	/**
 	 * Model constructor
 	 * @param numFactors Number of factors
 	 * @param numIters Number of iterations
 	 */
-	public Pmf (int numFactors, int numIters)	{
-		this(numFactors, numIters, DEFAULT_LAMBDA, DEFAULT_GAMMA, true);
+	public Pmf (DataModel dataModel, int numFactors, int numIters)	{
+		this(dataModel, numFactors, numIters, DEFAULT_LAMBDA, DEFAULT_GAMMA, true);
 	}
 
 	/**
@@ -65,8 +69,8 @@ public class Pmf implements FactorizationModel {
 	 * @param numIters Number of iterations
 	 * @param lambda Regularization parameter
 	 */
-	public Pmf (int numFactors, int numIters, double lambda) {
-		this(numFactors, numIters, lambda, DEFAULT_GAMMA, true);
+	public Pmf (DataModel dataModel,int numFactors, int numIters, double lambda) {
+		this(dataModel, numFactors, numIters, lambda, DEFAULT_GAMMA, true);
 	}
 
 	/**
@@ -76,8 +80,8 @@ public class Pmf implements FactorizationModel {
 	 * @param lambda Regularization parameter
 	 * @param gamma Learning rate parameter
 	 */
-	public Pmf (int numFactors, int numIters, double lambda, double gamma) {
-		this(numFactors, numIters, lambda, gamma, true);
+	public Pmf (DataModel dataModel, int numFactors, int numIters, double lambda, double gamma) {
+		this(dataModel, numFactors, numIters, lambda, gamma, true);
 	}
 
 	/**
@@ -87,8 +91,8 @@ public class Pmf implements FactorizationModel {
 	 * @param lambda Regularization parameter
 	 * @param biases Enable/disable biases in the model
 	 */
-	public Pmf (int numFactors, int numIters, double lambda, boolean biases) {
-		this(numFactors, numIters, lambda, DEFAULT_GAMMA, biases);
+	public Pmf (DataModel dataModel, int numFactors, int numIters, double lambda, boolean biases) {
+		this(dataModel, numFactors, numIters, lambda, DEFAULT_GAMMA, biases);
 	}
 
 	/**
@@ -99,21 +103,22 @@ public class Pmf implements FactorizationModel {
 	 * @param gamma Learning rate parameter
 	 * @param biases Enable/disable biases in the model
 	 */
-	public Pmf (int numFactors, int numIters, double lambda, double gamma, boolean biases) {
+	public Pmf (DataModel dataModel, int numFactors, int numIters, double lambda, double gamma, boolean biases) {
 
 		this.numFactors = numFactors;
 		this.numIters = numIters;
 		this.lambda = lambda;
 		this.gamma = gamma;
 		this.biases = biases;
+		this.dataModel = dataModel;
 
 		// Users initialization
-		for (int u = 0; u < DataModel.gi().getNumberOfUsers(); u++) {
+		for (int u = 0; u < dataModel.getNumberOfUsers(); u++) {
 			this.setUserFactors(u, this.random(this.numFactors, -1, 1));
 		}
 
 		// Items initialization
-		for (int i = 0; i < DataModel.gi().getNumberOfItems(); i++) {
+		for (int i = 0; i < dataModel.getNumberOfItems(); i++) {
 			this.setItemFactors(i, this.random(this.numFactors, -1, 1));
 		}
 
@@ -121,12 +126,12 @@ public class Pmf implements FactorizationModel {
 		if (this.biases) {
 
 			// Users bias initialization
-			for (int u = 0; u < DataModel.gi().getNumberOfUsers(); u++) {
+			for (int u = 0; u < dataModel.getNumberOfUsers(); u++) {
 				this.setUserBias(u, this.random(-1, 1));
 			}
 
 			// Items bias initialization
-			for (int i = 0; i < DataModel.gi().getNumberOfItems(); i++) {
+			for (int i = 0; i < dataModel.getNumberOfItems(); i++) {
 				this.setItemBias(i, this.random(-1, 1));
 			}
 		}
@@ -165,9 +170,11 @@ public class Pmf implements FactorizationModel {
 
 		for (int iter = 1; iter <= this.numIters; iter++) {
 
+			Processor porcessor = new Processor(false);
+
 			// ALS: fix q_i and update p_u -> fix p_u and update q_i
-			Processor.getInstance().usersProcess(new UpdateUsersFactors(), false);
-			Processor.getInstance().itemsProcess(new UpdateItemsFactors(), false);
+			porcessor.process(new UpdateUsersFactors(dataModel));
+			porcessor.process(new UpdateItemsFactors(dataModel));
 
 			if ((iter % 10) == 0) System.out.print(".");
 			if ((iter % 100) == 0) System.out.println(iter + " iterations");
@@ -179,9 +186,9 @@ public class Pmf implements FactorizationModel {
 	 * @param userIndex User index
 	 * @return User factors
 	 */
-	public double [] getUserFactors (int userIndex) {
-		User user = DataModel.gi().getUsers()[userIndex];
-		return (double []) user.get(USER_FACTORS_KEY);
+	public Double [] getUserFactors (int userIndex) {
+		User user = dataModel.getUserByIndex(userIndex);
+		return user.getStoredData().getDoubleArray(USER_FACTORS_KEY);
 	}
 
 	/**
@@ -189,9 +196,9 @@ public class Pmf implements FactorizationModel {
 	 * @param userIndex User index
 	 * @param factors User factors
 	 */
-	private void setUserFactors (int userIndex, double [] factors) {
-		User user = DataModel.gi().getUsers()[userIndex];
-		user.put(USER_FACTORS_KEY, factors);
+	private void setUserFactors (int userIndex, Double [] factors) {
+		User user = this.dataModel.getUserByIndex(userIndex);
+		user.getStoredData().setDoubleArray(USER_FACTORS_KEY, factors);
 	}
 
 	/**
@@ -199,9 +206,9 @@ public class Pmf implements FactorizationModel {
 	 * @param itemIndex Item index
 	 * @return Item factors
 	 */
-	public double [] getItemFactors (int itemIndex) {
-		Item item = DataModel.gi().getItems()[itemIndex];
-		return (double []) item.get(ITEM_FACTORS_KEY);
+	public Double [] getItemFactors (int itemIndex) {
+		Item item = this.dataModel.getItemByIndex(itemIndex);
+		return (Double []) item.getStoredData().getDoubleArray(ITEM_FACTORS_KEY);
 	}
 
 	/**
@@ -209,9 +216,9 @@ public class Pmf implements FactorizationModel {
 	 * @param itemIndex Item index
 	 * @param factors Item factors
 	 */
-	private void setItemFactors (int itemIndex, double [] factors) {
-		Item item = DataModel.gi().getItems()[itemIndex];
-		item.put(ITEM_FACTORS_KEY, factors);
+	private void setItemFactors (int itemIndex, Double [] factors) {
+		Item item = this.dataModel.getItemByIndex(itemIndex);
+		item.getStoredData().setDoubleArray(ITEM_FACTORS_KEY, factors);
 	}
 
 	/**
@@ -220,8 +227,8 @@ public class Pmf implements FactorizationModel {
 	 * @return User bias or null
 	 */
 	public double getUserBias (int userIndex) {
-		User user = DataModel.gi().getUsers()[userIndex];
-		return (Double) user.get(USER_BIAS_KEY);
+		User user = this.dataModel.getUserByIndex(userIndex);
+		return user.getStoredData().getDouble(USER_BIAS_KEY);
 	}
 
 	/**
@@ -230,8 +237,8 @@ public class Pmf implements FactorizationModel {
 	 * @param bias User bias
 	 */
 	private void setUserBias (int userIndex, double bias) 	{
-		User user = DataModel.gi().getUsers()[userIndex];
-		user.put(USER_BIAS_KEY, bias);
+		User user = this.dataModel.getUserByIndex(userIndex);
+		user.getStoredData().setDouble(USER_BIAS_KEY, bias);
 	}
 
 	/**
@@ -240,8 +247,8 @@ public class Pmf implements FactorizationModel {
 	 * @return Item bias
 	 */
 	public double getItemBias (int itemIndex) {
-		Item item = DataModel.gi().getItems()[itemIndex];
-		return (Double) item.get(ITEM_BIAS_KEY);
+		Item item = this.dataModel.getItemByIndex(itemIndex);
+		return item.getStoredData().getDouble(ITEM_BIAS_KEY);
 	}
 
 	/**
@@ -250,8 +257,8 @@ public class Pmf implements FactorizationModel {
 	 * @param bias Item bias
 	 */
 	private void setItemBias (int itemIndex, double bias) {
-		Item item = DataModel.gi().getItems()[itemIndex];
-		item.put(ITEM_BIAS_KEY, bias);
+		Item item = this.dataModel.getItemByIndex(itemIndex);
+		item.getStoredData().setDouble(ITEM_BIAS_KEY, bias);
 	}
 
 	/**
@@ -261,11 +268,11 @@ public class Pmf implements FactorizationModel {
 	 * @return Prediction
 	 */
 	public double getPrediction (int userIndex, int itemIndex) {
-		double [] factors_u = this.getUserFactors(userIndex);
-		double [] factors_i = this.getItemFactors(itemIndex);
+		Double [] factors_u = this.getUserFactors(userIndex);
+		Double [] factors_i = this.getItemFactors(itemIndex);
 
 		if (this.biases) {
-			double average = DataModel.gi().getRatingAverage();
+			double average = this.dataModel.getRatingAverage();
 
 			double bias_u = this.getUserBias(userIndex);
 			double bias_i = this.getItemBias(itemIndex);
@@ -281,7 +288,16 @@ public class Pmf implements FactorizationModel {
 	 * Auxiliary inner class to parallelize user factors computation
 	 * @author Fernando Ortega
 	 */
-	private class UpdateUsersFactors implements UsersPartible {
+	private class UpdateUsersFactors extends PartibleThreads {
+
+		public UpdateUsersFactors(DataModel dataModel) {
+			super(dataModel);
+		}
+
+		@Override
+		public int getTotalIndexes (){
+			return this.dataModel.getNumberOfUsers();
+		}
 
 		@Override
 		public void beforeRun() { }
@@ -289,20 +305,20 @@ public class Pmf implements FactorizationModel {
 		@Override
 		public void run (int userIndex) {
 
-			User user = DataModel.gi().getUsers()[userIndex];
+			User user = dataModel.getUserByIndex(userIndex);
 
 			int itemIndex = 0;
 
 			for (int j = 0; j < user.getNumberOfRatings(); j++) {
 
-				while (DataModel.gi().getItems()[itemIndex].getItemCode() < user.getItems()[j]) itemIndex++;
+				while (dataModel.getItemByIndex(itemIndex).getItemCode().compareTo(user.getItems().get(j)) < 0) itemIndex++;
 
 				// Get error
-				double error = user.getRatings()[j] - Pmf.this.getPrediction(userIndex, itemIndex);
+				double error = user.getRatingAt(j) - Pmf.this.getPrediction(userIndex, itemIndex);
 
 				// Update p_u
-				double [] p_u = Pmf.this.getUserFactors(userIndex);
-				double [] q_i = Pmf.this.getItemFactors(itemIndex);
+				Double [] p_u = Pmf.this.getUserFactors(userIndex);
+				Double [] q_i = Pmf.this.getItemFactors(itemIndex);
 
 				for (int k = 0; k < Pmf.this.numFactors; k++)	{
 					p_u[k] += Pmf.this.gamma * (error * q_i[k] - Pmf.this.lambda * p_u[k]);
@@ -329,7 +345,16 @@ public class Pmf implements FactorizationModel {
 	 * Auxiliary inner class to parallelize item factors computation
 	 * @author Fernando Ortega
 	 */
-	private class UpdateItemsFactors implements ItemsPartible {
+	private class UpdateItemsFactors extends PartibleThreads {
+
+		public UpdateItemsFactors(DataModel dataModel) {
+			super(dataModel);
+		}
+
+		@Override
+		public int getTotalIndexes (){
+			return this.dataModel.getNumberOfUsers();
+		}
 
 		@Override
 		public void beforeRun() { }
@@ -340,20 +365,20 @@ public class Pmf implements FactorizationModel {
 		@Override
 		public void run(int itemIndex) {
 
-			Item item = DataModel.gi().getItems()[itemIndex];
+			Item item = this.dataModel.getItemByIndex(itemIndex);
 
 			int userIndex = 0;
 
 			for (int v = 0; v < item.getNumberOfRatings(); v++)
 			{
-				while (DataModel.gi().getUsers()[userIndex].getUserCode() < item.getUsers()[v]) userIndex++;
+				while (this.dataModel.getUserByIndex(userIndex).getUserCode().compareTo(item.getUsers().get(v)) < 0) userIndex++; //TODO: Check, could be reversed
 
 				// Get error
-				double error = item.getRatings()[v] - Pmf.this.getPrediction(userIndex, itemIndex);
+				double error = item.getRatings().get(v) - Pmf.this.getPrediction(userIndex, itemIndex);
 
 				// Update q_i
-				double [] q_i = Pmf.this.getItemFactors(itemIndex);
-				double [] p_u = Pmf.this.getUserFactors(userIndex);
+				Double [] q_i = Pmf.this.getItemFactors(itemIndex);
+				Double [] p_u = Pmf.this.getUserFactors(userIndex);
 
 				for (int k = 0; k < Pmf.this.numFactors; k++) {
 					q_i[k] += Pmf.this.gamma * (error * p_u[k] - Pmf.this.lambda * q_i[k]);
@@ -391,8 +416,8 @@ public class Pmf implements FactorizationModel {
 	 * @param max Maximum random value
 	 * @return Array of randoms
 	 */
-	private double [] random (int size, double min, double max) {
-		double [] d = new double [size];
+	private Double [] random (int size, double min, double max) {
+		Double [] d = new Double [size];
 		for (int i = 0; i < size; i++) d[i] = this.random(min, max);
 		return d;
 	}

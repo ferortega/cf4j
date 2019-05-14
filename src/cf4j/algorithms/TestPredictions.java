@@ -2,7 +2,7 @@ package cf4j.algorithms;
 
 import cf4j.data.DataModel;
 import cf4j.data.TestUser;
-import cf4j.process.TestUsersPartible;
+import cf4j.process.PartibleThreads;
 
 /**
  * <p>Abstract class to handle predictions for test item rated by test users. If
@@ -16,7 +16,14 @@ import cf4j.process.TestUsersPartible;
  * 
  * @author Fernando Ortega
  */
-public abstract class TestPredictions implements TestUsersPartible {
+public abstract class TestPredictions extends PartibleThreads {
+
+	public TestPredictions(DataModel dataModel) {
+		super(dataModel);
+	}
+
+	@Override
+	public int getTotalIndexes () { return dataModel.getNumberOfTestUsers(); }
 
 	@Override
 	public void beforeRun() { }
@@ -24,18 +31,18 @@ public abstract class TestPredictions implements TestUsersPartible {
 	@Override
 	public void run (int testUserIndex) {
 
-		TestUser testUser = DataModel.gi().getTestUserByIndex(testUserIndex);
+		TestUser testUser = dataModel.getTestUserByIndex(testUserIndex);
 				
 		int numRatings = testUser.getNumberOfTestRatings();
-		double [] predictions = new double [numRatings];
+		Double [] predictions = new Double [numRatings];
 		
 		for (int i = 0; i < numRatings; i++) {
-			int itemCode = testUser.getTestItemAt(i);
+			String itemCode = testUser.getTestItemAt(i);
 			double prediction = predict(testUser, itemCode);
 			predictions[i] = prediction;
 		}
 
-		testUser.setPredictions(predictions);
+		testUser.getStoredData().setDoubleArray(TestUser.PREDICTIONS_KEYS,predictions);
 	}
 
 	@Override
@@ -47,5 +54,5 @@ public abstract class TestPredictions implements TestUsersPartible {
 	 * @param itemCode Item to be predicted.
 	 * @return Prediction value or Double.NaN if it can not be computed.
 	 */
-	public abstract double predict (TestUser testUser, int itemCode);
+	public abstract double predict (TestUser testUser, String itemCode);
 }

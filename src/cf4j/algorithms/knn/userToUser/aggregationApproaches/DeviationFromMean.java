@@ -29,15 +29,20 @@ public class DeviationFromMean extends TestPredictions {
 	 */
 	private double maxSim;
 
+	public DeviationFromMean(DataModel dataModel) {
+		super(dataModel);
+	}
+
 	@Override
 	public void beforeRun() {
 		super.beforeRun();
 		
 		this.maxSim = Double.MIN_VALUE;
 		this.minSim = Double.MAX_VALUE;
-		
-		for (TestUser testUser : DataModel.gi().getTestUsers()) {
-			for (double m : testUser.getSimilarities()) {
+
+		for (int i = 0; i < this.dataModel.getNumberOfTestUsers(); i++){
+			TestUser testUser = this.dataModel.getTestUserByIndex(i);
+			for (double m : testUser.getStoredData().getDoubleArray(TestUser.SIMILARITIES_KEY)) {
 				if (!Double.isInfinite(m)) {
 					if (m < this.minSim) this.minSim = m;
 					if (m > this.maxSim) this.maxSim = m;
@@ -52,10 +57,10 @@ public class DeviationFromMean extends TestPredictions {
 	 * @param itemCode Item to be predicted.
 	 * @return Prediction value or Double.NaN if it can not be computed.
 	 */
-	public double predict(TestUser testUser, int itemCode) {
+	public double predict(TestUser testUser, String itemCode) {
 		
-		int [] neighbors = testUser.getNeighbors();
-		double [] similarities = testUser.getSimilarities();
+		Integer [] neighbors = testUser.getStoredData().getIntegerArray(TestUser.NEIGHBORS_KEY);
+		Double [] similarities = testUser.getStoredData().getDoubleArray(TestUser.SIMILARITIES_KEY);
 		
 		double deviation = 0;
 		double sumSimilarities = 0;
@@ -64,14 +69,14 @@ public class DeviationFromMean extends TestPredictions {
 			if (neighbors[n] == -1) break; // Neighbors array are filled with -1 when no more neighbors exists
 			
 			int userIndex = neighbors[n];
-			User neighbor = DataModel.gi().getUsers()[userIndex];
+			User neighbor = this.dataModel.getUserByIndex(userIndex);
 			
 			int i = neighbor.getItemIndex(itemCode);
 			if (i != -1) {
 				double similarity = similarities[userIndex];
 				double sim = (similarity - this.minSim) / (this.maxSim - this.minSim);
 
-				deviation += sim * (neighbor.getRatings()[i] - neighbor.getRatingAverage());
+				deviation += sim * (neighbor.getRatings().get(i) - neighbor.getRatingAverage());
 				sumSimilarities += sim;
 			}
 		}
@@ -82,8 +87,8 @@ public class DeviationFromMean extends TestPredictions {
 		else {
 			deviation /= sumSimilarities;
 			double prediction = testUser.getRatingAverage() + deviation;
-			prediction = Math.min(prediction, DataModel.gi().getMaxRating());
-			prediction = Math.max(prediction, DataModel.gi().getMinRating());
+			prediction = Math.min(prediction, this.dataModel.getMaxRating());
+			prediction = Math.max(prediction, this.dataModel.getMinRating());
 			return prediction;
 		}
 	}

@@ -17,9 +17,9 @@ import java.util.ArrayList;
 public class TestItem extends Item {
 
 	private static final long serialVersionUID = 20171018L;
-	
-	private final static String SIMILARITIES_KEY = "similarities";
-	private final static String NEIGHBORS_KEY = "neighbors";
+
+	public final static String SIMILARITIES_KEY = "similarities";
+	public final static String NEIGHBORS_KEY = "neighbors";
 
 	/**
 	 * Test users that have rated this item

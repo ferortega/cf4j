@@ -16,15 +16,15 @@ public class FactorizationPrediction extends TestPredictions {
 
 	protected FactorizationModel model;
 
-	public FactorizationPrediction (FactorizationModel model) {
-		super();
+	public FactorizationPrediction (DataModel dataModel,FactorizationModel model) {
+		super(dataModel);
 		this.model = model;
 	}
 
 	@Override
-	public double predict(TestUser testUser, int itemCode) {
-		int itemIndex = DataModel.getInstance().getItemIndex(itemCode);
-		int userIndex = testUser.getUserIndex();
+	public double predict(TestUser testUser, String itemCode) {
+		int itemIndex = this.dataModel.getItemIndex(itemCode);
+		int userIndex = this.dataModel.getUserIndex(testUser.getUserCode());
 		return model.getPrediction(userIndex, itemIndex);
 	}
 }

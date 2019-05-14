@@ -1,5 +1,6 @@
 package cf4j.qualityMeasures;
 
+import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.utils.Methods;
 
@@ -33,8 +34,8 @@ public class Precision extends QualityMeasure {
 	 * @param numberOfRecommendations Number of recommendations
 	 * @param relevantThreshold Minimum rating to consider a rating as relevant
 	 */
-	public Precision (int numberOfRecommendations, double relevantThreshold) {
-		super(NAME);
+	public Precision (DataModel dataModel, int numberOfRecommendations, double relevantThreshold) {
+		super(dataModel, NAME);
 		this.numberOfRecommendations = numberOfRecommendations;
 		this.relevantThreshold = relevantThreshold;
 	}
@@ -43,15 +44,15 @@ public class Precision extends QualityMeasure {
 	public double getMeasure (TestUser testUser) {
 		
 		// Items that has been recommended and was relevant to the active user
-		double [] predictions = testUser.getPredictions();
-		int [] recommendations = Methods.findTopN(predictions, this.numberOfRecommendations);
+		Double [] predictions = testUser.getStoredData().getDoubleArray(TestUser.PREDICTIONS_KEYS);
+		Integer [] recommendations = Methods.findTopN(predictions, this.numberOfRecommendations);
 		
 		int recommendedAndRelevant = 0, recommended = 0;
 
 		for (int testItemIndex : recommendations) {
 			if (testItemIndex == -1) break;
 			
-			if (testUser.getTestRatings()[testItemIndex] >= this.relevantThreshold) {
+			if (testUser.getTestRatingAt(testItemIndex) >= this.relevantThreshold) {
 				recommendedAndRelevant++;
 			}
 			

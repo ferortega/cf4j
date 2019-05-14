@@ -24,17 +24,22 @@ public class CorrelationConstrained extends ItemSimilarities{
 	 * Constructor of the similarity metric
 	 * @param median Median of the ratings of the dataset
 	 */
-	public CorrelationConstrained (double median) {
+	public CorrelationConstrained (DataModel dataModel, double median) {
+		super(dataModel);
 		this.median = median;
 	}
 	
 	/**
 	 * Constructor of the similarity metric. Median is computed automatically (high CPU cost).
 	 */
-	public CorrelationConstrained () {
+	public CorrelationConstrained (DataModel dataModel) {
+		super (dataModel);
+
 		ArrayList <Double> ratings = new ArrayList <Double> ();
-		for (User user : DataModel.gi().getUsers()) {
-			for (double rating : user.getRatings()) {
+		for (int i = 0; i < this.dataModel.getNumberOfUsers(); i++){
+			User user = this.dataModel.getUserByIndex(i);
+			for (int j = 0; j < user.getNumberOfRatings(); j++){
+				double rating = user.getRatings().get(j);
 				ratings.add(rating);
 			}
 		}
@@ -54,13 +59,13 @@ public class CorrelationConstrained extends ItemSimilarities{
 		double num = 0d, denActive = 0d, denTarget = 0d;
 		
 		while (u < activeItem.getNumberOfRatings() && v < targetItem.getNumberOfRatings()) {
-			if (activeItem.getUsers()[u] < targetItem.getUsers()[v]) {
+			if (activeItem.getUsers().get(u).compareTo(targetItem.getUsers().get(v)) < 0) {	//TODO: Could be inverted
 				u++;
-			} else if (activeItem.getUsers()[u] > targetItem.getUsers()[v]) {
+			} else if (activeItem.getUsers().get(u).compareTo(targetItem.getUsers().get(v)) > 0) {
 				v++;
 			} else {
-				double fa = activeItem.getRatings()[u] - this.median;
-				double ft = targetItem.getRatings()[v] - this.median;
+				double fa = activeItem.getRatings().get(u) - this.median;
+				double ft = targetItem.getRatings().get(v) - this.median;
 				
 				num += fa * ft;
 				denActive += fa * fa;

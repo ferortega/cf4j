@@ -1,5 +1,6 @@
 package cf4j.algorithms.knn.itemToItem.neighbors;
 
+import cf4j.data.DataModel;
 import cf4j.data.TestItem;
 import cf4j.utils.Methods;
 
@@ -18,14 +19,14 @@ public class NearestNeighbors extends ItemNeighbors {
 	 * Class constructor
 	 * @param k Number of neighbors to calculate
 	 */
-	public NearestNeighbors (int k) {
-		super(k);
+	public NearestNeighbors (DataModel dataModel, int k) {
+		super(dataModel, k);
 	}
 	
 	@Override
-	public int [] neighbors (TestItem testItem) {
-		double [] similarities = testItem.getSimilarities();
-		int [] neighbors = Methods.findTopN(similarities, super.k);
+	public Integer [] neighbors (TestItem testItem) {
+		Double [] similarities = testItem.getStoredData().getDoubleArray(TestItem.SIMILARITIES_KEY);
+		Integer [] neighbors = Methods.findTopN(similarities, super.k);
 		return neighbors;
 	}
 }

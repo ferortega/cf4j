@@ -30,6 +30,10 @@ public class WeightedMean extends TestPredictions {
 	 */
 	private double maxSim;
 
+	public WeightedMean(DataModel dataModel) {
+		super(dataModel);
+	}
+
 	@Override
 	public void beforeRun() { 
 		super.beforeRun();
@@ -37,8 +41,9 @@ public class WeightedMean extends TestPredictions {
 		this.maxSim = Double.MIN_VALUE;
 		this.minSim = Double.MAX_VALUE;
 		
-		for (TestItem testItem : DataModel.gi().getTestItems()) {
-			for (double m : testItem.getSimilarities()) {
+		for (int i = 0; i < dataModel.getNumberOfTestItems(); i++){
+			TestItem testItem = dataModel.getTestItemByIndex(i);
+			for (double m : testItem.getStoredData().getDoubleArray(TestItem.SIMILARITIES_KEY)){
 				if (!Double.isInfinite(m)) {
 					if (m < this.minSim) this.minSim = m;
 					if (m > this.maxSim) this.maxSim = m;
@@ -48,12 +53,12 @@ public class WeightedMean extends TestPredictions {
 	}
 
 	@Override
-	public double predict (TestUser testUser, int itemCode) {
+	public double predict (TestUser testUser, String itemCode) {
 		
-		TestItem item = DataModel.gi().getTestItemByCode(itemCode);
+		TestItem testItem = dataModel.getTestItem(itemCode);
 		
-		double [] similarities = item.getSimilarities();
-		int [] neighbors = item.getNeighbors();
+		Double [] similarities = testItem.getStoredData().getDoubleArray(TestItem.SIMILARITIES_KEY);
+		Integer [] neighbors = testItem.getStoredData().getIntegerArray(TestItem.NEIGHBORS_KEY);
 		
 		double prediction = 0;
 		double sum = 0;
@@ -62,8 +67,8 @@ public class WeightedMean extends TestPredictions {
 			if (neighbors[n] == -1) break; // Neighbors array are filled with -1 when no more neighbors exists
 			
 			int itemIndex = neighbors[n];
-			Item neighbor = DataModel.gi().getItems()[itemIndex];
-			int neighborCode = neighbor.getItemCode();
+			Item neighbor = dataModel.getItemByIndex(itemIndex);
+			String neighborCode = neighbor.getItemCode();
 			
 							
 			int i = testUser.getItemIndex(neighborCode);
@@ -71,7 +76,7 @@ public class WeightedMean extends TestPredictions {
 				double similarity = similarities[itemIndex];
 				double sim = (similarity - this.minSim) / (this.maxSim - this.minSim);
 				
-				double rating = testUser.getRatings()[i];
+				double rating = testUser.getRatings().get(i);
 				
 				prediction += sim * rating;
 				sum += sim;

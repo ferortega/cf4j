@@ -4,63 +4,59 @@ import cf4j.data.DataModel;
 
 /**
  * <p>Class that manages the execution of processes. To use this class, you must have previously 
- * loaded kernel.</p>
- * 
- * <p>This class can not be instantiated. It implements the singleton pattern, so, when we want to use
- * it, we must use the getInstance() method.</p>
+ * loaded a dataModel. This datamodel should be sent to the specific Partible algorithms</p>
  * 
  * <p>Its mains methods are:</p>
  * <ul>
- * 		<li>usersProcess (...): execute a UserPartible implementation using users like test elements.</li>
- * 		<li>itemsProcess (...): execute a ItemPartible implementation using items like test elements.</li>
+ *      <li>get/setVerbose (...): indicates if the process will be verbose or not.</li>
+ * 		<li>get/setThreads (...): indicates the number of threads to the Partible execution.</li>
+ * 		<li>process (...): execute a specific Partible implementation.</li>
  * </ul>
  * 
  * @author Fernando Ortega
  */
 public class Processor {
-	
-	/**
-	 * Class instance (Singleton pattern)
-	 */
-	private static Processor instance = null;
 
 	/**
 	 * Number of thread to be used
 	 */
 	private int threads;
+	private boolean verbose;
 
-	/**
-	 * Gets the single instance of the class.
-	 * @return Single instance
-	 */
-	public static Processor getInstance() {
-		if (instance == null) {
-			instance = new Processor();
-		}
-		return instance;
-	}
-	
-	/**
-	 * Destroy the single instance of the class.
-	 */
-	public static void destroyInstance () {
-		instance = null;
-		System.gc();
-	}
-	
 	/**
 	 * Creates a new instance. The number of executions sets is set based on
 	 * the available processors.
 	 */
-	private Processor () {
-		this(Runtime.getRuntime().availableProcessors() * 2);
+	public Processor () {
+		this(Runtime.getRuntime().availableProcessors() * 2, true);
 	}
-	
+
+	/**
+	 * Creates a new instance. The number of executions sets is set based on
+	 * the available processors.
+	 * @param verbose we should write some output feedback?
+	 */
+	public Processor (boolean verbose) {
+		this(Runtime.getRuntime().availableProcessors() * 2, verbose);
+	}
+
 	/**
 	 * Creates a new instance setting the number of executions threads
+	 * @param threads number of threads to divide the processing.
 	 */
-	private Processor (int threads) {
-		this.threads = threads;
+	public Processor ( int threads) {
+		this(threads,true);
+
+	}
+
+	/**
+	 * Creates a new instance setting the number of executions threads
+	 * @param threads number of threads to divide the processing.
+	 * @param verbose we should write some output feedback?
+	 */
+	public Processor ( int threads, boolean verbose) {
+		this.setThreads(threads);
+		this.setVerbose(verbose);
 	}
 
 	/**
@@ -68,9 +64,9 @@ public class Processor {
 	 * @return Number of Threads
 	 */
 	public int getThreads () {
-		return threads;
+		return this.threads;
 	}
-	
+
 	/**
 	 * Set the number of thread to be used.
 	 * @param threads Number of threads
@@ -78,84 +74,30 @@ public class Processor {
 	public void setThreads (int threads) {
 		this.threads = threads;
 	}
-	
+
+	/**
+	 * Set if this processor should write some output.
+	 * @param verbose we should write some output feedback?
+	 */
+	public void setVerbose (boolean verbose) {
+		this.verbose = verbose;
+	}
+
+	/**
+	 * Returns if it's setted verbose mode or not.
+	 * @return state of the verbose mode.
+	 */
+	public boolean getVerbose () {
+		return this.verbose;
+	}
+
 	/**
 	 * Execute a Partible implementation for users.
-	 * @see UsersPartible
-	 * @param usersPartible usersPartible implementation instance.
+	 * @see PartibleThreads
+	 * @param partible partible implementation of the datamodel focused on a specific runnable algorithm.
 	 */
-	public void usersProcess (UsersPartible usersPartible) {	
-		this.usersProcess(usersPartible, true);	
+	public void process (PartibleThreads partible) {
+		partible.runThreads(this.threads, verbose);
 	}
-	
-	/**
-	 * Execute a Partible implementation for users.
-	 * @see UsersPartible
-	 * @param usersPartible usersPartible implementation instance.
-	 * @param verbose Print execution info
-	 */
-	public void usersProcess (UsersPartible usersPartible, boolean verbose) {	
-		int numUsers = DataModel.getInstance().getNumberOfUsers();
-		PartibleThreads.runThreads(usersPartible, this.threads, numUsers, verbose);	
-	}
-	
-	/**
-	 * Execute a Partible implementation for test users.
-	 * @see TestUsersPartible
-	 * @param testUsersPartible TestUsersPartible implementation instance.
-	 */
-	public void testUsersProcess (TestUsersPartible testUsersPartible) {	
-		this.testUsersProcess(testUsersPartible, true);
-	}
-	
-	/**
-	 * Execute a Partible implementation for test users.
-	 * @see TestUsersPartible
-	 * @param testUsersPartible TestUsersPartible implementation instance.
-	 * @param verbose Print execution info
-	 */
-	public void testUsersProcess (TestUsersPartible testUsersPartible, boolean verbose) {	
-		int numTestUsers = DataModel.getInstance().getNumberOfTestUsers();
-		PartibleThreads.runThreads(testUsersPartible, this.threads, numTestUsers, verbose);	
-	}
-	
-	/**
-	 * Execute a Partible implementation for items.
-	 * @see ItemsPartible
-	 * @param itemsPartible ItemsPartible implementation instance.
-	 */
-	public void itemsProcess (ItemsPartible itemsPartible) {	
-		this.itemsProcess(itemsPartible, true);
-	}
-	
-	/**
-	 * Execute a Partible implementation for items.
-	 * @see ItemsPartible
-	 * @param itemsPartible ItemsPartible implementation instance.
-	 * @param verbose Print execution info
-	 */
-	public void itemsProcess (ItemsPartible itemsPartible, boolean verbose) {	
-		int numItems = DataModel.getInstance().getNumberOfItems();
-		PartibleThreads.runThreads(itemsPartible, this.threads, numItems, verbose);	
-	}
-	
-	/**
-	 * Execute a Partible implementation for test items.
-	 * @see TestItemsPartible
-	 * @param testItemsPartible TestItemsPartible implementation instance.
-	 */
-	public void testItemsProcess (TestItemsPartible testItemsPartible) {	
-		this.testItemsProcess(testItemsPartible, true);
-	}
-	
-	/**
-	 * Execute a Partible implementation for test items.
-	 * @see TestItemsPartible
-	 * @param testItemsPartible TestItemsPartible implementation instance.
-	 * @param verbose Print execution info
-	 */
-	public void testItemsProcess (TestItemsPartible testItemsPartible, boolean verbose) {	
-		int numTestItems = DataModel.getInstance().getNumberOfTestItems();
-		PartibleThreads.runThreads(testItemsPartible, this.threads, numTestItems, verbose);	
-	}
+
 }

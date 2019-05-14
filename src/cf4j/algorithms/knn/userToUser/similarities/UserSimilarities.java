@@ -3,7 +3,7 @@ package cf4j.algorithms.knn.userToUser.similarities;
 import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.data.User;
-import cf4j.process.TestUsersPartible;
+import cf4j.process.PartibleThreads;
 
 /**
  * <p>This class process the similarity measure between two users. If you want to define your own similarity
@@ -17,7 +17,11 @@ import cf4j.process.TestUsersPartible;
  * 
  * @author Fernando Ortega
  */
-abstract public class UserSimilarities implements TestUsersPartible {
+abstract public class UserSimilarities extends PartibleThreads {
+
+	public UserSimilarities(DataModel dataModel) {
+		super(dataModel);
+	}
 
 	/**
 	 * <p>This method must returns the similarity between two users.</p> 
@@ -30,17 +34,20 @@ abstract public class UserSimilarities implements TestUsersPartible {
 	abstract public double similarity (TestUser activeUser, User targetUser);
 
 	@Override
+	public int getTotalIndexes () { return dataModel.getNumberOfTestUsers(); }
+
+	@Override
 	public void beforeRun () { }
 
 	@Override
 	public void run (int testUserIndex) {
-		TestUser activeUser = DataModel.gi().getTestUsers()[testUserIndex];
+		TestUser activeUser = dataModel.getTestUserByIndex(testUserIndex);
 		
-		int numUsers = DataModel.gi().getNumberOfUsers();
-		double [] similarities = new double [numUsers];
+		int numUsers = dataModel.getNumberOfUsers();
+		Double [] similarities = new Double [numUsers];
 		
 		for (int u = 0; u < similarities.length; u++) {
-			User targetUser = DataModel.gi().getUsers()[u];
+			User targetUser = dataModel.getUserByIndex(u);
 			if (activeUser.getUserCode() == targetUser.getUserCode()) {
 				similarities[u] = Double.NEGATIVE_INFINITY;
 			} else { 
@@ -48,7 +55,7 @@ abstract public class UserSimilarities implements TestUsersPartible {
 			}
 		}
 		
-		activeUser.setSimilarities(similarities);
+		activeUser.getStoredData().setDoubleArray(TestUser.SIMILARITIES_KEY,similarities);
 	}
 	
 	@Override

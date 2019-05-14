@@ -1,13 +1,9 @@
 package cf4j.data;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import cf4j.data.types.DynamicArray;
 import cf4j.data.types.DynamicSortedArray;
-import cf4j.utils.Methods;
 
 /**
  * <p>Defines an user. An user is composed by:</p>
@@ -63,9 +59,6 @@ public class User implements Serializable, Comparable<User> {
 		this.storedData = new DataBank();
 		this.items = new DynamicSortedArray<String>();
 		this.ratings = new DynamicArray<Double>();
-		//TODO: Metrics?
-		//this.ratingAverage = Methods.arrayAverage(ratings);
-		//this.ratingStandardDeviation = Methods.arrayStandardDeviation(ratings);
 	}
 
 	public DataBank getStoredData (){

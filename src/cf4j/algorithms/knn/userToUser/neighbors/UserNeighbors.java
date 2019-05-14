@@ -2,7 +2,7 @@ package cf4j.algorithms.knn.userToUser.neighbors;
 
 import cf4j.data.DataModel;
 import cf4j.data.TestUser;
-import cf4j.process.TestUsersPartible;
+import cf4j.process.PartibleThreads;
 
 /**
  * <p>This abstracts class calculates the neighbors of each test user. If you want to compute
@@ -15,7 +15,7 @@ import cf4j.process.TestUsersPartible;
  * 
  * @author Fernando Ortega
  */
-public abstract class UserNeighbors implements TestUsersPartible {
+public abstract class UserNeighbors extends PartibleThreads {
 
 	/**
 	 * Number of neighbors to be calculated
@@ -26,18 +26,22 @@ public abstract class UserNeighbors implements TestUsersPartible {
 	 * Class constructor
 	 * @param k Number of neighbors to calculate
 	 */
-	public UserNeighbors (int k) {
+	public UserNeighbors (DataModel dataModel,int k) {
+		super(dataModel);
 		this.k = k;
 	}
+
+	@Override
+	public int getTotalIndexes () { return dataModel.getNumberOfTestUsers(); }
 	
 	@Override
 	public void beforeRun() { }
 
 	@Override
 	public void run (int testUserIndex) {
-		TestUser testUser = DataModel.getInstance().getTestUserByIndex(testUserIndex);
-		int [] neighbors = this.neighbors(testUser);
-		testUser.setNeighbors(neighbors);
+		TestUser testUser = dataModel.getTestUserByIndex(testUserIndex);
+		Integer [] neighbors = this.neighbors(testUser);
+		testUser.getStoredData().setIntegerArray(TestUser.NEIGHBORS_KEY ,neighbors);
 	}
 
 	@Override
@@ -49,5 +53,5 @@ public abstract class UserNeighbors implements TestUsersPartible {
 	 * @return Array of integer with indexes of the training users that are neighbors
 	 *     of the active user. Fill with -1 it there is not more neighbors.  
 	 */
-	public abstract int [] neighbors (TestUser testUser);
+	public abstract Integer [] neighbors (TestUser testUser);
 }

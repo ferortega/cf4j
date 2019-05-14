@@ -17,6 +17,8 @@ import java.util.Iterator;
 public class DataModel implements Serializable {
 
     private static final long serialVersionUID = 20190503L;
+    public  static final String AVERAGE_KEY = "average";
+
 
     private DynamicSortedArray<User> users;
     private DynamicSortedArray<TestUser> testUsers;

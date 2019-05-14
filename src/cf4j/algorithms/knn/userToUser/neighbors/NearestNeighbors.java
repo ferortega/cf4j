@@ -1,5 +1,6 @@
 package cf4j.algorithms.knn.userToUser.neighbors;
 
+import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.utils.Methods;
 
@@ -17,14 +18,14 @@ public class NearestNeighbors extends UserNeighbors {
 	 * Class constructor
 	 * @param k Number of neighbors to calculate
 	 */
-	public NearestNeighbors(int k) {
-		super(k);
+	public NearestNeighbors(DataModel dataModel, int k) {
+		super(dataModel, k);
 	}
 
 	@Override
-	public int [] neighbors (TestUser testUser) {
-		double [] similarities = testUser.getSimilarities();
-		int [] neighbors = Methods.findTopN(similarities, super.k);
+	public Integer [] neighbors (TestUser testUser) {
+		Double [] similarities = testUser.getStoredData().getDoubleArray(TestUser.SIMILARITIES_KEY);
+		Integer [] neighbors = Methods.findTopN(similarities, super.k);
 		return neighbors;
 	}
 }

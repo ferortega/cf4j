@@ -15,11 +15,15 @@ public class MSD extends UserSimilarities {
 	 * Maximum difference between the ratings
 	 */
 	private double maxDiff;
-	
+
+	public MSD(DataModel dataModel) {
+		super(dataModel);
+	}
+
 	@Override
 	public void beforeRun () {		
 		super.beforeRun();
-		this.maxDiff = DataModel.gi().getMaxRating() - DataModel.gi().getMinRating();
+		this.maxDiff = this.dataModel.getMaxRating() - this.dataModel.getMinRating();
 	}
 	
 	@Override
@@ -29,12 +33,12 @@ public class MSD extends UserSimilarities {
 		double msd = 0d;
 		
 		while (i < activeUser.getNumberOfRatings() && j < targetUser.getNumberOfRatings()) {
-			if (activeUser.getItems()[i] < targetUser.getItems()[j]) {
+			if (activeUser.getItems().get(i).compareTo(targetUser.getItems().get(j))<0) {
 				i++;
-			} else if (activeUser.getItems()[i] > targetUser.getItems()[j]) {
+			} else if (activeUser.getItems().get(i).compareTo(targetUser.getItems().get(j))>0) {
 				j++;
 			} else {
-				double diff = (activeUser.getRatings()[i] - targetUser.getRatings()[j]) / this.maxDiff;
+				double diff = (activeUser.getRatings().get(i) - targetUser.getRatings().get(j)) / this.maxDiff;
 				msd += diff * diff;				
 				
 				common++;

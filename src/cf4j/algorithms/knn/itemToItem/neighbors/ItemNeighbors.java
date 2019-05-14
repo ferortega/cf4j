@@ -2,7 +2,7 @@ package cf4j.algorithms.knn.itemToItem.neighbors;
 
 import cf4j.data.DataModel;
 import cf4j.data.TestItem;
-import cf4j.process.TestItemsPartible;
+import cf4j.process.PartibleThreads;
 
 /**
  * <p>This abstracts class calculates the neighbors of each test item. If you want to compute
@@ -15,7 +15,7 @@ import cf4j.process.TestItemsPartible;
  * 
  * @author Fernando Ortega
  */
-public abstract class ItemNeighbors implements TestItemsPartible {
+public abstract class ItemNeighbors extends PartibleThreads {
 
 	/**
 	 * Number of neighbors to be calculated
@@ -26,18 +26,22 @@ public abstract class ItemNeighbors implements TestItemsPartible {
 	 * Class constructor
 	 * @param k Number of neighbors to calculate
 	 */
-	public ItemNeighbors (int k) {
+	public ItemNeighbors (DataModel dataModel,int k) {
+		super(dataModel);
 		this.k = k;
 	}
+
+	@Override
+	public int getTotalIndexes () { return dataModel.getNumberOfTestItems(); }
 	
 	@Override
 	public void beforeRun() { }
 
 	@Override
 	public void run (int testItemIndex) {
-		TestItem testItem = DataModel.getInstance().getTestItemByIndex(testItemIndex);
-		int [] neighbors = this.neighbors(testItem);
-		testItem.setNeighbors(neighbors);
+		TestItem testItem = dataModel.getTestItemByIndex(testItemIndex);
+		Integer [] neighbors = this.neighbors(testItem);
+		testItem.getStoredData().setIntegerArray(TestItem.NEIGHBORS_KEY ,neighbors);
 	}
 
 	@Override
@@ -49,5 +53,5 @@ public abstract class ItemNeighbors implements TestItemsPartible {
 	 * @return Array of integer with indexes of the training items that are neighbors
 	 *     of the active item. Fill with -1 if there is not more neighbors.  
 	 */
-	public abstract int [] neighbors (TestItem testItem);
+	public abstract Integer [] neighbors (TestItem testItem);
 }

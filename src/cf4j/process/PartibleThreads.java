@@ -1,5 +1,7 @@
 package cf4j.process;
 
+import cf4j.data.DataModel;
+
 import java.util.Date;
 
 /**
@@ -10,105 +12,122 @@ import java.util.Date;
  *  
  * @author Fernando Ortega
  */
-public class PartibleThreads implements Runnable {
+public abstract class PartibleThreads implements Runnable {
 
-	private static Partible render;
-	private static int numThreads;
-	private static int numIndexes;
-	private static int indexesPerThread;
+	protected DataModel dataModel;
+	protected boolean verbose;
 
-	private Thread t;
+	private Thread thread;
 	private int threadIndex;
-	private boolean verbose;
+
+	private int numThreads;
+	private int indexesPerThread;
+
+	public PartibleThreads (DataModel dataModel){
+		this.dataModel = dataModel;
+	}
+
+	/**
+	 * This method should return the max number of the processable elements (from the datamodel.
+	 * It depends on the type of the defined processor. If it is focused on Users or Items.
+	 */
+	public abstract int getTotalIndexes ();
+
+	/**
+	 * Is executed once before execute the method 'run'. It can be used to initialize
+	 * resources.
+	 */
+	public abstract void beforeRun ();
+
+	/**
+	 * Is executed once for each test element. It can be user, item, testUser or testItem indexes.
+	 * The child class should indicate in the name if it's for users, items, testUsers or testItems.
+	 * @param userOrItemIndex Index of the test element.
+	 */
+	public abstract void run (int userOrItemIndex);
+
+	/**
+	 * Is executed once after execute the method run. It can be used to close
+	 * resources.
+	 */
+	public abstract void afterRun ();
 
 	/* (non-Javadoc)
      */
-	public static synchronized void runThreads (Partible partible, int numThreads, int numIndexes, boolean verbose) {
-		if (verbose) System.out.println("\nProcessing... " + partible.getClass().getName());
+	public synchronized void runThreads (int numThreads, boolean verbose) {
+		if (verbose) System.out.println("\nProcessing... " + this.getClass().getName());
 		
-		if (numIndexes < 1)
+		if (this.getTotalIndexes() < 1)
 			throw new RuntimeException("Test array can not be empty");
 		
 		if (numThreads <= 0)
 			throw new RuntimeException("The number of threads must be one or more");
-		
-		PartibleThreads.render = partible;
-		PartibleThreads.numThreads = numThreads;
-		PartibleThreads.numIndexes = numIndexes;
+
+		this.numThreads = numThreads;
 
 		if (numThreads == 1) {
-			PartibleThreads.indexesPerThread = PartibleThreads.numIndexes;
-			partible.beforeRun();
-			for (int index = 0; (index < numIndexes); index++) {
-				partible.run(index);
+			this.indexesPerThread = this.getTotalIndexes();
+			this.beforeRun();
+			for (int index = 0; (index < this.getTotalIndexes()); index++) {
+				this.run(index);
 			}
-			partible.afterRun();
+			this.afterRun();
 			
 		} else {
 			// We compute number of indexes per thread
-			if (numThreads > numIndexes) {
-				PartibleThreads.numThreads = numIndexes;
-				PartibleThreads.indexesPerThread = 1;
-			} else if (numIndexes % numThreads == 0) {
-				PartibleThreads.indexesPerThread = numIndexes / numThreads;
+			if (numThreads > this.getTotalIndexes()) {
+				this.numThreads = this.getTotalIndexes();
+				this.indexesPerThread = 1;
+			} else if (this.getTotalIndexes() % numThreads == 0) {
+				this.indexesPerThread = this.getTotalIndexes() / numThreads;
 			} else {
-				PartibleThreads.indexesPerThread = numIndexes / numThreads + 1;
+				this.indexesPerThread = this.getTotalIndexes() / numThreads + 1;
 			}
 				
 			// Do some stuff...
-			partible.beforeRun();
+			this.beforeRun();
 			
 			// Launch all threads
 			int index;
 			PartibleThreads [] pt = new PartibleThreads[numThreads];
-			for (index = 0; index < PartibleThreads.numThreads; index++) {
-				pt[index] = new PartibleThreads(index, verbose);
+			for (index = 0; index < this.numThreads; index++) {
+				pt[index] = this.cloneInAThread(index);
 			}
 
 			// Wait until all threads end
 			try {
-				for (index = 0; index < PartibleThreads.numThreads; index++) {
-					pt[index].getT().join();
+				for (index = 0; index < this.numThreads; index++) {
+					pt[index].getThread().join();
 				}
 			} catch (InterruptedException ie) {
 				System.out.println("ERROR: " + ie);
 			}
 			
 			// Do some stuff...
-			partible.afterRun();
+			this.afterRun();
 		}
 
 	}
 
 	/**
-	 * @param threadIndex
-	 */
-	private PartibleThreads (int threadIndex, boolean verbose) {
-		this.verbose = verbose;
-		this.threadIndex = threadIndex;
-		this.t = new Thread (this, String.valueOf(threadIndex));
-		this.t.start();
-	}
-
-	/**
 	 * @return the thread
 	 */
-	public Thread getT() {
-		return t;
+	protected Thread getThread() {
+		return thread;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Runnable#run()
 	 */
 	public void run() {
 		long t1 = (new Date()).getTime() / 1000, t2, t3 = 0;
-		int iXt = PartibleThreads.indexesPerThread;
+		int iXt = this.indexesPerThread;
 		
 		// Last theard could have less users
 		for (int index = (this.threadIndex) * iXt; (index < (this.threadIndex + 1) * iXt)
-				&& (index < PartibleThreads.numIndexes); index++) {
+				&& (index < this.getTotalIndexes()); index++) {
 			if (this.threadIndex == 0 && this.verbose) {
 				t2 = (new Date()).getTime() / 1000;
 				if ((t2 - t1) > 5) {
@@ -122,7 +141,24 @@ public class PartibleThreads implements Runnable {
 				}
 			}
 
-			render.run(index);
+			this.run(index);
 		}
 	}
+
+	protected PartibleThreads cloneInAThread(int threadIndex) {
+		try {
+			PartibleThreads clone = (PartibleThreads) super.clone();
+
+			clone.dataModel = this.dataModel;
+			clone.verbose = this.verbose;
+			clone.threadIndex = threadIndex;
+			clone.thread = new Thread (this, String.valueOf(threadIndex));
+			clone.thread.start();
+
+			return clone;
+		} catch (CloneNotSupportedException e) {
+			throw new RuntimeException("Error while we are creating a new thread of the partible data model", e);
+		}
+	}
+
 }

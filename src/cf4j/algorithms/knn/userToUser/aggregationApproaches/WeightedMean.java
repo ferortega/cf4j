@@ -29,14 +29,19 @@ public class WeightedMean extends TestPredictions {
 	 */
 	private double maxSim;
 
+	public WeightedMean(DataModel dataModel) {
+		super(dataModel);
+	}
+
 	@Override
 	public void beforeRun() {
 		super.beforeRun();
 		this.maxSim = Double.MIN_VALUE;
 		this.minSim = Double.MAX_VALUE;
-		
-		for (TestUser testUser : DataModel.gi().getTestUsers()) {
-			for (double m : testUser.getSimilarities()) {
+
+		for (int i = 0; i < this.dataModel.getNumberOfTestUsers(); i++){
+			TestUser testUser = this.dataModel.getTestUserByIndex(i);
+			for (double m : testUser.getStoredData().getDoubleArray(TestUser.SIMILARITIES_KEY)) {
 				if (!Double.isInfinite(m)) {
 					if (m < this.minSim) this.minSim = m;
 					if (m > this.maxSim) this.maxSim = m;
@@ -51,10 +56,10 @@ public class WeightedMean extends TestPredictions {
 	 * @param itemCode Item to be predicted.
 	 * @return Prediction value or Double.NaN if it can not be computed.
 	 */
-	public double predict(TestUser testUser, int itemCode) {
+	public double predict(TestUser testUser, String itemCode) {
 		
-		int [] neighbors = testUser.getNeighbors();
-		double [] similarities = testUser.getSimilarities();
+		Integer [] neighbors = testUser.getStoredData().getIntegerArray(TestUser.NEIGHBORS_KEY);
+		Double [] similarities = testUser.getStoredData().getDoubleArray(TestUser.SIMILARITIES_KEY);
 		
 		double prediction = 0;
 		double sumSimilarities = 0;
@@ -63,14 +68,14 @@ public class WeightedMean extends TestPredictions {
 			if (neighbors[n] == -1) break; // Neighbors array are filled with -1 when no more neighbors exists
 			
 			int userIndex = neighbors[n];
-			User neighbor = DataModel.getInstance().getUsers()[userIndex];
+			User neighbor = this.dataModel.getUserByIndex(userIndex);
 			
 			int i = neighbor.getItemIndex(itemCode);
 			if (i != -1) {
 				double similarity = similarities[userIndex];
 				double sim = (similarity - this.minSim) / (this.maxSim - this.minSim);
 				
-				double rating = neighbor.getRatings()[i];
+				double rating = neighbor.getRatingAt(i);
 
 				prediction += sim * rating;
 				sumSimilarities += sim;

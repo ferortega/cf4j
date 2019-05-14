@@ -1,6 +1,8 @@
 package cf4j.qualityMeasures;
 
+import cf4j.data.DataModel;
 import cf4j.data.TestUser;
+import cf4j.data.types.DynamicArray;
 
 /**
  * <p>This class calculates the MAE (Mean Absolute Error) of the recommender system. The MAE is the
@@ -17,22 +19,22 @@ public class MAE extends QualityMeasure {
 	/**
 	 * Constructor of MAE
 	 */
-	public MAE () {
-		super(NAME);
+	public MAE (DataModel dataModel) {
+		super(dataModel, NAME);
 	}
 
 	@Override
 	public double getMeasure (TestUser testUser) {
 		
-		double [] predictions = testUser.getPredictions();
-		double [] ratings = testUser.getTestRatings();
+		Double [] predictions = testUser.getStoredData().getDoubleArray(TestUser.PREDICTIONS_KEYS);
+		DynamicArray<Double> ratings = testUser.getTestRatings();
 		
 		double mae = 0d; 
 		int count = 0;
 		
-		for (int i = 0; i < ratings.length; i++) {
+		for (int i = 0; i < ratings.size() ; i++) {
 			if (!Double.isNaN(predictions[i])) {
-				mae += Math.abs(predictions[i] - ratings[i]);
+				mae += Math.abs(predictions[i] - ratings.get(i));
 				count++;
 			}
 		}

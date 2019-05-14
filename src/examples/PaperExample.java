@@ -19,40 +19,42 @@ public class PaperExample {
 		double testUsers = 0.20; // 20% of test users
 		double testItems = 0.20; // 20% of test items
 
-		DataModel dm = new DataModel(new RandomSplitDataSet(dbPath, testUsers, testItems, "::"));
+		DataModel dataModel = new DataModel(new RandomSplitDataSet(dbPath, testUsers, testItems, "::"));
 
-//		String [] similarityMetrics = {"COR", "JMSD"};
-//		int [] numberOfNeighbors = {50, 100, 150, 200, 250, 300, 350, 400};
-//
-//		PrintableQualityMeasure mae = new cf4j.utils.PrintableQualityMeasure("MAE", numberOfNeighbors, similarityMetrics);
-//
-//		// For each similarity metric
-//		for (String sm : similarityMetrics) {
-//
-//			// Compute similarity
-//			if (sm.equals("COR")) {
-//				Processor.getInstance().testUsersProcess(new cf4j.algorithms.knn.userToUser.similarities.Correlation());
-//			}
-//			else if (sm.equals("JMSD")) {
-//				Processor.getInstance().testUsersProcess(new cf4j.algorithms.knn.userToUser.similarities.JMSD());
-//			}
-//
-//			// For each value of k
-//			for (int k : numberOfNeighbors) {
-//
-//				// Find the neighbors
-//				Processor.getInstance().testUsersProcess(new cf4j.algorithms.knn.userToUser.neighbors.NearestNeighbors(k));
-//
-//				// Compute predictions using DFM
-//				Processor.getInstance().testUsersProcess(new cf4j.algorithms.knn.userToUser.aggregationApproaches.DeviationFromMean());
-//
-//				// Compute MAE
-//				Processor.getInstance().testUsersProcess(new cf4j.qualityMeasures.MAE());
-//				mae.putError(k, sm, DataModel.gi().getQualityMeasure("MAE"));
-//			}
-//		}
+		Processor processor = new Processor();
 
-		// Print the results
-//		mae.print();
+		String [] similarityMetrics = {"COR", "JMSD"};
+		int [] numberOfNeighbors = {50, 100, 150, 200, 250, 300, 350, 400};
+
+		PrintableQualityMeasure mae = new cf4j.utils.PrintableQualityMeasure("MAE", numberOfNeighbors, similarityMetrics);
+
+		// For each similarity metric
+		for (String sm : similarityMetrics) {
+
+			// Compute similarity
+			if (sm.equals("COR")) {
+				processor.process(new cf4j.algorithms.knn.userToUser.similarities.Correlation(dataModel));
+			}
+			else if (sm.equals("JMSD")) {
+				processor.process(new cf4j.algorithms.knn.userToUser.similarities.JMSD(dataModel));
+			}
+
+			// For each value of k
+			for (int k : numberOfNeighbors) {
+
+				// Find the neighbors
+				processor.process(new cf4j.algorithms.knn.userToUser.neighbors.NearestNeighbors(dataModel, k));
+
+				// Compute predictions using DFM
+				processor.process(new cf4j.algorithms.knn.userToUser.aggregationApproaches.DeviationFromMean(dataModel));
+
+				// Compute MAE
+				processor.process(new cf4j.qualityMeasures.MAE(dataModel));
+				mae.putError(k, sm, dataModel.getStoredData().getDouble("MAE"));
+			}
+		}
+
+		//Print the results
+		mae.print();
 	}
 }

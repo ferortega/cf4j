@@ -6,6 +6,7 @@ import cf4j.data.Item;
 import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.data.User;
+import org.jcp.xml.dsig.internal.dom.DOMPGPData;
 
 /**
  * Implements the following CF similarity metric: Bobadilla, J., Ortega, F., &amp;
@@ -46,7 +47,8 @@ public class Singularities extends UserSimilarities{
 	 * @param relevantRatings Relevant ratings array
 	 * @param notRelevantRatings Not relevant ratings array
 	 */
-	public Singularities (double [] relevantRatings, double [] notRelevantRatings) {
+	public Singularities (DataModel dataModel, double [] relevantRatings, double [] notRelevantRatings) {
+		super(dataModel);
 
 		this.relevantRatings = new HashSet <Double> ();
 		for (double r : relevantRatings) this.relevantRatings.add(r);
@@ -54,26 +56,27 @@ public class Singularities extends UserSimilarities{
 		this.notRelevantRatings = new HashSet <Double> ();
 		for (double r : notRelevantRatings)  this.notRelevantRatings.add(r);
 		
-		this.maxDiff = DataModel.gi().getMaxRating() - DataModel.gi().getMinRating();
+		this.maxDiff = dataModel.getMaxRating() - dataModel.getMinRating();
 	}
 
 	@Override
 	public void beforeRun () {
 		super.beforeRun();
 		
-		double numUsers = DataModel.gi().getNumberOfUsers();
+		double numUsers = dataModel.getNumberOfUsers();
 
 		// To store items singularity
-		this.singularityOfRelevantRatings = new double [DataModel.gi().getNumberOfItems()];
-		this.singularityOfNotRelevantRatings = new double [DataModel.gi().getNumberOfItems()];
+		this.singularityOfRelevantRatings = new double [dataModel.getNumberOfItems()];
+		this.singularityOfNotRelevantRatings = new double [dataModel.getNumberOfItems()];
 
-		for (int i = 0; i < DataModel.gi().getNumberOfItems(); i++) {
-			Item item = DataModel.getInstance().getItems()[i];
+		for (int i = 0; i < dataModel.getNumberOfItems(); i++) {
+			Item item = dataModel.getItemByIndex(i);
 
 			int numberOfRelevantRatings = 0;
 			int numberOfNotRelevantRatings = 0;
 
-			for (double rating : item.getRatings()) {
+			for (int j = 0; j < item.getNumberOfRatings(); j++){
+				double rating = item.getRatingAt(j);
 				if (relevantRatings.contains(rating)) numberOfRelevantRatings++;
 				if (notRelevantRatings.contains(rating)) numberOfNotRelevantRatings++;
 			}
@@ -95,17 +98,17 @@ public class Singularities extends UserSimilarities{
 
 		int i = 0, j = 0, common = 0;
 		while (i < activeUser.getNumberOfRatings() && j < targetUser.getNumberOfRatings()) {
-			if (activeUser.getItems()[i] < targetUser.getItems()[j]) {
+			if (activeUser.getItems().get(i).compareTo(targetUser.getItems().get(j)) < 0) { //TODO:Check, could be reversed.
 				i++;
-			} else if (activeUser.getItems()[i] > targetUser.getItems()[j]) {
+			} else if (activeUser.getItems().get(i).compareTo(targetUser.getItems().get(j)) > 0) { //TODO:Check, could be reversed.
 				j++;
 			} else {
 				
 				// Get the ratings
-				int itemCode = activeUser.getItems()[i];
-				int itemIndex = DataModel.getInstance().getItemIndex(itemCode);
-				double activeUserRating = activeUser.getRatings()[i];
-				double targetUserRating = targetUser.getRatings()[j];
+				String itemCode = activeUser.getItemAt(i);
+				int itemIndex = dataModel.getItemIndex(itemCode);
+				double activeUserRating = activeUser.getRatings().get(i);
+				double targetUserRating = targetUser.getRatings().get(j);
 
 				// Both user have rated relevant
 				if (this.relevantRatings.contains(activeUserRating) && this.relevantRatings.contains(targetUserRating)) {

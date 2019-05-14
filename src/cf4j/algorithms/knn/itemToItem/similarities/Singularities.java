@@ -46,7 +46,8 @@ public class Singularities extends ItemSimilarities{
 	 * @param relevantRatings Relevant ratings array
 	 * @param notRelevantRatings Not relevant ratings array
 	 */
-	public Singularities (double [] relevantRatings, double [] notRelevantRatings) {
+	public Singularities (DataModel dataModel, double [] relevantRatings, double [] notRelevantRatings) {
+		super(dataModel);
 
 		this.relevantRatings = new HashSet <Double> ();
 		for (double r : relevantRatings) this.relevantRatings.add(r);
@@ -54,26 +55,27 @@ public class Singularities extends ItemSimilarities{
 		this.notRelevantRatings = new HashSet <Double> ();
 		for (double r : notRelevantRatings)  this.notRelevantRatings.add(r);
 		
-		this.maxDiff = DataModel.gi().getMaxRating() - DataModel.gi().getMinRating();
+		this.maxDiff = this.dataModel.getMaxRating() - this.dataModel.getMinRating();
 	}
 
 	@Override
 	public void beforeRun () {
 		super.beforeRun();
 		
-		double numItems = DataModel.gi().getNumberOfItems();
+		double numItems = this.dataModel.getNumberOfItems();
 
 		// To store users singularity
-		this.singularityOfRelevantRatings = new double [DataModel.gi().getNumberOfUsers()];
-		this.singularityOfNotRelevantRatings = new double [DataModel.gi().getNumberOfUsers()];
+		this.singularityOfRelevantRatings = new double [this.dataModel.getNumberOfUsers()];
+		this.singularityOfNotRelevantRatings = new double [this.dataModel.getNumberOfUsers()];
 
-		for (int u = 0; u < DataModel.gi().getNumberOfUsers(); u++) {
-			User user = DataModel.gi().getUsers()[u];
+		for (int u = 0; u < this.dataModel.getNumberOfUsers(); u++) {
+			User user = this.dataModel.getUserByIndex(u);
 
 			int numberOfRelevantRatings = 0;
 			int numberOfNotReleavantRatings = 0;
 
-			for (double rating : user.getRatings()) {
+			for (int v = 0; v < user.getNumberOfRatings();v++){
+				double rating = user.getRatingAt(v);
 				if (relevantRatings.contains(rating)) numberOfRelevantRatings++;
 				if (notRelevantRatings.contains(rating)) numberOfNotReleavantRatings++;
 			}
@@ -95,17 +97,17 @@ public class Singularities extends ItemSimilarities{
 
 		int u = 0, v = 0, common = 0;
 		while (u < activeItem.getNumberOfRatings() && v < targetItem.getNumberOfRatings()) {
-			if (activeItem.getUsers()[u] < targetItem.getUsers()[v]) {
+			if (activeItem.getUsers().get(u).compareTo(targetItem.getUsers().get(v))<0) {
 				u++;
-			} else if (activeItem.getUsers()[u] > targetItem.getUsers()[v]) {
+			} else if (activeItem.getUsers().get(u).compareTo(targetItem.getUsers().get(v))>0) {
 				v++;
 			} else {
 				
 				// Get the ratings
-				int userCode = activeItem.getUsers()[u];
-				int userIndex = DataModel.getInstance().getUserIndex(userCode);
-				double activeItemRating = activeItem.getRatings()[u];
-				double targetItemRating = targetItem.getRatings()[v];
+				String userCode = activeItem.getUsers().get(u);
+				int userIndex = this.dataModel.getUserIndex(userCode);
+				double activeItemRating = activeItem.getRatings().get(u);
+				double targetItemRating = targetItem.getRatings().get(v);
 
 				// Both user have rated relevant
 				if (this.relevantRatings.contains(activeItemRating) && this.relevantRatings.contains(targetItemRating)) {

@@ -3,7 +3,7 @@ package cf4j.algorithms.knn.itemToItem.similarities;
 import cf4j.data.Item;
 import cf4j.data.DataModel;
 import cf4j.data.TestItem;
-import cf4j.process.TestItemsPartible;
+import cf4j.process.PartibleThreads;
 
 /**
  * <p>This class process the similarity measure between two items. If you want to define your own similarity
@@ -17,7 +17,11 @@ import cf4j.process.TestItemsPartible;
  * 
  * @author Fernando Ortega
  */
-abstract public class ItemSimilarities implements TestItemsPartible {
+abstract public class ItemSimilarities extends PartibleThreads {
+
+	public ItemSimilarities(DataModel dataModel) {
+		super(dataModel);
+	}
 
 	/**
 	 * <p>Method to calculate the similarity measure between a pair of items.</p>
@@ -31,26 +35,29 @@ abstract public class ItemSimilarities implements TestItemsPartible {
 	abstract public double similarity (TestItem activeItem, Item targetItem);
 
 	@Override
+	public int getTotalIndexes () { return dataModel.getNumberOfTestItems(); }
+
+	@Override
 	public void beforeRun () { }
 
 	@Override
 	public void run (int testItemIndex) {
 		
-		TestItem activeItem = DataModel.getInstance().getTestItems()[testItemIndex];
+		TestItem activeItem = dataModel.getTestItemByIndex(testItemIndex);
 		
-		int numItems = DataModel.gi().getNumberOfItems();		
-		double [] similarities = new double [numItems];
+		int numItems = dataModel.getNumberOfItems();
+		Double [] similarities = new Double [numItems];
 		
 		for (int i = 0; i < numItems; i++) {
-			Item targetItem = DataModel.gi().getItems()[i];
+			Item targetItem = dataModel.getItemByIndex(i);
 			if (activeItem.getItemCode() == targetItem.getItemCode()) {
 				similarities[i] = Double.NEGATIVE_INFINITY;
 			} else { 
 				similarities[i] = this.similarity(activeItem, targetItem);
 			}
 		}
-		
-		activeItem.setSimilarities(similarities);
+
+		activeItem.getStoredData().setDoubleArray(TestItem.SIMILARITIES_KEY,similarities);
 	}
 	
 	@Override

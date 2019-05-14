@@ -34,42 +34,20 @@ public class DataBank implements Serializable {
      * @param value boolean value to be stored.
      * @return If an existing key is passed then the previous value gets returned. Null if it was not found.
      */
-    public Boolean setBoolean(String key, boolean value){
+    public Boolean setBoolean(String key, Boolean value){
         Object obj = map.put(key,value);
         return obj instanceof Boolean ? (Boolean)obj : null;
     }
 
     /**
-     * Set or store a byte inside this databank.
+     * Set or store a boolean array inside this databank.
      * @param key key where the element will be stored.
-     * @param value byte value to be stored.
+     * @param value boolean array to be stored.
      * @return If an existing key is passed then the previous value gets returned. Null if it was not found.
      */
-    public Byte setByte(String key, byte value){
+    public Boolean[] setBooleanArray(String key, Boolean[] value){
         Object obj = map.put(key,value);
-        return obj instanceof Byte ? (Byte)obj : null;
-    }
-
-    /**
-     * Set or store a char inside this databank.
-     * @param key key where the element will be stored.
-     * @param value char value to be stored
-     * @return If an existing key is passed then the previous value gets returned. Null if it was not found.
-     */
-    public Character setCharacter(String key, char value){
-        Object obj = map.put(key,value);
-        return obj instanceof Character ? (Character)obj : null;
-    }
-
-    /**
-     * Set or store a byte inside this databank.
-     * @param key key where the element will be stored.
-     * @param value byte value to be stored.
-     * @return If an existing key is passed then the previous value gets returned. Null if it was not found.
-     */
-    public Short setShort(String key, short value){
-        Object obj = map.put(key,value);
-        return obj instanceof Short ? (Short)obj : null;
+        return obj instanceof Boolean ? (Boolean[])obj : null;
     }
 
     /**
@@ -78,31 +56,20 @@ public class DataBank implements Serializable {
      * @param value int value to be stored.
      * @return If an existing key is passed then the previous value gets returned. Null if it was not found.
      */
-    public Integer setInteger(String key, int value){
+    public Integer setInteger(String key, Integer value){
         Object obj = map.put(key,value);
         return obj instanceof Integer ? (Integer)obj : null;
     }
 
     /**
-     * Set or store a long inside this databank.
+     * Set or store a int array inside this databank.
      * @param key key where the element will be stored.
-     * @param value long value to be stored.
+     * @param value int array to be stored.
      * @return If an existing key is passed then the previous value gets returned. Null if it was not found.
      */
-    public Long setLong(String key, long value){
+    public Integer [] setIntegerArray(String key, Integer [] value){
         Object obj = map.put(key,value);
-        return obj instanceof Long ? (Long)obj : null;
-    }
-
-    /**
-     * Set or store a float inside this databank.
-     * @param key key where the element will be stored.
-     * @param value float value to be stored.
-     * @return If an existing key is passed then the previous value gets returned. Null if it was not found.
-     */
-    public Float setFloat(String key, float value){
-        Object obj = map.put(key,value);
-        return obj instanceof Float ? (Float)obj : null;
+        return obj instanceof Integer ? (Integer [])obj : null;
     }
 
     /**
@@ -111,9 +78,20 @@ public class DataBank implements Serializable {
      * @param value double value to be stored.
      * @return If an existing key is passed then the previous value gets returned. Null if it was not found.
      */
-    public Double setDouble(String key, double value){
+    public Double setDouble(String key, Double value){
         Object obj = map.put(key,value);
         return obj instanceof Double ? (Double)obj : null;
+    }
+
+    /**
+     * Set or store a double array inside this databank.
+     * @param key key where the element will be stored.
+     * @param value double array to be stored.
+     * @return If an existing key is passed then the previous value gets returned. Null if it was not found.
+     */
+    public Double[] setDoubleArray(String key, Double[] value){
+        Object obj = map.put(key,value);
+        return obj instanceof Double ? (Double[])obj : null;
     }
 
     /**
@@ -127,33 +105,13 @@ public class DataBank implements Serializable {
     }
 
     /**
-     * Get an stored byte inside this databank.
+     * Get an stored boolean array inside this databank.
      * @param key key where the element should be stored.
      * @return If an existing key is passed then the previous value is returned. Null if it was not found.
      */
-    public Byte getByte(String key){
+    public Boolean [] getBooleanArray(String key){
         Object obj = map.get(key);
-        return obj instanceof Byte ? (Byte)obj : null;
-    }
-
-    /**
-     * Get an stored char inside this databank.
-     * @param key key where the element should be stored.
-     * @return If an existing key is passed then the previous value is returned. Null if it was not found.
-     */
-    public Character getCharacter(String key){
-        Object obj = map.get(key);
-        return obj instanceof Character ? (Character)obj : null;
-    }
-
-    /**
-     * Get an stored short inside this databank.
-     * @param key key where the element should be stored.
-     * @return If an existing key is passed then the previous value is returned. Null if it was not found.
-     */
-    public Short getShort(String key){
-        Object obj = map.get(key);
-        return obj instanceof Short ? (Short)obj : null;
+        return obj instanceof Boolean ? (Boolean [])obj : null;
     }
 
     /**
@@ -167,23 +125,13 @@ public class DataBank implements Serializable {
     }
 
     /**
-     * Get an stored long inside this databank.
+     * Get an stored int array inside this databank.
      * @param key key where the element should be stored.
      * @return If an existing key is passed then the previous value is returned. Null if it was not found.
      */
-    public Long getLong(String key){
+    public Integer [] getIntegerArray(String key){
         Object obj = map.get(key);
-        return obj instanceof Long ? (Long)obj : null;
-    }
-
-    /**
-     * Get an stored float inside this databank.
-     * @param key key where the element should be stored.
-     * @return If an existing key is passed then the previous value is returned. Null if it was not found.
-     */
-    public Float getFloat(String key){
-        Object obj = map.get(key);
-        return obj instanceof Float ? (Float)obj : null;
+        return obj instanceof Integer ? (Integer [])obj : null;
     }
 
     /**
@@ -194,5 +142,15 @@ public class DataBank implements Serializable {
     public Double getDouble(String key){
         Object obj = map.get(key);
         return obj instanceof Double ? (Double)obj : null;
+    }
+
+    /**
+     * Get an stored double array inside this databank.
+     * @param key key where the element should be stored.
+     * @return If an existing key is passed then the previous value is returned. Null if it was not found.
+     */
+    public Double [] getDoubleArray(String key){
+        Object obj = map.get(key);
+        return obj instanceof Double ? (Double [])obj : null;
     }
 }

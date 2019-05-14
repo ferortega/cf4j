@@ -17,11 +17,15 @@ public class CJMSD extends UserSimilarities {
 	 * Maximum difference between the ratings
 	 */
 	private double maxDiff;
-	
+
+	public CJMSD(DataModel dataModel) {
+		super(dataModel);
+	}
+
 	@Override
 	public void beforeRun () {
 		super.beforeRun();
-		this.maxDiff = DataModel.gi().getMaxRating() - DataModel.gi().getMinRating();
+		this.maxDiff = this.dataModel.getMaxRating() - this.dataModel.getMinRating();
 	}
 
 	@Override
@@ -31,12 +35,12 @@ public class CJMSD extends UserSimilarities {
 		double msd = 0d;
 		
 		while (i < activeUser.getNumberOfRatings() && j < targetUser.getNumberOfRatings()) {
-			if (activeUser.getItems()[i] < targetUser.getItems()[j]) {
+			if (activeUser.getItems().get(i).compareTo(targetUser.getItems().get(j))<0) {
 				i++;
-			} else if (activeUser.getItems()[i] > targetUser.getItems()[j]) {
+			} else if (activeUser.getItems().get(i).compareTo(targetUser.getItems().get(j))>0) {
 				j++;
 			} else {
-				double diff = (activeUser.getRatings()[i] - targetUser.getRatings()[j]) / this.maxDiff;
+				double diff = (activeUser.getRatings().get(i) - targetUser.getRatings().get(j)) / this.maxDiff;
 				msd += diff * diff;
 				common++;
 				i++; j++;
@@ -48,7 +52,7 @@ public class CJMSD extends UserSimilarities {
 
 		// Return similarity
 		double jaccard = (double) common / (double) (activeUser.getNumberOfRatings() + targetUser.getNumberOfRatings() - common);
-		double coverage = (double) (targetUser.getNumberOfRatings() - common) / (double) DataModel.gi().getNumberOfItems();
+		double coverage = (double) (targetUser.getNumberOfRatings() - common) / (double) this.dataModel.getNumberOfItems();
 		return coverage * jaccard * (1d - (msd / common));
 	}
 }

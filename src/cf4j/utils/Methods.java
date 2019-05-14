@@ -83,7 +83,7 @@ public class Methods {
 	 * @param n Number of elements to obtain
 	 * @return Indexes of values sorted by higher to lower
 	 */
-	public static int [] findTopN (double [] values, int n) {
+	public static Integer [] findTopN (Double [] values, int n) {
 
 		int [] indexes = new int [n];
 
@@ -129,7 +129,7 @@ public class Methods {
 	 * @param b Vector B
 	 * @return dot_product(A, B)
 	 */
-	public static double dotProduct (double [] a, double [] b) {
+	public static double dotProduct (Double [] a, Double [] b) {
 		double r = 0;
 		for (int i = 0; i < a.length; i++) r += a[i] * b[i];
 		return r;

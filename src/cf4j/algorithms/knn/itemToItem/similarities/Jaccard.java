@@ -1,5 +1,6 @@
 package cf4j.algorithms.knn.itemToItem.similarities;
 
+import cf4j.data.DataModel;
 import cf4j.data.Item;
 import cf4j.data.TestItem;
 
@@ -10,14 +11,18 @@ import cf4j.data.TestItem;
  */
 public class Jaccard extends ItemSimilarities{
 
+	public Jaccard(DataModel dataModel) {
+		super(dataModel);
+	}
+
 	@Override
 	public double similarity (TestItem activeItem, Item targetItem) {
 
 		int u = 0, v = 0, common = 0;
 		while (u < activeItem.getNumberOfRatings() && v < targetItem.getNumberOfRatings()) {
-			if (activeItem.getUsers()[u] < targetItem.getUsers()[v]) {
+			if (activeItem.getUsers().get(u).compareTo(targetItem.getUsers().get(v)) < 0) {
 				u++;
-			} else if (activeItem.getUsers()[u] > targetItem.getUsers()[v]) {
+			} else if (activeItem.getUsers().get(u).compareTo(targetItem.getUsers().get(v)) > 0) {
 				v++;
 			} else {
 				common++;

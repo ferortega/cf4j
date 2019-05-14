@@ -4,6 +4,7 @@ import cf4j.data.Item;
 import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.data.User;
+import cf4j.data.types.DynamicArray;
 
 /**
  * Implements the following CF similarity metric: Ahn, H. J. (2008). A new similarity 
@@ -32,9 +33,10 @@ public class PIP extends UserSimilarities {
 	/**
 	 * Constructor of the similarity metric
 	 */
-	public PIP () {
-		this.max = DataModel.gi().getMaxRating();
-		this.min = DataModel.gi().getMinRating();
+	public PIP (DataModel dataModel) {
+		super(dataModel);
+		this.max = dataModel.getMaxRating();
+		this.min = dataModel.getMinRating();
 		
 		this.median = (max + min) / 2d;
 	}
@@ -46,13 +48,13 @@ public class PIP extends UserSimilarities {
 		double PIP = 0d;
 		
 		while (i < activeUser.getNumberOfRatings() && j < targetUser.getNumberOfRatings()) {
-			if (activeUser.getItems()[i] < targetUser.getItems()[j]) 
+			if (activeUser.getItems().get(i).compareTo(targetUser.getItems().get(j))<0)
 				i++;
-			else if (activeUser.getItems()[i] > targetUser.getItems()[j]) 
+			else if (activeUser.getItems().get(i).compareTo(targetUser.getItems().get(j))>0)
 				j++;
 			else {
-				double ra = activeUser.getRatings()[i];
-				double rt = targetUser.getRatings()[j];
+				double ra = activeUser.getRatings().get(i);
+				double rt = targetUser.getRatings().get(j);
 				
 				// Compute agreement
 				boolean agreement = true;
@@ -69,8 +71,8 @@ public class PIP extends UserSimilarities {
 				double impact = (agreement) ? im : 1d / im;
 
 				// Compute popularity
-				int itemCode = activeUser.getItems()[i];
-				Item item = DataModel.gi().getItemByCode(itemCode);
+				String itemCode = activeUser.getItems().get(i);
+				Item item = this.dataModel.getItem(itemCode);
 				double itemAvg = item.getRatingAverage();
 				
 				double popularity = 1;

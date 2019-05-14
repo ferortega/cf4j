@@ -1,5 +1,6 @@
 package cf4j.qualityMeasures;
 
+import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.utils.Methods;
 
@@ -32,8 +33,8 @@ public class F1 extends QualityMeasure {
 	 * @param numberOfRecommendations Number of recommendations
 	 * @param relevantThreshold Minimum rating to consider a rating as relevant
 	 */
-	public F1 (int numberOfRecommendations, double relevantThreshold) {
-		super(NAME);
+	public F1 (DataModel dataModel, int numberOfRecommendations, double relevantThreshold) {
+		super(dataModel, NAME);
 		this.numberOfRecommendations = numberOfRecommendations;
 		this.relevantThreshold = relevantThreshold;
 	}
@@ -43,22 +44,23 @@ public class F1 extends QualityMeasure {
 		
 		// Items rated as relevant (in test) by the active user		
 		int relevant = 0;
-		for (double rating : testUser.getTestRatings()) {
+		for (int i = 0; i < testUser.getNumberOfRatings(); i++){
+			double rating = testUser.getRatingAt(i);
 			if (rating >= this.relevantThreshold) {
 				relevant++;
 			}
 		}
 		
 		// Items that has been recommended and was relevant to the active user
-		double [] predictions = testUser.getPredictions();
-		int [] recommendations = Methods.findTopN(predictions, this.numberOfRecommendations);
+		Double [] predictions = testUser.getStoredData().getDoubleArray(TestUser.PREDICTIONS_KEYS);
+		Integer [] recommendations = Methods.findTopN(predictions, this.numberOfRecommendations);
 		
 		int recommendedAndRelevant = 0, recommended = 0;
 
 		for (int testItemIndex : recommendations) {
 			if (testItemIndex == -1) break;
 			
-			if (testUser.getTestRatings()[testItemIndex] >= this.relevantThreshold) {
+			if (testUser.getTestRatings().get(testItemIndex) >= this.relevantThreshold) {
 				recommendedAndRelevant++;
 			}
 			

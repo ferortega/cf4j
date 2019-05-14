@@ -60,67 +60,69 @@ public class Example2 {
 		// Load the database
 		DataModel dataModel = new DataModel(new RandomSplitDataSet(dataset,testUsers,testItems,"::"));
 
-//		// Test each similarity metric
-//		for (String sm : similarityMetrics) {
-//
-//			// Compute similarity
-//			if (sm.equals("COR")) {
-//				Processor.getInstance().testUsersProcess(new Correlation());
-//			}
-//			else if (sm.equals("MSD")) {
-//				Processor.getInstance().testUsersProcess(new MSD());
-//			}
-//			else if (sm.equals("JAC")) {
-//				Processor.getInstance().testUsersProcess(new Jaccard());
-//			}
-//			else if (sm.equals("JMSD")) {
-//				Processor.getInstance().testUsersProcess(new JMSD());
-//			}
-//
-//			// For each number of neighbors
-//			for (int k : numberOfNeighbors) {
-//
-//				// Compute neighbors
-//				Processor.getInstance().testUsersProcess(new NearestNeighbors(k));
-//
-//				// Compute predictions using DFM
-//				Processor.getInstance().testUsersProcess(new DeviationFromMean());
-//
-//				// Get MAE
-//				Processor.getInstance().testUsersProcess(new MAE());
-//				mae.putError(k, sm, dataModel.gi().getQualityMeasure("MAE"));
-//
-//				// Get Coverage
-//				Processor.getInstance().testUsersProcess(new Coverage());
-//				coverage.putError(k, sm, dataModel.gi().getQualityMeasure("Coverage"));
-//			}
-//
-//			// For each number of recommendations
-//			Processor.getInstance().testUsersProcess(new NearestNeighbors(precisionRecallK));
-//			Processor.getInstance().testUsersProcess(new DeviationFromMean());
-//
-//			for (int n : numberOfRecommendations) {
-//
-//				// Get precision
-//				Processor.getInstance().testUsersProcess(new Precision(n, precisionRecallThreshold));
-//				precision.putError(n, sm, dataModel.gi().getQualityMeasure("Precision"));
-//
-//				// Get recall
-//				Processor.getInstance().testUsersProcess(new Recall(n, precisionRecallThreshold));
-//				recall.putError(n, sm, dataModel.gi().getQualityMeasure("Recall"));
-//
-//				// Get F1 score
-//				Processor.getInstance().testUsersProcess(new F1(n, precisionRecallThreshold));
-//				f1.putError(n, sm, dataModel.gi().getQualityMeasure("F1"));
-//			}
-//
-//
-//			// Print results
-//			mae.print();
-//			coverage.print();
-//			precision.print();
-//			recall.print();
-//			f1.print();
-//		}
+		Processor processor = new Processor();
+
+		// Test each similarity metric
+		for (String sm : similarityMetrics) {
+
+			// Compute similarity
+			if (sm.equals("COR")) {
+				processor.process(new Correlation(dataModel));
+			}
+			else if (sm.equals("MSD")) {
+				processor.process(new MSD(dataModel));
+			}
+			else if (sm.equals("JAC")) {
+				processor.process(new Jaccard(dataModel));
+			}
+			else if (sm.equals("JMSD")) {
+				processor.process(new JMSD(dataModel));
+			}
+
+			// For each number of neighbors
+			for (int k : numberOfNeighbors) {
+
+				// Compute neighbors
+				processor.process(new NearestNeighbors(dataModel, k));
+
+				// Compute predictions using DFM
+				processor.process(new DeviationFromMean(dataModel));
+
+				// Get MAE
+				processor.process(new MAE(dataModel));
+				mae.putError(k, sm, dataModel.getStoredData().getDouble("MAE"));
+
+				// Get Coverage
+				processor.process(new Coverage(dataModel));
+				coverage.putError(k, sm, dataModel.getStoredData().getDouble("Coverage"));
+			}
+
+			// For each number of recommendations
+			processor.process(new NearestNeighbors(dataModel, precisionRecallK));
+			processor.process(new DeviationFromMean(dataModel));
+
+			for (int n : numberOfRecommendations) {
+
+				// Get precision
+				processor.process(new Precision(dataModel,n, precisionRecallThreshold));
+				precision.putError(n, sm, dataModel.getStoredData().getDouble("Precision"));
+
+				// Get recall
+				processor.process(new Recall(dataModel,n, precisionRecallThreshold));
+				recall.putError(n, sm, dataModel.getStoredData().getDouble("Recall"));
+
+				// Get F1 score
+				processor.process(new F1(dataModel,n, precisionRecallThreshold));
+				f1.putError(n, sm, dataModel.getStoredData().getDouble("F1"));
+			}
+
+
+			// Print results
+			mae.print();
+			coverage.print();
+			precision.print();
+			recall.print();
+			f1.print();
+		}
 	}
 }

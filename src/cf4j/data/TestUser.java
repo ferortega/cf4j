@@ -17,9 +17,9 @@ public class TestUser extends User {
 
 	private static final long serialVersionUID = 20130403L;
 	
-	private final static String SIMILARITIES_KEY = "similarities";
-	private final static String NEIGHBORS_KEY = "neighbors";
-	private final static String PREDICTIONS_KEYS = "predictions";
+	public final static String SIMILARITIES_KEY = "similarities";
+	public final static String NEIGHBORS_KEY = "neighbors";
+	public final static String PREDICTIONS_KEYS = "predictions";
 
 	/**
 	 * Test items that rated by the user

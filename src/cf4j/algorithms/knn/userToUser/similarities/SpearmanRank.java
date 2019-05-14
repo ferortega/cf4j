@@ -1,5 +1,6 @@
 package cf4j.algorithms.knn.userToUser.similarities;
 
+import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.data.User;
 
@@ -10,6 +11,10 @@ import cf4j.data.User;
  */
 public class SpearmanRank extends UserSimilarities{
 
+	public SpearmanRank(DataModel dataModel) {
+		super(dataModel);
+	}
+
 	@Override
 	public double similarity (TestUser activeUser, User targetUser) {		
 
@@ -17,12 +22,12 @@ public class SpearmanRank extends UserSimilarities{
 		double num = 0d;
 		
 		while (i < activeUser.getNumberOfRatings() && j < targetUser.getNumberOfRatings()) {
-			if (activeUser.getItems()[i] < targetUser.getItems()[j]) {
+			if (activeUser.getItems().get(i).compareTo(targetUser.getItems().get(j)) < 0) {
 				i++;
-			} else if (activeUser.getItems()[i] > targetUser.getItems()[j]) {
+			} else if (activeUser.getItems().get(i).compareTo(targetUser.getItems().get(j)) > 0) {
 				j++;
 			} else {
-				double diff = activeUser.getRatings()[i] - targetUser.getRatings()[j];
+				double diff = activeUser.getRatings().get(i) - targetUser.getRatings().get(j);
 				num += diff * diff;
 				common++;
 				i++; 

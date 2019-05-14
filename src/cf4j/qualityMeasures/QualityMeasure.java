@@ -2,7 +2,8 @@ package cf4j.qualityMeasures;
 
 import cf4j.data.DataModel;
 import cf4j.data.TestUser;
-import cf4j.process.TestUsersPartible;
+import cf4j.data.User;
+import cf4j.process.PartibleThreads;
 
 /**
  * Abstract class to compute quality measures for test of users. To encode
@@ -11,13 +12,17 @@ import cf4j.process.TestUsersPartible;
  * 
  * @author Fernando Ortega
  */
-public abstract class QualityMeasure implements TestUsersPartible {
+public abstract class QualityMeasure extends PartibleThreads {
 
 	private String qualityMeasureName;
 	
-	public QualityMeasure (String qualityMeasureName) {
+	public QualityMeasure (DataModel dataModel, String qualityMeasureName) {
+		super(dataModel);
 		this.qualityMeasureName = qualityMeasureName;
 	}
+
+	@Override
+	public int getTotalIndexes () { return dataModel.getNumberOfTestUsers(); }
 		
 	@Override
 	public void beforeRun() { }
@@ -33,13 +38,28 @@ public abstract class QualityMeasure implements TestUsersPartible {
 
 	@Override
 	public void run (int testUserIndex) {
-		TestUser testUser = DataModel.gi().getTestUsers()[testUserIndex];
+		TestUser testUser = dataModel.getTestUserByIndex(testUserIndex);
 		double measure = this.getMeasure(testUser);
-		testUser.put(qualityMeasureName, measure);
+		testUser.getStoredData().setDouble(qualityMeasureName, measure);
 	}
 
 	@Override
 	public void afterRun() {
-		DataModel.getInstance().putUsersAverage(qualityMeasureName);
+
+		double summation = 0.0f;
+		int numValues = 0;
+		for (int i = 0 ; i < dataModel.getNumberOfUsers(); i++){
+			User user = dataModel.getTestUserByIndex(i);
+			double userValue = user.getStoredData().getDouble(qualityMeasureName);
+			if (!Double.isNaN(userValue)) {
+				summation += userValue;
+				numValues++;
+			}
+		}
+		if (numValues > 0) {
+			dataModel.getStoredData().setDouble(qualityMeasureName,(summation / numValues));
+		} else {
+			dataModel.getStoredData().setDouble(qualityMeasureName, Double.NaN);
+		}
 	}
 }
