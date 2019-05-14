@@ -114,7 +114,7 @@ public class DataModel implements Serializable {
      * Getter of the stored data. This data allows you to store general calculation data inside the DataModel.
      * @return The databank who stores general information.
      */
-    public DataBank GetStoredData (){
+    public DataBank getStoredData (){
         return storedData;
     }
 

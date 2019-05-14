@@ -92,11 +92,18 @@ public class TwoFilesDataSet implements DataSet
         }
     }
 
-
+    /**
+     * Implementation of the interface.
+     * @return An interator with the entries. (no test entries)
+     */
     public Iterator<DataSetEntry> getRatingsIterator(){
         return ratings.iterator();
     }
 
+    /**
+     * Implementation of the interface.
+     * @return An interator with the entries. (test entries)
+     */
     public Iterator<DataSetEntry> getTestRatingsIterator(){
         return testRatings.iterator();
     }

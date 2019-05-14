@@ -64,7 +64,7 @@ public class Item implements Serializable, Comparable<Item> {
 		this.ratings = new DynamicArray<Double>();
 	}
 
-	public DataBank GetStoredData (){
+	public DataBank getStoredData (){
 		return storedData;
 	}
 

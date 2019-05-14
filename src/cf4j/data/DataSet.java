@@ -16,6 +16,9 @@ public interface DataSet{
      */
     public Iterator<DataSetEntry> getTestRatingsIterator();
 
+    /**
+     * This is the class that contains the specific structure needed to send entries to the data model.
+     */
     class DataSetEntry extends Triplet<String,String,Double>{
         public DataSetEntry(String first, String second, Double third) {
             super(first, second, third);

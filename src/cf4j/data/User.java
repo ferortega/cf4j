@@ -68,7 +68,7 @@ public class User implements Serializable, Comparable<User> {
 		//this.ratingStandardDeviation = Methods.arrayStandardDeviation(ratings);
 	}
 
-	public DataBank GetStoredData (){
+	public DataBank getStoredData (){
 		return storedData;
 	}
 
