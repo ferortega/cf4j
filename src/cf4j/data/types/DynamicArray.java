@@ -28,6 +28,7 @@ public class DynamicArray<E> {
 
         System.arraycopy(this.data,index,this.data,index+1,this.size - index); //TODO: copia bien? se pisa?
         this.data[index] = element;
+        this.size++;
 
         if (index >= this.size)
             this.size = index + 1;
