@@ -37,7 +37,7 @@ public class CorrelationConstrained extends ItemSimilarities{
 
 		ArrayList <Double> ratings = new ArrayList <Double> ();
 		for (int i = 0; i < this.dataModel.getNumberOfUsers(); i++){
-			User user = this.dataModel.getUserByIndex(i);
+			User user = this.dataModel.getUserAt(i);
 			for (int j = 0; j < user.getNumberOfRatings(); j++){
 				double rating = user.getRatings().get(j);
 				ratings.add(rating);
@@ -59,13 +59,13 @@ public class CorrelationConstrained extends ItemSimilarities{
 		double num = 0d, denActive = 0d, denTarget = 0d;
 		
 		while (u < activeItem.getNumberOfRatings() && v < targetItem.getNumberOfRatings()) {
-			if (activeItem.getUsers().get(u).compareTo(targetItem.getUsers().get(v)) < 0) {	//TODO: Could be inverted
+			if (activeItem.getUserAt(u).compareTo(targetItem.getUserAt(v)) < 0) {	//TODO: Could be inverted
 				u++;
-			} else if (activeItem.getUsers().get(u).compareTo(targetItem.getUsers().get(v)) > 0) {
+			} else if (activeItem.getUserAt(u).compareTo(targetItem.getUserAt(v)) > 0) {
 				v++;
 			} else {
-				double fa = activeItem.getRatings().get(u) - this.median;
-				double ft = targetItem.getRatings().get(v) - this.median;
+				double fa = activeItem.getRatingAt(u) - this.median;
+				double ft = targetItem.getRatingAt(v) - this.median;
 				
 				num += fa * ft;
 				denActive += fa * fa;

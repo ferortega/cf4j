@@ -187,7 +187,7 @@ public class Pmf implements FactorizationModel {
 	 * @return User factors
 	 */
 	public Double [] getUserFactors (int userIndex) {
-		User user = dataModel.getUserByIndex(userIndex);
+		User user = dataModel.getUserAt(userIndex);
 		return user.getStoredData().getDoubleArray(USER_FACTORS_KEY);
 	}
 
@@ -197,7 +197,7 @@ public class Pmf implements FactorizationModel {
 	 * @param factors User factors
 	 */
 	private void setUserFactors (int userIndex, Double [] factors) {
-		User user = this.dataModel.getUserByIndex(userIndex);
+		User user = this.dataModel.getUserAt(userIndex);
 		user.getStoredData().setDoubleArray(USER_FACTORS_KEY, factors);
 	}
 
@@ -207,7 +207,7 @@ public class Pmf implements FactorizationModel {
 	 * @return Item factors
 	 */
 	public Double [] getItemFactors (int itemIndex) {
-		Item item = this.dataModel.getItemByIndex(itemIndex);
+		Item item = this.dataModel.getItemAt(itemIndex);
 		return (Double []) item.getStoredData().getDoubleArray(ITEM_FACTORS_KEY);
 	}
 
@@ -217,7 +217,7 @@ public class Pmf implements FactorizationModel {
 	 * @param factors Item factors
 	 */
 	private void setItemFactors (int itemIndex, Double [] factors) {
-		Item item = this.dataModel.getItemByIndex(itemIndex);
+		Item item = this.dataModel.getItemAt(itemIndex);
 		item.getStoredData().setDoubleArray(ITEM_FACTORS_KEY, factors);
 	}
 
@@ -227,7 +227,7 @@ public class Pmf implements FactorizationModel {
 	 * @return User bias or null
 	 */
 	public double getUserBias (int userIndex) {
-		User user = this.dataModel.getUserByIndex(userIndex);
+		User user = this.dataModel.getUserAt(userIndex);
 		return user.getStoredData().getDouble(USER_BIAS_KEY);
 	}
 
@@ -237,7 +237,7 @@ public class Pmf implements FactorizationModel {
 	 * @param bias User bias
 	 */
 	private void setUserBias (int userIndex, double bias) 	{
-		User user = this.dataModel.getUserByIndex(userIndex);
+		User user = this.dataModel.getUserAt(userIndex);
 		user.getStoredData().setDouble(USER_BIAS_KEY, bias);
 	}
 
@@ -247,7 +247,7 @@ public class Pmf implements FactorizationModel {
 	 * @return Item bias
 	 */
 	public double getItemBias (int itemIndex) {
-		Item item = this.dataModel.getItemByIndex(itemIndex);
+		Item item = this.dataModel.getItemAt(itemIndex);
 		return item.getStoredData().getDouble(ITEM_BIAS_KEY);
 	}
 
@@ -257,7 +257,7 @@ public class Pmf implements FactorizationModel {
 	 * @param bias Item bias
 	 */
 	private void setItemBias (int itemIndex, double bias) {
-		Item item = this.dataModel.getItemByIndex(itemIndex);
+		Item item = this.dataModel.getItemAt(itemIndex);
 		item.getStoredData().setDouble(ITEM_BIAS_KEY, bias);
 	}
 
@@ -272,7 +272,7 @@ public class Pmf implements FactorizationModel {
 		Double [] factors_i = this.getItemFactors(itemIndex);
 
 		if (this.biases) {
-			double average = this.dataModel.getStoredData().getDouble(DataModel.AVERAGERATING_KEY);
+			double average = this.dataModel.getDataBank().getDouble(DataModel.AVERAGERATING_KEY);
 
 			double bias_u = this.getUserBias(userIndex);
 			double bias_i = this.getItemBias(itemIndex);
@@ -305,13 +305,13 @@ public class Pmf implements FactorizationModel {
 		@Override
 		public void run (int userIndex) {
 
-			User user = dataModel.getUserByIndex(userIndex);
+			User user = dataModel.getUserAt(userIndex);
 
 			int itemIndex = 0;
 
 			for (int j = 0; j < user.getNumberOfRatings(); j++) {
 
-				while (dataModel.getItemByIndex(itemIndex).getItemCode().compareTo(user.getItems().get(j)) < 0) itemIndex++;
+				while (dataModel.getItemAt(itemIndex).getItemCode().compareTo(user.getItems().get(j)) < 0) itemIndex++;
 
 				// Get error
 				double error = user.getRatingAt(j) - Pmf.this.getPrediction(userIndex, itemIndex);
@@ -365,16 +365,16 @@ public class Pmf implements FactorizationModel {
 		@Override
 		public void run(int itemIndex) {
 
-			Item item = this.dataModel.getItemByIndex(itemIndex);
+			Item item = this.dataModel.getItemAt(itemIndex);
 
 			int userIndex = 0;
 
 			for (int v = 0; v < item.getNumberOfRatings(); v++)
 			{
-				while (this.dataModel.getUserByIndex(userIndex).getUserCode().compareTo(item.getUsers().get(v)) < 0) userIndex++; //TODO: Check, could be reversed
+				while (this.dataModel.getUserAt(userIndex).getUserCode().compareTo(item.getUserAt(v)) < 0) userIndex++; //TODO: Check, could be reversed
 
 				// Get error
-				double error = item.getRatings().get(v) - Pmf.this.getPrediction(userIndex, itemIndex);
+				double error = item.getRatingAt(v) - Pmf.this.getPrediction(userIndex, itemIndex);
 
 				// Update q_i
 				Double [] q_i = Pmf.this.getItemFactors(itemIndex);

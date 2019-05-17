@@ -55,7 +55,7 @@ public class Singularities extends ItemSimilarities{
 		this.notRelevantRatings = new HashSet <Double> ();
 		for (double r : notRelevantRatings)  this.notRelevantRatings.add(r);
 		
-		this.maxDiff = this.dataModel.getStoredData().getDouble(DataModel.MAXRATING_KEY) - this.dataModel.getStoredData().getDouble(DataModel.MINRATING_KEY);
+		this.maxDiff = this.dataModel.getDataBank().getDouble(DataModel.MAXRATING_KEY) - this.dataModel.getDataBank().getDouble(DataModel.MINRATING_KEY);
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class Singularities extends ItemSimilarities{
 		this.singularityOfNotRelevantRatings = new double [this.dataModel.getNumberOfUsers()];
 
 		for (int u = 0; u < this.dataModel.getNumberOfUsers(); u++) {
-			User user = this.dataModel.getUserByIndex(u);
+			User user = this.dataModel.getUserAt(u);
 
 			int numberOfRelevantRatings = 0;
 			int numberOfNotReleavantRatings = 0;
@@ -97,17 +97,17 @@ public class Singularities extends ItemSimilarities{
 
 		int u = 0, v = 0, common = 0;
 		while (u < activeItem.getNumberOfRatings() && v < targetItem.getNumberOfRatings()) {
-			if (activeItem.getUsers().get(u).compareTo(targetItem.getUsers().get(v))<0) {
+			if (activeItem.getUserAt(u).compareTo(targetItem.getUserAt(v))<0) {
 				u++;
-			} else if (activeItem.getUsers().get(u).compareTo(targetItem.getUsers().get(v))>0) {
+			} else if (activeItem.getUserAt(u).compareTo(targetItem.getUserAt(v))>0) {
 				v++;
 			} else {
 				
 				// Get the ratings
-				String userCode = activeItem.getUsers().get(u);
+				String userCode = activeItem.getUserAt(u);
 				int userIndex = this.dataModel.getUserIndex(userCode);
-				double activeItemRating = activeItem.getRatings().get(u);
-				double targetItemRating = targetItem.getRatings().get(v);
+				double activeItemRating = activeItem.getRatingAt(u);
+				double targetItemRating = targetItem.getRatingAt(v);
 
 				// Both user have rated relevant
 				if (this.relevantRatings.contains(activeItemRating) && this.relevantRatings.contains(targetItemRating)) {

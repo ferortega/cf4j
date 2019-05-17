@@ -4,7 +4,6 @@ import cf4j.data.Item;
 import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.data.User;
-import cf4j.data.types.DynamicArray;
 
 /**
  * Implements the following CF similarity metric: Ahn, H. J. (2008). A new similarity 
@@ -35,8 +34,8 @@ public class PIP extends UserSimilarities {
 	 */
 	public PIP (DataModel dataModel) {
 		super(dataModel);
-		this.max = dataModel.getStoredData().getDouble(DataModel.MAXRATING_KEY);
-		this.min = dataModel.getStoredData().getDouble(DataModel.MINRATING_KEY);
+		this.max = dataModel.getDataBank().getDouble(DataModel.MAXRATING_KEY);
+		this.min = dataModel.getDataBank().getDouble(DataModel.MINRATING_KEY);
 
 		this.median = (max + min) / 2d;
 	}

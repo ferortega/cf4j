@@ -167,7 +167,7 @@ public class Bmf implements FactorizationModel {
 	 * @return User gamma
 	 */
 	public Double [] getUserGamma (int userIndex) {
-		User user = this.dataModel.getUserByIndex(userIndex);
+		User user = this.dataModel.getUserAt(userIndex);
 		return user.getStoredData().getDoubleArray(USER_GAMMA_KEY);
 	}
 
@@ -177,7 +177,7 @@ public class Bmf implements FactorizationModel {
 	 * @param gamma User gamma
 	 */
 	private void setUserGamma (int userIndex, Double [] gamma) 	{
-		User user = this.dataModel.getUserByIndex(userIndex);
+		User user = this.dataModel.getUserAt(userIndex);
 		user.getStoredData().setDoubleArray(USER_GAMMA_KEY, gamma);
 	}
 
@@ -187,7 +187,7 @@ public class Bmf implements FactorizationModel {
 	 * @return Item E+
 	 */
 	public Double [] getItemEPlus (int itemIndex) {
-		Item item = this.dataModel.getItemByIndex(itemIndex);
+		Item item = this.dataModel.getItemAt(itemIndex);
 		return item.getStoredData().getDoubleArray(ITEM_E_PLUS_KEY).clone();
 	}
 
@@ -197,7 +197,7 @@ public class Bmf implements FactorizationModel {
 	 * @param ePlus Item E+
 	 */
 	private void setItemEPlus (int itemIndex, Double [] ePlus) {
-		Item item = this.dataModel.getItemByIndex(itemIndex);
+		Item item = this.dataModel.getItemAt(itemIndex);
 		item.getStoredData().setDoubleArray(ITEM_E_PLUS_KEY, ePlus);
 	}
 
@@ -207,7 +207,7 @@ public class Bmf implements FactorizationModel {
 	 * @return Item E-
 	 */
 	public Double [] getItemEMinus (int itemIndex) {
-		Item item = this.dataModel.getItemByIndex(itemIndex);
+		Item item = this.dataModel.getItemAt(itemIndex);
 		return item.getStoredData().getDoubleArray(ITEM_E_MINUS_KEY).clone();
 	}
 
@@ -217,7 +217,7 @@ public class Bmf implements FactorizationModel {
 	 * @param eMinus Item E-
 	 */
 	private void setItemEMinus (int itemIndex, Double [] eMinus) 	{
-		Item item = this.dataModel.getItemByIndex(itemIndex);
+		Item item = this.dataModel.getItemAt(itemIndex);
 		item.getStoredData().setDoubleArray(ITEM_E_MINUS_KEY, eMinus);
 	}
 
@@ -232,8 +232,8 @@ public class Bmf implements FactorizationModel {
 		Double [] b = this.getItemFactors(itemIndex);
 		double prediction = Methods.dotProduct(a, b);
 
-		double max = this.dataModel.getStoredData().getDouble(DataModel.MAXRATING_KEY);
-		double min = this.dataModel.getStoredData().getDouble(DataModel.MINRATING_KEY);
+		double max = this.dataModel.getDataBank().getDouble(DataModel.MAXRATING_KEY);
+		double min = this.dataModel.getDataBank().getDouble(DataModel.MINRATING_KEY);
 
 		return prediction * (max - min) + min;
 	}
@@ -298,7 +298,7 @@ public class Bmf implements FactorizationModel {
 		@Override
 		public void run (int itemIndex) {
 
-			Item item = this.dataModel.getItemByIndex(itemIndex);
+			Item item = this.dataModel.getItemAt(itemIndex);
 
 			Double [] ePlus = Bmf.this.getItemEPlus(itemIndex);
 			Double [] eMinus = Bmf.this.getItemEMinus(itemIndex);
@@ -308,14 +308,14 @@ public class Bmf implements FactorizationModel {
 			for (int u = 0; u < item.getNumberOfRatings(); u++) {
 
 				// Arrays of ref codes are sorted
-				while (this.dataModel.getUserByIndex(userIndex).getUserCode().compareTo(item.getUsers().get(u)) < 0) userIndex++; //TODO: Check, could be reversed.
+				while (this.dataModel.getUserAt(userIndex).getUserCode().compareTo(item.getUserAt(u)) < 0) userIndex++; //TODO: Check, could be reversed.
 
 				Double [] gamma = Bmf.this.getUserGamma(userIndex);
 
 				double [] lambda = new double [Bmf.this.numFactors];
 
-				double rating = (item.getRatings().get(u) - this.dataModel.getStoredData().getDouble(DataModel.MINRATING_KEY))
-						/ (this.dataModel.getStoredData().getDouble(DataModel.MAXRATING_KEY) - this.dataModel.getStoredData().getDouble(DataModel.MINRATING_KEY));
+				double rating = (item.getRatingAt(u) - this.dataModel.getDataBank().getDouble(DataModel.MINRATING_KEY))
+						/ (this.dataModel.getDataBank().getDouble(DataModel.MAXRATING_KEY) - this.dataModel.getDataBank().getDouble(DataModel.MINRATING_KEY));
 
 				double acc = 0;
 

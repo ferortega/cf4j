@@ -52,7 +52,7 @@ public class Example1 {
 
 			// Get MAE
 			processor.process(new MAE(dataModel));
-			mae.putError(k, "user-to-user", dataModel.getStoredData().getDouble("MAE"));
+			mae.putError(k, "user-to-user", dataModel.getDataBank().getDouble("MAE"));
 		}
 
 
@@ -70,7 +70,7 @@ public class Example1 {
 
 			// Get MAE
 			processor.process(new MAE(dataModel));
-			mae.putError(k, "item-to-item", dataModel.getStoredData().getDouble("MAE"));
+			mae.putError(k, "item-to-item", dataModel.getDataBank().getDouble("MAE"));
 		}
 
 

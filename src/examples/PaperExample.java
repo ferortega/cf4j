@@ -50,7 +50,7 @@ public class PaperExample {
 
 				// Compute MAE
 				processor.process(new cf4j.qualityMeasures.MAE(dataModel));
-				mae.putError(k, sm, dataModel.getStoredData().getDouble("MAE"));
+				mae.putError(k, sm, dataModel.getDataBank().getDouble("MAE"));
 			}
 		}
 

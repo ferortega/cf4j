@@ -39,7 +39,7 @@ public class Mean extends TestPredictions {
 			if (neighbors[n] == -1) break; // Neighbors array are filled with -1 when no more neighbors exists
 			
 			int userIndex = neighbors[n];
-			User neighbor = dataModel.getUserByIndex(userIndex);
+			User neighbor = dataModel.getUserAt(userIndex);
 			
 			int i = neighbor.getItemIndex(itemCode);
 			if (i != -1) {

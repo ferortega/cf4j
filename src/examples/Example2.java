@@ -90,11 +90,11 @@ public class Example2 {
 
 				// Get MAE
 				processor.process(new MAE(dataModel));
-				mae.putError(k, sm, dataModel.getStoredData().getDouble("MAE"));
+				mae.putError(k, sm, dataModel.getDataBank().getDouble("MAE"));
 
 				// Get Coverage
 				processor.process(new Coverage(dataModel));
-				coverage.putError(k, sm, dataModel.getStoredData().getDouble("Coverage"));
+				coverage.putError(k, sm, dataModel.getDataBank().getDouble("Coverage"));
 			}
 
 			// For each number of recommendations
@@ -105,15 +105,15 @@ public class Example2 {
 
 				// Get precision
 				processor.process(new Precision(dataModel,n, precisionRecallThreshold));
-				precision.putError(n, sm, dataModel.getStoredData().getDouble("Precision"));
+				precision.putError(n, sm, dataModel.getDataBank().getDouble("Precision"));
 
 				// Get recall
 				processor.process(new Recall(dataModel,n, precisionRecallThreshold));
-				recall.putError(n, sm, dataModel.getStoredData().getDouble("Recall"));
+				recall.putError(n, sm, dataModel.getDataBank().getDouble("Recall"));
 
 				// Get F1 score
 				processor.process(new F1(dataModel,n, precisionRecallThreshold));
-				f1.putError(n, sm, dataModel.getStoredData().getDouble("F1"));
+				f1.putError(n, sm, dataModel.getDataBank().getDouble("F1"));
 			}
 
 

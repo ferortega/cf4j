@@ -36,7 +36,7 @@ public class CorrelationConstrained extends UserSimilarities {
 		ArrayList <Double> ratings = new ArrayList <Double> ();
 
 		for (int i = 0; i < this.dataModel.getNumberOfUsers(); i++){
-			User user = this.dataModel.getUserByIndex(i);
+			User user = this.dataModel.getUserAt(i);
 			for (int j = 0; j < user.getNumberOfRatings(); j++){
 				double rating = user.getRatingAt(j);
 				ratings.add(rating);

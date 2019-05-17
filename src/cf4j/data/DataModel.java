@@ -28,7 +28,7 @@ public class DataModel implements Serializable {
     private DynamicSortedArray<Item> items;
     private DynamicSortedArray<TestItem> testItems;
 
-    private DataBank storedData;
+    private DataBank dataBank;
 
     /**
      * Default constructor. It doesn't contains any information by itself. You need use loadDataset.
@@ -38,7 +38,7 @@ public class DataModel implements Serializable {
         this.testUsers = new DynamicSortedArray<TestUser>();
         this.items = new DynamicSortedArray<Item>();
         this.testItems = new DynamicSortedArray<TestItem>();
-        this.storedData = new DataBank();
+        this.dataBank = new DataBank();
     }
 
     /**
@@ -73,15 +73,14 @@ public class DataModel implements Serializable {
      */
     public void addRating (String userCode, String itemCode, double rating) {
 
-
         //Also to testUsers
         //Getting User with that id.
-        User user = this.getTestUser(userCode);
+        User user = this.getUser(userCode);
         if(user == null)  //If don't exist, create new.
             user = new User(userCode);
 
         //Getting Item with that id.
-        Item item = this.getTestItem(itemCode);
+        Item item = this.getItem(itemCode);
         if(item == null) {//If don't exist, create new.
             item = new Item(itemCode);
         }
@@ -114,18 +113,18 @@ public class DataModel implements Serializable {
         testUser.addTestRating(itemCode, rating);
         testItem.addTestRating(userCode, rating);
 
-        users.add(testUser);
-        items.add(testItem);
-        testUsers.add(testUser);
-        testItems.add(testItem);
+        this.users.add(testUser);
+        this.items.add(testItem);
+        this.testUsers.add(testUser);
+        this.testItems.add(testItem);
     }
 
     /**
      * Getter of the stored data. This data allows you to store general calculation data inside the DataModel.
      * @return The databank who stores general information.
      */
-    public DataBank getStoredData (){
-        return storedData;
+    public DataBank getDataBank(){
+        return dataBank;
     }
 
     /**
@@ -133,7 +132,7 @@ public class DataModel implements Serializable {
      * @param userCode Code of the user to retrieve
      * @return User or null
      */
-    public User getUserByCode (String userCode) {
+    public User getUser(String userCode) {
 
         int index = users.get(new User(userCode));
         if (index == -1)
@@ -146,7 +145,7 @@ public class DataModel implements Serializable {
      * @param userIndex Index of the user to retrieve
      * @return User or null
      */
-    public User getUserByIndex (int userIndex) {
+    public User getUserAt(int userIndex) {
         try {
             return this.users.get(userIndex);
         } catch (IndexOutOfBoundsException e) {
@@ -180,7 +179,7 @@ public class DataModel implements Serializable {
      * @param testUserIndex Index of the user to retrieve
      * @return User or null
      */
-    public TestUser getTestUserByIndex (int testUserIndex) {
+    public TestUser getTestUserAt(int testUserIndex) {
         try {
             return this.testUsers.get(testUserIndex);
         } catch (IndexOutOfBoundsException e) {
@@ -215,7 +214,7 @@ public class DataModel implements Serializable {
      * @param itemIndex Index of the item to retrieve
      * @return TestItem or null
      */
-    public Item getItemByIndex (int itemIndex) {
+    public Item getItemAt(int itemIndex) {
         try {
             return this.items.get(itemIndex);
         } catch (IndexOutOfBoundsException e) {
@@ -249,7 +248,7 @@ public class DataModel implements Serializable {
      * @param testItemIndex Index of the test item to retrieve
      * @return TestItem or null
      */
-    public TestItem getTestItemByIndex (int testItemIndex) {
+    public TestItem getTestItemAt(int testItemIndex) {
         try {
             return this.testItems.get(testItemIndex);
         } catch (IndexOutOfBoundsException e) {

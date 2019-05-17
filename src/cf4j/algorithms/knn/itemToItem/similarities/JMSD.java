@@ -26,7 +26,7 @@ public class JMSD extends ItemSimilarities{
 	@Override
 	public void beforeRun () {		
 		super.beforeRun();
-		this.maxDiff = this.dataModel.getStoredData().getDouble(DataModel.MAXRATING_KEY) - this.dataModel.getStoredData().getDouble(DataModel.MINRATING_KEY);
+		this.maxDiff = this.dataModel.getDataBank().getDouble(DataModel.MAXRATING_KEY) - this.dataModel.getDataBank().getDouble(DataModel.MINRATING_KEY);
 	}
 
 	@Override
@@ -36,12 +36,12 @@ public class JMSD extends ItemSimilarities{
 		double msd = 0d;
 		
 		while (u < activeItem.getNumberOfRatings() && v < targetItem.getNumberOfRatings()) {
-			if (activeItem.getUsers().get(u).compareTo(targetItem.getUsers().get(v)) < 0) {
+			if (activeItem.getUserAt(u).compareTo(targetItem.getUserAt(v)) < 0) {
 				u++;
-			} else if (activeItem.getUsers().get(u).compareTo(targetItem.getUsers().get(v)) > 0) {
+			} else if (activeItem.getUserAt(u).compareTo(targetItem.getUserAt(v)) > 0) {
 				v++;
 			} else {
-				double diff = (activeItem.getRatings().get(u) - targetItem.getRatings().get(v)) / this.maxDiff;
+				double diff = (activeItem.getRatingAt(u) - targetItem.getRatingAt(v)) / this.maxDiff;
 				msd += diff * diff;
 				intersection++;
 				u++; 

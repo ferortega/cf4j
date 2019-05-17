@@ -41,7 +41,7 @@ public class DeviationFromMean extends TestPredictions {
 		this.minSim = Double.MAX_VALUE;
 
 		for (int i = 0; i < this.dataModel.getNumberOfTestUsers(); i++){
-			TestUser testUser = this.dataModel.getTestUserByIndex(i);
+			TestUser testUser = this.dataModel.getTestUserAt(i);
 			for (double m : testUser.getStoredData().getDoubleArray(TestUser.SIMILARITIES_KEY)) {
 				if (!Double.isInfinite(m)) {
 					if (m < this.minSim) this.minSim = m;
@@ -69,7 +69,7 @@ public class DeviationFromMean extends TestPredictions {
 			if (neighbors[n] == -1) break; // Neighbors array are filled with -1 when no more neighbors exists
 			
 			int userIndex = neighbors[n];
-			User neighbor = this.dataModel.getUserByIndex(userIndex);
+			User neighbor = this.dataModel.getUserAt(userIndex);
 			
 			int i = neighbor.getItemIndex(itemCode);
 			if (i != -1) {
@@ -87,8 +87,8 @@ public class DeviationFromMean extends TestPredictions {
 		else {
 			deviation /= sumSimilarities;
 			double prediction = testUser.getRatingAverage() + deviation;
-			prediction = Math.min(prediction, this.dataModel.getStoredData().getDouble(DataModel.MAXRATING_KEY));
-			prediction = Math.max(prediction, this.dataModel.getStoredData().getDouble(DataModel.MINRATING_KEY));
+			prediction = Math.min(prediction, this.dataModel.getDataBank().getDouble(DataModel.MAXRATING_KEY));
+			prediction = Math.max(prediction, this.dataModel.getDataBank().getDouble(DataModel.MINRATING_KEY));
 			return prediction;
 		}
 	}

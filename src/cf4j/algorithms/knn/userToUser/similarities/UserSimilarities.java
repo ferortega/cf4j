@@ -41,13 +41,13 @@ abstract public class UserSimilarities extends PartibleThreads {
 
 	@Override
 	public void run (int testUserIndex) {
-		TestUser activeUser = dataModel.getTestUserByIndex(testUserIndex);
+		TestUser activeUser = dataModel.getTestUserAt(testUserIndex);
 		
 		int numUsers = dataModel.getNumberOfUsers();
 		Double [] similarities = new Double [numUsers];
 		
 		for (int u = 0; u < similarities.length; u++) {
-			User targetUser = dataModel.getUserByIndex(u);
+			User targetUser = dataModel.getUserAt(u);
 			if (activeUser.getUserCode() == targetUser.getUserCode()) {
 				similarities[u] = Double.NEGATIVE_INFINITY;
 			} else { 

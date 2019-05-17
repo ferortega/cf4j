@@ -43,13 +43,13 @@ abstract public class ItemSimilarities extends PartibleThreads {
 	@Override
 	public void run (int testItemIndex) {
 		
-		TestItem activeItem = dataModel.getTestItemByIndex(testItemIndex);
+		TestItem activeItem = dataModel.getTestItemAt(testItemIndex);
 		
 		int numItems = dataModel.getNumberOfItems();
 		Double [] similarities = new Double [numItems];
 		
 		for (int i = 0; i < numItems; i++) {
-			Item targetItem = dataModel.getItemByIndex(i);
+			Item targetItem = dataModel.getItemAt(i);
 			if (activeItem.getItemCode() == targetItem.getItemCode()) {
 				similarities[i] = Double.NEGATIVE_INFINITY;
 			} else { 

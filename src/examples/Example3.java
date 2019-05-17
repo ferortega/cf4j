@@ -51,10 +51,10 @@ public class Example3 {
 		System.out.println("\nPMF:");
 
 		processor.process(new MAE(dataModel));
-		System.out.println("- MAE: " + dataModel.getStoredData().getDouble("MAE"));
+		System.out.println("- MAE: " + dataModel.getDataBank().getDouble("MAE"));
 
 		processor.process(new Precision(dataModel, numRecommendations, threshold));
-		System.out.println("- Precision: " + dataModel.getStoredData().getDouble("Precision"));
+		System.out.println("- Precision: " + dataModel.getDataBank().getDouble("Precision"));
 
 
 		// BMF
@@ -66,9 +66,9 @@ public class Example3 {
 		System.out.println("\nBMF:");
 
 		processor.process(new MAE(dataModel));
-		System.out.println("- MAE: " + dataModel.getStoredData().getDouble("MAE"));
+		System.out.println("- MAE: " + dataModel.getDataBank().getDouble("MAE"));
 
 		processor.process(new Precision(dataModel, numRecommendations, threshold));
-		System.out.println("- Precision: " + dataModel.getStoredData().getDouble("Precision"));
+		System.out.println("- Precision: " + dataModel.getDataBank().getDouble("Precision"));
 	}
 }

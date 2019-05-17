@@ -20,9 +20,9 @@ public class Jaccard extends ItemSimilarities{
 
 		int u = 0, v = 0, common = 0;
 		while (u < activeItem.getNumberOfRatings() && v < targetItem.getNumberOfRatings()) {
-			if (activeItem.getUsers().get(u).compareTo(targetItem.getUsers().get(v)) < 0) {
+			if (activeItem.getUserAt(u).compareTo(targetItem.getUserAt(v)) < 0) {
 				u++;
-			} else if (activeItem.getUsers().get(u).compareTo(targetItem.getUsers().get(v)) > 0) {
+			} else if (activeItem.getUserAt(u).compareTo(targetItem.getUserAt(v)) > 0) {
 				v++;
 			} else {
 				common++;

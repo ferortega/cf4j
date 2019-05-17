@@ -22,14 +22,14 @@ public class Cosine extends ItemSimilarities{
 		double num = 0d, denActive = 0d, denTarget = 0d;
 		
 		while (u < activeItem.getNumberOfRatings() && v < targetItem.getNumberOfRatings()) {
-			if (activeItem.getUsers().get(u).compareTo(targetItem.getUsers().get(v)) < 0) {
+			if (activeItem.getUserAt(u).compareTo(targetItem.getUserAt(v)) < 0) {
 				u++;
-			} else if (activeItem.getUsers().get(u).compareTo(targetItem.getUsers().get(v)) > 0) {
+			} else if (activeItem.getUserAt(u).compareTo(targetItem.getUserAt(v)) > 0) {
 				v++;
 			} else {
-				num += activeItem.getRatings().get(u) * targetItem.getRatings().get(v);
-				denActive += activeItem.getRatings().get(u) * activeItem.getRatings().get(u);
-				denTarget += targetItem.getRatings().get(v) * targetItem.getRatings().get(v);
+				num += activeItem.getRatingAt(u) * targetItem.getRatingAt(v);
+				denActive += activeItem.getRatingAt(u) * activeItem.getRatingAt(u);
+				denTarget += targetItem.getRatingAt(v) * targetItem.getRatingAt(v);
 				
 				common++;
 				u++; 

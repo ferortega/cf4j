@@ -31,7 +31,7 @@ public abstract class TestPredictions extends PartibleThreads {
 	@Override
 	public void run (int testUserIndex) {
 
-		TestUser testUser = dataModel.getTestUserByIndex(testUserIndex);
+		TestUser testUser = dataModel.getTestUserAt(testUserIndex);
 				
 		int numRatings = testUser.getNumberOfTestRatings();
 		Double [] predictions = new Double [numRatings];

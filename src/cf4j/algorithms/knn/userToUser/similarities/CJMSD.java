@@ -25,7 +25,7 @@ public class CJMSD extends UserSimilarities {
 	@Override
 	public void beforeRun () {
 		super.beforeRun();
-		this.maxDiff = this.dataModel.getStoredData().getDouble(DataModel.MAXRATING_KEY) - this.dataModel.getStoredData().getDouble(DataModel.MINRATING_KEY);
+		this.maxDiff = this.dataModel.getDataBank().getDouble(DataModel.MAXRATING_KEY) - this.dataModel.getDataBank().getDouble(DataModel.MINRATING_KEY);
 	}
 
 	@Override

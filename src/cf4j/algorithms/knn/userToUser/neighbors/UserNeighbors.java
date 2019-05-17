@@ -39,7 +39,7 @@ public abstract class UserNeighbors extends PartibleThreads {
 
 	@Override
 	public void run (int testUserIndex) {
-		TestUser testUser = dataModel.getTestUserByIndex(testUserIndex);
+		TestUser testUser = dataModel.getTestUserAt(testUserIndex);
 		Integer [] neighbors = this.neighbors(testUser);
 		testUser.getStoredData().setIntegerArray(TestUser.NEIGHBORS_KEY ,neighbors);
 	}

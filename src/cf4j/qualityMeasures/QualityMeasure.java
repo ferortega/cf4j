@@ -38,7 +38,7 @@ public abstract class QualityMeasure extends PartibleThreads {
 
 	@Override
 	public void run (int testUserIndex) {
-		TestUser testUser = dataModel.getTestUserByIndex(testUserIndex);
+		TestUser testUser = dataModel.getTestUserAt(testUserIndex);
 		double measure = this.getMeasure(testUser);
 		testUser.getStoredData().setDouble(qualityMeasureName, measure);
 	}
@@ -49,7 +49,7 @@ public abstract class QualityMeasure extends PartibleThreads {
 		double summation = 0.0f;
 		int numValues = 0;
 		for (int i = 0 ; i < dataModel.getNumberOfUsers(); i++){
-			User user = dataModel.getTestUserByIndex(i);
+			User user = dataModel.getTestUserAt(i);
 			double userValue = user.getStoredData().getDouble(qualityMeasureName);
 			if (!Double.isNaN(userValue)) {
 				summation += userValue;
@@ -57,9 +57,9 @@ public abstract class QualityMeasure extends PartibleThreads {
 			}
 		}
 		if (numValues > 0) {
-			dataModel.getStoredData().setDouble(qualityMeasureName,(summation / numValues));
+			dataModel.getDataBank().setDouble(qualityMeasureName,(summation / numValues));
 		} else {
-			dataModel.getStoredData().setDouble(qualityMeasureName, Double.NaN);
+			dataModel.getDataBank().setDouble(qualityMeasureName, Double.NaN);
 		}
 	}
 }

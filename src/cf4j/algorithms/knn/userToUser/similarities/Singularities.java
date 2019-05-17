@@ -6,7 +6,6 @@ import cf4j.data.Item;
 import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.data.User;
-import org.jcp.xml.dsig.internal.dom.DOMPGPData;
 
 /**
  * Implements the following CF similarity metric: Bobadilla, J., Ortega, F., &amp;
@@ -56,7 +55,7 @@ public class Singularities extends UserSimilarities{
 		this.notRelevantRatings = new HashSet <Double> ();
 		for (double r : notRelevantRatings)  this.notRelevantRatings.add(r);
 		
-		this.maxDiff = dataModel.getStoredData().getDouble(DataModel.MAXRATING_KEY) - dataModel.getStoredData().getDouble(DataModel.MINRATING_KEY);
+		this.maxDiff = dataModel.getDataBank().getDouble(DataModel.MAXRATING_KEY) - dataModel.getDataBank().getDouble(DataModel.MINRATING_KEY);
 	}
 
 	@Override
@@ -70,7 +69,7 @@ public class Singularities extends UserSimilarities{
 		this.singularityOfNotRelevantRatings = new double [dataModel.getNumberOfItems()];
 
 		for (int i = 0; i < dataModel.getNumberOfItems(); i++) {
-			Item item = dataModel.getItemByIndex(i);
+			Item item = dataModel.getItemAt(i);
 
 			int numberOfRelevantRatings = 0;
 			int numberOfNotRelevantRatings = 0;

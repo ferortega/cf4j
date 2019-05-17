@@ -42,7 +42,7 @@ public class WeightedMean extends TestPredictions {
 		this.minSim = Double.MAX_VALUE;
 		
 		for (int i = 0; i < dataModel.getNumberOfTestItems(); i++){
-			TestItem testItem = dataModel.getTestItemByIndex(i);
+			TestItem testItem = dataModel.getTestItemAt(i);
 			for (double m : testItem.getStoredData().getDoubleArray(TestItem.SIMILARITIES_KEY)){
 				if (!Double.isInfinite(m)) {
 					if (m < this.minSim) this.minSim = m;
@@ -67,7 +67,7 @@ public class WeightedMean extends TestPredictions {
 			if (neighbors[n] == -1) break; // Neighbors array are filled with -1 when no more neighbors exists
 			
 			int itemIndex = neighbors[n];
-			Item neighbor = dataModel.getItemByIndex(itemIndex);
+			Item neighbor = dataModel.getItemAt(itemIndex);
 			String neighborCode = neighbor.getItemCode();
 			
 							
