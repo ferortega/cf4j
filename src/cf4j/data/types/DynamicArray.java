@@ -19,8 +19,8 @@ public class DynamicArray<E> {
 
     /**
      * <p>Insert element in a specific position.</p>
-     * <p>Don't use this method if you are using sorted arrays</p>
-     * @param index No sense index.
+     * <p>This will move each other elements right.</p>
+     * @param index Position to insert the element.
      * @param element Element to add ordered
      * @throws IndexOutOfBoundsException
      */
@@ -31,7 +31,7 @@ public class DynamicArray<E> {
         if (this.size >= this.data.length)
             this.increaseCapacity(this.size);
 
-        System.arraycopy(this.data,index,this.data,index+1,this.size - index); //TODO: copia bien? se pisa?
+        System.arraycopy(this.data,index,this.data,index+1,this.size - index);
         this.data[index] = element;
         this.size++;
 
@@ -39,6 +39,27 @@ public class DynamicArray<E> {
             this.size = index + 1;
     }
 
+    /**
+     * <p>Insert element in a specific position, overwriting its contents.</p>
+     * <p>If the index exceeds current size, it will be added as new element in the array increasing the size</p>
+     * @param index Position to insert/add the element.
+     * @param element Element to add ordered
+     * @throws IndexOutOfBoundsException
+     */
+    public void modify(int index, E element){
+        if (index >= 0 && index < this.size){
+            this.data[index] = element;
+        }
+
+        if (index >= this.size) {
+            this.size = index + 1;
+
+            if (this.size >= this.data.length)
+                this.increaseCapacity(this.size);
+
+            this.data[index] = element;
+        }
+    }
     /**
      * <p>This method returns the element in a specific position in the array [0-size()-1]</p>
      * @param index Index to the element inside the array.

@@ -147,7 +147,14 @@ public class User implements Serializable, Comparable<User> {
 	 * @param rating rated value by user, refering this item.
 	 */
 	public void addRating(String itemCode, double rating){
-		this.ratings.add(this.items.add(itemCode), new Double(rating));
+		int positionInArray = this.items.get(itemCode);
+
+		if (positionInArray != -1){ //If element already exists.
+			this.items.modify(positionInArray, itemCode);
+			this.ratings.modify(positionInArray, rating);
+		}else{ //If not exist.
+			this.ratings.add(this.items.add(itemCode), rating);
+		}
 	}
 
 	/**

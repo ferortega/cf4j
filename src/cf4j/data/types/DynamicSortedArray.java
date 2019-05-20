@@ -27,17 +27,23 @@ public class DynamicSortedArray<E> extends DynamicArray<E> {
             @SuppressWarnings("unchecked") //This won't happen.
             final Comparable<E> c = (Comparable<E>) data[center];
 
-            if (c.compareTo(element) > 0) { //TODO: Comprobar.
+            if (c.compareTo(element) > 0) {
                 max = center - 1;
             } else {
                 min = center + 1;
             }
+
+            if (c.compareTo(element) == 0){
+                this.modify(center,element);
+                return center;
+            }
         }
+
         @SuppressWarnings("unchecked") //This won't happen.
         final E e = (E) data[min];
         @SuppressWarnings("unchecked") //This won't happen.
         final Comparable<E> c = (Comparable<E>) data[min];
-        if(c.compareTo(element) > 0){ //TODO: Comprobar.
+        if(c.compareTo(element) > 0){
             this.add(min+1,element);
             return min+1;
         }else{
@@ -46,8 +52,10 @@ public class DynamicSortedArray<E> extends DynamicArray<E> {
         }
     }
 
+
+
     /**
-     * This methods find the element with positional equivalence in the array (Followin Comparable interface ordering).
+     * This methods find the element with positional equivalence in the array (Following Comparable interface ordering).
      * @param element Element to find position correspondences.
      * @return Array element which corresponds with the given element position.
      * @throws ClassCastException
@@ -62,7 +70,7 @@ public class DynamicSortedArray<E> extends DynamicArray<E> {
             final Comparable<E> c = (Comparable<E>) data[center];
             if (c.compareTo(element) == 0)
                 return center;
-            if (c.compareTo(element) > 0) { //TODO: Comprobar.
+            if (c.compareTo(element) > 0) {
                 max = center - 1;
             } else {
                 min = center + 1;

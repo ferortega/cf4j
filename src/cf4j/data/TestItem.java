@@ -129,6 +129,13 @@ public class TestItem extends Item {
 	 * @param rating rated value of the user, refering this item.
 	 */
 	public void addTestRating(String userCode, double rating){
-		testRatings.add(testUsers.add(userCode), new Double(rating));
+		int positionInArray = this.testUsers.get(userCode);
+
+		if (positionInArray != -1){ //If element already exists.
+			this.testUsers.modify(positionInArray, userCode);
+			this.testRatings.modify(positionInArray, rating);
+		}else{ //If not exist.
+			this.testRatings.add(this.testUsers.add(userCode), rating);
+		}
 	}
 }
