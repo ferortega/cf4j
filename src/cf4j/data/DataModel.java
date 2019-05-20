@@ -46,7 +46,12 @@ public class DataModel implements Serializable {
      * @param dataset DataSet to be added to the DataModel.
      */
     public DataModel (DataSet dataset){
-        this();
+        //Initializing the arrays to the estimated initial size (taking into account the DataSet entries)
+        this.users = new DynamicSortedArray<User>(dataset.getRatingsSize()/40);
+        this.testUsers = new DynamicSortedArray<TestUser>(dataset.getTestRatingsSize()/40);
+        this.items = new DynamicSortedArray<Item>(dataset.getRatingsSize()/40);
+        this.testItems = new DynamicSortedArray<TestItem>(dataset.getTestRatingsSize()/40);
+        this.dataBank = new DataBank();
         this.loadDataset(dataset);
     }
 
@@ -76,20 +81,19 @@ public class DataModel implements Serializable {
         //Also to testUsers
         //Getting User with that id.
         User user = this.getUser(userCode);
-        if(user == null)  //If don't exist, create new.
+        if(user == null) { //If don't exist, create new and add it.
             user = new User(userCode);
-
+            this.users.add(user);
+        }
         //Getting Item with that id.
         Item item = this.getItem(itemCode);
-        if(item == null) {//If don't exist, create new.
+        if(item == null) {//If don't exist, create new and add it.
             item = new Item(itemCode);
+            this.items.add(item);
         }
 
         user.addRating(itemCode, rating);
         item.addRating(userCode, rating);
-
-        this.users.add(user);
-        this.items.add(item);
     }
 
     /**
@@ -101,22 +105,21 @@ public class DataModel implements Serializable {
     public void addTestRating (String userCode, String itemCode, double rating) {
 
         TestUser testUser = this.getTestUser(userCode);
-        if(testUser == null) { //If don't exist, create new.
+        if(testUser == null) { //If don't exist, create new and add it to the arrays.
             testUser = new TestUser(userCode); //<-
+            this.users.add(testUser);
+            this.testUsers.add(testUser);
         }
         //Getting Item with that id.
         TestItem testItem = this.getTestItem(itemCode);
-        if(testItem == null) {//If don't exist, create new.
+        if(testItem == null) {//If don't exist, create new and add it to the arrays..
             testItem = new TestItem(itemCode); //<-
+            this.items.add(testItem);
+            this.testItems.add(testItem);
         }
 
         testUser.addTestRating(itemCode, rating);
         testItem.addTestRating(userCode, rating);
-
-        this.users.add(testUser);
-        this.items.add(testItem);
-        this.testUsers.add(testUser);
-        this.testItems.add(testItem);
     }
 
     /**

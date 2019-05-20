@@ -2,6 +2,13 @@ package cf4j.data.types;
 
 public class DynamicSortedArray<E> extends DynamicArray<E> {
 
+    public DynamicSortedArray (){
+        super();
+    }
+
+    public DynamicSortedArray (int customCapacity){
+        super(customCapacity);
+    }
     /**
      * <p>Adds any element to the array in a ordered way</p>
      * @param element Element to insert inside the sorted array.
@@ -19,10 +26,6 @@ public class DynamicSortedArray<E> extends DynamicArray<E> {
             final E e = (E) data[center];
             @SuppressWarnings("unchecked") //This won't happen.
             final Comparable<E> c = (Comparable<E>) data[center];
-
-            if ((max-min)<=1){
-
-            }
 
             if (c.compareTo(element) > 0) { //TODO: Comprobar.
                 max = center - 1;

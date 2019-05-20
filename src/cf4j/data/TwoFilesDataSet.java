@@ -108,4 +108,20 @@ public class TwoFilesDataSet implements DataSet
         return testRatings.iterator();
     }
 
+    /**
+     * Implementation of the interface.
+     * @return Number of elements of the Rating array.
+     */
+    public int getRatingsSize(){
+        return ratings.size();
+    }
+
+    /**
+     * Implementation of the interface.
+     * @return Number of elements of the Test Rating array.
+     */
+    public int getTestRatingsSize(){
+        return testRatings.size();
+    }
+
 }
