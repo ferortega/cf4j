@@ -1,7 +1,5 @@
 package cf4j.process;
 
-import cf4j.data.DataModel;
-
 /**
  * <p>Class that manages the execution of processes. To use this class, you must have previously 
  * loaded a dataModel. This datamodel should be sent to the specific Partible algorithms</p>
@@ -63,19 +61,19 @@ public class Processor {
 
 	/**
 	 * Execute a Partible implementation for users.
-	 * @see PartibleThreads
+	 * @see Partible
 	 * @param partible partible implementation of the datamodel focused on a specific runnable algorithm.
 	 */
-	public synchronized void parallelExec (PartibleThreads partible) {
+	public synchronized void parallelExec (Partible partible) {
 		this.parallelExec(partible, true);
 	}
 
 	/**
 	 * Execute a Partible implementation for users.
-	 * @see PartibleThreads
+	 * @see Partible
 	 * @param partible partible implementation of the datamodel focused on a specific runnable algorithm.
 	 */
-	public synchronized void parallelExec (PartibleThreads partible, boolean verbose) {
+	public synchronized void parallelExec (Partible partible, boolean verbose) {
 		if (verbose) System.out.println("\nProcessing... " + this.getClass().getName());
 
 		// Error control
@@ -95,16 +93,11 @@ public class Processor {
 
 		// Launch all threads
 		int index;
-		PartibleThreads [] pt = new PartibleThreads[numThreads];
+		PartibleThread[] pt = new PartibleThread[numThreads];
 		//First thread is the received instance of the partibles.
-		for (index = 1; index < this.numThreads && index < partible.getTotalIndexes(); index++) {
-			pt[index] = (PartibleThreads) partible.clone();
-			pt[index].setName("Thread-"+index);
-			pt[index].startPartible(index, indexesPerThread); //This runs the run function once per index
+		for (index = 0; index < this.numThreads && index < partible.getTotalIndexes(); index++) {
+			pt[index] = new PartibleThread(partible,index,indexesPerThread,verbose);
 		}
-		pt[0] = (PartibleThreads) partible.clone(); //First partition is executed lastly
-		pt[0].setName("Thread-0");
-		pt[0].startPartible(0, indexesPerThread); //This runs the run function once per index
 
 		// Wait until all threads end
 		try {

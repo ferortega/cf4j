@@ -38,7 +38,7 @@ public abstract class UserNeighbors extends TestUserPartible {
 	public void run (int testUserIndex) {
 		TestUser testUser = dataModel.getTestUserAt(testUserIndex);
 		Integer [] neighbors = this.neighbors(testUser);
-		testUser.getStoredData().setIntegerArray(TestUser.NEIGHBORS_KEY ,neighbors);
+		testUser.getDataBank().setIntegerArray(TestUser.NEIGHBORS_KEY ,neighbors);
 	}
 
 	@Override

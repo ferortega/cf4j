@@ -38,7 +38,7 @@ public abstract class ItemNeighbors extends ItemPartible {
 	public void run (int testItemIndex) {
 		TestItem testItem = dataModel.getTestItemAt(testItemIndex);
 		Integer [] neighbors = this.neighbors(testItem);
-		testItem.getStoredData().setIntegerArray(TestItem.NEIGHBORS_KEY ,neighbors);
+		testItem.getDataBank().setIntegerArray(TestItem.NEIGHBORS_KEY ,neighbors);
 	}
 
 	@Override

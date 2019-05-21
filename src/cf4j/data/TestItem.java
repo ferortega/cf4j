@@ -16,10 +16,12 @@ import java.util.ArrayList;
  */
 public class TestItem extends Item {
 
-	private static final long serialVersionUID = 20171018L;
+	private static final long serialVersionUID = 20190518L;
 
 	public final static String SIMILARITIES_KEY = "similarities";
 	public final static String NEIGHBORS_KEY = "neighbors";
+	public static final String AVERAGETESTRATING_KEY = "averagetest_rating";
+	public static final String STANDARDDEVIATIONTEST_KEY = "standardDeviation_rating";
 
 	/**
 	 * Test users that have rated this item
@@ -30,16 +32,7 @@ public class TestItem extends Item {
 	 * Test ratings of the users
 	 */
 	protected DynamicArray<Double> testRatings;
-	
-	/**
-	 * Test rating average of the item
-	 */
-	protected double testRatingAverage;
-	
-	/**
-	 * Test rating standard deviation of this item
-	 */
-	protected double testRatingStandardDeviation;
+
 
 	/**
 	 * Creates a new instance of a test item. This constructor should not be used by developers.
@@ -49,27 +42,26 @@ public class TestItem extends Item {
 		super(itemCode);
 		this.testUsers = new DynamicSortedArray<String>();
 		this.testRatings = new DynamicArray<Double>();
-		//TODO: Metrics?
-		//this.testRatingAverage = Methods.arrayAverage(testRatings);
-		//this.testRatingStandardDeviation = Methods.arrayStandardDeviation(testRatings);
 	}
 
-	/**
-	 * Average of the test ratings
-	 * @return Test ratings average
-	 */
-	public double getTestRatingAverage() {
-		return this.testRatingAverage;
+	public void calculateMetrics() {
+		double sumRatings = 0;
+		for (int i = 0; i < this.getNumberOfRatings();i++){
+			sumRatings += this.testRatings.get(i);
+		}
+
+		double ratingAverage = sumRatings / this.getNumberOfRatings();
+		double sumDesv = 0;
+
+		for (int i = 0; i < this.getNumberOfRatings();i++){
+			sumDesv += (this.testRatings.get(i) - ratingAverage) * (this.testRatings.get(i) - ratingAverage);
+		}
+		double standardDeviation = Math.sqrt(sumDesv / this.getNumberOfRatings()-1);
+
+		this.getDataBank().setDouble(AVERAGETESTRATING_KEY, ratingAverage);
+		this.getDataBank().setDouble(STANDARDDEVIATIONTEST_KEY, standardDeviation);
 	}
 
-	/**
-	 * Standard deviation of the test ratings
-	 * @return Test ratings standard deviation
-	 */
-	public double getTestRatingStandardDeviation() {
-		return this.testRatingStandardDeviation;
-	}
-	
 	/**
 	 * Get the test users that have rated the item
 	 * @return Test users codes sorted from low to high. 

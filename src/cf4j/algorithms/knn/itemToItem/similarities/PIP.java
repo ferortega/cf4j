@@ -35,7 +35,6 @@ public class PIP extends ItemSimilarities {
 	public PIP (DataModel dataModel) {
 		super(dataModel);
 
-		this.dataModel.recalculateMetrics();
 		this.max = this.dataModel.getDataBank().getDouble(DataModel.MAXRATING_KEY);
 		this.min = this.dataModel.getDataBank().getDouble(DataModel.MINRATING_KEY);
 		
@@ -74,7 +73,7 @@ public class PIP extends ItemSimilarities {
 				// Calculamos la popularity
 				String userCode = activeItem.getUserAt(u);
 				User user = this.dataModel.getUser(userCode);
-				double userAvg = user.getRatingAverage();
+				double userAvg = (user.getNumberOfRatings() != 0) ? user.getDataBank().getDouble(User.AVERAGERATING_KEY) : 0;
 				
 				double popularity = 1;
 				if ((ra > userAvg && rt > userAvg) || (ra < userAvg && rt < userAvg)) {

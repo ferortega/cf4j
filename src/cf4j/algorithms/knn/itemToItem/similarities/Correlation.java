@@ -27,8 +27,8 @@ public class Correlation extends ItemSimilarities{
 			} else if (activeItem.getUserAt(u).compareTo(targetItem.getUserAt(v)) > 0) {
 				v++;
 			} else {
-				double fa = activeItem.getRatingAt(u) - activeItem.getRatingAverage();
-				double ft = targetItem.getRatingAt(v) - targetItem.getRatingAverage();
+				double fa = activeItem.getRatingAt(u) - activeItem.getDataBank().getDouble(Item.AVERAGERATING_KEY);
+				double ft = targetItem.getRatingAt(v) - targetItem.getDataBank().getDouble(Item.AVERAGERATING_KEY);
 				
 				num += fa * ft;
 				denActive += fa * fa;

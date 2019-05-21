@@ -26,7 +26,6 @@ public class JMSD extends UserSimilarities {
 	public void beforeRun () {
 		super.beforeRun();
 
-		this.dataModel.recalculateMetrics();
 		this.maxDiff = dataModel.getDataBank().getDouble(DataModel.MAXRATING_KEY) - dataModel.getDataBank().getDouble(DataModel.MINRATING_KEY);
 	}
 	

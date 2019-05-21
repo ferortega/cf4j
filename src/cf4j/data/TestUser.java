@@ -20,6 +20,8 @@ public class TestUser extends User {
 	public final static String SIMILARITIES_KEY = "similarities";
 	public final static String NEIGHBORS_KEY = "neighbors";
 	public final static String PREDICTIONS_KEYS = "predictions";
+	public static final String AVERAGETESTRATING_KEY = "averagetest_rating";
+	public static final String STANDARDDEVIATIONTEST_KEY = "standardDeviation_rating";
 
 	/**
 	 * Test items that rated by the user
@@ -30,16 +32,6 @@ public class TestUser extends User {
 	 * Test ratings of the items
 	 */
 	protected DynamicArray<Double> testRatings;
-	
-	/**
-	 * Test rating average of the user
-	 */
-	protected double testRatingAverage;
-	
-	/**
-	 * Test rating standard deviation of this user
-	 */
-	protected double testRatingStandardDeviation;
 
 	/**
 	 * Creates a new instance of an user. This constructor should not be used by developers.
@@ -49,25 +41,24 @@ public class TestUser extends User {
 		super(userCode);
 		this.testItems = new DynamicSortedArray<String>();
 		this.testRatings = new DynamicArray<Double>();
-		//TODO: Metrics?
-		//this.testRatingAverage = Methods.arrayAverage(testRatings);
-		//this.testRatingStandardDeviation = Methods.arrayStandardDeviation(testRatings);
 	}
 
-	/**
-	 * Average of the test ratings
-	 * @return Test rating average
-	 */
-	public double getTestRatingAverage() {
-		return this.testRatingAverage;
-	}
+	public void calculateMetrics() {
+		double sumRatings = 0;
+		for (int i = 0; i < this.getNumberOfRatings();i++){
+			sumRatings += this.testRatings.get(i);
+		}
 
-	/**
-	 * Standard deviation of the test ratings
-	 * @return Test rating standard deviation
-	 */
-	public double getTestRatingStandardDeviation() {
-		return this.testRatingStandardDeviation;
+		double ratingAverage = sumRatings / this.getNumberOfRatings();
+		double sumDesv = 0;
+
+		for (int i = 0; i < this.getNumberOfRatings();i++){
+			sumDesv += (this.testRatings.get(i) - ratingAverage) * (this.testRatings.get(i) - ratingAverage);
+		}
+		double standardDeviation = Math.sqrt(sumDesv / this.getNumberOfRatings()-1);
+
+		this.getDataBank().setDouble(AVERAGETESTRATING_KEY, ratingAverage);
+		this.getDataBank().setDouble(STANDARDDEVIATIONTEST_KEY, standardDeviation);
 	}
 
 	/**

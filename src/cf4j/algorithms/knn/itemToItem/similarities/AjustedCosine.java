@@ -30,7 +30,7 @@ public class AjustedCosine extends ItemSimilarities {
 			} else {
 				String userCode = activeItem.getUserAt(u);
 				User user = this.dataModel.getUser(userCode);
-				double avg = user.getRatingAverage();
+				double avg = (user.getNumberOfRatings() != 0) ? user.getDataBank().getDouble(User.AVERAGERATING_KEY): 0;
 				
 				double fa = activeItem.getRatingAt(u) - avg;
 				double ft = targetItem.getRatingAt(v) - avg;

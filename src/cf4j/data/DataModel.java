@@ -121,7 +121,7 @@ public class DataModel implements Serializable {
         testItem.addTestRating(userCode, rating);
     }
 
-    public void recalculateMetrics(){
+    public void calculateMetrics(){
         //TODO: Its made only of users, is it right?.
         double minRating = Double.MAX_VALUE;
         double maxRating = Double.MIN_VALUE;
@@ -129,12 +129,26 @@ public class DataModel implements Serializable {
         int numRatings = 0;
 
         for (int i = 0; i < this.getNumberOfUsers(); i++){
+            this.getUserAt(i).calculateMetrics();
+        }
+        for (int i = 0; i < this.getNumberOfTestUsers(); i++){
+            this.getTestUserAt(i).calculateMetrics();
+        }
+        for (int i = 0; i < this.getNumberOfItems(); i++){
+            this.getItemAt(i).calculateMetrics();
+        }
+        for (int i = 0; i < this.getNumberOfTestItems(); i++){
+            this.getTestItemAt(i).calculateMetrics();
+        }
+
+        for (int i = 0; i < this.getNumberOfUsers(); i++){
             User user = this.getUserAt(i);
             for (int j = 0; j < user.getNumberOfRatings(); j++){
                 if (user.getRatingAt(j) < minRating) minRating = user.getRatingAt(j);
                 if (user.getRatingAt(j) > maxRating) maxRating = user.getRatingAt(j);
-                sumRatigns += user.getRatingAt(j);
             }
+            if (user.getNumberOfRatings() != 0)
+                sumRatigns += user.getDataBank().getDouble(User.AVERAGERATING_KEY) * user.getNumberOfRatings();
             numRatings += user.getNumberOfRatings();
         }
 
@@ -323,7 +337,7 @@ public class DataModel implements Serializable {
 
     public String toString() {
 
-        recalculateMetrics();
+        calculateMetrics();
 
         int numRatings = 0;
         for (int i = 0; i < this.users.size(); i++)

@@ -39,7 +39,7 @@ public abstract class TestPredictions extends TestUserPartible {
 			predictions[i] = prediction;
 		}
 
-		testUser.getStoredData().setDoubleArray(TestUser.PREDICTIONS_KEYS,predictions);
+		testUser.getDataBank().setDoubleArray(TestUser.PREDICTIONS_KEYS,predictions);
 	}
 
 	@Override

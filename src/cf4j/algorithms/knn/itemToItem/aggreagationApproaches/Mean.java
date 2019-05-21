@@ -28,7 +28,7 @@ public class Mean extends TestPredictions {
 	public double predict (TestUser testUser, String itemCode) {
 		
 		TestItem item = this.dataModel.getTestItem(itemCode);
-		Integer [] neighbors = item.getStoredData().getIntegerArray(TestItem.NEIGHBORS_KEY);
+		Integer [] neighbors = item.getDataBank().getIntegerArray(TestItem.NEIGHBORS_KEY);
 		
 		double prediction = 0;
 		int count = 0;

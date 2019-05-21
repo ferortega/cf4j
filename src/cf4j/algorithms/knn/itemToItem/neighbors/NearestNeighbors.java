@@ -25,7 +25,7 @@ public class NearestNeighbors extends ItemNeighbors {
 	
 	@Override
 	public Integer [] neighbors (TestItem testItem) {
-		Double [] similarities = testItem.getStoredData().getDoubleArray(TestItem.SIMILARITIES_KEY);
+		Double [] similarities = testItem.getDataBank().getDoubleArray(TestItem.SIMILARITIES_KEY);
 		Integer [] neighbors = Methods.findTopN(similarities, super.k);
 		return neighbors;
 	}

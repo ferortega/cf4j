@@ -27,8 +27,10 @@ public class Correlation extends UserSimilarities {
 			} else if (activeUser.getItems().get(i).compareTo(targetUser.getItems().get(j)) > 0) {
 				j++;
 			} else {
-				double fa = activeUser.getRatings().get(i) - activeUser.getRatingAverage();
-				double ft = targetUser.getRatings().get(j) - targetUser.getRatingAverage();
+				double avgFa = (activeUser.getNumberOfRatings()>0)?activeUser.getDataBank().getDouble(User.AVERAGERATING_KEY):0;
+				double avgFt = (targetUser.getNumberOfRatings()>0)?targetUser.getDataBank().getDouble(User.AVERAGERATING_KEY):0;
+				double fa = activeUser.getRatings().get(i) - avgFa;
+				double ft = targetUser.getRatings().get(j) - avgFt;
 				
 				num += fa * ft;
 				denActive += fa * fa;

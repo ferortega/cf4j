@@ -24,7 +24,7 @@ public class NearestNeighbors extends UserNeighbors {
 
 	@Override
 	public Integer [] neighbors (TestUser testUser) {
-		Double [] similarities = testUser.getStoredData().getDoubleArray(TestUser.SIMILARITIES_KEY);
+		Double [] similarities = testUser.getDataBank().getDoubleArray(TestUser.SIMILARITIES_KEY);
 		Integer [] neighbors = Methods.findTopN(similarities, super.k);
 		return neighbors;
 	}

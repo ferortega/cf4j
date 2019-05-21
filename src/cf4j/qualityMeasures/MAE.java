@@ -26,7 +26,7 @@ public class MAE extends QualityMeasure {
 	@Override
 	public double getMeasure (TestUser testUser) {
 		
-		Double [] predictions = testUser.getStoredData().getDoubleArray(TestUser.PREDICTIONS_KEYS);
+		Double [] predictions = testUser.getDataBank().getDoubleArray(TestUser.PREDICTIONS_KEYS);
 		DynamicArray<Double> ratings = testUser.getTestRatings();
 		
 		double mae = 0d; 

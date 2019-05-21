@@ -18,7 +18,10 @@ import cf4j.data.types.DynamicSortedArray;
  */
 public class User implements Serializable, Comparable<User> {
 
-	private static final long serialVersionUID = 20171018L;
+	private static final long serialVersionUID = 20190518L;
+
+	public static final String AVERAGERATING_KEY = "average_rating";
+	public static final String STANDARDDEVIATION_KEY = "standardDeviation_rating";
 
 	/**
 	 * User code
@@ -28,7 +31,7 @@ public class User implements Serializable, Comparable<User> {
 	/**
 	 * Map of the user
 	 */
-	protected DataBank storedData;
+	protected DataBank dataBank;
 
 	/**
 	 * Items rated by the user
@@ -39,16 +42,6 @@ public class User implements Serializable, Comparable<User> {
 	 * Ratings of the user to the items
 	 */
 	protected DynamicArray<Double> ratings;
-	
-	/**
-	 * Rating average of the user ratings
-	 */
-	protected double ratingAverage;
-	
-	/**
-	 * Standard deviation of the user ratings
-	 */
-	protected double ratingStandardDeviation;
 
 	/**
 	 * Creates a new instance of an user. This constructor should not be used by developers.
@@ -56,29 +49,31 @@ public class User implements Serializable, Comparable<User> {
 	 */
 	public User (String userCode) {
 		this.userCode = userCode;
-		this.storedData = new DataBank();
+		this.dataBank = new DataBank();
 		this.items = new DynamicSortedArray<String>();
 		this.ratings = new DynamicArray<Double>();
 	}
 
-	public DataBank getStoredData (){
-		return storedData;
+	public DataBank getDataBank(){
+		return dataBank;
 	}
 
-	/**
-	 * Average of the user ratings.
-	 * @return Rating average
-	 */
-	public double getRatingAverage() {
-		return this.ratingAverage;
-	}
+	public void calculateMetrics() {
+		double sumRatings = 0;
+		for (int i = 0; i < this.getNumberOfRatings();i++){
+			sumRatings += this.ratings.get(i);
+		}
 
-	/**
-	 * Standard deviation of the user ratings.
-	 * @return Rating standard deviation
-	 */
-	public double getRatingStandardDeviation() {
-		return this.ratingStandardDeviation;
+		double ratingAverage = sumRatings / this.getNumberOfRatings();
+		double sumDesv = 0;
+
+		for (int i = 0; i < this.getNumberOfRatings();i++){
+			sumDesv += (this.ratings.get(i) - ratingAverage) * (this.ratings.get(i) - ratingAverage);
+		}
+		double standardDeviation = Math.sqrt(sumDesv / this.getNumberOfRatings()-1);
+
+		this.getDataBank().setDouble(AVERAGERATING_KEY, ratingAverage);
+		this.getDataBank().setDouble(STANDARDDEVIATION_KEY, standardDeviation);
 	}
 
 	/**

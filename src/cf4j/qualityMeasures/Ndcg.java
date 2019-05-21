@@ -2,7 +2,6 @@ package cf4j.qualityMeasures;
 
 import cf4j.data.DataModel;
 import cf4j.data.TestUser;
-import cf4j.qualityMeasures.QualityMeasure;
 import cf4j.utils.Methods;
 
 /**
@@ -45,7 +44,7 @@ public class Ndcg extends QualityMeasure {
 				
         // Compute DCG
 		
-		Double [] predictions = testUser.getStoredData().getDoubleArray(TestUser.PREDICTIONS_KEYS);
+		Double [] predictions = testUser.getDataBank().getDoubleArray(TestUser.PREDICTIONS_KEYS);
 		Integer [] recommendations = Methods.findTopN(predictions, this.numberOfRecommendations);
 		
 		double dcg = 0d;

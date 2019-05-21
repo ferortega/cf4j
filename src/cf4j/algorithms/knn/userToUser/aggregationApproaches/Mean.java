@@ -30,7 +30,7 @@ public class Mean extends TestPredictions {
 	 */
 	public double predict (TestUser testUser, String itemCode) {
 		
-		Integer [] neighbors = testUser.getStoredData().getIntegerArray(TestUser.NEIGHBORS_KEY);
+		Integer [] neighbors = testUser.getDataBank().getIntegerArray(TestUser.NEIGHBORS_KEY);
 		
 		double prediction = 0;
 		int count = 0;

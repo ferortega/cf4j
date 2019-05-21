@@ -44,7 +44,7 @@ public class Precision extends QualityMeasure {
 	public double getMeasure (TestUser testUser) {
 		
 		// Items that has been recommended and was relevant to the active user
-		Double [] predictions = testUser.getStoredData().getDoubleArray(TestUser.PREDICTIONS_KEYS);
+		Double [] predictions = testUser.getDataBank().getDoubleArray(TestUser.PREDICTIONS_KEYS);
 		Integer [] recommendations = Methods.findTopN(predictions, this.numberOfRecommendations);
 		
 		int recommendedAndRelevant = 0, recommended = 0;

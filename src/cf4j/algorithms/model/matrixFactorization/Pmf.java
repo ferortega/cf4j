@@ -135,6 +135,8 @@ public class Pmf implements FactorizationModel {
 				this.setItemBias(i, this.random(-1, 1));
 			}
 		}
+
+		this.dataModel.calculateMetrics();
 	}
 
 	/**
@@ -186,7 +188,7 @@ public class Pmf implements FactorizationModel {
 	 */
 	public Double [] getUserFactors (int userIndex) {
 		User user = dataModel.getUserAt(userIndex);
-		return user.getStoredData().getDoubleArray(USER_FACTORS_KEY);
+		return user.getDataBank().getDoubleArray(USER_FACTORS_KEY);
 	}
 
 	/**
@@ -196,7 +198,7 @@ public class Pmf implements FactorizationModel {
 	 */
 	private void setUserFactors (int userIndex, Double [] factors) {
 		User user = this.dataModel.getUserAt(userIndex);
-		user.getStoredData().setDoubleArray(USER_FACTORS_KEY, factors);
+		user.getDataBank().setDoubleArray(USER_FACTORS_KEY, factors);
 	}
 
 	/**
@@ -206,7 +208,7 @@ public class Pmf implements FactorizationModel {
 	 */
 	public Double [] getItemFactors (int itemIndex) {
 		Item item = this.dataModel.getItemAt(itemIndex);
-		return (Double []) item.getStoredData().getDoubleArray(ITEM_FACTORS_KEY);
+		return (Double []) item.getDataBank().getDoubleArray(ITEM_FACTORS_KEY);
 	}
 
 	/**
@@ -216,7 +218,7 @@ public class Pmf implements FactorizationModel {
 	 */
 	private void setItemFactors (int itemIndex, Double [] factors) {
 		Item item = this.dataModel.getItemAt(itemIndex);
-		item.getStoredData().setDoubleArray(ITEM_FACTORS_KEY, factors);
+		item.getDataBank().setDoubleArray(ITEM_FACTORS_KEY, factors);
 	}
 
 	/**
@@ -226,7 +228,7 @@ public class Pmf implements FactorizationModel {
 	 */
 	public double getUserBias (int userIndex) {
 		User user = this.dataModel.getUserAt(userIndex);
-		return user.getStoredData().getDouble(USER_BIAS_KEY);
+		return user.getDataBank().getDouble(USER_BIAS_KEY);
 	}
 
 	/**
@@ -236,7 +238,7 @@ public class Pmf implements FactorizationModel {
 	 */
 	private void setUserBias (int userIndex, double bias) 	{
 		User user = this.dataModel.getUserAt(userIndex);
-		user.getStoredData().setDouble(USER_BIAS_KEY, bias);
+		user.getDataBank().setDouble(USER_BIAS_KEY, bias);
 	}
 
 	/**
@@ -246,7 +248,7 @@ public class Pmf implements FactorizationModel {
 	 */
 	public double getItemBias (int itemIndex) {
 		Item item = this.dataModel.getItemAt(itemIndex);
-		return item.getStoredData().getDouble(ITEM_BIAS_KEY);
+		return item.getDataBank().getDouble(ITEM_BIAS_KEY);
 	}
 
 	/**
@@ -256,7 +258,7 @@ public class Pmf implements FactorizationModel {
 	 */
 	private void setItemBias (int itemIndex, double bias) {
 		Item item = this.dataModel.getItemAt(itemIndex);
-		item.getStoredData().setDouble(ITEM_BIAS_KEY, bias);
+		item.getDataBank().setDouble(ITEM_BIAS_KEY, bias);
 	}
 
 	/**
@@ -271,7 +273,6 @@ public class Pmf implements FactorizationModel {
 
 		if (this.biases) {
 
-			this.dataModel.recalculateMetrics();
 			double average = this.dataModel.getDataBank().getDouble(DataModel.AVERAGERATING_KEY);
 
 			double bias_u = this.getUserBias(userIndex);

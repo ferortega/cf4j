@@ -35,7 +35,9 @@ abstract public class ItemSimilarities extends ItemPartible {
 	abstract public double similarity (TestItem activeItem, Item targetItem);
 
 	@Override
-	public void beforeRun () { }
+	public void beforeRun () {
+		dataModel.calculateMetrics();
+	}
 
 	@Override
 	public void run (int testItemIndex) {
@@ -54,7 +56,7 @@ abstract public class ItemSimilarities extends ItemPartible {
 			}
 		}
 
-		activeItem.getStoredData().setDoubleArray(TestItem.SIMILARITIES_KEY,similarities);
+		activeItem.getDataBank().setDoubleArray(TestItem.SIMILARITIES_KEY,similarities);
 	}
 	
 	@Override

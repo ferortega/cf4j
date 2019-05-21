@@ -43,7 +43,7 @@ public class WeightedMean extends TestPredictions {
 		
 		for (int i = 0; i < dataModel.getNumberOfTestItems(); i++){
 			TestItem testItem = dataModel.getTestItemAt(i);
-			for (double m : testItem.getStoredData().getDoubleArray(TestItem.SIMILARITIES_KEY)){
+			for (double m : testItem.getDataBank().getDoubleArray(TestItem.SIMILARITIES_KEY)){
 				if (!Double.isInfinite(m)) {
 					if (m < this.minSim) this.minSim = m;
 					if (m > this.maxSim) this.maxSim = m;
@@ -57,8 +57,8 @@ public class WeightedMean extends TestPredictions {
 		
 		TestItem testItem = dataModel.getTestItem(itemCode);
 		
-		Double [] similarities = testItem.getStoredData().getDoubleArray(TestItem.SIMILARITIES_KEY);
-		Integer [] neighbors = testItem.getStoredData().getIntegerArray(TestItem.NEIGHBORS_KEY);
+		Double [] similarities = testItem.getDataBank().getDoubleArray(TestItem.SIMILARITIES_KEY);
+		Integer [] neighbors = testItem.getDataBank().getIntegerArray(TestItem.NEIGHBORS_KEY);
 		
 		double prediction = 0;
 		double sum = 0;

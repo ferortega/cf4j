@@ -34,7 +34,9 @@ abstract public class UserSimilarities extends TestUserPartible {
 	abstract public double similarity (TestUser activeUser, User targetUser);
 
 	@Override
-	public void beforeRun () { }
+	public void beforeRun () {
+		this.dataModel.calculateMetrics();
+	}
 
 	@Override
 	public void run (int testUserIndex) {
@@ -52,7 +54,7 @@ abstract public class UserSimilarities extends TestUserPartible {
 			}
 		}
 		
-		activeUser.getStoredData().setDoubleArray(TestUser.SIMILARITIES_KEY,similarities);
+		activeUser.getDataBank().setDoubleArray(TestUser.SIMILARITIES_KEY,similarities);
 	}
 	
 	@Override
