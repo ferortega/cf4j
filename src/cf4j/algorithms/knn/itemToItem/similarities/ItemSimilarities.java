@@ -3,7 +3,7 @@ package cf4j.algorithms.knn.itemToItem.similarities;
 import cf4j.data.Item;
 import cf4j.data.DataModel;
 import cf4j.data.TestItem;
-import cf4j.process.PartibleThreads;
+import cf4j.process.ItemPartible;
 
 /**
  * <p>This class process the similarity measure between two items. If you want to define your own similarity
@@ -17,7 +17,7 @@ import cf4j.process.PartibleThreads;
  * 
  * @author Fernando Ortega
  */
-abstract public class ItemSimilarities extends PartibleThreads {
+abstract public class ItemSimilarities extends ItemPartible {
 
 	public ItemSimilarities(DataModel dataModel) {
 		super(dataModel);
@@ -33,9 +33,6 @@ abstract public class ItemSimilarities extends PartibleThreads {
 	 * @return Similarity measure between the two items
 	 */
 	abstract public double similarity (TestItem activeItem, Item targetItem);
-
-	@Override
-	public int getTotalIndexes () { return dataModel.getNumberOfTestItems(); }
 
 	@Override
 	public void beforeRun () { }

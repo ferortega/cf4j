@@ -3,8 +3,8 @@ package cf4j.algorithms.model.matrixFactorization;
 import cf4j.data.Item;
 import cf4j.data.DataModel;
 import cf4j.data.User;
-import cf4j.process.PartibleThreads;
 import cf4j.process.Processor;
+import cf4j.process.UserPartible;
 import cf4j.utils.Methods;
 
 /**
@@ -170,11 +170,9 @@ public class Pmf implements FactorizationModel {
 
 		for (int iter = 1; iter <= this.numIters; iter++) {
 
-			Processor porcessor = new Processor(false);
-
 			// ALS: fix q_i and update p_u -> fix p_u and update q_i
-			porcessor.process(new UpdateUsersFactors(dataModel));
-			porcessor.process(new UpdateItemsFactors(dataModel));
+			Processor.getInstance().parallelExec(new UpdateUsersFactors(dataModel));
+			Processor.getInstance().parallelExec(new UpdateItemsFactors(dataModel));
 
 			if ((iter % 10) == 0) System.out.print(".");
 			if ((iter % 100) == 0) System.out.println(iter + " iterations");
@@ -272,6 +270,8 @@ public class Pmf implements FactorizationModel {
 		Double [] factors_i = this.getItemFactors(itemIndex);
 
 		if (this.biases) {
+
+			this.dataModel.recalculateMetrics();
 			double average = this.dataModel.getDataBank().getDouble(DataModel.AVERAGERATING_KEY);
 
 			double bias_u = this.getUserBias(userIndex);
@@ -288,15 +288,10 @@ public class Pmf implements FactorizationModel {
 	 * Auxiliary inner class to parallelize user factors computation
 	 * @author Fernando Ortega
 	 */
-	private class UpdateUsersFactors extends PartibleThreads {
+	private class UpdateUsersFactors extends UserPartible {
 
 		public UpdateUsersFactors(DataModel dataModel) {
 			super(dataModel);
-		}
-
-		@Override
-		public int getTotalIndexes (){
-			return this.dataModel.getNumberOfUsers();
 		}
 
 		@Override
@@ -345,15 +340,10 @@ public class Pmf implements FactorizationModel {
 	 * Auxiliary inner class to parallelize item factors computation
 	 * @author Fernando Ortega
 	 */
-	private class UpdateItemsFactors extends PartibleThreads {
+	private class UpdateItemsFactors extends UserPartible {
 
 		public UpdateItemsFactors(DataModel dataModel) {
 			super(dataModel);
-		}
-
-		@Override
-		public int getTotalIndexes (){
-			return this.dataModel.getNumberOfUsers();
 		}
 
 		@Override

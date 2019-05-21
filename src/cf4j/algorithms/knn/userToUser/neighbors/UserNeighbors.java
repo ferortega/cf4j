@@ -2,7 +2,7 @@ package cf4j.algorithms.knn.userToUser.neighbors;
 
 import cf4j.data.DataModel;
 import cf4j.data.TestUser;
-import cf4j.process.PartibleThreads;
+import cf4j.process.TestUserPartible;
 
 /**
  * <p>This abstracts class calculates the neighbors of each test user. If you want to compute
@@ -15,7 +15,7 @@ import cf4j.process.PartibleThreads;
  * 
  * @author Fernando Ortega
  */
-public abstract class UserNeighbors extends PartibleThreads {
+public abstract class UserNeighbors extends TestUserPartible {
 
 	/**
 	 * Number of neighbors to be calculated
@@ -30,9 +30,6 @@ public abstract class UserNeighbors extends PartibleThreads {
 		super(dataModel);
 		this.k = k;
 	}
-
-	@Override
-	public int getTotalIndexes () { return dataModel.getNumberOfTestUsers(); }
 	
 	@Override
 	public void beforeRun() { }

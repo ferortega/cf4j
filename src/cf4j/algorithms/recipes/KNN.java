@@ -8,9 +8,8 @@ import cf4j.process.Processor;
 public class KNN {
 
 	public static void userToUser (UserSimilarities similarities, UserNeighbors neighbors, TestPredictions aggregationApproach) {
-		Processor processor = new Processor ();
-		processor.process(similarities);
-		processor.process(neighbors);
-		processor.process(aggregationApproach);
+		Processor.getInstance().parallelExec(similarities);
+		Processor.getInstance().parallelExec(neighbors);
+		Processor.getInstance().parallelExec(aggregationApproach);
 	}
 }

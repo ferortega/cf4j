@@ -34,6 +34,8 @@ public class PIP extends UserSimilarities {
 	 */
 	public PIP (DataModel dataModel) {
 		super(dataModel);
+
+		this.dataModel.recalculateMetrics();
 		this.max = dataModel.getDataBank().getDouble(DataModel.MAXRATING_KEY);
 		this.min = dataModel.getDataBank().getDouble(DataModel.MINRATING_KEY);
 

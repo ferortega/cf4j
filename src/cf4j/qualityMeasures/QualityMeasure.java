@@ -3,7 +3,7 @@ package cf4j.qualityMeasures;
 import cf4j.data.DataModel;
 import cf4j.data.TestUser;
 import cf4j.data.User;
-import cf4j.process.PartibleThreads;
+import cf4j.process.TestUserPartible;
 
 /**
  * Abstract class to compute quality measures for test of users. To encode
@@ -12,7 +12,7 @@ import cf4j.process.PartibleThreads;
  * 
  * @author Fernando Ortega
  */
-public abstract class QualityMeasure extends PartibleThreads {
+public abstract class QualityMeasure extends TestUserPartible {
 
 	private String qualityMeasureName;
 	
@@ -20,9 +20,6 @@ public abstract class QualityMeasure extends PartibleThreads {
 		super(dataModel);
 		this.qualityMeasureName = qualityMeasureName;
 	}
-
-	@Override
-	public int getTotalIndexes () { return dataModel.getNumberOfTestUsers(); }
 		
 	@Override
 	public void beforeRun() { }

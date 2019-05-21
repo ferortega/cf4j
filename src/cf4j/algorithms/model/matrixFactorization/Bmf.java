@@ -2,7 +2,7 @@ package cf4j.algorithms.model.matrixFactorization;
 
 import java.util.concurrent.locks.ReentrantLock;
 
-import cf4j.process.PartibleThreads;
+import cf4j.process.ItemPartible;
 import org.apache.commons.math3.special.Gamma;
 
 import cf4j.data.Item;
@@ -118,7 +118,7 @@ public class Bmf implements FactorizationModel {
 
 		for (int iter = 1; iter <= this.numIters; iter++) {
 
-			new Processor(false).process(new UpdateModel(this.dataModel)); //TODO: Does this work correctly?
+			Processor.getInstance().parallelExec(new UpdateModel(this.dataModel), false);
 
 			if ((iter % 10) == 0) System.out.print(".");
 			if ((iter % 100) == 0) System.out.println(iter + " iterations");
@@ -232,6 +232,7 @@ public class Bmf implements FactorizationModel {
 		Double [] b = this.getItemFactors(itemIndex);
 		double prediction = Methods.dotProduct(a, b);
 
+		this.dataModel.recalculateMetrics();
 		double max = this.dataModel.getDataBank().getDouble(DataModel.MAXRATING_KEY);
 		double min = this.dataModel.getDataBank().getDouble(DataModel.MINRATING_KEY);
 
@@ -242,7 +243,7 @@ public class Bmf implements FactorizationModel {
 	 * Auxiliary inner class to parallelize model update
 	 * @author Fernando Ortega
 	 */
-	private class UpdateModel extends PartibleThreads {
+	private class UpdateModel extends ItemPartible {
 
 		private final int NUM_LOCKS = 100;
 
@@ -270,10 +271,6 @@ public class Bmf implements FactorizationModel {
 			this.gamma = new Double [numUsers][numFactors];
 			this.ePlus = new Double [numItems][numFactors];
 			this.eMinus = new Double [numItems][numFactors];
-		}
-		@Override
-		public int getTotalIndexes (){
-			return dataModel.getNumberOfItems();
 		}
 
 		@Override
@@ -314,6 +311,7 @@ public class Bmf implements FactorizationModel {
 
 				double [] lambda = new double [Bmf.this.numFactors];
 
+				this.dataModel.recalculateMetrics();
 				double rating = (item.getRatingAt(u) - this.dataModel.getDataBank().getDouble(DataModel.MINRATING_KEY))
 						/ (this.dataModel.getDataBank().getDouble(DataModel.MAXRATING_KEY) - this.dataModel.getDataBank().getDouble(DataModel.MINRATING_KEY));
 

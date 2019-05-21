@@ -37,39 +37,37 @@ public class Example1 {
 		//DataModel.getInstance().open(dataset, testUsers, testItems, "::");
 
 		// User to user approach
-		Processor processor = new Processor();
-
-		processor.process(new cf4j.algorithms.knn.userToUser.similarities.JMSD(dataModel));
+		Processor.getInstance().parallelExec(new cf4j.algorithms.knn.userToUser.similarities.JMSD(dataModel));
 
 		// For each number of neighbors
 		for (int k : numberOfNeighbors) {
 
 			// Compute neighbors
-			processor.process(new cf4j.algorithms.knn.userToUser.neighbors.NearestNeighbors(dataModel,k));
+			Processor.getInstance().parallelExec(new cf4j.algorithms.knn.userToUser.neighbors.NearestNeighbors(dataModel,k));
 
 			// Compute predictions using Weighted Mean
-			processor.process(new cf4j.algorithms.knn.userToUser.aggregationApproaches.WeightedMean(dataModel));
+			Processor.getInstance().parallelExec(new cf4j.algorithms.knn.userToUser.aggregationApproaches.WeightedMean(dataModel));
 
 			// Get MAE
-			processor.process(new MAE(dataModel));
+			Processor.getInstance().parallelExec(new MAE(dataModel));
 			mae.putError(k, "user-to-user", dataModel.getDataBank().getDouble("MAE"));
 		}
 
 
 		// Item to item approach
-		processor.process(new cf4j.algorithms.knn.itemToItem.similarities.JMSD(dataModel));
+		Processor.getInstance().parallelExec(new cf4j.algorithms.knn.itemToItem.similarities.JMSD(dataModel));
 
 		// For each number of neighbors
 		for (int k : numberOfNeighbors) {
 
 			// Compute neighbors
-			processor.process(new cf4j.algorithms.knn.itemToItem.neighbors.NearestNeighbors(dataModel,k));
+			Processor.getInstance().parallelExec(new cf4j.algorithms.knn.itemToItem.neighbors.NearestNeighbors(dataModel,k));
 
 			// Compute predictions using DFM
-			processor.process(new cf4j.algorithms.knn.itemToItem.aggreagationApproaches.WeightedMean(dataModel));
+			Processor.getInstance().parallelExec(new cf4j.algorithms.knn.itemToItem.aggreagationApproaches.WeightedMean(dataModel));
 
 			// Get MAE
-			processor.process(new MAE(dataModel));
+			Processor.getInstance().parallelExec(new MAE(dataModel));
 			mae.putError(k, "item-to-item", dataModel.getDataBank().getDouble("MAE"));
 		}
 

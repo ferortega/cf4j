@@ -40,20 +40,18 @@ public class Example3 {
 		// Load the database
 		DataModel dataModel = new DataModel(new RandomSplitDataSet(dataset,testUsers,testItems,"::"));
 
-		Processor processor = new Processor();
-
 		// PMF
 		Pmf pmf = new Pmf (dataModel, pmf_numTopics, pmf_numIters, pmf_lambda);
 		pmf.train();
 
-		processor.process(new FactorizationPrediction(dataModel, pmf));
+		Processor.getInstance().parallelExec(new FactorizationPrediction(dataModel, pmf));
 
 		System.out.println("\nPMF:");
 
-		processor.process(new MAE(dataModel));
+		Processor.getInstance().parallelExec(new MAE(dataModel));
 		System.out.println("- MAE: " + dataModel.getDataBank().getDouble("MAE"));
 
-		processor.process(new Precision(dataModel, numRecommendations, threshold));
+		Processor.getInstance().parallelExec(new Precision(dataModel, numRecommendations, threshold));
 		System.out.println("- Precision: " + dataModel.getDataBank().getDouble("Precision"));
 
 
@@ -61,14 +59,14 @@ public class Example3 {
 		Bmf bmf = new Bmf (dataModel, bmf_numTopics, bmf_numIters, bmf_alpha, bmf_beta);
 		bmf.train();
 
-		processor.process(new FactorizationPrediction(dataModel, bmf));
+		Processor.getInstance().parallelExec(new FactorizationPrediction(dataModel, bmf));
 
 		System.out.println("\nBMF:");
 
-		processor.process(new MAE(dataModel));
+		Processor.getInstance().parallelExec(new MAE(dataModel));
 		System.out.println("- MAE: " + dataModel.getDataBank().getDouble("MAE"));
 
-		processor.process(new Precision(dataModel, numRecommendations, threshold));
+		Processor.getInstance().parallelExec(new Precision(dataModel, numRecommendations, threshold));
 		System.out.println("- Precision: " + dataModel.getDataBank().getDouble("Precision"));
 	}
 }

@@ -47,7 +47,7 @@ public class DataBank implements Serializable {
      */
     public Boolean[] setBooleanArray(String key, Boolean[] value){
         Object obj = map.put(key,value);
-        return obj instanceof Boolean ? (Boolean[])obj : null;
+        return obj instanceof Boolean[] ? (Boolean[])obj : null;
     }
 
     /**
@@ -69,7 +69,7 @@ public class DataBank implements Serializable {
      */
     public Integer [] setIntegerArray(String key, Integer [] value){
         Object obj = map.put(key,value);
-        return obj instanceof Integer ? (Integer [])obj : null;
+        return obj instanceof Integer[] ? (Integer [])obj : null;
     }
 
     /**
@@ -91,7 +91,7 @@ public class DataBank implements Serializable {
      */
     public Double[] setDoubleArray(String key, Double[] value){
         Object obj = map.put(key,value);
-        return obj instanceof Double ? (Double[])obj : null;
+        return obj instanceof Double[] ? (Double[])obj : null;
     }
 
     /**
@@ -111,7 +111,7 @@ public class DataBank implements Serializable {
      */
     public Boolean [] getBooleanArray(String key){
         Object obj = map.get(key);
-        return obj instanceof Boolean ? (Boolean [])obj : null;
+        return obj instanceof Boolean[] ? (Boolean [])obj : null;
     }
 
     /**
@@ -131,7 +131,7 @@ public class DataBank implements Serializable {
      */
     public Integer [] getIntegerArray(String key){
         Object obj = map.get(key);
-        return obj instanceof Integer ? (Integer [])obj : null;
+        return obj instanceof Integer[] ? (Integer [])obj : null;
     }
 
     /**
@@ -151,6 +151,6 @@ public class DataBank implements Serializable {
      */
     public Double [] getDoubleArray(String key){
         Object obj = map.get(key);
-        return obj instanceof Double ? (Double [])obj : null;
+        return obj instanceof Double[] ? (Double [])obj : null;
     }
 }

@@ -21,8 +21,6 @@ public class PaperExample {
 
 		DataModel dataModel = new DataModel(new RandomSplitDataSet(dbPath, testUsers, testItems, "::"));
 
-		Processor processor = new Processor();
-
 		String [] similarityMetrics = {"COR", "JMSD"};
 		int [] numberOfNeighbors = {50, 100, 150, 200, 250, 300, 350, 400};
 
@@ -33,23 +31,23 @@ public class PaperExample {
 
 			// Compute similarity
 			if (sm.equals("COR")) {
-				processor.process(new cf4j.algorithms.knn.userToUser.similarities.Correlation(dataModel));
+				Processor.getInstance().parallelExec(new cf4j.algorithms.knn.userToUser.similarities.Correlation(dataModel));
 			}
 			else if (sm.equals("JMSD")) {
-				processor.process(new cf4j.algorithms.knn.userToUser.similarities.JMSD(dataModel));
+				Processor.getInstance().parallelExec(new cf4j.algorithms.knn.userToUser.similarities.JMSD(dataModel));
 			}
 
 			// For each value of k
 			for (int k : numberOfNeighbors) {
 
 				// Find the neighbors
-				processor.process(new cf4j.algorithms.knn.userToUser.neighbors.NearestNeighbors(dataModel, k));
+				Processor.getInstance().parallelExec(new cf4j.algorithms.knn.userToUser.neighbors.NearestNeighbors(dataModel, k));
 
 				// Compute predictions using DFM
-				processor.process(new cf4j.algorithms.knn.userToUser.aggregationApproaches.DeviationFromMean(dataModel));
+				Processor.getInstance().parallelExec(new cf4j.algorithms.knn.userToUser.aggregationApproaches.DeviationFromMean(dataModel));
 
 				// Compute MAE
-				processor.process(new cf4j.qualityMeasures.MAE(dataModel));
+				Processor.getInstance().parallelExec(new cf4j.qualityMeasures.MAE(dataModel));
 				mae.putError(k, sm, dataModel.getDataBank().getDouble("MAE"));
 			}
 		}

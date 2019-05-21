@@ -11,7 +11,7 @@ import java.util.Iterator;
  *
  * <p>This class can not be instantiated. It implements the singleton pattern, so, when we want to use
  * it, we must use the getInstance() method.</p>
- * @author Fernando Ortega, Jesús Mayor
+ * @author Fernando Ortega
  */
 public class DataModel implements Serializable {
 
@@ -20,7 +20,6 @@ public class DataModel implements Serializable {
     public static final String AVERAGERATING_KEY = "average_rating";
     public static final String MAXRATING_KEY = "max_rating";
     public static final String MINRATING_KEY = "min_rating";
-
 
     private DynamicSortedArray<User> users;
     private DynamicSortedArray<TestUser> testUsers;
@@ -120,6 +119,28 @@ public class DataModel implements Serializable {
 
         testUser.addTestRating(itemCode, rating);
         testItem.addTestRating(userCode, rating);
+    }
+
+    public void recalculateMetrics(){
+        //TODO: Its made only of users, is it right?.
+        double minRating = Double.MAX_VALUE;
+        double maxRating = Double.MIN_VALUE;
+        double sumRatigns = 0;
+        int numRatings = 0;
+
+        for (int i = 0; i < this.getNumberOfUsers(); i++){
+            User user = this.getUserAt(i);
+            for (int j = 0; j < user.getNumberOfRatings(); j++){
+                if (user.getRatingAt(j) < minRating) minRating = user.getRatingAt(j);
+                if (user.getRatingAt(j) > maxRating) maxRating = user.getRatingAt(j);
+                sumRatigns += user.getRatingAt(j);
+            }
+            numRatings += user.getNumberOfRatings();
+        }
+
+        dataBank.setDouble( MINRATING_KEY, minRating );
+        dataBank.setDouble( MAXRATING_KEY, maxRating );
+        dataBank.setDouble( AVERAGERATING_KEY, sumRatigns / numRatings );
     }
 
     /**
@@ -301,8 +322,26 @@ public class DataModel implements Serializable {
     }
 
     public String toString() {
-        //TODO: Write
-        return "TODO: Write";
+
+        recalculateMetrics();
+
+        int numRatings = 0;
+        for (int i = 0; i < this.users.size(); i++)
+            numRatings += this.users.get(i).getNumberOfRatings();
+
+        int numTestRatings = 0;
+        for (int i = 0; i < this.testUsers.size(); i++)
+            numTestRatings += this.testUsers.get(i).getNumberOfTestRatings();
+
+        return "\nNumber of users: " + this.users.size() +
+                "\nNumber of test users: " + this.testUsers.size() +
+                "\nNumber of items: " + this.items.size() +
+                "\nNumber of test items: " + this.testItems.size() +
+                "\nNumber of ratings: " + numRatings +
+                "\nNumber of test ratings: " + numTestRatings +
+                "\nMin rating: " + this.dataBank.getDouble(MINRATING_KEY) +
+                "\nMax rating: " + this.dataBank.getDouble(MAXRATING_KEY) +
+                "\nAverage rating: " + this.dataBank.getDouble(AVERAGERATING_KEY);
     }
 
 }

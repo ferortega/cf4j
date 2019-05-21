@@ -35,6 +35,7 @@ public class PIP extends ItemSimilarities {
 	public PIP (DataModel dataModel) {
 		super(dataModel);
 
+		this.dataModel.recalculateMetrics();
 		this.max = this.dataModel.getDataBank().getDouble(DataModel.MAXRATING_KEY);
 		this.min = this.dataModel.getDataBank().getDouble(DataModel.MINRATING_KEY);
 		

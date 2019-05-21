@@ -2,7 +2,7 @@ package cf4j.algorithms;
 
 import cf4j.data.DataModel;
 import cf4j.data.TestUser;
-import cf4j.process.PartibleThreads;
+import cf4j.process.TestUserPartible;
 
 /**
  * <p>Abstract class to handle predictions for test item rated by test users. If
@@ -16,14 +16,11 @@ import cf4j.process.PartibleThreads;
  * 
  * @author Fernando Ortega
  */
-public abstract class TestPredictions extends PartibleThreads {
+public abstract class TestPredictions extends TestUserPartible {
 
 	public TestPredictions(DataModel dataModel) {
 		super(dataModel);
 	}
-
-	@Override
-	public int getTotalIndexes () { return dataModel.getNumberOfTestUsers(); }
 
 	@Override
 	public void beforeRun() { }

@@ -2,6 +2,7 @@ package cf4j.process;
 
 import cf4j.data.DataModel;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 
 /**
@@ -12,15 +13,12 @@ import java.util.Date;
  *  
  * @author Fernando Ortega
  */
-public abstract class PartibleThreads implements Runnable {
+public abstract class PartibleThreads extends Thread implements Cloneable {
 
 	protected DataModel dataModel;
 	protected boolean verbose;
 
-	private Thread thread;
 	private int threadIndex;
-
-	private int numThreads;
 	private int indexesPerThread;
 
 	public PartibleThreads (DataModel dataModel){
@@ -52,68 +50,26 @@ public abstract class PartibleThreads implements Runnable {
 	 */
 	public abstract void afterRun ();
 
-	/* (non-Javadoc)
-     */
-	public synchronized void runThreads (int numThreads, boolean verbose) {
-		if (verbose) System.out.println("\nProcessing... " + this.getClass().getName());
-		
-		if (this.getTotalIndexes() < 1)
-			throw new RuntimeException("Test array can not be empty");
-		
-		if (numThreads <= 0)
-			throw new RuntimeException("The number of threads must be one or more");
-
-		this.numThreads = numThreads;
-
-		if (numThreads == 1) {
-			this.indexesPerThread = this.getTotalIndexes();
-			this.beforeRun();
-			for (int index = 0; (index < this.getTotalIndexes()); index++) {
-				this.run(index);
-			}
-			this.afterRun();
-			
-		} else {
-			// We compute number of indexes per thread
-			if (numThreads > this.getTotalIndexes()) {
-				this.numThreads = this.getTotalIndexes();
-				this.indexesPerThread = 1;
-			} else if (this.getTotalIndexes() % numThreads == 0) {
-				this.indexesPerThread = this.getTotalIndexes() / numThreads;
-			} else {
-				this.indexesPerThread = this.getTotalIndexes() / numThreads + 1;
-			}
-				
-			// Do some stuff...
-			this.beforeRun();
-			
-			// Launch all threads
-			int index;
-			PartibleThreads [] pt = new PartibleThreads[numThreads];
-			for (index = 0; index < this.numThreads; index++) {
-				pt[index] = this.cloneInAThread(index);
-			}
-
-			// Wait until all threads end
-			try {
-				for (index = 0; index < this.numThreads; index++) {
-					pt[index].getThread().join();
-				}
-			} catch (InterruptedException ie) {
-				System.out.println("ERROR: " + ie);
-			}
-			
-			// Do some stuff...
-			this.afterRun();
-		}
-
+	/**
+	 * This methods is a substitute of the main Thread start function, if you want to specify what indexes process.
+	 * @param threadIndex Thread number
+	 * @param indexesPerThread Number of indexes to proces per thread.
+	 */
+	public synchronized void startPartible(int threadIndex,int indexesPerThread){
+		this.startPartible(threadIndex,indexesPerThread, true);
 	}
 
 	/**
-	 * @return the thread
+	 * This methods is a substitute of the main Thread start function, if you want to specify what indexes process.
+	 * @param threadIndex Thread number
+	 * @param indexesPerThread Number of indexes to proces per thread.
+	 * @param verbose Should I write some output?
 	 */
-	protected Thread getThread() {
-		return thread;
+	public synchronized void startPartible(int threadIndex,int indexesPerThread, boolean verbose){
+		this.indexesPerThread = indexesPerThread;
+		this.threadIndex = threadIndex;
+		this.verbose = verbose;
+		this.start();
 	}
 
 	/*
@@ -121,23 +77,26 @@ public abstract class PartibleThreads implements Runnable {
 	 *
 	 * @see java.lang.Runnable#run()
 	 */
+	@Override
 	public void run() {
-		long t1 = (new Date()).getTime() / 1000, t2, t3 = 0;
+		long time1 = (new Date()).getTime() / 1000;
+		long time2 = 0;
+		long time3 = 0;
 		int iXt = this.indexesPerThread;
 		
 		// Last theard could have less users
 		for (int index = (this.threadIndex) * iXt; (index < (this.threadIndex + 1) * iXt)
 				&& (index < this.getTotalIndexes()); index++) {
 			if (this.threadIndex == 0 && this.verbose) {
-				t2 = (new Date()).getTime() / 1000;
-				if ((t2 - t1) > 5) {
+				time2 = (new Date()).getTime() / 1000;
+				if ((time2 - time1) > 5) {
 					System.out.print(".");
-					t1 = t2;
-					t3++;
+					time1 = time2;
+					time3++;
 				}
-				if (t3 > 20) {
+				if (time3 > 20) {
 					System.out.println(((index - this.threadIndex * iXt) * 100 / iXt) + "%");
-					t3 = 0;
+					time3 = 0;
 				}
 			}
 
@@ -145,20 +104,22 @@ public abstract class PartibleThreads implements Runnable {
 		}
 	}
 
-	protected PartibleThreads cloneInAThread(int threadIndex) {
+	@Override
+	public Object clone() {
 		try {
-			PartibleThreads clone = (PartibleThreads) super.clone();
-
-			clone.dataModel = this.dataModel;
+			PartibleThreads clone = this.getClass().getDeclaredConstructor(DataModel.class).newInstance(this.dataModel); //Reflection
 			clone.verbose = this.verbose;
-			clone.threadIndex = threadIndex;
-			clone.thread = new Thread (this, String.valueOf(threadIndex));
-			clone.thread.start();
-
+			clone.indexesPerThread = this.indexesPerThread;
+			clone.threadIndex = this.threadIndex;
 			return clone;
-		} catch (CloneNotSupportedException e) {
-			throw new RuntimeException("Error while we are creating a new thread of the partible data model", e);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException("Error while we are creating a new thread of the partible data model (IlegalAccesException)", e);
+		} catch (InstantiationException e) {
+			throw new RuntimeException("Error while we are creating a new thread of the partible data model (InstantiationException)",e);
+		} catch (NoSuchMethodException e) {
+			throw new RuntimeException("Error while we are creating a new thread of the partible data model (NoSuchMethodException)",e);
+		} catch (InvocationTargetException e) {
+			throw new RuntimeException("Error while we are creating a new thread of the partible data model (InvocationTargetException)", e);
 		}
 	}
-
 }

@@ -23,6 +23,7 @@ public class MSD extends ItemSimilarities{
 	@Override
 	public void beforeRun () {		
 		super.beforeRun();
+		this.dataModel.recalculateMetrics();
 		this.maxDiff = this.dataModel.getDataBank().getDouble(DataModel.MAXRATING_KEY) - this.dataModel.getDataBank().getDouble(DataModel.MINRATING_KEY);
 	}
 
