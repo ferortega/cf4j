@@ -1,8 +1,6 @@
 package cf4j.data;
 
 import cf4j.data.types.DynamicArray;
-import cf4j.data.types.DynamicSortedArray;
-import cf4j.utils.Methods;
 import java.util.ArrayList;
 
 /**
@@ -26,12 +24,12 @@ public class TestItem extends Item {
 	/**
 	 * Test users that have rated this item
 	 */
-	protected DynamicSortedArray<String> testUsers;
+	protected DynamicArray<String> testUsers;
 
 	/**
 	 * Test ratings of the users
 	 */
-	protected DynamicArray<Double> testRatings;
+	protected ArrayList<Double> testRatings;
 
 
 	/**
@@ -40,23 +38,26 @@ public class TestItem extends Item {
 	 */
 	public TestItem (String itemCode) {
 		super(itemCode);
-		this.testUsers = new DynamicSortedArray<String>();
-		this.testRatings = new DynamicArray<Double>();
+		this.testUsers = new DynamicArray<String>();
+		this.testRatings = new ArrayList<Double>();
 	}
 
+	@Override
 	public void calculateMetrics() {
+		super.calculateMetrics();
+
 		double sumRatings = 0;
-		for (int i = 0; i < this.getNumberOfRatings();i++){
+		for (int i = 0; i < this.getNumberOfTestRatings();i++){
 			sumRatings += this.testRatings.get(i);
 		}
 
-		double ratingAverage = sumRatings / this.getNumberOfRatings();
+		double ratingAverage = sumRatings / this.getNumberOfTestRatings();
 		double sumDesv = 0;
 
-		for (int i = 0; i < this.getNumberOfRatings();i++){
+		for (int i = 0; i < this.getNumberOfTestRatings();i++){
 			sumDesv += (this.testRatings.get(i) - ratingAverage) * (this.testRatings.get(i) - ratingAverage);
 		}
-		double standardDeviation = Math.sqrt(sumDesv / this.getNumberOfRatings()-1);
+		double standardDeviation = Math.sqrt(sumDesv / this.getNumberOfTestRatings()-1);
 
 		this.getDataBank().setDouble(AVERAGETESTRATING_KEY, ratingAverage);
 		this.getDataBank().setDouble(STANDARDDEVIATIONTEST_KEY, standardDeviation);
@@ -66,7 +67,7 @@ public class TestItem extends Item {
 	 * Get the test users that have rated the item
 	 * @return Test users codes sorted from low to high. 
 	 */
-	public DynamicSortedArray<String> getTestUsers() {
+	public DynamicArray<String> getTestUsers() {
 		return this.testUsers;
 	}
 	
@@ -84,7 +85,7 @@ public class TestItem extends Item {
 	 * array overlaps with indexes of the getTestUsers() array.
 	 * @return Test users ratings
 	 */
-	public DynamicArray<Double> getTestRatings() {
+	public ArrayList<Double> getTestRatings() {
 		return this.testRatings;
 	}
 	
@@ -124,10 +125,10 @@ public class TestItem extends Item {
 		int positionInArray = this.testUsers.get(userCode);
 
 		if (positionInArray != -1){ //If element already exists.
-			this.testUsers.modify(positionInArray, userCode);
-			this.testRatings.modify(positionInArray, rating);
+			this.testUsers.set(positionInArray, userCode);
+			this.testRatings.set(positionInArray, rating);
 		}else{ //If not exist.
-			this.testRatings.add(this.testUsers.add(userCode), rating);
+			this.testRatings.add(this.testUsers.addOrdered(userCode), rating);
 		}
 	}
 }

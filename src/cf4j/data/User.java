@@ -1,9 +1,9 @@
 package cf4j.data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import cf4j.data.types.DynamicArray;
-import cf4j.data.types.DynamicSortedArray;
 
 /**
  * <p>Defines an user. An user is composed by:</p>
@@ -36,12 +36,12 @@ public class User implements Serializable, Comparable<User> {
 	/**
 	 * Items rated by the user
 	 */
-	protected DynamicSortedArray<String> items;
+	protected DynamicArray<String> items;
 
 	/**
 	 * Ratings of the user to the items
 	 */
-	protected DynamicArray<Double> ratings;
+	protected ArrayList<Double> ratings;
 
 	/**
 	 * Creates a new instance of an user. This constructor should not be used by developers.
@@ -50,8 +50,8 @@ public class User implements Serializable, Comparable<User> {
 	public User (String userCode) {
 		this.userCode = userCode;
 		this.dataBank = new DataBank();
-		this.items = new DynamicSortedArray<String>();
-		this.ratings = new DynamicArray<Double>();
+		this.items = new DynamicArray<String>();
+		this.ratings = new ArrayList<Double>();
 	}
 
 	public DataBank getDataBank(){
@@ -70,7 +70,8 @@ public class User implements Serializable, Comparable<User> {
 		for (int i = 0; i < this.getNumberOfRatings();i++){
 			sumDesv += (this.ratings.get(i) - ratingAverage) * (this.ratings.get(i) - ratingAverage);
 		}
-		double standardDeviation = Math.sqrt(sumDesv / this.getNumberOfRatings()-1);
+
+		double standardDeviation = (this.getNumberOfRatings()<=1)? 0 : Math.sqrt(sumDesv / (this.getNumberOfRatings()-1));
 
 		this.getDataBank().setDouble(AVERAGERATING_KEY, ratingAverage);
 		this.getDataBank().setDouble(STANDARDDEVIATION_KEY, standardDeviation);
@@ -88,7 +89,7 @@ public class User implements Serializable, Comparable<User> {
 	 * Returns the items codes rated by the user. 
 	 * @return Items codes sorted from low to high. 
 	 */
-	public DynamicSortedArray<String> getItems() {
+	public DynamicArray<String> getItems() {
 		return this.items;
 	}
 	
@@ -106,7 +107,7 @@ public class User implements Serializable, Comparable<User> {
 	 * array overlaps with indexes of the getItems() array.
 	 * @return Items ratings.
 	 */
-	public DynamicArray<Double> getRatings() {
+	public ArrayList<Double> getRatings() {
 		return this.ratings;
 	}
 	
@@ -145,10 +146,10 @@ public class User implements Serializable, Comparable<User> {
 		int positionInArray = this.items.get(itemCode);
 
 		if (positionInArray != -1){ //If element already exists.
-			this.items.modify(positionInArray, itemCode);
-			this.ratings.modify(positionInArray, rating);
+			this.items.set(positionInArray, itemCode);
+			this.ratings.set(positionInArray, rating);
 		}else{ //If not exist.
-			this.ratings.add(this.items.add(itemCode), rating);
+			this.ratings.add(this.items.addOrdered(itemCode), rating);
 		}
 	}
 

@@ -1,5 +1,7 @@
 package cf4j.process;
 
+import java.util.Date;
+
 /**
  * <p>Class that manages the execution of processes. To use this class, you must have previously 
  * loaded a dataModel. This datamodel should be sent to the specific Partible algorithms</p>
@@ -40,7 +42,7 @@ public class Processor {
 	 * the available processors.
 	 */
 	private Processor () {
-		this.setNumThreads(Runtime.getRuntime().availableProcessors() * 2);
+		this.setNumThreads(1);
 	}
 
 	/**
@@ -74,14 +76,20 @@ public class Processor {
 	 * @param partible partible implementation of the datamodel focused on a specific runnable algorithm.
 	 */
 	public synchronized void parallelExec (Partible partible, boolean verbose) {
-		if (verbose) System.out.println("\nProcessing... " + this.getClass().getName());
+		if (verbose) System.out.println("\nProcessing... " + partible.getClass().getName());
 
 		// Error control
 		if (partible.getTotalIndexes() < 1)
 			throw new RuntimeException("Test array can not be empty");
 
+
 		if (this.numThreads < 1)
 			throw new RuntimeException("The number of threads must be one or more");
+
+		if (this.numThreads == 1){
+			monoExec(partible,verbose);
+			return;
+		}
 
 		// We compute number of indexes per thread
 		int indexesPerThread = partible.getTotalIndexes() / numThreads;
@@ -94,7 +102,7 @@ public class Processor {
 		// Launch all threads
 		int index;
 		PartibleThread[] pt = new PartibleThread[numThreads];
-		//First thread is the received instance of the partibles.
+		//Run is processed in threads.
 		for (index = 0; index < this.numThreads && index < partible.getTotalIndexes(); index++) {
 			pt[index] = new PartibleThread(partible,index,indexesPerThread,verbose);
 		}
@@ -106,6 +114,37 @@ public class Processor {
 			}
 		} catch (InterruptedException ie) {
 			System.out.println("ERROR: " + ie);
+		}
+
+		// Do some stuff...
+		partible.afterRun();
+	}
+
+	/**
+	 * Execute a inside the main thread, without not balance the processing.
+	 * @see Partible
+	 * @param partible partible implementation of the datamodel focused on a specific runnable algorithm.
+	 */
+	private void monoExec (Partible partible, boolean verbose) {
+
+		// Do some stuff...
+		partible.beforeRun();
+
+		// Run for each index, displaying load feedback.
+		long time1 = (new Date()).getTime() / 1000;
+		long time2 = 0;
+		int index;
+		for (index = 0; index < partible.getTotalIndexes(); index++) {
+
+			if (verbose) {
+				time2 = (new Date()).getTime() / 1000;
+				if ((time2 - time1) > 10) {
+					System.out.print("..." + ((index / partible.getTotalIndexes())  * 100) + "%");
+					time1 = time2;
+				}
+			}
+
+			partible.run(index);
 		}
 
 		// Do some stuff...

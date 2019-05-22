@@ -49,7 +49,7 @@ abstract public class ItemSimilarities extends ItemPartible {
 		
 		for (int i = 0; i < numItems; i++) {
 			Item targetItem = dataModel.getItemAt(i);
-			if (activeItem.getItemCode() == targetItem.getItemCode()) {
+			if (activeItem.getItemCode().equals(targetItem.getItemCode())) {
 				similarities[i] = Double.NEGATIVE_INFINITY;
 			} else { 
 				similarities[i] = this.similarity(activeItem, targetItem);

@@ -1,9 +1,9 @@
 package cf4j.data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import cf4j.data.types.DynamicArray;
-import cf4j.data.types.DynamicSortedArray;
 
 /**
  * <p>Defines an item. An item is composed by:</p>
@@ -35,12 +35,12 @@ public class Item implements Serializable, Comparable<Item> {
 	/**
 	 * Users that have rated this item
 	 */
-	protected DynamicSortedArray<String> users;
+	protected DynamicArray<String> users;
 
 	/**
 	 * Ratings of the users
 	 */
-	protected DynamicArray<Double> ratings;
+	protected ArrayList<Double> ratings;
 
 	/**
 	 * Creates a new instance of an item. This constructor should not be users by developers.
@@ -49,8 +49,8 @@ public class Item implements Serializable, Comparable<Item> {
 	public Item (String itemCode) {
 		this.itemCode = itemCode;
 		this.dataBank = new DataBank();
-		this.users = new DynamicSortedArray<String>();
-		this.ratings = new DynamicArray<Double>();
+		this.users = new DynamicArray<String>();
+		this.ratings = new ArrayList<Double>();
 	}
 
 	public DataBank getDataBank(){
@@ -127,10 +127,10 @@ public class Item implements Serializable, Comparable<Item> {
 		int positionInArray = this.users.get(userCode);
 
 		if (positionInArray != -1){ //If element already exists.
-			this.users.modify(positionInArray, userCode);
-			this.ratings.modify(positionInArray, rating);
+			this.users.set(positionInArray, userCode);
+			this.ratings.set(positionInArray, rating);
 		}else{ //If not exist.
-			this.ratings.add(this.users.add(userCode), rating);
+			this.ratings.add(this.users.addOrdered(userCode), rating);
 		}
 	}
 

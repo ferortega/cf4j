@@ -1,8 +1,8 @@
 package cf4j.data;
 
 import cf4j.data.types.DynamicArray;
-import cf4j.data.types.DynamicSortedArray;
-import cf4j.utils.Methods;
+
+import java.util.ArrayList;
 
 /**
  * <p>A TestUser extends an User given it the following properties:</p>
@@ -26,12 +26,12 @@ public class TestUser extends User {
 	/**
 	 * Test items that rated by the user
 	 */
-	protected DynamicSortedArray<String> testItems;
+	protected DynamicArray<String> testItems;
 
 	/**
 	 * Test ratings of the items
 	 */
-	protected DynamicArray<Double> testRatings;
+	protected ArrayList<Double> testRatings;
 
 	/**
 	 * Creates a new instance of an user. This constructor should not be used by developers.
@@ -39,23 +39,26 @@ public class TestUser extends User {
 	 */
 	public TestUser (String userCode) {
 		super(userCode);
-		this.testItems = new DynamicSortedArray<String>();
-		this.testRatings = new DynamicArray<Double>();
+		this.testItems = new DynamicArray<String>();
+		this.testRatings = new ArrayList<Double>();
 	}
 
+	@Override
 	public void calculateMetrics() {
+		super.calculateMetrics();
+
 		double sumRatings = 0;
-		for (int i = 0; i < this.getNumberOfRatings();i++){
+		for (int i = 0; i < this.getNumberOfTestRatings();i++){
 			sumRatings += this.testRatings.get(i);
 		}
 
-		double ratingAverage = sumRatings / this.getNumberOfRatings();
+		double ratingAverage = sumRatings / this.getNumberOfTestRatings();
 		double sumDesv = 0;
 
-		for (int i = 0; i < this.getNumberOfRatings();i++){
+		for (int i = 0; i < this.getNumberOfTestRatings();i++){
 			sumDesv += (this.testRatings.get(i) - ratingAverage) * (this.testRatings.get(i) - ratingAverage);
 		}
-		double standardDeviation = Math.sqrt(sumDesv / this.getNumberOfRatings()-1);
+		double standardDeviation = Math.sqrt(sumDesv / this.getNumberOfTestRatings()-1);
 
 		this.getDataBank().setDouble(AVERAGETESTRATING_KEY, ratingAverage);
 		this.getDataBank().setDouble(STANDARDDEVIATIONTEST_KEY, standardDeviation);
@@ -65,7 +68,7 @@ public class TestUser extends User {
 	 * Get the test items rated by the user
 	 * @return Test items codes sorted from low to high. 
 	 */
-	public DynamicSortedArray<String> getTestItems() {
+	public DynamicArray<String> getTestItems() {
 		return this.testItems;
 	}
 	
@@ -83,7 +86,7 @@ public class TestUser extends User {
 	 * with indexes of the getTestItems() array.
 	 * @return Test items ratings
 	 */
-	public DynamicArray<Double> getTestRatings() {
+	public ArrayList<Double> getTestRatings() {
 		return this.testRatings;
 	}
 	
@@ -122,10 +125,10 @@ public class TestUser extends User {
 		int positionInArray = this.testItems.get(itemCode);
 
 		if (positionInArray != -1){ //If element already exists.
-			this.testItems.modify(positionInArray, itemCode);
-			this.testRatings.modify(positionInArray, rating);
+			this.testItems.set(positionInArray, itemCode);
+			this.testRatings.set(positionInArray, rating);
 		}else{ //If not exist.
-			this.testRatings.add(this.testItems.add(itemCode), rating);
+			this.testRatings.add(this.testItems.addOrdered(itemCode), rating);
 		}
 	}
 }

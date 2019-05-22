@@ -35,7 +35,7 @@ public abstract class QualityMeasure extends TestUserPartible {
 
 	@Override
 	public void run (int testUserIndex) {
-		TestUser testUser = dataModel.getTestUserAt(testUserIndex);
+		TestUser testUser = this.dataModel.getTestUserAt(testUserIndex);
 		double measure = this.getMeasure(testUser);
 		testUser.getDataBank().setDouble(qualityMeasureName, measure);
 	}
@@ -45,18 +45,20 @@ public abstract class QualityMeasure extends TestUserPartible {
 
 		double summation = 0.0f;
 		int numValues = 0;
-		for (int i = 0 ; i < dataModel.getNumberOfUsers(); i++){
-			User user = dataModel.getTestUserAt(i);
-			double userValue = user.getDataBank().getDouble(qualityMeasureName);
-			if (!Double.isNaN(userValue)) {
-				summation += userValue;
-				numValues++;
+		for (int i = 0 ; i < this.dataModel.getNumberOfUsers(); i++){
+			User user = this.dataModel.getUserAt(i);
+			if (user.getDataBank().hasKey(qualityMeasureName)) {
+				double userValue = user.getDataBank().getDouble(qualityMeasureName);
+				if (!Double.isNaN(userValue)) {
+					summation += userValue;
+					numValues++;
+				}
 			}
 		}
 		if (numValues > 0) {
-			dataModel.getDataBank().setDouble(qualityMeasureName,(summation / numValues));
+			this.dataModel.getDataBank().setDouble(qualityMeasureName,(summation / numValues));
 		} else {
-			dataModel.getDataBank().setDouble(qualityMeasureName, Double.NaN);
+			this.dataModel.getDataBank().setDouble(qualityMeasureName, Double.NaN);
 		}
 	}
 }

@@ -47,7 +47,7 @@ abstract public class UserSimilarities extends TestUserPartible {
 		
 		for (int u = 0; u < similarities.length; u++) {
 			User targetUser = dataModel.getUserAt(u);
-			if (activeUser.getUserCode() == targetUser.getUserCode()) {
+			if (activeUser.getUserCode().equals(targetUser.getUserCode())) {
 				similarities[u] = Double.NEGATIVE_INFINITY;
 			} else { 
 				similarities[u] = this.similarity(activeUser, targetUser);

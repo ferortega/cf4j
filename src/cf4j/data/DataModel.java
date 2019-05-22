@@ -1,6 +1,6 @@
 package cf4j.data;
 
-import cf4j.data.types.DynamicSortedArray;
+import cf4j.data.types.DynamicArray;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -21,11 +21,11 @@ public class DataModel implements Serializable {
     public static final String MAXRATING_KEY = "max_rating";
     public static final String MINRATING_KEY = "min_rating";
 
-    private DynamicSortedArray<User> users;
-    private DynamicSortedArray<TestUser> testUsers;
+    private DynamicArray<User> users;
+    private DynamicArray<TestUser> testUsers;
 
-    private DynamicSortedArray<Item> items;
-    private DynamicSortedArray<TestItem> testItems;
+    private DynamicArray<Item> items;
+    private DynamicArray<TestItem> testItems;
 
     private DataBank dataBank;
 
@@ -33,10 +33,10 @@ public class DataModel implements Serializable {
      * Default constructor. It doesn't contains any information by itself. You need use loadDataset.
      */
     public DataModel (){
-        this.users = new DynamicSortedArray<User>();
-        this.testUsers = new DynamicSortedArray<TestUser>();
-        this.items = new DynamicSortedArray<Item>();
-        this.testItems = new DynamicSortedArray<TestItem>();
+        this.users = new DynamicArray<User>();
+        this.testUsers = new DynamicArray<TestUser>();
+        this.items = new DynamicArray<Item>();
+        this.testItems = new DynamicArray<TestItem>();
         this.dataBank = new DataBank();
     }
 
@@ -46,10 +46,10 @@ public class DataModel implements Serializable {
      */
     public DataModel (DataSet dataset){
         //Initializing the arrays to the estimated initial size (taking into account the DataSet entries)
-        this.users = new DynamicSortedArray<User>(dataset.getRatingsSize()/40);
-        this.testUsers = new DynamicSortedArray<TestUser>(dataset.getTestRatingsSize()/40);
-        this.items = new DynamicSortedArray<Item>(dataset.getRatingsSize()/40);
-        this.testItems = new DynamicSortedArray<TestItem>(dataset.getTestRatingsSize()/40);
+        this.users = new DynamicArray<User>(dataset.getRatingsSize()/40);
+        this.testUsers = new DynamicArray<TestUser>(dataset.getTestRatingsSize()/40);
+        this.items = new DynamicArray<Item>(dataset.getRatingsSize()/40);
+        this.testItems = new DynamicArray<TestItem>(dataset.getTestRatingsSize()/40);
         this.dataBank = new DataBank();
         this.loadDataset(dataset);
     }
@@ -82,13 +82,13 @@ public class DataModel implements Serializable {
         User user = this.getUser(userCode);
         if(user == null) { //If don't exist, create new and add it.
             user = new User(userCode);
-            this.users.add(user);
+            this.users.addOrdered(user);
         }
         //Getting Item with that id.
         Item item = this.getItem(itemCode);
         if(item == null) {//If don't exist, create new and add it.
             item = new Item(itemCode);
-            this.items.add(item);
+            this.items.addOrdered(item);
         }
 
         user.addRating(itemCode, rating);
@@ -103,18 +103,49 @@ public class DataModel implements Serializable {
      */
     public void addTestRating (String userCode, String itemCode, double rating) {
 
-        TestUser testUser = this.getTestUser(userCode);
-        if(testUser == null) { //If don't exist, create new and add it to the arrays.
-            testUser = new TestUser(userCode); //<-
-            this.users.add(testUser);
-            this.testUsers.add(testUser);
+        User user = this.getUser(userCode);
+        TestUser testUser;
+        if(user == null) { //If don't exist as an user, create new and add it to the arrays.
+            testUser = new TestUser(userCode);
+            this.users.addOrdered(testUser);
+            this.testUsers.addOrdered(testUser);
+        }else {//In case user started not being test (Because we used add firstly as a training Rating):
+            if (user instanceof TestUser) {
+                testUser = (TestUser) user;
+            }else{
+                //Transform him in test user.
+                testUser = new TestUser(userCode);
+                //Copying current item rating.
+                for (int i = 0; i < user.getNumberOfRatings();i++){
+                    testUser.addRating(user.getItemAt(i),user.getRatingAt(i));
+                }
+                //Modifying old instance of user by the new one and adding as new the testUser.
+                this.users.set(this.users.get(user),testUser);
+                this.testUsers.addOrdered(testUser);
+            }
         }
+
         //Getting Item with that id.
-        TestItem testItem = this.getTestItem(itemCode);
-        if(testItem == null) {//If don't exist, create new and add it to the arrays..
-            testItem = new TestItem(itemCode); //<-
-            this.items.add(testItem);
-            this.testItems.add(testItem);
+        Item item = this.getItem(itemCode);
+        TestItem testItem;
+        if(item == null) {//If don't exist as an item, create new and add it to the arrays.
+            testItem = new TestItem(itemCode);
+            this.items.addOrdered(testItem);
+            this.testItems.addOrdered(testItem);
+        }else{//In case user started not being test (Because we used add firstly as a training Rating):
+            if (item instanceof TestItem) {
+                testItem = (TestItem) item;
+            }else{
+                //Transform him in test item.
+                testItem = new TestItem(itemCode);
+                //Copying current user rating.
+                for (int i = 0; i < item.getNumberOfRatings();i++){
+                    testItem.addRating(item.getUserAt(i),item.getRatingAt(i));
+                }
+                //Modifying old instance of user by the new one and adding as new the testItem.
+                this.items.set(this.items.get(item),testItem);
+                this.testItems.addOrdered(testItem);
+            }
         }
 
         testUser.addTestRating(itemCode, rating);
@@ -122,7 +153,6 @@ public class DataModel implements Serializable {
     }
 
     public void calculateMetrics(){
-        //TODO: Its made only of users, is it right?.
         double minRating = Double.MAX_VALUE;
         double maxRating = Double.MIN_VALUE;
         double sumRatigns = 0;

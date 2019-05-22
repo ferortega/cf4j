@@ -362,7 +362,7 @@ public class Pmf implements FactorizationModel {
 
 			for (int v = 0; v < item.getNumberOfRatings(); v++)
 			{
-				while (this.dataModel.getUserAt(userIndex).getUserCode().compareTo(item.getUserAt(v)) < 0) userIndex++; //TODO: Check, could be reversed
+				while (this.dataModel.getUserAt(userIndex).getUserCode().compareTo(item.getUserAt(v)) < 0) userIndex++;
 
 				// Get error
 				double error = item.getRatingAt(v) - Pmf.this.getPrediction(userIndex, itemIndex);

@@ -308,7 +308,7 @@ public class Bmf implements FactorizationModel {
 			for (int u = 0; u < item.getNumberOfRatings(); u++) {
 
 				// Arrays of ref codes are sorted
-				while (this.dataModel.getUserAt(userIndex).getUserCode().compareTo(item.getUserAt(u)) < 0) userIndex++; //TODO: Check, could be reversed.
+				while (this.dataModel.getUserAt(userIndex).getUserCode().compareTo(item.getUserAt(u)) < 0) userIndex++;
 
 				Double [] gamma = Bmf.this.getUserGamma(userIndex);
 

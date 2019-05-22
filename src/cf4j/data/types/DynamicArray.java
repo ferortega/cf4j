@@ -1,92 +1,73 @@
 package cf4j.data.types;
 
-public class DynamicArray<E> {
+import java.util.ArrayList;
 
-    static final short INITIAL_CAPACITY = 10;
-
-    protected Object [] data;
-    protected int size;
+public class DynamicArray<E>  extends ArrayList<E> {
 
     public DynamicArray(){
-        this.data =  new Object[INITIAL_CAPACITY];
-        this.size = 0;
+        super();
     }
 
     public DynamicArray(int customCapacity){
-        this.data =  new Object[customCapacity];
-        this.size = 0;
+        super(customCapacity);
     }
 
-    /**
-     * <p>Insert element in a specific position.</p>
-     * <p>This will move each other elements right.</p>
-     * @param index Position to insert the element.
-     * @param element Element to add ordered
-     * @throws IndexOutOfBoundsException
-     */
-    public void add(int index, E element) throws IndexOutOfBoundsException{
-        if (index < 0 || index > this.size) //Allowing insertion at last position
-            throw new IndexOutOfBoundsException("Entered index '" + index + "' is out of bounds.");
+    public int addOrdered(E element){
+        if (this.size()==0){
+            this.add(0,element);
+            return 0;
+        }
+        int min = 0, max = this.size() -1;
+        while (min < max) {
+            int center = ((max - min) / 2) + min;
+            final E e = this.get(center);
+            @SuppressWarnings("unchecked") //This won't happen.
+            final Comparable<E> c = (Comparable<E>) this.get(center);
 
-        if (this.size >= this.data.length)
-            this.increaseCapacity(this.size);
-
-        System.arraycopy(this.data,index,this.data,index+1,this.size - index);
-        this.data[index] = element;
-        this.size++;
-
-        if (index >= this.size)
-            this.size = index + 1;
-    }
-
-    /**
-     * <p>Insert element in a specific position, overwriting its contents.</p>
-     * <p>If the index exceeds current size, it will be added as new element in the array increasing the size</p>
-     * @param index Position to insert/add the element.
-     * @param element Element to add ordered
-     * @throws IndexOutOfBoundsException
-     */
-    public void modify(int index, E element){
-        if (index >= 0 && index < this.size){
-            this.data[index] = element;
+            if (c.compareTo(element) == 0){
+                this.set(center,element);
+                return center;
+            } else if (c.compareTo(element) > 0) {
+                max = center - 1;
+            } else {
+                min = center + 1;
+            }
         }
 
-        if (index >= this.size) {
-            this.size = index + 1;
-
-            if (this.size >= this.data.length)
-                this.increaseCapacity(this.size);
-
-            this.data[index] = element;
-        }
-    }
-    /**
-     * <p>This method returns the element in a specific position in the array [0-size()-1]</p>
-     * @param index Index to the element inside the array.
-     * @return The element, or null if it's not setted.
-     * @throws IndexOutOfBoundsException
-     */
-    public E get (int index) throws IndexOutOfBoundsException {
-        if (index<0 || index>=this.size)
-            throw new IndexOutOfBoundsException("Entered index '" + index + "' is out of bounds.");
-
+        final E e = this.get(min);
         @SuppressWarnings("unchecked") //This won't happen.
-        final E e = (E) data[index]; //TODO: Devuelve null si no está setteado?
-        return e;
+        final Comparable<E> c = (Comparable<E>) this.get(min);
+        if(c.compareTo(element) > 0){
+            this.add(min+1,element);
+            return min+1;
+        }else{
+            this.add(min,element);
+            return min;
+        }
     }
 
-    public int size(){
-        return this.size;
-    }
 
-    protected void increaseCapacity (int toAllocate){
-        final Object[] newData = new Object [toAllocate * 2];
-        System.arraycopy(this.data, 0, newData,0, this.data.length);
-        this.data = newData; //Garbage collector, it's your turn.
-    }
 
-//    public boolean remove (Object o){
-//        //TODO: Busqueda dicotómica y utilizar this.remove(index). (Creo que nos obliga a hacerlo por hash, debido a que no tiene tipo.
-//        return false;
-//    }
+    /**
+     * This methods find the element with positional equivalence in the array (Following Comparable interface ordering).
+     * @param element Element to find position correspondences.
+     * @return Array element which corresponds with the given element position.
+     */
+    public int get (E element){
+        int min = 0, max = this.size() -1;
+        while (min <= max) {
+            int center = ((max - min) / 2) + min;
+            final E e = this.get(center);
+            @SuppressWarnings("unchecked") //This won't happen.
+            final Comparable<E> c = (Comparable<E>) this.get(center);
+            if (c.compareTo(element) == 0)
+                return center;
+            if (c.compareTo(element) > 0) {
+                max = center - 1;
+            } else {
+                min = center + 1;
+            }
+        }
+        return -1; //If it doesnt exist.
+    }
 }
