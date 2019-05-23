@@ -3,6 +3,7 @@ package cf4j.algorithms.model.matrixFactorization;
 import cf4j.data.Item;
 import cf4j.data.DataModel;
 import cf4j.data.User;
+import cf4j.process.ItemPartible;
 import cf4j.process.Processor;
 import cf4j.process.UserPartible;
 import cf4j.utils.Methods;
@@ -341,7 +342,7 @@ public class Pmf implements FactorizationModel {
 	 * Auxiliary inner class to parallelize item factors computation
 	 * @author Fernando Ortega
 	 */
-	private class UpdateItemsFactors extends UserPartible {
+	private class UpdateItemsFactors extends ItemPartible {
 
 		public UpdateItemsFactors(DataModel dataModel) {
 			super(dataModel);
