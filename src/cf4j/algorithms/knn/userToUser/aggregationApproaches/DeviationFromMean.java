@@ -78,7 +78,7 @@ public class DeviationFromMean extends TestPredictions {
 				double similarity = similarities[userIndex];
 				double sim = (similarity - this.minSim) / (this.maxSim - this.minSim);
 
-				deviation += sim * (neighbor.getRatings().get(i) - neighbor.getDataBank().getDouble(User.AVERAGERATING_KEY));
+				deviation += sim * (neighbor.getRatingAt(i) - neighbor.getDataBank().getDouble(User.AVERAGERATING_KEY));
 				sumSimilarities += sim;
 			}
 		}

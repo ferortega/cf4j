@@ -3,7 +3,7 @@ package cf4j.algorithms.knn.itemToItem.similarities;
 import cf4j.data.Item;
 import cf4j.data.DataModel;
 import cf4j.data.TestItem;
-import cf4j.process.ItemPartible;
+import cf4j.process.TestItemPartible;
 
 /**
  * <p>This class process the similarity measure between two items. If you want to define your own similarity
@@ -17,7 +17,7 @@ import cf4j.process.ItemPartible;
  * 
  * @author Fernando Ortega
  */
-abstract public class ItemSimilarities extends ItemPartible {
+abstract public class ItemSimilarities extends TestItemPartible {
 
 	public ItemSimilarities(DataModel dataModel) {
 		super(dataModel);

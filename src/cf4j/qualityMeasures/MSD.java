@@ -28,20 +28,17 @@ public class MSD extends QualityMeasure {
 	public double getMeasure (TestUser testUser) {
 		
 		Double [] predictions = testUser.getDataBank().getDoubleArray(TestUser.PREDICTIONS_KEYS);
-		ArrayList<Double> ratings = testUser.getTestRatings();
 		
 		double msd = 0d; 
 		int count = 0;
 		
-		for (int i = 0; i < ratings.size(); i++) {
+		for (int i = 0; i < testUser.getNumberOfTestRatings(); i++) {
 			if (!Double.isNaN(predictions[i])) {
-				msd += Math.pow(predictions[i] - ratings.get(i), 2);
+				msd += Math.pow(predictions[i] -  testUser.getTestRatingAt(i), 2);
 				count++;
 			}
 		}
 		
-		return (count == 0) 
-			? Double.NaN
-			: msd / count;
+		return (count == 0) ? Double.NaN : (msd / count);
 	}
 }

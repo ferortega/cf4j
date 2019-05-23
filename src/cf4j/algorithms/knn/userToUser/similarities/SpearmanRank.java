@@ -22,12 +22,12 @@ public class SpearmanRank extends UserSimilarities{
 		double num = 0d;
 		
 		while (i < activeUser.getNumberOfRatings() && j < targetUser.getNumberOfRatings()) {
-			if (activeUser.getItems().get(i).compareTo(targetUser.getItems().get(j)) < 0) {
+			if (activeUser.getItemAt(i).compareTo(targetUser.getItemAt(j)) < 0) {
 				i++;
-			} else if (activeUser.getItems().get(i).compareTo(targetUser.getItems().get(j)) > 0) {
+			} else if (activeUser.getItemAt(i).compareTo(targetUser.getItemAt(j)) > 0) {
 				j++;
 			} else {
-				double diff = activeUser.getRatings().get(i) - targetUser.getRatings().get(j);
+				double diff = activeUser.getRatingAt(i) - targetUser.getRatingAt(j);
 				num += diff * diff;
 				common++;
 				i++; 

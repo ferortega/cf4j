@@ -22,15 +22,15 @@ public class Correlation extends UserSimilarities {
 		double num = 0d, denActive = 0d, denTarget = 0d;
 		
 		while (i < activeUser.getNumberOfRatings() && j < targetUser.getNumberOfRatings()) {
-			if (activeUser.getItems().get(i).compareTo(targetUser.getItems().get(j)) < 0) { //TODO: Could be reverted.
+			if (activeUser.getItemAt(i).compareTo(targetUser.getItemAt(j)) < 0) {
 				i++;
-			} else if (activeUser.getItems().get(i).compareTo(targetUser.getItems().get(j)) > 0) {
+			} else if (activeUser.getItemAt(i).compareTo(targetUser.getItemAt(j)) > 0) {
 				j++;
 			} else {
 				double avgFa = (activeUser.getNumberOfRatings()>0)?activeUser.getDataBank().getDouble(User.AVERAGERATING_KEY):0;
 				double avgFt = (targetUser.getNumberOfRatings()>0)?targetUser.getDataBank().getDouble(User.AVERAGERATING_KEY):0;
-				double fa = activeUser.getRatings().get(i) - avgFa;
-				double ft = targetUser.getRatings().get(j) - avgFt;
+				double fa = activeUser.getRatingAt(i) - avgFa;
+				double ft = targetUser.getRatingAt(j) - avgFt;
 				
 				num += fa * ft;
 				denActive += fa * fa;

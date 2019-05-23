@@ -19,10 +19,10 @@ public class Jaccard extends UserSimilarities {
 	public double similarity (TestUser activeUser, User targetUser) {		
 		
 		int i = 0, j = 0, common = 0;
-		while (i < activeUser.getNumberOfRatings() && j < targetUser.getNumberOfRatings()) { //TODO: Check this, could be reversed.
-			if (activeUser.getItems().get(i).compareTo(targetUser.getItems().get(j))<0) {
+		while (i < activeUser.getNumberOfRatings() && j < targetUser.getNumberOfRatings()) {
+			if (activeUser.getItemAt(i).compareTo(targetUser.getItemAt(j))<0) {
 				i++;
-			} else if (activeUser.getItems().get(i).compareTo(targetUser.getItems().get(j))>0) { //TODO: Check this, could be reversed.
+			} else if (activeUser.getItemAt(i).compareTo(targetUser.getItemAt(j))>0) {
 				j++;
 			} else {
 				common++;

@@ -48,13 +48,13 @@ public class PIP extends UserSimilarities {
 		double PIP = 0d;
 		
 		while (i < activeUser.getNumberOfRatings() && j < targetUser.getNumberOfRatings()) {
-			if (activeUser.getItems().get(i).compareTo(targetUser.getItems().get(j))<0)
+			if (activeUser.getItemAt(i).compareTo(targetUser.getItemAt(j))<0)
 				i++;
-			else if (activeUser.getItems().get(i).compareTo(targetUser.getItems().get(j))>0)
+			else if (activeUser.getItemAt(i).compareTo(targetUser.getItemAt(j))>0)
 				j++;
 			else {
-				double ra = activeUser.getRatings().get(i);
-				double rt = targetUser.getRatings().get(j);
+				double ra = activeUser.getRatingAt(i);
+				double rt = targetUser.getRatingAt(j);
 				
 				// Compute agreement
 				boolean agreement = true;
@@ -71,7 +71,7 @@ public class PIP extends UserSimilarities {
 				double impact = (agreement) ? im : 1d / im;
 
 				// Compute popularity
-				String itemCode = activeUser.getItems().get(i);
+				String itemCode = activeUser.getItemAt(i);
 				Item item = this.dataModel.getItem(itemCode);
 				double itemAvg = item.getDataBank().getDouble(Item.AVERAGERATING_KEY);
 				

@@ -39,7 +39,7 @@ public class CorrelationConstrained extends ItemSimilarities{
 		for (int i = 0; i < this.dataModel.getNumberOfUsers(); i++){
 			User user = this.dataModel.getUserAt(i);
 			for (int j = 0; j < user.getNumberOfRatings(); j++){
-				double rating = user.getRatings().get(j);
+				double rating = user.getRatingAt(j);
 				ratings.add(rating);
 			}
 		}

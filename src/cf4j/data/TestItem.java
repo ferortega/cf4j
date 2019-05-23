@@ -62,14 +62,6 @@ public class TestItem extends Item {
 		this.getDataBank().setDouble(AVERAGETESTRATING_KEY, ratingAverage);
 		this.getDataBank().setDouble(STANDARDDEVIATIONTEST_KEY, standardDeviation);
 	}
-
-	/**
-	 * Get the test users that have rated the item
-	 * @return Test users codes sorted from low to high. 
-	 */
-	public DynamicArray<String> getTestUsers() {
-		return this.testUsers;
-	}
 	
 	/**
 	 * Returns the test user code at index position. 
@@ -77,25 +69,16 @@ public class TestItem extends Item {
 	 * @return Test user code at index. 
 	 */
 	public String getTestUserAt(int index) {
-		return this.getTestUsers().get(index);
+		return this.testUsers.get(index);
 	}
 
-	/**
-	 * Get the test ratings of the test users to the item. The indexes of this 
-	 * array overlaps with indexes of the getTestUsers() array.
-	 * @return Test users ratings
-	 */
-	public ArrayList<Double> getTestRatings() {
-		return this.testRatings;
-	}
-	
 	/**
 	 * Returns the test rating at index position. 
  	 * @param index Index.
 	 * @return Test rating at index. 
 	 */
 	public double getTestRatingAt(int index) {
-		return this.getTestRatings().get(index);
+		return this.testRatings.get(index);
 	}
 	
 	/**

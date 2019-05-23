@@ -97,17 +97,17 @@ public class Singularities extends UserSimilarities{
 
 		int i = 0, j = 0, common = 0;
 		while (i < activeUser.getNumberOfRatings() && j < targetUser.getNumberOfRatings()) {
-			if (activeUser.getItems().get(i).compareTo(targetUser.getItems().get(j)) < 0) { //TODO:Check, could be reversed.
+			if (activeUser.getItemAt(i).compareTo(targetUser.getItemAt(j)) < 0) {
 				i++;
-			} else if (activeUser.getItems().get(i).compareTo(targetUser.getItems().get(j)) > 0) { //TODO:Check, could be reversed.
+			} else if (activeUser.getItemAt(i).compareTo(targetUser.getItemAt(j)) > 0) {
 				j++;
 			} else {
 				
 				// Get the ratings
 				String itemCode = activeUser.getItemAt(i);
 				int itemIndex = dataModel.getItemIndex(itemCode);
-				double activeUserRating = activeUser.getRatings().get(i);
-				double targetUserRating = targetUser.getRatings().get(j);
+				double activeUserRating = activeUser.getRatingAt(i);
+				double targetUserRating = targetUser.getRatingAt(j);
 
 				// Both user have rated relevant
 				if (this.relevantRatings.contains(activeUserRating) && this.relevantRatings.contains(targetUserRating)) {

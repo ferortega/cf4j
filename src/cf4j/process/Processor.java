@@ -42,7 +42,7 @@ public class Processor {
 	 * the available processors.
 	 */
 	private Processor () {
-		this.setNumThreads(1);
+		this.setNumThreads(Runtime.getRuntime().availableProcessors() * 2);
 	}
 
 	/**
@@ -121,11 +121,11 @@ public class Processor {
 	}
 
 	/**
-	 * Execute a inside the main thread, without not balance the processing.
+	 * Execute a inside the main thread, without not balance the processing (slower version).
 	 * @see Partible
 	 * @param partible partible implementation of the datamodel focused on a specific runnable algorithm.
 	 */
-	private void monoExec (Partible partible, boolean verbose) {
+	public void monoExec (Partible partible, boolean verbose) {
 
 		// Do some stuff...
 		partible.beforeRun();
@@ -139,7 +139,7 @@ public class Processor {
 			if (verbose) {
 				time2 = (new Date()).getTime() / 1000;
 				if ((time2 - time1) > 10) {
-					System.out.print("..." + ((index / partible.getTotalIndexes())  * 100) + "%");
+					System.out.print("..." + ((index*100 / partible.getTotalIndexes())) + "%");
 					time1 = time2;
 				}
 			}

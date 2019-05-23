@@ -28,20 +28,17 @@ public class MAE extends QualityMeasure {
 	public double getMeasure (TestUser testUser) {
 		
 		Double [] predictions = testUser.getDataBank().getDoubleArray(TestUser.PREDICTIONS_KEYS);
-		ArrayList<Double> ratings = testUser.getTestRatings();
-		
+
 		double mae = 0d; 
 		int count = 0;
 		
-		for (int i = 0; i < ratings.size() ; i++) {
+		for (int i = 0; i < testUser.getNumberOfTestRatings(); i++) {
 			if (!Double.isNaN(predictions[i])) {
-				mae += Math.abs(predictions[i] - ratings.get(i));
+				mae += Math.abs(predictions[i] -  testUser.getTestRatingAt(i));
 				count++;
 			}
 		}
 		
-		return (count == 0) 
-			? Double.NaN
-			: mae / count;
+		return (count == 0) ? Double.NaN : (mae / count);
 	}
 }

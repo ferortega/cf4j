@@ -60,7 +60,7 @@ public class F1 extends QualityMeasure {
 		for (int testItemIndex : recommendations) {
 			if (testItemIndex == -1) break;
 			
-			if (testUser.getTestRatings().get(testItemIndex) >= this.relevantThreshold) {
+			if (testUser.getTestRatingAt(testItemIndex) >= this.relevantThreshold) {
 				recommendedAndRelevant++;
 			}
 			

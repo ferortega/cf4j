@@ -2,7 +2,7 @@ package cf4j.algorithms.knn.itemToItem.neighbors;
 
 import cf4j.data.DataModel;
 import cf4j.data.TestItem;
-import cf4j.process.ItemPartible;
+import cf4j.process.TestItemPartible;
 
 /**
  * <p>This abstracts class calculates the neighbors of each test item. If you want to compute
@@ -15,7 +15,7 @@ import cf4j.process.ItemPartible;
  * 
  * @author Fernando Ortega
  */
-public abstract class ItemNeighbors extends ItemPartible {
+public abstract class ItemNeighbors extends TestItemPartible {
 
 	/**
 	 * Number of neighbors to be calculated

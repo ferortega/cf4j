@@ -76,7 +76,7 @@ public class WeightedMean extends TestPredictions {
 				double similarity = similarities[itemIndex];
 				double sim = (similarity - this.minSim) / (this.maxSim - this.minSim);
 				
-				double rating = testUser.getRatings().get(i);
+				double rating = testUser.getRatingAt(i);
 				
 				prediction += sim * rating;
 				sum += sim;

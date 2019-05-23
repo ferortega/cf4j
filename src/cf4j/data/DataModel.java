@@ -214,11 +214,7 @@ public class DataModel implements Serializable {
      * @return User or null
      */
     public User getUserAt(int userIndex) {
-        try {
-            return this.users.get(userIndex);
-        } catch (IndexOutOfBoundsException e) {
-            return null;
-        }
+        return this.users.get(userIndex);
     }
 
     /**
@@ -248,11 +244,7 @@ public class DataModel implements Serializable {
      * @return User or null
      */
     public TestUser getTestUserAt(int testUserIndex) {
-        try {
-            return this.testUsers.get(testUserIndex);
-        } catch (IndexOutOfBoundsException e) {
-            return null;
-        }
+        return this.testUsers.get(testUserIndex);
     }
 
     /**
@@ -283,11 +275,7 @@ public class DataModel implements Serializable {
      * @return TestItem or null
      */
     public Item getItemAt(int itemIndex) {
-        try {
-            return this.items.get(itemIndex);
-        } catch (IndexOutOfBoundsException e) {
-            return null;
-        }
+        return this.items.get(itemIndex);
     }
 
     /**
@@ -317,11 +305,7 @@ public class DataModel implements Serializable {
      * @return TestItem or null
      */
     public TestItem getTestItemAt(int testItemIndex) {
-        try {
-            return this.testItems.get(testItemIndex);
-        } catch (IndexOutOfBoundsException e) {
-            return null;
-        }
+        return this.testItems.get(testItemIndex);
     }
 
     /**

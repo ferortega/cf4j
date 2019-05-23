@@ -65,29 +65,12 @@ public class TestUser extends User {
 	}
 
 	/**
-	 * Get the test items rated by the user
-	 * @return Test items codes sorted from low to high. 
-	 */
-	public DynamicArray<String> getTestItems() {
-		return this.testItems;
-	}
-	
-	/**
 	 * Returns the test item code at index position. 
 	 * @param index Index.
 	 * @return Test item code at index. 
 	 */
 	public String getTestItemAt(int index) {
-		return this.getTestItems().get(index);
-	}
-
-	/**
-	 * Get the ratings of the test items. The indexes of this array overlaps
-	 * with indexes of the getTestItems() array.
-	 * @return Test items ratings
-	 */
-	public ArrayList<Double> getTestRatings() {
-		return this.testRatings;
+		return this.testItems.get(index);
 	}
 	
 	/**
@@ -96,7 +79,7 @@ public class TestUser extends User {
 	 * @return Test rating at index. 
 	 */
 	public double getTestRatingAt(int index) {
-		return this.getTestRatings().get(index);
+		return this.testRatings.get(index);
 	}
 	
 	/**
