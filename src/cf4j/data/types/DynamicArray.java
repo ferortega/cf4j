@@ -37,7 +37,7 @@ public class DynamicArray<E>  extends ArrayList<E> {
         final E e = this.get(min);
         @SuppressWarnings("unchecked") //This won't happen.
         final Comparable<E> c = (Comparable<E>) this.get(min);
-        if(c.compareTo(element) > 0){
+        if(c.compareTo(element) < 0){
             this.add(min+1,element);
             return min+1;
         }else{

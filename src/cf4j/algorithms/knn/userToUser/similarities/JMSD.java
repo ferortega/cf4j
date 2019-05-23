@@ -36,9 +36,9 @@ public class JMSD extends UserSimilarities {
 		double msd = 0d;
 		
 		while (i < activeUser.getNumberOfRatings() && j < targetUser.getNumberOfRatings()) {
-			if (activeUser.getItems().get(i).compareTo( targetUser.getItems().get(j)) < 0) { //TODO: Check this. Could be reversed
+			if (activeUser.getItems().get(i).compareTo( targetUser.getItems().get(j)) < 0) {
 				i++;
-			} else if (activeUser.getItems().get(i).compareTo( targetUser.getItems().get(j)) > 0) { //TODO: Check this. Could be reversed
+			} else if (activeUser.getItems().get(i).compareTo( targetUser.getItems().get(j)) > 0) {
 				j++;
 			} else {
 				double diff = (activeUser.getRatings().get(i) - targetUser.getRatings().get(j)) / this.maxDiff;

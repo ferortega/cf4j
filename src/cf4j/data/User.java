@@ -86,8 +86,8 @@ public class User implements Serializable, Comparable<User> {
 	}
 
 	/**
-	 * Returns the items codes rated by the user. 
-	 * @return Items codes sorted from low to high. 
+	 * Returns the items codes rated by the user.
+	 * @return Items codes sorted from low to high.
 	 */
 	public DynamicArray<String> getItems() {
 		return this.items;
@@ -103,14 +103,14 @@ public class User implements Serializable, Comparable<User> {
 	}
 
 	/**
-	 * Returns the ratings given by the user to the items. The indexes of the 
+	 * Returns the ratings given by the user to the items. The indexes of the
 	 * array overlaps with indexes of the getItems() array.
 	 * @return Items ratings.
 	 */
 	public ArrayList<Double> getRatings() {
 		return this.ratings;
 	}
-	
+
 	/**
 	 * Returns the rating at index position. 
 	 * @param index Index.
