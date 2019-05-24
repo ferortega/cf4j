@@ -59,14 +59,40 @@ public class DataModel implements Serializable {
      * @param dataset Dataset eith the information to be added
      */
     public void loadDataset (DataSet dataset){
-        for (Iterator<DataSet.DataSetEntry> it = dataset.getRatingsIterator(); it.hasNext(); ){
-            DataSet.DataSetEntry entry = it.next();
-            this.addRating(entry.first, entry.second, entry.third);
-        }
         for (Iterator<DataSet.DataSetEntry> it = dataset.getTestRatingsIterator(); it.hasNext(); ){
             DataSet.DataSetEntry entry = it.next();
             this.addTestRating(entry.first, entry.second, entry.third);
         }
+        for (Iterator<DataSet.DataSetEntry> it = dataset.getRatingsIterator(); it.hasNext(); ){
+            DataSet.DataSetEntry entry = it.next();
+            this.addRating(entry.first, entry.second, entry.third);
+        }
+    }
+
+    /**
+     * This method adds a single test rating to the DataSet
+     * @param userCode UserCode as string, of the rating.
+     * @param itemCode ItemCode to be rated.
+     * @param rating Rating of the item.
+     */
+    public void addTestRating (String userCode, String itemCode, double rating) {
+
+        TestUser testUser = this.getTestUser(userCode);
+        if(testUser == null) { //If don't exist, create new and add it to the arrays.
+            testUser = new TestUser(userCode); //<-
+            this.users.add(testUser);
+            this.testUsers.add(testUser);
+        }
+        //Getting Item with that id.
+        TestItem testItem = this.getTestItem(itemCode);
+        if(testItem == null) {//If don't exist, create new and add it to the arrays..
+            testItem = new TestItem(itemCode); //<-
+            this.items.add(testItem);
+            this.testItems.add(testItem);
+        }
+
+        testUser.addTestRating(itemCode, rating);
+        testItem.addTestRating(userCode, rating);
     }
 
     /**
@@ -93,63 +119,6 @@ public class DataModel implements Serializable {
 
         user.addRating(itemCode, rating);
         item.addRating(userCode, rating);
-    }
-
-    /**
-     * This method adds a single test rating to the DataSet
-     * @param userCode UserCode as string, of the rating.
-     * @param itemCode ItemCode to be rated.
-     * @param rating Rating of the item.
-     */
-    public void addTestRating (String userCode, String itemCode, double rating) {
-
-        User user = this.getUser(userCode);
-        TestUser testUser;
-        if(user == null) { //If don't exist as an user, create new and add it to the arrays.
-            testUser = new TestUser(userCode);
-            this.users.addOrdered(testUser);
-            this.testUsers.addOrdered(testUser);
-        }else {//In case user started not being test (Because we used add firstly as a training Rating):
-            if (user instanceof TestUser) {
-                testUser = (TestUser) user;
-            }else{
-                //Transform him in test user.
-                testUser = new TestUser(userCode);
-                //Copying current item rating.
-                for (int i = 0; i < user.getNumberOfRatings();i++){
-                    testUser.addRating(user.getItemAt(i),user.getRatingAt(i));
-                }
-                //Modifying old instance of user by the new one and adding as new the testUser.
-                this.users.set(this.users.get(user),testUser);
-                this.testUsers.addOrdered(testUser);
-            }
-        }
-
-        //Getting Item with that id.
-        Item item = this.getItem(itemCode);
-        TestItem testItem;
-        if(item == null) {//If don't exist as an item, create new and add it to the arrays.
-            testItem = new TestItem(itemCode);
-            this.items.addOrdered(testItem);
-            this.testItems.addOrdered(testItem);
-        }else{//In case user started not being test (Because we used add firstly as a training Rating):
-            if (item instanceof TestItem) {
-                testItem = (TestItem) item;
-            }else{
-                //Transform him in test item.
-                testItem = new TestItem(itemCode);
-                //Copying current user rating.
-                for (int i = 0; i < item.getNumberOfRatings();i++){
-                    testItem.addRating(item.getUserAt(i),item.getRatingAt(i));
-                }
-                //Modifying old instance of user by the new one and adding as new the testItem.
-                this.items.set(this.items.get(item),testItem);
-                this.testItems.addOrdered(testItem);
-            }
-        }
-
-        testUser.addTestRating(itemCode, rating);
-        testItem.addTestRating(userCode, rating);
     }
 
     public void calculateMetrics(){

@@ -35,9 +35,9 @@ public abstract class Partible {
 	/**
 	 * Is executed once for each test element. It can be user, item, testUser or testItem indexes.
 	 * The child class should indicate in the name if it's for users, items, testUsers or testItems.
-	 * @param userOrItemIndex Index of the test element.
+	 * @param index Index of the test element.
 	 */
-	public abstract void run (int userOrItemIndex);
+	public abstract void run (int index);
 
 	/**
 	 * Is executed once after execute the method run. It can be used to close
