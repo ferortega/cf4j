@@ -80,15 +80,15 @@ public class DataModel implements Serializable {
         TestUser testUser = this.getTestUser(userCode);
         if(testUser == null) { //If don't exist, create new and add it to the arrays.
             testUser = new TestUser(userCode); //<-
-            this.users.add(testUser);
-            this.testUsers.add(testUser);
+            this.users.addOrdered(testUser);
+            this.testUsers.addOrdered(testUser);
         }
         //Getting Item with that id.
         TestItem testItem = this.getTestItem(itemCode);
         if(testItem == null) {//If don't exist, create new and add it to the arrays..
             testItem = new TestItem(itemCode); //<-
-            this.items.add(testItem);
-            this.testItems.add(testItem);
+            this.items.addOrdered(testItem);
+            this.testItems.addOrdered(testItem);
         }
 
         testUser.addTestRating(itemCode, rating);

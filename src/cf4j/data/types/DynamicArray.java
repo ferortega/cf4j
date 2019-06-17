@@ -60,13 +60,13 @@ public class DynamicArray<E>  extends ArrayList<E> {
             final E e = this.get(center);
             @SuppressWarnings("unchecked") //This won't happen.
             final Comparable<E> c = (Comparable<E>) this.get(center);
-            if (c.compareTo(element) == 0)
+            int compVal = c.compareTo(element);
+            if (compVal == 0)
                 return center;
-            if (c.compareTo(element) > 0) {
+            else if (compVal > 0)
                 max = center - 1;
-            } else {
+            else
                 min = center + 1;
-            }
         }
         return -1; //If it doesnt exist.
     }
