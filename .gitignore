@@ -7,7 +7,4 @@
 
 dependency-reduced-pom.xml
 
-bin/
-doc/
-src/debug/
-target/
+out/

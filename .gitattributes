@@ -1,6 +1,0 @@
-datasets/MovieLens1M.txt filter=lfs diff=lfs merge=lfs -text
-datasets/MovieLens100K.txt filter=lfs diff=lfs merge=lfs -text
-datasets/MovieLens10M.txt filter=lfs diff=lfs merge=lfs -text
-datasets/FilmTrust.txt filter=lfs diff=lfs merge=lfs -text
-datasets/BookCrossing.csv filter=lfs diff=lfs merge=lfs -text
-datasets/Jester.txt filter=lfs diff=lfs merge=lfs -text

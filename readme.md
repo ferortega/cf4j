@@ -225,7 +225,7 @@ Let's encode our first experiment with CF4J. In this experiment, we will compare
 			Processor.getInstance().testUsersProcess(new cf4j.knn.userToUser.aggregationApproaches.DeviationFromMean());
 
 			// Compute MAE
-			Processor.getInstance().testUsersProcess(new cf4j.qualityMeasures.MAE());
+			Processor.getInstance().testUsersProcess(new cf4j.qualityMeasures.prediction.MAE());
 
 			// Retrieve mae an store it
 			mae.putError(k, sm, Kernel.gi().getQualityMeasure("MAE"));
