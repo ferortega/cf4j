@@ -1,9 +1,9 @@
-package cf4j.algorithms.knn.userSimilarityMetrics;
+package es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetrics;
 
-import cf4j.data.DataModel;
-import cf4j.data.TestUser;
-import cf4j.data.User;
-import cf4j.process.Partible;
+
+import es.upm.etsisi.cf4j.data.DataModel;
+import es.upm.etsisi.cf4j.data.TestUser;
+import es.upm.etsisi.cf4j.data.User;
 
 /**
  * <p>This class process the similarity measure between two users. If you want to define your own similarity
@@ -55,7 +55,5 @@ import cf4j.process.Partible;
 	}
 	
 	@Override
-	public void afterRun() {
-		// TODO normalize metric
-	}
+	public void afterRun() { }
 }

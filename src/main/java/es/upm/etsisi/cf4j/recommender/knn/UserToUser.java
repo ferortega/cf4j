@@ -1,13 +1,14 @@
-package cf4j.algorithms.knn;
+package es.upm.etsisi.cf4j.recommender.knn;
 
-import cf4j.algorithms.Recommender;
-import cf4j.algorithms.knn.userSimilarityMetrics.UserSimilarities;
-import cf4j.data.DataModel;
-import cf4j.data.TestUser;
-import cf4j.data.User;
-import cf4j.process.Parallel;
-import cf4j.process.Partible;
-import cf4j.utils.Methods;
+
+import es.upm.etsisi.cf4j.data.DataModel;
+import es.upm.etsisi.cf4j.data.TestUser;
+import es.upm.etsisi.cf4j.data.User;
+import es.upm.etsisi.cf4j.process.Parallel;
+import es.upm.etsisi.cf4j.process.Partible;
+import es.upm.etsisi.cf4j.recommender.Recommender;
+import es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetrics.UserSimilarities;
+import es.upm.etsisi.cf4j.utils.Methods;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -145,15 +146,15 @@ public class UserToUser extends Recommender {
                 : user.getRatingAverage() + num / den;
     }
 
-    private class UserNeighbors implements Partible {
+    private class UserNeighbors implements Partible<TestUser> {
 
         @Override
         public void beforeRun() { }
 
         @Override
-        public void run(int testUserIndex) {
-            TestUser testUser = datamodel.getTestUserAt(testUserIndex);
-            neighbors[testUserIndex] = Methods.findTopN(similarities[testUserIndex], k);
+        public void run(TestUser testUser) {
+            int testUserIndex = testUser.getTestIndex();
+            neighbors[testUserIndex] = Methods.findTopN(similarities[testUserIndex], K);
         }
 
         @Override

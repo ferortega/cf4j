@@ -1,4 +1,4 @@
-package cf4j.data;
+package es.upm.etsisi.cf4j.data;
 
 import cf4j.data.types.Triplet;
 import java.util.Iterator;

@@ -1,7 +1,8 @@
-package cf4j.algorithms;
+package es.upm.etsisi.cf4j.recommender;
 
-import cf4j.data.DataModel;
-import cf4j.data.TestUser;
+
+import es.upm.etsisi.cf4j.data.DataModel;
+import es.upm.etsisi.cf4j.data.TestUser;
 
 public abstract class Recommender {
 

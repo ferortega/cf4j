@@ -1,4 +1,4 @@
-package cf4j.qualityMeasures;
+package es.upm.etsisi.cf4j.qualityMeasures.recommendation;
 
 import cf4j.data.DataModel;
 import cf4j.data.TestUser;

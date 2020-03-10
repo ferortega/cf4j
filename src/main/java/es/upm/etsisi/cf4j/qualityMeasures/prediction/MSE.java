@@ -1,9 +1,9 @@
-package cf4j.qualityMeasures.prediction;
+package es.upm.etsisi.cf4j.qualityMeasures.prediction;
 
-import cf4j.algorithms.Recommender;
-import cf4j.data.TestUser;
-import cf4j.qualityMeasures.QualityMeasure;
 
+import es.upm.etsisi.cf4j.data.TestUser;
+import es.upm.etsisi.cf4j.qualityMeasures.QualityMeasure;
+import es.upm.etsisi.cf4j.recommender.Recommender;
 
 public class MSE extends QualityMeasure {
 
@@ -12,7 +12,7 @@ public class MSE extends QualityMeasure {
 	}
 
 	@Override
-	public double getScore (TestUser testUser, double[] predictions) {
+	public double getScore(TestUser testUser, double[] predictions) {
 
 		double mse = 0d;
 		int count = 0;

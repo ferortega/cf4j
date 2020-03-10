@@ -1,8 +1,9 @@
-package cf4j.algorithms.knn.userSimilarityMetrics;
+package es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetrics;
 
-import cf4j.data.DataModel;
-import cf4j.data.TestUser;
-import cf4j.data.User;
+
+import es.upm.etsisi.cf4j.data.DataModel;
+import es.upm.etsisi.cf4j.data.TestUser;
+import es.upm.etsisi.cf4j.data.User;
 
 /**
  * Implements traditional Cosine as CF similarity metric.

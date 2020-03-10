@@ -1,4 +1,4 @@
-package cf4j.utils;
+package es.upm.etsisi.cf4j.utils;
 
 /**
  * Class responsible for abstracting the storage and representation of the results. Used to save those

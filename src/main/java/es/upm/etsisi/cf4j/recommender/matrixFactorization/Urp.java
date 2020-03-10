@@ -1,11 +1,12 @@
-package cf4j.algorithms.matrixFactorization;
+package es.upm.etsisi.cf4j.recommender.matrixFactorization;
 
-import cf4j.algorithms.Recommender;
-import cf4j.data.DataModel;
-import cf4j.data.Item;
-import cf4j.data.User;
-import cf4j.process.Parallel;
-import cf4j.process.Partible;
+
+import es.upm.etsisi.cf4j.data.DataModel;
+import es.upm.etsisi.cf4j.data.Item;
+import es.upm.etsisi.cf4j.data.User;
+import es.upm.etsisi.cf4j.process.Parallel;
+import es.upm.etsisi.cf4j.process.Partible;
+import es.upm.etsisi.cf4j.recommender.Recommender;
 import org.apache.commons.math3.special.Gamma;
 
 import java.util.Arrays;

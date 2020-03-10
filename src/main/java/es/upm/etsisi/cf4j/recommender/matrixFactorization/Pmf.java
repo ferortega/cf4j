@@ -1,12 +1,14 @@
-package cf4j.algorithms.matrixFactorization;
+package es.upm.etsisi.cf4j.recommender.matrixFactorization;
 
-import cf4j.algorithms.Recommender;
-import cf4j.data.DataModel;
-import cf4j.data.Item;
-import cf4j.data.User;
-import cf4j.process.Parallel;
-import cf4j.process.Partible;
-import cf4j.utils.Methods;
+
+
+import es.upm.etsisi.cf4j.data.DataModel;
+import es.upm.etsisi.cf4j.data.Item;
+import es.upm.etsisi.cf4j.data.User;
+import es.upm.etsisi.cf4j.process.Parallel;
+import es.upm.etsisi.cf4j.process.Partible;
+import es.upm.etsisi.cf4j.recommender.Recommender;
+import es.upm.etsisi.cf4j.utils.Methods;
 
 import java.util.Random;
 

@@ -1,12 +1,10 @@
-package cf4j.qualityMeasures;
+package es.upm.etsisi.cf4j.qualityMeasures;
 
-import cf4j.algorithms.Recommender;
-import cf4j.data.DataModel;
-import cf4j.data.TestUser;
-import cf4j.data.User;
-import cf4j.process.Parallel;
-import cf4j.process.Partible;
 
+import es.upm.etsisi.cf4j.data.TestUser;
+import es.upm.etsisi.cf4j.process.Parallel;
+import es.upm.etsisi.cf4j.process.Partible;
+import es.upm.etsisi.cf4j.recommender.Recommender;
 
 public abstract class QualityMeasure {
 
@@ -18,7 +16,7 @@ public abstract class QualityMeasure {
 
 	public QualityMeasure(Recommender recommender) {
 		this.recommender = recommender;
-		Parallel(recommender.getDataModel().getTestUsers(), new EvaluateUsers());
+		Parallel.run(recommender.getDataModel().getTestUsers(), new EvaluateUsers());
 	}
 
 	// fit?
@@ -52,6 +50,4 @@ public abstract class QualityMeasure {
 			score = sum / count;
 		}
 	}
-
-
 }

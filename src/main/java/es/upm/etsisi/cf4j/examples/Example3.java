@@ -7,7 +7,7 @@ import cf4j.data.DataModel;
 import cf4j.data.RandomSplitDataSet;
 import cf4j.process.Parallel;
 import cf4j.qualityMeasures.prediction.MAE;
-import cf4j.qualityMeasures.Precision;
+import es.upm.etsisi.cf4j.qualityMeasures.recommendation.Precision;
 
 /**
  * Compare MAE and Precision of PMF and BMF.

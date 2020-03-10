@@ -1,18 +1,16 @@
-package cf4j.algorithms.matrixFactorization;
+package es.upm.etsisi.cf4j.recommender.matrixFactorization;
 
 import java.util.Random;
 import java.util.concurrent.locks.ReentrantLock;
 
-import cf4j.algorithms.Recommender;
-import cf4j.algorithms.model.matrixFactorization.FactorizationModel;
-import cf4j.process.Partible;
+
+import es.upm.etsisi.cf4j.data.DataModel;
+import es.upm.etsisi.cf4j.data.Item;
+import es.upm.etsisi.cf4j.process.Parallel;
+import es.upm.etsisi.cf4j.recommender.Recommender;
+import es.upm.etsisi.cf4j.utils.Methods;
 import org.apache.commons.math3.special.Gamma;
 
-import cf4j.data.Item;
-import cf4j.data.DataModel;
-import cf4j.data.User;
-import cf4j.process.Parallel;
-import cf4j.utils.Methods;
 
 /**
  * Implements Probabilist Matrix Factorization: Hernando, A., Bobadilla, J., &amp; Ortega, F. (2016).

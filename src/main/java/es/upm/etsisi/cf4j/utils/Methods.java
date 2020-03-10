@@ -1,4 +1,4 @@
-package cf4j.utils;
+package es.upm.etsisi.cf4j.utils;
 
 /**
  * This class contains useful methods to work with during the development of the implementations
@@ -13,7 +13,7 @@ public class Methods {
 	  * @param array Array of double from which to calculate the mean
 	  * @return Array mean
 	  */
-	 public static double arrayAverage (double [] array) {
+	 public static double arrayAverage (double[] array) {
 		 double average = 0f;
 		 for (double d : array) average += d;
 		 return average / (double) array.length;
@@ -24,7 +24,7 @@ public class Methods {
 	 * @param array Array of double from which to calculate the standard deviation
 	 * @return Standard deviation of the array
 	 */
-	public static double arrayStandardDeviation (double [] array) {
+	public static double arrayStandardDeviation (double[] array) {
 		double average = Methods.arrayAverage(array);
 		double standard_deviation = 0f;
 		for (double d : array) standard_deviation += (d - average) * (d - average);
@@ -36,7 +36,7 @@ public class Methods {
 	  * @param array Array of int from which to calculate the mean
 	  * @return Array mean
 	  */
-	 public static double arrayAverage (int [] array) {
+	 public static double arrayAverage (int[] array) {
 		 double average = 0f;
 		 for (int i : array) average += i;
 		 return average / (double) array.length;
@@ -47,7 +47,7 @@ public class Methods {
 	 * @param array Array of int from which to calculate the standard deviation
 	 * @return Standard deviation of the array
 	 */
-	public static double arrayStandardDeviation (int [] array) {
+	public static double arrayStandardDeviation (int[] array) {
 		double average = Methods.arrayAverage(array);
 		double standard_deviation = 0f;
 		for (int i : array) standard_deviation += (i - average) * (i - average);
@@ -61,7 +61,7 @@ public class Methods {
 	 * @param value Value which calculates the position
 	 * @return Index of the item or -1 if not found
 	 */
-	public static int getIndex (int [] array, int value) {
+	public static int getIndex (int[] array, int value) {
 		int min = 0, max = array.length -1;
 		while (min <= max) {
 			int center = ((max - min) / 2) + min;
@@ -83,11 +83,11 @@ public class Methods {
 	 * @param n Number of elements to obtain
 	 * @return Indexes of values sorted by higher to lower
 	 */
-	public static Integer [] findTopN (Double [] values, int n) {
+	public static int[] findTopN(double [] values, int n) {
 
-		Integer [] indexes = new Integer [n];
+		int[] indexes = new int[n];
 
-		double [] aux = new double [n];
+		double[] aux = new double[n];
 
 		for (int i = 0; i < n; i++) {
 
@@ -129,7 +129,7 @@ public class Methods {
 	 * @param b Vector B
 	 * @return dot_product(A, B)
 	 */
-	public static double dotProduct (double [] a, double [] b) {
+	public static double dotProduct(double [] a, double [] b) {
 		double r = 0;
 		for (int i = 0; i < a.length; i++) r += a[i] * b[i];
 		return r;

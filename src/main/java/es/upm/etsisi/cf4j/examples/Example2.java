@@ -10,11 +10,11 @@ import cf4j.algorithms.knn.userToUser.similarities.*;
 import cf4j.data.DataModel;
 import cf4j.data.RandomSplitDataSet;
 import cf4j.process.Parallel;
-import cf4j.qualityMeasures.Coverage;
-import cf4j.qualityMeasures.F1;
+import es.upm.etsisi.cf4j.qualityMeasures.prediction.Coverage;
+import es.upm.etsisi.cf4j.qualityMeasures.recommendation.F1;
 import cf4j.qualityMeasures.prediction.MAE;
-import cf4j.qualityMeasures.Precision;
-import cf4j.qualityMeasures.Recall;
+import es.upm.etsisi.cf4j.qualityMeasures.recommendation.Precision;
+import es.upm.etsisi.cf4j.qualityMeasures.recommendation.Recall;
 import cf4j.utils.PrintableQualityMeasure;
 import cf4j.utils.Range;
 

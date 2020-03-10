@@ -1,7 +1,8 @@
-package cf4j.qualityMeasures;
+package es.upm.etsisi.cf4j.qualityMeasures.prediction;
 
-import cf4j.data.DataModel;
-import cf4j.data.TestUser;
+import es.upm.etsisi.cf4j.data.TestUser;
+import es.upm.etsisi.cf4j.qualityMeasures.QualityMeasure;
+import es.upm.etsisi.cf4j.recommender.Recommender;
 
 /**
  * <p>This class calculates the Coverage of the recommender system. The coverage is the capacity of
@@ -16,20 +17,15 @@ import cf4j.data.TestUser;
  */
 public class Coverage extends QualityMeasure {
 
-	private final static String NAME = "Coverage";
-
 	/**
 	 * Constructor of Coverage
 	 */
-	public Coverage (DataModel dataModel) {
-		super(dataModel, NAME);
+	public Coverage (Recommender recommender) {
+		super(recommender);
 	}
 
 	@Override
-	public double getMeasure (TestUser testUser) {
-		
-		Double [] predictions = testUser.getDataBank().getDoubleArray(TestUser.PREDICTIONS_KEYS);
-		
+	public double getScore(TestUser testUser, double[] predictions) {
 		int count = 0;
 		
 		for (int i = 0; i < predictions.length; i++) {
