@@ -1,9 +1,9 @@
 package es.upm.etsisi.cf4j.qualityMeasures.recommendation;
 
-import cf4j.data.DataModel;
-import cf4j.data.TestUser;
-import cf4j.utils.Methods;
+import es.upm.etsisi.cf4j.data.TestUser;
 import es.upm.etsisi.cf4j.qualityMeasures.QualityMeasure;
+import es.upm.etsisi.cf4j.recommender.Recommender;
+import es.upm.etsisi.cf4j.utils.Methods;
 
 /**
  * <p>This class calculates the Precision of the recommender system. It is calculated as 
@@ -17,9 +17,7 @@ import es.upm.etsisi.cf4j.qualityMeasures.QualityMeasure;
  * @author Fernando Ortega
  */
 public class Precision extends QualityMeasure {
-	
-	private final static String NAME = "Precision";
-	
+
 	/**
 	 * Number of recommended items
 	 */
@@ -35,25 +33,26 @@ public class Precision extends QualityMeasure {
 	 * @param numberOfRecommendations Number of recommendations
 	 * @param relevantThreshold Minimum rating to consider a rating as relevant
 	 */
-	public Precision (DataModel dataModel, int numberOfRecommendations, double relevantThreshold) {
-		super(dataModel, NAME);
+	public Precision (Recommender recommender, int numberOfRecommendations, double relevantThreshold) {
+		super(recommender);
 		this.numberOfRecommendations = numberOfRecommendations;
 		this.relevantThreshold = relevantThreshold;
 	}
 
 	@Override
-	public double getMeasure (TestUser testUser) {
+	protected double getScore(TestUser testUser, double[] predictions) {
 		
 		// Items that has been recommended and was relevant to the active user
-		Double [] predictions = testUser.getDataBank().getDoubleArray(TestUser.PREDICTIONS_KEYS);
-		Integer [] recommendations = Methods.findTopN(predictions, this.numberOfRecommendations);
+		
+		int [] recommendations = Methods.findTopN(predictions, this.numberOfRecommendations);
 		
 		int recommendedAndRelevant = 0, recommended = 0;
 
-		for (int testItemIndex : recommendations) {
-			if (testItemIndex == -1) break;
-			
-			if (testUser.getTestRatingAt(testItemIndex) >= this.relevantThreshold) {
+		for (int i : recommendations) {
+			if (i == -1) break;
+
+			double rating = testUser.getRatingAt(i);
+			if (rating >= this.relevantThreshold) {
 				recommendedAndRelevant++;
 			}
 			

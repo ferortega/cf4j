@@ -20,7 +20,7 @@ public class Coverage extends QualityMeasure {
 	/**
 	 * Constructor of Coverage
 	 */
-	public Coverage (Recommender recommender) {
+	public Coverage(Recommender recommender) {
 		super(recommender);
 	}
 

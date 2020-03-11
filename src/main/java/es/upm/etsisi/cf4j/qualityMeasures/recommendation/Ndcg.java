@@ -1,8 +1,10 @@
 package es.upm.etsisi.cf4j.qualityMeasures.recommendation;
 
-import cf4j.data.DataModel;
-import cf4j.data.TestUser;
-import cf4j.utils.Methods;
+
+import es.upm.etsisi.cf4j.data.TestUser;
+import es.upm.etsisi.cf4j.qualityMeasures.QualityMeasure;
+import es.upm.etsisi.cf4j.recommender.Recommender;
+import es.upm.etsisi.cf4j.utils.Methods;
 
 /**
  * <p>This class calculates the NDCG of the recommender system. It is calculated as 
@@ -16,63 +18,61 @@ import cf4j.utils.Methods;
  * @author Bo Zhu
  */
 public class Ndcg extends QualityMeasure {
-	
-	private final static String NAME = "NDCG";
-	
+
 	/**
 	 * Number of recommended items, NDCG@N
 	 */
 	private int numberOfRecommendations;
-	
 
 	/**
 	 * Constructor of Ndcg
 	 * @param numberOfRecommendations Number of recommendations
 	 */
-	public Ndcg (DataModel dataModel, int numberOfRecommendations) {
-		super(dataModel, NAME);
+	public Ndcg(Recommender recommender, int numberOfRecommendations) {
+		super(recommender);
 		this.numberOfRecommendations = numberOfRecommendations;
 	}
 
 	@Override
-	public double getMeasure (TestUser testUser) {
+	protected double getScore(TestUser testUser, double[] predictions) {
 
-		Double [] testRatings = new Double[testUser.getNumberOfTestRatings()];
-		for (int i = 0; i < testUser.getNumberOfTestRatings(); i++){
+		// Compute DCG
+
+		int [] recommendations = Methods.findTopN(predictions, this.numberOfRecommendations);
+
+		double dcg = 0d;
+
+		for (int pos = 0; pos < recommendations.length; pos++) {
+			int i = recommendations[pos];
+			if (i == -1) break;
+
+			double rating = testUser.getTestRatingAt(i);
+			dcg += (Math.pow(2, rating) - 1) / (Math.log(pos + 2) / Math.log(2));
+		}
+
+		// Compute IDCG
+
+		double[] testRatings = new double[testUser.getNumberOfTestRatings()];
+		for (int i = 0; i < testRatings.length; i++) {
 			testRatings[i] = testUser.getRatingAt(i);
 		}
-				
-        // Compute DCG
-		
-		Double [] predictions = testUser.getDataBank().getDoubleArray(TestUser.PREDICTIONS_KEYS);
-		Integer [] recommendations = Methods.findTopN(predictions, this.numberOfRecommendations);
-		
-		double dcg = 0d;
-		
-		for (int i = 0; i < recommendations.length; i++) {
-			int testItemIndex = recommendations[i];
-			if (testItemIndex == -1) break;
-			
-			dcg += (Math.pow(2, testRatings[testItemIndex]) - 1) / (Math.log(i + 2) / Math.log(2));
-		}
-		
-		// Compute IDCG
-		
-		Integer [] idealRecommendations = Methods.findTopN(testRatings, this.numberOfRecommendations);
 
-		double idcg = 0d;	
-		
-		for (int i = 0; i < idealRecommendations.length; i++) {
-			int testItemIndex = idealRecommendations[i];
-			if (testItemIndex == -1) break;
-			
-			idcg += (Math.pow(2, testRatings[testItemIndex]) - 1) / (Math.log(i + 2) / Math.log(2));
+		int [] idealRecommendations = Methods.findTopN(testRatings, this.numberOfRecommendations);
+
+		double idcg = 0d;
+
+		for (int pos = 0; pos < idealRecommendations.length; pos++) {
+			int i = idealRecommendations[pos];
+			if (i == -1) break;
+
+			double rating = testUser.getTestRatingAt(i);
+			idcg += (Math.pow(2, rating) - 1) / (Math.log(pos + 2) / Math.log(2));
 		}
-		
+
 		// Compute NDCG
-		
+
 		double ndcg = dcg / idcg;
-		
+
 		return ndcg;
 	}
 }

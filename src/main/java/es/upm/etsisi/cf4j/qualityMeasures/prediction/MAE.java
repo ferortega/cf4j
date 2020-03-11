@@ -7,7 +7,7 @@ import es.upm.etsisi.cf4j.recommender.Recommender;
 
 public class MAE extends QualityMeasure {
 
-	public MAE (Recommender recommender) {
+	public MAE(Recommender recommender) {
 		super(recommender);
 	}
 
