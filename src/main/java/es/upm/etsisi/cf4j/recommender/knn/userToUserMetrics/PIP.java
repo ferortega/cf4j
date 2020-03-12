@@ -1,8 +1,7 @@
-package es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetrics;
+package es.upm.etsisi.cf4j.recommender.knn.userToUserMetrics;
 
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
-import es.upm.etsisi.cf4j.data.TestUser;
 import es.upm.etsisi.cf4j.data.User;
 
 /**
@@ -12,7 +11,7 @@ import es.upm.etsisi.cf4j.data.User;
  * 
  * @author Fernando Ortega
  */
-public class PIP extends UserSimilarities {
+public class PIP extends UserToUserMetric {
 
 	/**
 	 * Median of the ratings of the dataset
@@ -38,22 +37,22 @@ public class PIP extends UserSimilarities {
 		this.max = super.datamodel.getMaxRating();
 		this.min = super.datamodel.getMinRating();
 
-		this.median = (max + min) / 2d;
+		this.median = (this.max + this.min) / 2d;
 	}
 	
 	@Override
-	public double similarity(TestUser testUser, User otherUser) {
+	public double similarity(User user, User otherUser) {
 
 		int i = 0, j = 0, common = 0; 
 		double PIP = 0d;
 		
-		while (i < testUser.getNumberOfRatings() && j < otherUser.getNumberOfRatings()) {
-			if (testUser.getItemAt(i) < otherUser.getItemAt(j)) {
+		while (i < user.getNumberOfRatings() && j < otherUser.getNumberOfRatings()) {
+			if (user.getItemAt(i) < otherUser.getItemAt(j)) {
 				i++;
-			} else if (testUser.getItemAt(i) > otherUser.getItemAt(j)) {
+			} else if (user.getItemAt(i) > otherUser.getItemAt(j)) {
 				j++;
 			} else {
-				double ra = testUser.getRatingAt(i);
+				double ra = user.getRatingAt(i);
 				double rt = otherUser.getRatingAt(j);
 				
 				// Compute agreement
@@ -71,7 +70,7 @@ public class PIP extends UserSimilarities {
 				double impact = (agreement) ? im : 1d / im;
 
 				// Compute popularity
-				String itemIndex = testUser.getItemAt(i);
+				int itemIndex = user.getItemAt(i);
 				Item item = super.datamodel.getItemAt(itemIndex);
 				double itemAvg = item.getRatingAverage();
 				

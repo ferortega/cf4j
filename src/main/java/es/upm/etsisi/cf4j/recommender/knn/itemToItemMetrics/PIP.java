@@ -1,9 +1,9 @@
-package cf4j.algorithms.knn.itemToItem.similarities;
+package es.upm.etsisi.cf4j.recommender.knn.itemToItemMetrics;
 
-import cf4j.data.Item;
-import cf4j.data.DataModel;
-import cf4j.data.TestItem;
-import cf4j.data.User;
+
+import es.upm.etsisi.cf4j.data.DataModel;
+import es.upm.etsisi.cf4j.data.Item;
+import es.upm.etsisi.cf4j.data.User;
 
 /**
  * This class implements the PIP CF similarity metric for the items. The similarity metric
@@ -12,7 +12,7 @@ import cf4j.data.User;
  * 
  * @author Fernando ortega
  */
-public class PIP extends ItemSimilarities {
+public class PIP extends ItemToItemMetric {
 
 	/**
 	 * Median of the ratings of the dataset
@@ -32,48 +32,44 @@ public class PIP extends ItemSimilarities {
 	/**
 	 * Constructor of the similarity metric
 	 */
-	public PIP (DataModel dataModel) {
-		super(dataModel);
+	public PIP (DataModel datamodel, double[][] similarities) {
+		super(datamodel, similarities);
 
-		this.max = this.dataModel.getDataBank().getDouble(DataModel.MAXRATING_KEY);
-		this.min = this.dataModel.getDataBank().getDouble(DataModel.MINRATING_KEY);
-		
-		this.median = ((double) (this.dataModel.getDataBank().getDouble(DataModel.MAXRATING_KEY) + this.dataModel.getDataBank().getDouble(DataModel.MINRATING_KEY))) / 2d;
+		this.max = this.datamodel.getMaxRating();
+		this.min = this.datamodel.getMinRating();
+
+		this.median = (this.max + this.min) / 2d;
 	}
 	
 	@Override
-	public double similarity (TestItem activeItem, Item targetItem) {	
+	public double similarity(Item item, Item otherItem) {
 
 		int u = 0, v = 0, common = 0; 
 		double PIP = 0d;
-		
-		while (u < activeItem.getNumberOfRatings() && v < targetItem.getNumberOfRatings()) {
-			if (activeItem.getUserAt(u).compareTo(targetItem.getUserAt(v)) < 0) {
+
+		while (u < item.getNumberOfRatings() && v < otherItem.getNumberOfRatings()) {
+			if (item.getUserAt(u) < otherItem.getUserAt(v)) {
 				u++;
-			} else if (activeItem.getUserAt(u).compareTo(targetItem.getUserAt(v)) > 0) {
+			} else if (item.getUserAt(u) > otherItem.getUserAt(v)) {
 				v++;
 			} else {
-				double ra = activeItem.getRatingAt(u);
-				double rt = targetItem.getRatingAt(v);
+				double ra = item.getRatingAt(u);
+				double rt = otherItem.getRatingAt(v);
 
-				// Compute agreement
 				boolean agreement = true;
 				if ((ra > this.median && rt < this.median) || (ra < this.median && rt > this.median)) {
 					agreement = false;
 				}
 
-				// Compute proximity
 				double d = (agreement) ? Math.abs(ra - rt) : 2 * Math.abs(ra - rt);
 				double proximity = ((2d * (this.max - this.min) + 1d) - d) * ((2d * (this.max - this.min) + 1d) - d);
 
-				// Calculamos el impact
 				double im = (Math.abs(ra - this.median) + 1d) * (Math.abs(rt - this.median) + 1d);
 				double impact = (agreement) ? im : 1d / im;
 
-				// Calculamos la popularity
-				String userCode = activeItem.getUserAt(u);
-				User user = this.dataModel.getUser(userCode);
-				double userAvg = (user.getNumberOfRatings() != 0) ? user.getDataBank().getDouble(User.AVERAGERATING_KEY) : 0;
+				int userIndex = item.getUserAt(u);
+				User user = this.datamodel.getUserAt(userIndex);
+				double userAvg = user.getRatingAverage();
 				
 				double popularity = 1;
 				if ((ra > userAvg && rt > userAvg) || (ra < userAvg && rt < userAvg)) {

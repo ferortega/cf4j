@@ -1,8 +1,7 @@
-package es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetrics;
+package es.upm.etsisi.cf4j.recommender.knn.userToUserMetrics;
 
 
 import es.upm.etsisi.cf4j.data.DataModel;
-import es.upm.etsisi.cf4j.data.TestUser;
 import es.upm.etsisi.cf4j.data.User;
 
 /**
@@ -10,7 +9,7 @@ import es.upm.etsisi.cf4j.data.User;
  * 
  * @author Fernando Ortega
  */
-public class Jaccard extends UserSimilarities {
+public class Jaccard extends UserToUserMetric {
 
 
 	public Jaccard(DataModel datamodel, double[][] similarities) {
@@ -18,13 +17,13 @@ public class Jaccard extends UserSimilarities {
 	}
 
 	@Override
-	public double similarity(TestUser testUser, User otherUser) {
+	public double similarity(User user, User otherUser) {
 		
 		int i = 0, j = 0, common = 0;
-		while (i < testUser.getNumberOfRatings() && j < otherUser.getNumberOfRatings()) {
-			if (testUser.getItemAt(i) < otherUser.getItemAt(j)) {
+		while (i < user.getNumberOfRatings() && j < otherUser.getNumberOfRatings()) {
+			if (user.getItemAt(i) < otherUser.getItemAt(j)) {
 				i++;
-			} else if (testUser.getItemAt(i) > otherUser.getItemAt(j)) {
+			} else if (user.getItemAt(i) > otherUser.getItemAt(j)) {
 				j++;
 			} else {
 				common++;
@@ -37,6 +36,6 @@ public class Jaccard extends UserSimilarities {
 		if (common == 0) return Double.NEGATIVE_INFINITY;
 			
 		// Return similarity
-		return (double) common / (double) (testUser.getNumberOfRatings() + otherUser.getNumberOfRatings() - common);
+		return (double) common / (double) (user.getNumberOfRatings() + otherUser.getNumberOfRatings() - common);
 	}
 }

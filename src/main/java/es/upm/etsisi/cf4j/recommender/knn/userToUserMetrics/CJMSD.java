@@ -1,8 +1,7 @@
-package es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetrics;
+package es.upm.etsisi.cf4j.recommender.knn.userToUserMetrics;
 
 
 import es.upm.etsisi.cf4j.data.DataModel;
-import es.upm.etsisi.cf4j.data.TestUser;
 import es.upm.etsisi.cf4j.data.User;
 
 /**
@@ -12,7 +11,7 @@ import es.upm.etsisi.cf4j.data.User;
  * 
  * @author Fernando Ortega
  */
-public class CJMSD extends UserSimilarities {
+public class CJMSD extends UserToUserMetric {
 
 	/**
 	 * Maximum difference between the ratings
@@ -25,18 +24,18 @@ public class CJMSD extends UserSimilarities {
 	}
 
 	@Override
-	public double similarity(TestUser testUser, User otherUser) {
+	public double similarity(User user, User otherUser) {
 
 		int i = 0, j = 0, common = 0; 
 		double msd = 0d;
 		
-		while (i < testUser.getNumberOfRatings() && j < otherUser.getNumberOfRatings()) {
-			if (testUser.getItemAt(i) < otherUser.getItemAt(j)) {
+		while (i < user.getNumberOfRatings() && j < otherUser.getNumberOfRatings()) {
+			if (user.getItemAt(i) < otherUser.getItemAt(j)) {
 				i++;
-			} else if (testUser.getItemAt(i) > otherUser.getItemAt(j)) {
+			} else if (user.getItemAt(i) > otherUser.getItemAt(j)) {
 				j++;
 			} else {
-				double diff = (testUser.getRatingAt(i) - otherUser.getRatingAt(j)) / this.maxDiff;
+				double diff = (user.getRatingAt(i) - otherUser.getRatingAt(j)) / this.maxDiff;
 				msd += diff * diff;
 				common++;
 				i++; j++;
@@ -47,7 +46,7 @@ public class CJMSD extends UserSimilarities {
 		if (common == 0) return Double.NEGATIVE_INFINITY;
 
 		// Return similarity
-		double jaccard = (double) common / (double) (testUser.getNumberOfRatings() + otherUser.getNumberOfRatings() - common);
+		double jaccard = (double) common / (double) (user.getNumberOfRatings() + otherUser.getNumberOfRatings() - common);
 		double coverage = (double) (otherUser.getNumberOfRatings() - common) / (double) super.datamodel.getNumberOfItems();
 		return coverage * jaccard * (1d - (msd / common));
 	}

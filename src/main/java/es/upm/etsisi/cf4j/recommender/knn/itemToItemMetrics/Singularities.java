@@ -1,20 +1,20 @@
-package es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetrics;
+package cf4j.algorithms.knn.itemToItem.similarities;
 
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
-import es.upm.etsisi.cf4j.data.TestUser;
 import es.upm.etsisi.cf4j.data.User;
+import es.upm.etsisi.cf4j.recommender.knn.itemToItemMetrics.ItemToItemMetric;
 
 import java.util.HashSet;
 
 /**
- * Implements the following CF similarity metric: Bobadilla, J., Ortega, F., &amp;
- * Hernando, A. (2012). A collaborative filtering similarity measure based on
- * singularities, Information Processing and Management, 48 (2), 204-217.
+ * This class implements the singularities CF similarity metric. The similarity metric 
+ * is described here: Bobadilla, J., Ortega, F., 	&amp; Hernando, A. (2012). A collaborative filtering
+ * similarity measure based on singularities, Information Processing and Management, 48 (2), 204-217
  * 
  * @author Fernando Ortega
  */
-public class Singularities extends UserSimilarities{
+public class Singularities extends ItemToItemMetric {
 
 	/**
 	 * Maximum difference between the ratings
@@ -61,33 +61,33 @@ public class Singularities extends UserSimilarities{
 	@Override
 	public void beforeRun () {
 		super.beforeRun();
-		
+
 		int numUsers = super.datamodel.getNumberOfUsers();
 		int numItems = super.datamodel.getNumberOfItems();
 
-		// To store items singularity
-		this.singularityOfRelevantRatings = new double [numItems];
-		this.singularityOfNotRelevantRatings = new double [numItems];
+		// To store users singularity
+		this.singularityOfRelevantRatings = new double [numUsers];
+		this.singularityOfNotRelevantRatings = new double [numUsers];
 
-		for (int i = 0; i < numItems; i++) {
-			Item item = super.datamodel.getItemAt(i);
+		for (int userIndex = 0; userIndex < numUsers; userIndex++) {
+			User user = this.datamodel.getUserAt(userIndex);
 
 			int numberOfRelevantRatings = 0;
-			int numberOfNotRelevantRatings = 0;
+			int numberOfNotReleavantRatings = 0;
 
-			for (int j = 0; j < item.getNumberOfRatings(); j++){
-				double rating = item.getRatingAt(j);
+			for (int v = 0; v < user.getNumberOfRatings();v++){
+				double rating = user.getRatingAt(v);
 				if (relevantRatings.contains(rating)) numberOfRelevantRatings++;
-				if (notRelevantRatings.contains(rating)) numberOfNotRelevantRatings++;
+				if (notRelevantRatings.contains(rating)) numberOfNotReleavantRatings++;
 			}
 
-			this.singularityOfRelevantRatings[i] = 1d - numberOfRelevantRatings / (double) numUsers;
-			this.singularityOfNotRelevantRatings[i] = 1d - numberOfNotRelevantRatings / (double) numUsers;
+			this.singularityOfRelevantRatings[userIndex] = 1d - numberOfRelevantRatings / (double) numItems;
+			this.singularityOfNotRelevantRatings[userIndex] = 1d - numberOfNotReleavantRatings / (double) numItems;
 		}
 	}
 
 	@Override
-	public double similarity(TestUser testUser, User otherUser) {
+	public double similarity(Item item, Item otherItem) {
 
 		// Compute the metric
 		//  (a) Both users have rated as relevant
@@ -96,51 +96,51 @@ public class Singularities extends UserSimilarities{
 		double metric_a = 0d, metric_b = 0d, metric_c = 0d;
 		int items_a = 0, items_b = 0, items_c = 0;
 
-		int i = 0, j = 0, common = 0;
-		while (i < testUser.getNumberOfRatings() && j < otherUser.getNumberOfRatings()) {
-			if (testUser.getItemAt(i) < otherUser.getItemAt(j)) {
-				i++;
-			} else if (testUser.getItemAt(i) > otherUser.getItemAt(j)) {
-				j++;
+		int u = 0, v = 0, common = 0;
+		while (u < item.getNumberOfRatings() && v < otherItem.getNumberOfRatings()) {
+			if (item.getUserAt(u) < otherItem.getUserAt(v)) {
+				u++;
+			} else if (item.getUserAt(u) > otherItem.getUserAt(v)) {
+				v++;
 			} else {
 				
 				// Get the ratings
-				int itemIndex = testUser.getItemAt(i);
-				double activeUserRating = testUser.getRatingAt(i);
-				double targetUserRating = otherUser.getRatingAt(j);
+				int userIndex = item.getUserAt(u);
+				double activeItemRating = item.getRatingAt(u);
+				double targetItemRating = otherItem.getRatingAt(v);
 
 				// Both user have rated relevant
-				if (this.relevantRatings.contains(activeUserRating) && this.relevantRatings.contains(targetUserRating)) {
+				if (this.relevantRatings.contains(activeItemRating) && this.relevantRatings.contains(targetItemRating)) {
 					items_a++;
 
-					double sing_p = this.singularityOfRelevantRatings[itemIndex];
+					double sing_p = this.singularityOfRelevantRatings[userIndex];
 
-					double diff = ((double) (activeUserRating - targetUserRating)) / this.maxDiff;
+					double diff = ((double) (activeItemRating - targetItemRating)) / this.maxDiff;
 					metric_a += (1d - diff * diff) * sing_p * sing_p;
 
 				// Both users have rated no relevant
-				} else if (this.notRelevantRatings.contains(activeUserRating) && this.notRelevantRatings.contains(targetUserRating)) {
+				} else if (this.notRelevantRatings.contains(activeItemRating) && this.notRelevantRatings.contains(targetItemRating)) {
 					items_b++;
 
-					double sing_n = this.singularityOfNotRelevantRatings[itemIndex];
+					double sing_n = this.singularityOfNotRelevantRatings[userIndex];
 
-					double diff = ((double) (activeUserRating - targetUserRating)) / this.maxDiff;
+					double diff = ((double) (activeItemRating - targetItemRating)) / this.maxDiff;
 					metric_b += (1d - diff * diff) * sing_n * sing_n;
 
 				//  One user has rated relevant and the other one has rated no relevat
 				} else {
 					items_c++;
 
-					double sing_p = this.singularityOfRelevantRatings[itemIndex];
-					double sing_n = this.singularityOfNotRelevantRatings[itemIndex];
+					double sing_p = this.singularityOfRelevantRatings[userIndex];
+					double sing_n = this.singularityOfNotRelevantRatings[userIndex];
 
-					double diff = ((double) (activeUserRating - targetUserRating)) / this.maxDiff;
+					double diff = ((double) (activeItemRating - targetItemRating)) / this.maxDiff;
 					metric_c += (1d - diff * diff) * sing_p * sing_n;
 				}
 				
 				common++;
-				i++; 
-				j++;
+				u++; 
+				v++;
 			}	
 		}
 

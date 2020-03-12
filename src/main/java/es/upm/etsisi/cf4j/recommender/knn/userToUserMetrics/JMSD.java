@@ -1,8 +1,7 @@
-package es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetrics;
+package es.upm.etsisi.cf4j.recommender.knn.userToUserMetrics;
 
 
 import es.upm.etsisi.cf4j.data.DataModel;
-import es.upm.etsisi.cf4j.data.TestUser;
 import es.upm.etsisi.cf4j.data.User;
 
 /**
@@ -12,7 +11,7 @@ import es.upm.etsisi.cf4j.data.User;
  * 
  * @author Fernando Ortega
  */
-public class JMSD extends UserSimilarities {
+public class JMSD extends UserToUserMetric {
 
 	/**
 	 * Maximum difference between the ratings
@@ -25,18 +24,18 @@ public class JMSD extends UserSimilarities {
 	}
 	
 	@Override
-	public double similarity(TestUser testUser, User otherUser) {
+	public double similarity(User user, User otherUser) {
 
 		int i = 0, j = 0, intersection = 0;
 		double msd = 0d;
 		
-		while (i < testUser.getNumberOfRatings() && j < otherUser.getNumberOfRatings()) {
-			if (testUser.getItemAt(i) < otherUser.getItemAt(j)) {
+		while (i < user.getNumberOfRatings() && j < otherUser.getNumberOfRatings()) {
+			if (user.getItemAt(i) < otherUser.getItemAt(j)) {
 				i++;
-			} else if (testUser.getItemAt(i) > otherUser.getItemAt(j)) {
+			} else if (user.getItemAt(i) > otherUser.getItemAt(j)) {
 				j++;
 			} else {
-				double diff = (testUser.getRatingAt(i) - otherUser.getRatingAt(j)) / this.maxDiff;
+				double diff = (user.getRatingAt(i) - otherUser.getRatingAt(j)) / this.maxDiff;
 				msd += diff * diff;
 				intersection++;
 				i++; 
@@ -48,7 +47,7 @@ public class JMSD extends UserSimilarities {
 		if (intersection == 0) return Double.NEGATIVE_INFINITY;
 		
 		// Return similarity
-		double union = testUser.getNumberOfRatings() + otherUser.getNumberOfRatings() - intersection;
+		double union = user.getNumberOfRatings() + otherUser.getNumberOfRatings() - intersection;
 		double jaccard = intersection / union;
 		return jaccard * (1d - (msd / intersection));
 	}

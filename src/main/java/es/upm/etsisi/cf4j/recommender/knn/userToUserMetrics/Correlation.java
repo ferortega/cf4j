@@ -1,8 +1,7 @@
-package es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetrics;
+package es.upm.etsisi.cf4j.recommender.knn.userToUserMetrics;
 
 
 import es.upm.etsisi.cf4j.data.DataModel;
-import es.upm.etsisi.cf4j.data.TestUser;
 import es.upm.etsisi.cf4j.data.User;
 
 /**
@@ -10,25 +9,25 @@ import es.upm.etsisi.cf4j.data.User;
  * 
  * @author Fernando Ortega
  */
-public class Correlation extends UserSimilarities {
+public class Correlation extends UserToUserMetric {
 
 	public Correlation(DataModel datamodel, double[][] similarities) {
 		super(datamodel, similarities);
 	}
 
 	@Override
-	public double similarity(TestUser testUser, User otherUser) {
+	public double similarity(User user, User otherUser) {
 
 		int i = 0, j = 0, common = 0; 
 		double num = 0d, denActive = 0d, denTarget = 0d;
 		
-		while (i < testUser.getNumberOfRatings() && j < otherUser.getNumberOfRatings()) {
-			if (testUser.getItemAt(i) < otherUser.getItemAt(j)) {
+		while (i < user.getNumberOfRatings() && j < otherUser.getNumberOfRatings()) {
+			if (user.getItemAt(i) < otherUser.getItemAt(j)) {
 				i++;
-			} else if (testUser.getItemAt(i) > otherUser.getItemAt(j)) {
+			} else if (user.getItemAt(i) > otherUser.getItemAt(j)) {
 				j++;
 			} else {
-				double t = testUser.getRatingAt(i) - testUser.getRatingAverage();
+				double t = user.getRatingAt(i) - user.getRatingAverage();
 				double o = otherUser.getRatingAt(j) - otherUser.getRatingAverage();
 				
 				num += t * o;

@@ -2,16 +2,17 @@ package es.upm.etsisi.cf4j.recommender.knn;
 
 
 import es.upm.etsisi.cf4j.data.DataModel;
+import es.upm.etsisi.cf4j.data.Item;
 import es.upm.etsisi.cf4j.data.User;
 import es.upm.etsisi.cf4j.process.Parallelizer;
 import es.upm.etsisi.cf4j.process.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
-import es.upm.etsisi.cf4j.recommender.knn.userToUserMetrics.UserToUserMetric;
+import es.upm.etsisi.cf4j.recommender.knn.itemToItemMetrics.ItemToItemMetric;
 import es.upm.etsisi.cf4j.utils.Methods;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class UserToUser extends Recommender {
+public class ItemToItem extends Recommender {
 
     public enum AggregationApproach {MEAN, WEIGTHED_MEAN, DEVIATION_FROM_MEAN}
 
@@ -21,12 +22,12 @@ public class UserToUser extends Recommender {
 
     protected int K;
 
-    private Class<? extends UserToUserMetric> metricClass;
+    private Class<? extends ItemToItemMetric> metricClass;
 
     private AggregationApproach aa;
 
 
-    public UserToUser(DataModel datamodel, int K, Class<? extends UserToUserMetric> metricClass, AggregationApproach aa) {
+    public ItemToItem(DataModel datamodel, int K, Class<? extends ItemToItemMetric> metricClass, AggregationApproach aa) {
         super(datamodel);
 
         this.K = K;
@@ -43,7 +44,7 @@ public class UserToUser extends Recommender {
 
     @Override
     public void fit() {
-        UserToUserMetric metric = null;
+        ItemToItemMetric metric = null;
 
         try {
             metric = metricClass.getDeclaredConstructor(DataModel.class, double[][].class).newInstance(this.datamodel, this.similarities);
@@ -57,8 +58,8 @@ public class UserToUser extends Recommender {
             e.printStackTrace();
         }
 
-        Parallelizer.exec(this.datamodel.getUsers(), metric);
-        Parallelizer.exec(this.datamodel.getUsers(), new UserNeighbors());
+        Parallelizer.exec(this.datamodel.getItems(), metric);
+        Parallelizer.exec(this.datamodel.getItems(), new UserNeighbors());
     }
 
     @Override
@@ -76,17 +77,17 @@ public class UserToUser extends Recommender {
     }
 
     private double predictMean(int userIndex, int itemIndex) {
+        User user = this.datamodel.getUserAt(userIndex);
+
         double prediction = 0;
         int count = 0;
 
-        for (int neighborIndex : this.neighbors[userIndex]) {
+        for (int neighborIndex : this.neighbors[itemIndex]) {
             if (neighborIndex == -1) break; // Neighbors array are filled with -1 when no more neighbors exists
 
-            User neighbor = this.datamodel.getUserAt(neighborIndex);
-
-            int i = neighbor.getItemIndex(itemIndex);
+            int i = user.getItemIndex(neighborIndex);
             if (i != -1) {
-                prediction += neighbor.getRatingAt(i);
+                prediction += user.getRatingAt(i);
                 count++;
             }
         }
@@ -100,18 +101,18 @@ public class UserToUser extends Recommender {
     }
 
     private double predictWeigthedMean(int userIndex, int itemIndex) {
+        User user = this.datamodel.getUserAt(userIndex);
+
         double num = 0;
         double den = 0;
 
-        for (int neighborIndex : this.neighbors[userIndex]) {
+        for (int neighborIndex : this.neighbors[itemIndex]) {
             if (neighborIndex == -1) break; // Neighbors array are filled with -1 when no more neighbors exists
 
-            User neighbor = this.datamodel.getUserAt(neighborIndex);
-
-            int i = neighbor.getItemIndex(itemIndex);
+            int i = user.getItemIndex(neighborIndex);
             if (i != -1) {
-                double similarity = this.similarities[userIndex][neighborIndex];
-                double rating = neighbor.getRatingAt(i);
+                double similarity = this.similarities[itemIndex][neighborIndex];
+                double rating = user.getRatingAt(i);
                 num += similarity * rating;
                 den += similarity;
             }
@@ -120,42 +121,15 @@ public class UserToUser extends Recommender {
         return (den == 0) ? Double.NaN : num / den;
     }
 
-    private double predictDeviationFromMean(int userIndex, int itemIndex) {
-        User user = this.datamodel.getUserAt(userIndex);
-
-        double num = 0;
-        double den = 0;
-
-        for (int neighborIndex : this.neighbors[userIndex]) {
-            if (neighborIndex == -1) break; // Neighbors array are filled with -1 when no more neighbors exists
-
-            User neighbor = this.datamodel.getUserAt(neighborIndex);
-
-            int i = neighbor.getItemIndex(itemIndex);
-            if (i != -1) {
-                double similarity = this.similarities[userIndex][neighborIndex];
-                double rating = neighbor.getRatingAt(i);
-                double avg = neighbor.getRatingAverage();
-
-                num += similarity * (rating - avg);
-                den += similarity;
-            }
-        }
-
-        return (den == 0)
-                ? Double.NaN
-                : user.getRatingAverage() + num / den;
-    }
-
-    private class UserNeighbors implements Partible<User> {
+    private class ItemNeighbors implements Partible<Item> {
 
         @Override
         public void beforeRun() { }
 
         @Override
-        public void run(User user) {
-            int userIndex = user.getUserIndex();
-            neighbors[userIndex] = Methods.findTopN(similarities[userIndex], K);
+        public void run(Item item) {
+            int itemIndex = item.getItemIndex();
+            neighbors[itemIndex] = Methods.findTopN(similarities[itemIndex], K);
         }
 
         @Override
