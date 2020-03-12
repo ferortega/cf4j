@@ -16,7 +16,7 @@ public class TestItem extends Item {
 
 	private static final long serialVersionUID = 20190518L;
 
-	public final static String SIMILARITIES_KEY = "similarities";
+	public final static String SIMILARITIES_KEY = "itemToItemMetrics";
 	public final static String NEIGHBORS_KEY = "neighbors";
 	public static final String AVERAGETESTRATING_KEY = "averagetest_rating";
 	public static final String STANDARDDEVIATIONTEST_KEY = "standardDeviation_rating";

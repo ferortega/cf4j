@@ -5,7 +5,7 @@ package es.upm.etsisi.cf4j.recommender.matrixFactorization;
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
 import es.upm.etsisi.cf4j.data.User;
-import es.upm.etsisi.cf4j.process.Parallel;
+import es.upm.etsisi.cf4j.process.Parallelizer;
 import es.upm.etsisi.cf4j.process.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.utils.Methods;
@@ -151,8 +151,8 @@ public class Pmf extends Recommender {
 		for (int iter = 1; iter <= this.numIters; iter++) {
 
 			// ALS: fix q_i and update p_u -> fix p_u and update q_i
-			Parallel.run(this.datamodel.getUsers(), new UpdateUsersFactors());
-			Parallel.run(this.datamodel.getItems(), new UpdateItemsFactors());
+			Parallelizer.exec(this.datamodel.getUsers(), new UpdateUsersFactors());
+			Parallelizer.exec(this.datamodel.getItems(), new UpdateItemsFactors());
 
 			if ((iter % 10) == 0) System.out.print(".");
 			if ((iter % 100) == 0) System.out.println(iter + " iterations");

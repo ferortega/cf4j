@@ -5,7 +5,7 @@ package es.upm.etsisi.cf4j.recommender.matrixFactorization;
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
 import es.upm.etsisi.cf4j.data.User;
-import es.upm.etsisi.cf4j.process.Parallel;
+import es.upm.etsisi.cf4j.process.Parallelizer;
 import es.upm.etsisi.cf4j.process.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 
@@ -162,8 +162,8 @@ public class BiasedMF extends Recommender {
 
 		for (int iter = 1; iter <= this.numIters; iter++) {
 
-			Parallel.run(super.datamodel.getUsers(), new UpdateUsersFactors());
-			Parallel.run(super.datamodel.getItems(), new UpdateItemsFactors());
+			Parallelizer.exec(super.datamodel.getUsers(), new UpdateUsersFactors());
+			Parallelizer.exec(super.datamodel.getItems(), new UpdateItemsFactors());
 
 			if ((iter % 10) == 0) System.out.print(".");
 			if ((iter % 100) == 0) System.out.println(iter + " iterations");

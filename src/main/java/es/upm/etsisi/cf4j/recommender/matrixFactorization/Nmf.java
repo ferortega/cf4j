@@ -4,7 +4,7 @@ package es.upm.etsisi.cf4j.recommender.matrixFactorization;
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
 import es.upm.etsisi.cf4j.data.User;
-import es.upm.etsisi.cf4j.process.Parallel;
+import es.upm.etsisi.cf4j.process.Parallelizer;
 import es.upm.etsisi.cf4j.process.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.utils.Methods;
@@ -67,8 +67,8 @@ public class Nmf extends Recommender {
 		System.out.println("\nProcessing NMF...");
 
 		for (int iter = 1; iter <= this.numIters; iter++) {
-			Parallel.run(this.datamodel.getUsers(), new UpdateUsersFactors());
-			Parallel.run(this.datamodel.getItems(), new UpdateItemsFactors());
+			Parallelizer.exec(this.datamodel.getUsers(), new UpdateUsersFactors());
+			Parallelizer.exec(this.datamodel.getItems(), new UpdateItemsFactors());
 		}
 	}
 

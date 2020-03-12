@@ -2,7 +2,7 @@ package es.upm.etsisi.cf4j.qualityMeasures;
 
 
 import es.upm.etsisi.cf4j.data.TestUser;
-import es.upm.etsisi.cf4j.process.Parallel;
+import es.upm.etsisi.cf4j.process.Parallelizer;
 import es.upm.etsisi.cf4j.process.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 
@@ -16,12 +16,14 @@ public abstract class QualityMeasure {
 
 	public QualityMeasure(Recommender recommender) {
 		this.recommender = recommender;
-		Parallel.run(recommender.getDataModel().getTestUsers(), new EvaluateUsers());
 	}
 
-	// fit?
-
 	protected abstract double getScore(TestUser testUser, double[] predictions);
+
+	public double getScore() {
+		Parallelizer.exec(recommender.getDataModel().getTestUsers(), new EvaluateUsers());
+		return score;
+	}
 
 	private class EvaluateUsers implements Partible<TestUser> {
 
@@ -32,7 +34,7 @@ public abstract class QualityMeasure {
 
 		@Override
 		public void run(TestUser testUser) {
-			int testUserIndex = testUser.getTestIndex();
+			int testUserIndex = testUser.getTestUserIndex();
 			double[] predictions = recommender.predict(testUser);
 			usersScores[testUserIndex] = QualityMeasure.this.getScore(testUser, predictions);
 		}

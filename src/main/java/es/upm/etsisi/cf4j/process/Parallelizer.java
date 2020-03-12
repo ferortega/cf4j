@@ -1,21 +1,19 @@
 package es.upm.etsisi.cf4j.process;
 
-import java.util.Date;
 
+public class Parallelizer {
 
-public class Parallel {
-
-	public static void run (Object[] array, Partible partible) {
-		run(array, partible, -1);
+	public static void exec(Object[] array, Partible partible) {
+		exec(array, partible, -1);
 	}
 
 
-	public static void run (Object[] objects, Partible partible, int numThreads) {
+	public static void exec(Object[] objects, Partible partible, int numThreads) {
 
 		// use all processors if required
 		if (numThreads <= 0) numThreads = Runtime.getRuntime().availableProcessors();
 
-		// execute before run method
+		// execute before exec method
 		partible.beforeRun();
 
 		// create and launch threads
@@ -33,7 +31,7 @@ public class Parallel {
 			System.out.println("ERROR: " + ie);
 		}
 
-		// execute after run method
+		// execute after exec method
 		partible.afterRun();
 	}
 
@@ -62,7 +60,7 @@ public class Parallel {
 		/*
 		 * (non-Javadoc)
 		 *
-		 * @see java.lang.Runnable#run()
+		 * @see java.lang.Runnable#exec()
 		 */
 		public void run() {
 			//long t1 = (new Date()).getTime() / 1000, t2, t3 = 0;

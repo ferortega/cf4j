@@ -17,7 +17,7 @@ public class TestUser extends User {
 
 	private static final long serialVersionUID = 20130403L;
 	
-	public final static String SIMILARITIES_KEY = "similarities";
+	public final static String SIMILARITIES_KEY = "itemToItemMetrics";
 	public final static String NEIGHBORS_KEY = "neighbors";
 	public final static String PREDICTIONS_KEYS = "predictions";
 	public static final String AVERAGETESTRATING_KEY = "averagetest_rating";

@@ -4,7 +4,7 @@ package es.upm.etsisi.cf4j.recommender.matrixFactorization;
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
 import es.upm.etsisi.cf4j.data.User;
-import es.upm.etsisi.cf4j.process.Parallel;
+import es.upm.etsisi.cf4j.process.Parallelizer;
 import es.upm.etsisi.cf4j.process.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import org.apache.commons.math3.special.Gamma;
@@ -78,8 +78,8 @@ public class Urp extends Recommender {
 
             System.out.println("iteration " + iter + " of " + this.numIters);
 
-            Parallel.run(this.datamodel.getUsers(), new UpdatePhiGamma());
-            Parallel.run(this.datamodel.getItems(), new UpdateBeta());
+            Parallelizer.exec(this.datamodel.getUsers(), new UpdatePhiGamma());
+            Parallelizer.exec(this.datamodel.getItems(), new UpdateBeta());
 
             double diff;
 

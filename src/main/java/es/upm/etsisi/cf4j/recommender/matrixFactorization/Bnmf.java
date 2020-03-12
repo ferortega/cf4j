@@ -6,7 +6,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
-import es.upm.etsisi.cf4j.process.Parallel;
+import es.upm.etsisi.cf4j.process.Parallelizer;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.utils.Methods;
 import org.apache.commons.math3.special.Gamma;
@@ -142,7 +142,7 @@ public class Bnmf extends Recommender {
 
 		for (int iter = 1; iter <= this.numIters; iter++) {
 
-			Parallel.run(datamodel.getItems(), new UpdateModel());
+			Parallelizer.exec(datamodel.getItems(), new UpdateModel());
 
 			if ((iter % 10) == 0) System.out.print(".");
 			if ((iter % 100) == 0) System.out.println(iter + " iterations");

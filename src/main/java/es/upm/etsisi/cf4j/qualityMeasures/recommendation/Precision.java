@@ -43,7 +43,7 @@ public class Precision extends QualityMeasure {
 	protected double getScore(TestUser testUser, double[] predictions) {
 		
 		// Items that has been recommended and was relevant to the active user
-		
+
 		int [] recommendations = Methods.findTopN(predictions, this.numberOfRecommendations);
 		
 		int recommendedAndRelevant = 0, recommended = 0;

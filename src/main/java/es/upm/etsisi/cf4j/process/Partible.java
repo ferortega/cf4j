@@ -12,7 +12,7 @@ package es.upm.etsisi.cf4j.process;
 public interface Partible<T> {
 
 	/**
-	 * Is executed once before execute the method 'run'. It can be used to initialize
+	 * Is executed once before execute the method 'exec'. It can be used to initialize
 	 * resources.
 	 */
 	void beforeRun();
@@ -25,7 +25,7 @@ public interface Partible<T> {
 	void run(T object);
 
 	/**
-	 * Is executed once after execute the method run. It can be used to close
+	 * Is executed once after execute the method exec. It can be used to close
 	 * resources.
 	 */
 	void afterRun();
