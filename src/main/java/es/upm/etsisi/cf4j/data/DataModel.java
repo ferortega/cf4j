@@ -1,6 +1,6 @@
 package es.upm.etsisi.cf4j.data;
 
-import cf4j.data.types.DynamicArray;
+import es.upm.etsisi.cf4j.data.types.SortedArrayList;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -21,11 +21,11 @@ public class DataModel implements Serializable {
     public static final String MAXRATING_KEY = "max_rating";
     public static final String MINRATING_KEY = "min_rating";
 
-    private DynamicArray<User> users;
-    private DynamicArray<TestUser> testUsers;
+    private SortedArrayList<User> users;
+    private SortedArrayList<TestUser> testUsers;
 
-    private DynamicArray<Item> items;
-    private DynamicArray<TestItem> testItems;
+    private SortedArrayList<Item> items;
+    private SortedArrayList<TestItem> testItems;
 
     private DataBank dataBank;
 
@@ -33,10 +33,10 @@ public class DataModel implements Serializable {
      * Default constructor. It doesn't contains any information by itself. You need use loadDataset.
      */
     public DataModel (){
-        this.users = new DynamicArray<User>();
-        this.testUsers = new DynamicArray<TestUser>();
-        this.items = new DynamicArray<Item>();
-        this.testItems = new DynamicArray<TestItem>();
+        this.users = new SortedArrayList<User>();
+        this.testUsers = new SortedArrayList<TestUser>();
+        this.items = new SortedArrayList<Item>();
+        this.testItems = new SortedArrayList<TestItem>();
         this.dataBank = new DataBank();
     }
 
@@ -46,10 +46,10 @@ public class DataModel implements Serializable {
      */
     public DataModel (DataSet dataset){
         //Initializing the arrays to the estimated initial size (taking into account the DataSet entries)
-        this.users = new DynamicArray<User>(dataset.getRatingsSize()/40);
-        this.testUsers = new DynamicArray<TestUser>(dataset.getTestRatingsSize()/40);
-        this.items = new DynamicArray<Item>(dataset.getRatingsSize()/40);
-        this.testItems = new DynamicArray<TestItem>(dataset.getTestRatingsSize()/40);
+        this.users = new SortedArrayList<User>(dataset.getRatingsSize()/40);
+        this.testUsers = new SortedArrayList<TestUser>(dataset.getTestRatingsSize()/40);
+        this.items = new SortedArrayList<Item>(dataset.getRatingsSize()/40);
+        this.testItems = new SortedArrayList<TestItem>(dataset.getTestRatingsSize()/40);
         this.dataBank = new DataBank();
         this.loadDataset(dataset);
     }
@@ -80,15 +80,15 @@ public class DataModel implements Serializable {
         TestUser testUser = this.getTestUser(userCode);
         if(testUser == null) { //If don't exist, create new and add it to the arrays.
             testUser = new TestUser(userCode); //<-
-            this.users.addOrdered(testUser);
-            this.testUsers.addOrdered(testUser);
+            this.users.add(testUser);
+            this.testUsers.add(testUser);
         }
         //Getting Item with that id.
         TestItem testItem = this.getTestItem(itemCode);
         if(testItem == null) {//If don't exist, create new and add it to the arrays..
             testItem = new TestItem(itemCode); //<-
-            this.items.addOrdered(testItem);
-            this.testItems.addOrdered(testItem);
+            this.items.add(testItem);
+            this.testItems.add(testItem);
         }
 
         testUser.addTestRating(itemCode, rating);
@@ -108,13 +108,13 @@ public class DataModel implements Serializable {
         User user = this.getUser(userCode);
         if(user == null) { //If don't exist, create new and add it.
             user = new User(userCode);
-            this.users.addOrdered(user);
+            this.users.add(user);
         }
         //Getting Item with that id.
         Item item = this.getItem(itemCode);
         if(item == null) {//If don't exist, create new and add it.
             item = new Item(itemCode);
-            this.items.addOrdered(item);
+            this.items.add(item);
         }
 
         user.addRating(itemCode, rating);

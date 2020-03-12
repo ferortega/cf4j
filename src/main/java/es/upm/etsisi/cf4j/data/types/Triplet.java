@@ -1,4 +1,4 @@
-package cf4j.data.types;
+package es.upm.etsisi.cf4j.data.types;
 
 public class Triplet <F, S, T>{
 

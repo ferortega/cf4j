@@ -1,6 +1,6 @@
 package es.upm.etsisi.cf4j.data;
 
-import cf4j.data.types.Triplet;
+import es.upm.etsisi.cf4j.data.types.Triplet;
 import java.util.Iterator;
 
 public interface DataSet{

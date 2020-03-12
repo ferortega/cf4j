@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
 
 class DynamicArrayTest {
-    static DynamicArray<String> testArray = new DynamicArray<String>(10);
+    static SortedArrayList<String> testArray = new SortedArrayList<String>(10);
 
     @BeforeAll
     static void initAll() {
@@ -24,11 +24,11 @@ class DynamicArrayTest {
 
     @Test
     void addOrdered() {
-        testArray.addOrdered("000");
-        testArray.addOrdered("lefz");
-        testArray.addOrdered("middle");
-        testArray.addOrdered("middlz");
-        testArray.addOrdered("righz");
+        testArray.addGettingIndex("000");
+        testArray.addGettingIndex("lefz");
+        testArray.addGettingIndex("middle");
+        testArray.addGettingIndex("middlz");
+        testArray.addGettingIndex("righz");
 
         //Asserting everything is OK
         assertEquals("000", testArray.get(0));

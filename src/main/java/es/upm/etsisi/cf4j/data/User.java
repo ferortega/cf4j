@@ -2,8 +2,7 @@ package es.upm.etsisi.cf4j.data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
-import cf4j.data.types.DynamicArray;
+import es.upm.etsisi.cf4j.data.types.SortedArrayList;
 
 /**
  * <p>Defines an user. An user is composed by:</p>
@@ -36,7 +35,7 @@ public class User implements Serializable, Comparable<User> {
 	/**
 	 * Items rated by the user
 	 */
-	protected DynamicArray<String> items;
+	protected SortedArrayList<String> items;
 
 	/**
 	 * Ratings of the user to the items
@@ -50,7 +49,7 @@ public class User implements Serializable, Comparable<User> {
 	public User (String userCode) {
 		this.userCode = userCode;
 		this.dataBank = new DataBank();
-		this.items = new DynamicArray<String>();
+		this.items = new SortedArrayList<String>();
 		this.ratings = new ArrayList<Double>();
 	}
 
@@ -132,7 +131,7 @@ public class User implements Serializable, Comparable<User> {
 			this.items.set(positionInArray, itemCode);
 			this.ratings.set(positionInArray, rating);
 		}else{ //If not exist.
-			this.ratings.add(this.items.addOrdered(itemCode), rating);
+			this.ratings.add(this.items.addReturningIndex(itemCode), rating);
 		}
 	}
 

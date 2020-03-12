@@ -1,6 +1,6 @@
 package es.upm.etsisi.cf4j.data;
 
-import cf4j.data.types.DynamicArray;
+import es.upm.etsisi.cf4j.data.types.SortedArrayList;
 import java.util.ArrayList;
 
 /**
@@ -24,7 +24,7 @@ public class TestItem extends Item {
 	/**
 	 * Test users that have rated this item
 	 */
-	protected DynamicArray<String> testUsers;
+	protected SortedArrayList<String> testUsers;
 
 	/**
 	 * Test ratings of the users
@@ -38,7 +38,7 @@ public class TestItem extends Item {
 	 */
 	public TestItem (String itemCode) {
 		super(itemCode);
-		this.testUsers = new DynamicArray<String>();
+		this.testUsers = new SortedArrayList<String>();
 		this.testRatings = new ArrayList<Double>();
 	}
 
@@ -111,7 +111,7 @@ public class TestItem extends Item {
 			this.testUsers.set(positionInArray, userCode);
 			this.testRatings.set(positionInArray, rating);
 		}else{ //If not exist.
-			this.testRatings.add(this.testUsers.addOrdered(userCode), rating);
+			this.testRatings.add(this.testUsers.addReturningIndex(userCode), rating);
 		}
 	}
 }
