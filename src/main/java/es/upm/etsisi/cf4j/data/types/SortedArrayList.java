@@ -8,25 +8,15 @@ public class SortedArrayList<T>  extends ArrayList<T> {
         super();
     }
 
-    public SortedArrayList(int customCapacity){
-        super(customCapacity);
-    }
-
     @Override
     public void add (int index, T element){
         //Add at certain position is not allowed.
         //Index is ignored.
-        addReturningIndex(element);
+        add(element);
     }
 
     @Override
     public boolean add (T element){
-        addReturningIndex(element);
-        return true; //Not needed
-    }
-
-    public int addReturningIndex(T element){
-
         int low = 0, high = this.size() -1;
         while (low <= high) {
             int mid = (low + high) >>> 1;
@@ -39,25 +29,21 @@ public class SortedArrayList<T>  extends ArrayList<T> {
             } else {
                 //If element exist, override.
                 this.set(mid, element);
-                return mid;
+                return false;
             }
         }
 
         //Element not found, usual insertion
         super.add(low, element);
-        return low;
-
+        return true; //Not needed
     }
-
-
 
     /**
      * This method find the element with positional equivalence in the array (Following Comparable interface ordering).
      * @param element Element to find position correspondences.
      * @return Array element which corresponds with the given element position.
      */
-    public int get (T element){
-
+    public int find (T element){
         int low = 0, high = this.size() -1;
         while (low <= high) {
             int mid = (low + high) >>> 1;
@@ -72,6 +58,6 @@ public class SortedArrayList<T>  extends ArrayList<T> {
             }
         }
         return -1; //If it doesnt exist.
-
     }
+
 }

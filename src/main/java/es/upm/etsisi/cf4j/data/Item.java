@@ -1,14 +1,13 @@
 package es.upm.etsisi.cf4j.data;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import es.upm.etsisi.cf4j.data.types.Pair;
 import es.upm.etsisi.cf4j.data.types.SortedArrayList;
 
 /**
  * <p>Defines an item. An item is composed by:</p>
  * <ul>
  *  <li>Item code</li>
- *  <li>A databank where we can save any type of information</li>
  *  <li>Array of users who have rated the item</li>
  *  <li>Array of ratings that the item have received</li>
  * </ul>
@@ -16,10 +15,13 @@ import es.upm.etsisi.cf4j.data.types.SortedArrayList;
  */
 public class Item implements Serializable, Comparable<Item> {
 
-	private static final long serialVersionUID = 20190518L;
+	private static final long serialVersionUID = 20200314L;
 
-	public static final String AVERAGERATING_KEY = "average_rating";
-	public static final String STANDARDDEVIATION_KEY = "standardDeviation_rating";
+	//Stored metrics
+	protected double min = Double.MAX_VALUE;
+	protected double max = Double.MIN_VALUE;
+	protected double average = 0.0;
+	protected int totalRatings = 0;
 
 	/**
 	 * Item code
@@ -29,17 +31,12 @@ public class Item implements Serializable, Comparable<Item> {
 	/**
 	 * Map of the item
 	 */
-	protected DataBank dataBank;
+	//protected DataBank dataBank;
 
 	/**
 	 * Users that have rated this item
 	 */
-	protected SortedArrayList<String> users;
-
-	/**
-	 * Ratings of the users
-	 */
-	protected ArrayList<Double> ratings;
+	protected SortedArrayList<Pair<String, Double>> usersRatings;
 
 	/**
 	 * Creates a new instance of an item. This constructor should not be users by developers.
@@ -47,32 +44,13 @@ public class Item implements Serializable, Comparable<Item> {
 	 */
 	public Item (String itemCode) {
 		this.itemCode = itemCode;
-		this.dataBank = new DataBank();
-		this.users = new SortedArrayList<String>();
-		this.ratings = new ArrayList<Double>();
+		//this.dataBank = new DataBank();
+		this.usersRatings = new SortedArrayList<Pair<String, Double>>();
 	}
 
-	public DataBank getDataBank(){
-		return dataBank;
-	}
-
-	public void calculateMetrics() {
-		double sumRatings = 0;
-		for (int i = 0; i < this.getNumberOfRatings();i++){
-			sumRatings += this.ratings.get(i);
-		}
-
-		double ratingAverage = sumRatings / this.getNumberOfRatings();
-		double sumDesv = 0;
-
-		for (int i = 0; i < this.getNumberOfRatings();i++){
-			sumDesv += (this.ratings.get(i) - ratingAverage) * (this.ratings.get(i) - ratingAverage);
-		}
-		double standardDeviation = Math.sqrt(sumDesv / this.getNumberOfRatings()-1);
-
-		this.getDataBank().setDouble(AVERAGERATING_KEY, ratingAverage);
-		this.getDataBank().setDouble(STANDARDDEVIATION_KEY, standardDeviation);
-	}
+	//public DataBank getDataBank(){
+	//	return dataBank;
+	//}
 
 	/**
 	 * Return the item code.
@@ -83,30 +61,38 @@ public class Item implements Serializable, Comparable<Item> {
 	}
 	
 	/**
-	 * Returns the user code at index position. 
-	 * @param index Index.
-	 * @return User code at index. 
+	 * Returns the user code at local index position.
+	 * @param userLocalIndex Index.
+	 * @return User code at localIndex.
 	 */
-	public String getUserAt(int index) {
-		return this.users.get(index);
+	public String getUser(int userLocalIndex) {
+		if (userLocalIndex < 0 || userLocalIndex > this.usersRatings.size())
+			return null;
+
+		return this.usersRatings.get(userLocalIndex).key;
 	}
 
 	/**
 	 * Returns the rating at index position. 
-	 * @param index Index.
-	 * @return Rating at index. 
+	 * @param userLocalIndex Index.
+	 * @return Rating at localIndex.
 	 */
-	public double getRatingAt(int index) {
-		return this.ratings.get(index);
+	public Double getRating(int userLocalIndex) {
+		if (userLocalIndex < 0 || userLocalIndex > this.usersRatings.size())
+			return null;
+
+		return this.usersRatings.get(userLocalIndex).value;
 	}
 	
 	/**
 	 * Get the index of an user code at the user's item array.
-	 * @param user_code User code
-	 * @return User index in the user's item array if the user has rated the item or -1 if not
+	 * @param userCode User code
+	 * @return User local index in the user's item array if the user has rated the item or -1 if not
 	 */
-	public int getUserIndex (String user_code) {
-		return users.get(user_code);
+	public int findUserRating (String userCode) {
+		//We need create a aux Pair to get the real one localIndex
+		Pair<String,Double> aux = new Pair<String, Double>(userCode,0.0);
+		return usersRatings.find(aux);
 	}
 	
 	/**
@@ -114,7 +100,7 @@ public class Item implements Serializable, Comparable<Item> {
 	 * @return Number of ratings received
 	 */
 	public int getNumberOfRatings () {
-		return this.ratings.size();
+		return this.usersRatings.size();
 	}
 
 	/**
@@ -123,15 +109,17 @@ public class Item implements Serializable, Comparable<Item> {
 	 * @param rating rated value by user, refering this item.
 	 */
 	public void addRating(String userCode, double rating){
-		int positionInArray = this.users.get(userCode);
+		if (this.usersRatings.add(new Pair<String, Double>(userCode, rating)))
+			totalRatings++;
 
-		if (positionInArray != -1){ //If element already exists.
-			this.users.set(positionInArray, userCode);
-			this.ratings.set(positionInArray, rating);
-		}else{ //If not exist.
-			this.ratings.add(this.users.addReturningIndex(userCode), rating);
-		}
+		min = Math.min(rating, min);
+		max = Math.max(rating, max);
+		average = (totalRatings <= 1) ? rating : ((average * (totalRatings-1)) + rating) / totalRatings;
 	}
+
+	public double getMin(){ return min; }
+	public double getMax(){ return max; }
+	public double getAverage(){ return average; }
 
 	/**
 	 * This methods implements the Comparable interface. It allows to be ordered by dynamicSortedArray.

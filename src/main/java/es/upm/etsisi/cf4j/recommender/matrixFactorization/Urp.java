@@ -245,8 +245,8 @@ public class Urp extends Recommender {
             while (u < item.getNumberOfRatings() && userIndex < datamodel.getNumberOfUsers()) {
                 User user = datamodel.getUserAt(userIndex);
 
-                if (item.getUserAt(u) == userIndex) {
-                    double rating = item.getRatingAt(u);
+                if (item.getUser(u) == userIndex) {
+                    double rating = item.getRating(u);
                     int v = Arrays.binarySearch(ratings, rating);
 
                     for (int z = 0; z < numFactors; z++) {

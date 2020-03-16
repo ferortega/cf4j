@@ -22,17 +22,17 @@ public class AjustedCosine extends ItemToItemMetric {
 		double num = 0d, denActive = 0d, denTarget = 0d;
 
 		while (u < item.getNumberOfRatings() && v < otherItem.getNumberOfRatings()) {
-			if (item.getUserAt(u) < otherItem.getUserAt(v)) {
+			if (item.getUser(u) < otherItem.getUser(v)) {
 				u++;
-			} else if (item.getUserAt(u) > otherItem.getUserAt(v)) {
+			} else if (item.getUser(u) > otherItem.getUser(v)) {
 				v++;
 			} else {
-				int userIndex = item.getUserAt(u);
+				int userIndex = item.getUser(u);
 				User user = super.datamodel.getUserAt(userIndex);
 				double avg = user.getRatigAverage();
 				
-				double fa = item.getRatingAt(u) - avg;
-				double ft = otherItem.getRatingAt(v) - avg;
+				double fa = item.getRating(u) - avg;
+				double ft = otherItem.getRating(v) - avg;
 				
 				num += fa * ft;
 				denActive += fa * fa;

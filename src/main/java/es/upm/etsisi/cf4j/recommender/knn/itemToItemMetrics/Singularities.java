@@ -98,16 +98,16 @@ public class Singularities extends ItemToItemMetric {
 
 		int u = 0, v = 0, common = 0;
 		while (u < item.getNumberOfRatings() && v < otherItem.getNumberOfRatings()) {
-			if (item.getUserAt(u) < otherItem.getUserAt(v)) {
+			if (item.getUser(u) < otherItem.getUser(v)) {
 				u++;
-			} else if (item.getUserAt(u) > otherItem.getUserAt(v)) {
+			} else if (item.getUser(u) > otherItem.getUser(v)) {
 				v++;
 			} else {
 				
 				// Get the ratings
-				int userIndex = item.getUserAt(u);
-				double activeItemRating = item.getRatingAt(u);
-				double targetItemRating = otherItem.getRatingAt(v);
+				int userIndex = item.getUser(u);
+				double activeItemRating = item.getRating(u);
+				double targetItemRating = otherItem.getRating(v);
 
 				// Both user have rated relevant
 				if (this.relevantRatings.contains(activeItemRating) && this.relevantRatings.contains(targetItemRating)) {

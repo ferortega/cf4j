@@ -30,12 +30,12 @@ public class JMSD extends ItemToItemMetric {
 		double msd = 0d;
 
 		while (u < item.getNumberOfRatings() && v < otherItem.getNumberOfRatings()) {
-			if (item.getUserAt(u) < otherItem.getUserAt(v)) {
+			if (item.getUser(u) < otherItem.getUser(v)) {
 				u++;
-			} else if (item.getUserAt(u) > otherItem.getUserAt(v)) {
+			} else if (item.getUser(u) > otherItem.getUser(v)) {
 				v++;
 			} else {
-				double diff = (item.getRatingAt(u) - otherItem.getRatingAt(v)) / this.maxDiff;
+				double diff = (item.getRating(u) - otherItem.getRating(v)) / this.maxDiff;
 				msd += diff * diff;
 				intersection++;
 				u++; 

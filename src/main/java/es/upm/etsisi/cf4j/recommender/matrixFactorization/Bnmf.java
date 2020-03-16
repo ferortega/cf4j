@@ -236,11 +236,11 @@ public class Bnmf extends Recommender {
 
 			for (int u = 0; u < item.getNumberOfRatings(); u++) {
 
-				int userIndex = item.getUserAt(u);
+				int userIndex = item.getUser(u);
 
 				double [] lambda = new double [Bnmf.this.numFactors];
 
-				double rating = (item.getRatingAt(u) - datamodel.getMinRating()) / (datamodel.getMaxRatring() - dataModel.getMinRating());
+				double rating = (item.getRating(u) - datamodel.getMinRating()) / (datamodel.getMaxRatring() - dataModel.getMinRating());
 
 				double sum = 0;
 

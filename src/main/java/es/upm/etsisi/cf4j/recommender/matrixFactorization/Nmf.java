@@ -128,7 +128,7 @@ public class Nmf extends Recommender {
 
 			double [] predictions = new double [item.getNumberOfRatings()];
 			for (int u = 0; u < item.getNumberOfRatings(); u++) {
-				int userIndex = item.getUserAt(u);
+				int userIndex = item.getUser(u);
 				predictions[u] = predict(userIndex, itemIndex);
 			}
 
@@ -138,9 +138,9 @@ public class Nmf extends Recommender {
 				double sumPredictions = 0;
 
 				for (int u = 0; u < item.getNumberOfRatings(); u++) {
-					int userIndex = item.getUserAt(u);
+					int userIndex = item.getUser(u);
 					double [] wu = w[userIndex];
-					sumRatings += wu[k] * item.getRatingAt(u);
+					sumRatings += wu[k] * item.getRating(u);
 					sumPredictions += wu[k] * predictions[u];
 				}
 

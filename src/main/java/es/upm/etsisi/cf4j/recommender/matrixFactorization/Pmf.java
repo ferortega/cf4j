@@ -213,10 +213,10 @@ public class Pmf extends Recommender {
 
 			for (int v = 0; v < item.getNumberOfRatings(); v++) {
 
-				int userIndex = item.getUserAt(v);
+				int userIndex = item.getUser(v);
 
 				// Get error
-				double error = item.getRatingAt(v) - predict(userIndex, itemIndex);
+				double error = item.getRating(v) - predict(userIndex, itemIndex);
 
 				for (int k = 0; k < numFactors; k++) {
 					q[itemIndex][k] += gamma * (error * p[userIndex][k] - lambda * q[itemIndex][k]);

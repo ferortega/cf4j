@@ -18,9 +18,9 @@ public class Jaccard extends ItemToItemMetric {
 	public double similarity(Item item, Item otherItem) {
 		int u = 0, v = 0, common = 0;
 		while (u < item.getNumberOfRatings() && v < otherItem.getNumberOfRatings()) {
-			if (item.getUserAt(u) < otherItem.getUserAt(v)) {
+			if (item.getUser(u) < otherItem.getUser(v)) {
 				u++;
-			} else if (item.getUserAt(u) > otherItem.getUserAt(v)) {
+			} else if (item.getUser(u) > otherItem.getUser(v)) {
 				v++;
 			} else {
 				common++;

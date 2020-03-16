@@ -62,21 +62,21 @@ class DataModelTest {
     @Test
     void checkingElementOrders () {
         //Users
-        assertEquals(dataModel.getUserIndex("Kim"), 0);
-        assertEquals(dataModel.getUserIndex("Laurie"), 1);
-        assertEquals(dataModel.getUserIndex("Mike"), 2);
-        assertEquals(dataModel.getUserIndex("Tim"), 3);
+        assertEquals(dataModel.findUser("Kim"), 0);
+        assertEquals(dataModel.findUser("Laurie"), 1);
+        assertEquals(dataModel.findUser("Mike"), 2);
+        assertEquals(dataModel.findUser("Tim"), 3);
         //Items
-        assertEquals(dataModel.getItemIndex("Milk"), 0);
-        assertEquals(dataModel.getItemIndex("Potatoad"), 1);
-        assertEquals(dataModel.getItemIndex("WiredThing"), 2);
-        assertEquals(dataModel.getItemIndex("Yeah,IsWired"), 3);
+        assertEquals(dataModel.findItem("Milk"), 0);
+        assertEquals(dataModel.findItem("Potatoad"), 1);
+        assertEquals(dataModel.findItem("WiredThing"), 2);
+        assertEquals(dataModel.findItem("Yeah,IsWired"), 3);
         //TestUsers
-        assertEquals(dataModel.getTestUserIndex("Kim"), 0);
-        assertEquals(dataModel.getTestUserIndex("Tim"), 1);
+        assertEquals(dataModel.findTestUser("Kim"), 0);
+        assertEquals(dataModel.findTestUser("Tim"), 1);
         //TestItems
-        assertEquals(dataModel.getTestItemIndex("Milk"), 0);
-        assertEquals(dataModel.getTestItemIndex("Potatoad"), 1);
+        assertEquals(dataModel.findTestItem("Milk"), 0);
+        assertEquals(dataModel.findTestItem("Potatoad"), 1);
     }
 
     @Test

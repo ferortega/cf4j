@@ -22,13 +22,13 @@ public class Correlation extends ItemToItemMetric {
 		double num = 0d, denActive = 0d, denTarget = 0d;
 
 		while (u < item.getNumberOfRatings() && v < otherItem.getNumberOfRatings()) {
-			if (item.getUserAt(u) < otherItem.getUserAt(v)) {
+			if (item.getUser(u) < otherItem.getUser(v)) {
 				u++;
-			} else if (item.getUserAt(u) > otherItem.getUserAt(v)) {
+			} else if (item.getUser(u) > otherItem.getUser(v)) {
 				v++;
 			} else {
-				double fa = item.getRatingAt(u) - item..getRatingAverage();
-				double ft = otherItem.getRatingAt(v) - otherItem.getRatingAverage();
+				double fa = item.getRating(u) - item..getRatingAverage();
+				double ft = otherItem.getRating(v) - otherItem.getRatingAverage();
 				
 				num += fa * ft;
 				denActive += fa * fa;

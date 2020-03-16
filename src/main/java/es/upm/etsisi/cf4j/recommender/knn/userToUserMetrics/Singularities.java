@@ -75,7 +75,7 @@ public class Singularities extends UserToUserMetric {
 			int numberOfNotRelevantRatings = 0;
 
 			for (int j = 0; j < item.getNumberOfRatings(); j++){
-				double rating = item.getRatingAt(j);
+				double rating = item.getRating(j);
 				if (relevantRatings.contains(rating)) numberOfRelevantRatings++;
 				if (notRelevantRatings.contains(rating)) numberOfNotRelevantRatings++;
 			}
