@@ -1,8 +1,7 @@
 package es.upm.etsisi.cf4j.data;
 
 import java.io.Serializable;
-import es.upm.etsisi.cf4j.data.types.Pair;
-import es.upm.etsisi.cf4j.data.types.SortedArrayList;
+import es.upm.etsisi.cf4j.data.types.SortedRatingList;
 
 /**
  * <p>Defines an user. An user is composed by:</p>
@@ -13,7 +12,7 @@ import es.upm.etsisi.cf4j.data.types.SortedArrayList;
  * </ul>
  * @author Fernando Ortega, Jesús Mayor
  */
-public class User implements Serializable, Comparable<User> {
+public class User implements Serializable {
 
 	private static final long serialVersionUID = 20200314L;
 
@@ -21,7 +20,6 @@ public class User implements Serializable, Comparable<User> {
 	protected double min = Double.MAX_VALUE;
 	protected double max = Double.MIN_VALUE;
 	protected double average = 0.0;
-	protected int totalRatings = 0;
 
 	/**
 	 * User code
@@ -31,12 +29,12 @@ public class User implements Serializable, Comparable<User> {
 	/**
 	 * Map of the user
 	 */
-	//protected DataBank dataBank;
+	protected DataBank dataBank;
 
 	/**
 	 * Items rated by the user
 	 */
-	protected SortedArrayList<Pair<String, Double>> itemsRatings;
+	protected SortedRatingList itemsRatings;
 
 	/**
 	 * Creates a new instance of an user. This constructor should not be used by developers.
@@ -44,13 +42,13 @@ public class User implements Serializable, Comparable<User> {
 	 */
 	public User (String userCode) {
 		this.userCode = userCode;
-		//this.dataBank = new DataBank();
-		this.itemsRatings = new SortedArrayList<Pair<String, Double>>();
+		this.dataBank = new DataBank();
+		this.itemsRatings = new SortedRatingList();
 	}
 
-	//public DataBank getDataBank(){
-	//	return dataBank;
-	//}
+	public DataBank getDataBank(){
+		return dataBank;
+	}
 
 	/**
 	 * Returns the user code.
@@ -61,73 +59,76 @@ public class User implements Serializable, Comparable<User> {
 	}
 
 	/**
-	 * Returns the item code at local index position.
+	 * Returns the item index at a local index position.
 	 * @param itemLocalIndex Index.
-	 * @return Item code at localIndex.
+	 * @return itemIndex in the datamodel. NULL: if received localIndex was out of bounds.
 	 */
-	public String getItem(int itemLocalIndex) {
+	public Integer getItem(int itemLocalIndex) {
 		if (itemLocalIndex < 0 || itemLocalIndex > this.itemsRatings.size())
 			return null;
 
-		return this.itemsRatings.get(itemLocalIndex).key;
+		return this.itemsRatings.get(itemLocalIndex).getLeft();
 	}
 
 	/**
 	 * Returns the rating at index position. 
 	 * @param itemLocalIndex Index.
-	 * @return Rating at localIndex.
+	 * @return Rating at localIndex. Null if received localIndex was out of bounds.
 	 */
 	public Double getRating(int itemLocalIndex) {
 		if (itemLocalIndex < 0 || itemLocalIndex > this.itemsRatings.size())
 			return null;
 
-		return this.itemsRatings.get(itemLocalIndex).value;
+		return this.itemsRatings.get(itemLocalIndex).getRight();
 	}
 	
 	/**
 	 * Get the index of an item code at the items array of the user.
-	 * @param itemCode Item code
-	 * @return Item index if the user has rated the item or -1 if not
+	 * @param itemIndex Item code
+	 * @return Item local index in the user's items array if the item has rated the item or -1 if don't
 	 */
-	public int findItemRating (String itemCode) {
-		//We need create a aux Pair to get the real one localIndex
-		Pair<String,Double> aux = new Pair<String, Double>(itemCode,0.0);
-		return itemsRatings.find(aux);
+	public int findItemRating (int itemIndex) {
+		return itemsRatings.find(itemIndex);
 	}
 
 	/**
 	 * Get the number of ratings that the user have made.
-	 * @return Number of ratings
+	 * @return Number of ratings received
 	 */
 	public int getNumberOfRatings () {
 		return this.itemsRatings.size();
 	}
 
 	/**
-	 * Add/Modify a new rating to the user, associated to a item.
-	 * @param itemCode itemCode which identify the specific item.
+	 * Add a new rating to the user, associated to an item.
+	 * You cannot overwrite an existing relation, otherwise repeated relations will throw an exception.
+	 * @param itemIndex item global code which identify the specific  in the datamodel.
 	 * @param rating rated value by user, refering this item.
 	 */
-	public void addRating(String itemCode, double rating){
-		if (this.itemsRatings.add(new Pair<String, Double>(itemCode, rating)))
-			totalRatings++;
+	public void addRating(int itemIndex, double rating){
+		if (!this.itemsRatings.add(itemIndex, rating))
+			throw new IllegalArgumentException("Provided rating already exist in item: " + itemIndex);
 
 		min = Math.min(rating, min);
 		max = Math.max(rating, max);
-		average = (totalRatings <= 1) ? rating : ((average * (totalRatings-1)) + rating) / totalRatings;
+		average = (this.itemsRatings.size() <= 1) ? rating : ((average * (this.itemsRatings.size()-1)) + rating) / this.itemsRatings.size();
 	}
-
-	public double getMin(){ return min; }
-	public double getMax(){ return max; }
-	public double getAverage(){ return average; }
 
 	/**
-	 * This methods implements the Comparable interface. It allows to be ordered by dynamicSortedArray.
-	 * @param o Other user
-	 * @return 1 0 or -1. If the other element si greater, equal or lesser.
+	 * Get the minimum rating done
+	 * @return minimum rating
 	 */
-	@Override
-	public int compareTo(User o) {
-		return this.userCode.compareTo(o.userCode);
-	}
+	public double getMin(){ return min; }
+
+	/**
+	 * Get the maximum rating done
+	 * @return maximum rating
+	 */
+	public double getMax(){ return max; }
+
+	/**
+	 * Get the average of ratings done
+	 * @return average
+	 */
+	public double getAverage(){ return average; }
 }

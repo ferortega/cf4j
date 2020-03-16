@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
 
 class DynamicArrayTest {
-    static SortedArrayList<String> testArray = new SortedArrayList<String>(10);
+    static SortedRatingList<String> testArray = new SortedRatingList<String>(10);
 
     @BeforeAll
     static void initAll() {

@@ -1,8 +1,6 @@
 package es.upm.etsisi.cf4j.data;
 
-import es.upm.etsisi.cf4j.data.types.Pair;
-import es.upm.etsisi.cf4j.data.types.SortedArrayList;
-import java.util.ArrayList;
+import es.upm.etsisi.cf4j.data.types.SortedRatingList;
 
 /**
  * <p>A TestUser extends an User given it the following properties:</p>
@@ -11,56 +9,59 @@ import java.util.ArrayList;
  *  <li>Array of test items that the user have rated</li>
  *  <li>Array of test ratings hat the user have made</li>
  * </ul>
- * @author Fernando Ortega
+ * @author Fernando Ortega, Jesús Mayor
  */
 public class TestUser extends User {
 
-	private static final long serialVersionUID = 20130403L;
+	private static final long serialVersionUID = 20200314L;
 
-	protected SortedArrayList<Pair<String, Double>> testItemsRatings;
+	//Stored metrics
+	protected double minTest = Double.MAX_VALUE;
+	protected double maxTest = Double.MIN_VALUE;
+	protected double averageTest = 0.0;
+
+	protected SortedRatingList testItemsRatings;
 
 	/**
-	 * Creates a new instance of an user. This constructor should not be used by developers.
+	 * Creates a new instance of a test user. This constructor should not be used by developers.
 	 * @param userCode User code
 	 */
 	public TestUser (String userCode) {
 		super(userCode);
-		this.testItemsRatings = new SortedArrayList<Pair<String, Double>>();
+		this.testItemsRatings = new SortedRatingList();
 	}
 
 	/**
 	 * Returns the test item code at index position. 
 	 * @param testItemLocalIndex Index.
-	 * @return Test item code at index. 
+	 * @return Test item code at index. NULL: if received localIndex was out of bounds.
 	 */
-	public String getTestItem(int testItemLocalIndex) {
+	public Integer getTestItem(int testItemLocalIndex) {
 		if (testItemLocalIndex < 0 || testItemLocalIndex > this.testItemsRatings.size())
 			return null;
 
-		return this.testItemsRatings.get(testItemLocalIndex).key;
+		return this.testItemsRatings.get(testItemLocalIndex).getLeft();
 	}
 	
 	/**
 	 * Returns the test rating at index position. 
 	 * @param testItemLocalIndex Index.
-	 * @return Test rating at index. 
+	 * @return Test rating at index. NULL: if received localIndex was out of bounds.
 	 */
 	public Double getTestRating(int testItemLocalIndex) {
 		if (testItemLocalIndex < 0 || testItemLocalIndex > this.testItemsRatings.size())
 			return null;
 
-		return this.testItemsRatings.get(testItemLocalIndex).value;
+		return this.testItemsRatings.get(testItemLocalIndex).getRight();
 	}
 	
 	/**
-	 * Get the index of an test item code at the test items array of the user.
-	 * @param itemCode Item code
-	 * @return Test item index if the user has rated the item or -1 if dont
+	 * Get the index of an test item index at test user's items array.
+	 * @param itemIndex Item code
+	 * @return Test item index if the user has rated the item or -1 if don't
 	 */
-	public int findTestUserRating (String itemCode) {
-		//We need create a aux Pair to get the real one localIndex
-		Pair<String,Double> aux = new Pair<String, Double>(itemCode,0.0);
-		return this.testItemsRatings.find(aux);
+	public int findTestUserRating (int itemIndex) {
+		return this.testItemsRatings.find(itemIndex);
 	}
 	
 	/**
@@ -72,22 +73,35 @@ public class TestUser extends User {
 	}
 
 	/**
-	 * Add/Modify a new test rating to the test user, associated to a item.
-	 * @param itemCode itemCode which identify the specific item.
-	 * @param rating rated value by user, refering this item.
+	 * Add a new test rating to the test user, associated to a item.
+	 * You cannot overwrite an existing relation, otherwise repeated relations will throw an exception.
+	 * @param itemIndex item global index which identify the specific item in the datamodel.
+	 * @param rating rated value by user, referencing this item.
 	 */
-	public void addTestRating(String itemCode, double rating){
-		if (this.testItemsRatings.add(new Pair<String, Double>(itemCode, rating))) {
-			totalRatings++;
-			average = (totalRatings <= 1) ? rating : ((average * (totalRatings-1)) + rating) / totalRatings;
-		}else{
-			average = 0.0;
-			for (Pair<String, Double> pair : this.testItemsRatings)
-				average += pair.value;
-			average /= totalRatings;
-		}
+	public void addTestRating(int itemIndex, double rating){
+		if (!this.testItemsRatings.add(itemIndex, rating))
+			throw new IllegalArgumentException("Provided rating already exist in item: " + itemIndex);
 
-		min = Math.min(rating, min);
-		max = Math.max(rating, max);
+		minTest = Math.min(rating, minTest);
+		maxTest = Math.max(rating, maxTest);
+		averageTest = (this.testItemsRatings.size() <= 1) ? rating : ((averageTest * (this.testItemsRatings.size()-1)) + rating) / this.testItemsRatings.size();
 	}
+
+	/**
+	 * Get the minimum rating done
+	 * @return minimum rating
+	 */
+	public double getMinTest(){ return min; }
+
+	/**
+	 * Get the maximum rating done
+	 * @return maximum rating
+	 */
+	public double getMaxTest(){ return max; }
+
+	/**
+	 * Get the average of ratings done
+	 * @return average
+	 */
+	public double getAverageTest(){ return average; }
 }

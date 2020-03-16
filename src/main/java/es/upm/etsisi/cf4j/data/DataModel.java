@@ -23,11 +23,11 @@ public class DataModel implements Serializable {
     private TestItem[] testItems;
 
     //Stored metrics
-    private double min = 0.0;
-    private double max = 0.0;
+    private double min = Double.MAX_VALUE;
+    private double max = Double.MIN_VALUE;
     private double average = 0.0;
 
-    //private DataBank dataBank;
+    private DataBank dataBank;
 
     /**
      * This constructor initializes the DataModel with the contents the given DataSet.
@@ -35,7 +35,7 @@ public class DataModel implements Serializable {
      */
     public DataModel (DataSet dataset){
 
-        //this.dataBank = new DataBank();
+        this.dataBank = new DataBank();
 
         //1.- Initializing the auxiliary arrays to the estimated initial size (taking into account the DataSet entries)
         ArrayList<User> aListUsers = new ArrayList<User>(dataset.getRatingsSize()/40);
@@ -47,30 +47,34 @@ public class DataModel implements Serializable {
         for (Iterator<DataSet.DataSetEntry> it = dataset.getTestRatingsIterator(); it.hasNext(); ){
             DataSet.DataSetEntry entry = it.next();
 
-            //Getting TestUser with globalIndex.
-            int testUserGlobalIndex = this.findTestUser(entry.first);
-            TestUser testUser = this.getTestUser(testUserGlobalIndex);
+            //Getting TestUser with Index.
+            int testUserIndex = this.findTestUser(entry.first);
+            TestUser testUser = this.getTestUser(testUserIndex);
             if(testUser == null) { //If don't exist, create new and add it to the arrays.
                 testUser = new TestUser(entry.first); //<-
                 aListUsers.add(testUser);
                 aListTestUsers.add(testUser);
+                testUserIndex = aListTestUsers.size() - 1;
             }
 
-            //Getting TestItem with globalIndex.
-            int testItemGlobalIndex = this.findTestItem(entry.second);
-            TestItem testItem = this.getTestItem(testItemGlobalIndex);
+            //Getting TestItem with Index.
+            int testItemIndex = this.findTestItem(entry.second);
+            TestItem testItem = this.getTestItem(testItemIndex);
             if(testItem == null) {//If don't exist, create new and add it to the arrays..
                 testItem = new TestItem(entry.second); //<-
                 aListItems.add(testItem);
                 aListTestItems.add(testItem);
+                testItemIndex = aListTestItems.size() - 1;
             }
 
-            if (testUserGlobalIndex == -1) testUserGlobalIndex = aListTestUsers.size() - 1;
-            if (testItemGlobalIndex == -1) testItemGlobalIndex = aListTestItems.size() - 1;
-
             //Relating user with item.
-            testUser.addTestRating(entry.second, entry.third);
-            testItem.addTestRating(entry.first, entry.third);
+            testUser.addTestRating(testItemIndex, entry.third);
+            testItem.addTestRating(testUserIndex, entry.third);
+
+            int sumEntries = aListUsers.size() + aListItems.size() + aListTestUsers.size() + aListTestItems.size();
+            min = Math.min(entry.third, min);
+            max = Math.max(entry.third, max);
+            average = (sumEntries <= 1) ? entry.third : ((average * (sumEntries-1)) + entry.third) / sumEntries;
         }
 
         //2.2.- Second: Adding non-test cases to our data structure
@@ -78,28 +82,32 @@ public class DataModel implements Serializable {
             DataSet.DataSetEntry entry = it.next();
 
             //Also to testUsers
-            //Getting User with that globalIndex.
-            int userGlobalIndex = this.findUser(entry.first);
-            User user = this.getUser(userGlobalIndex);
+            //Getting User with that Index.
+            int userIndex = this.findUser(entry.first);
+            User user = this.getUser(userIndex);
             if(user == null) { //If don't exist, create new and add it.
                 user = new User(entry.first);
                 aListUsers.add(user);
+                userIndex = aListUsers.size() - 1;
             }
 
-            //Getting Item with that globalIndex.
-            int itemGlobalIndex = this.findItem(entry.second);
-            Item item = this.getItem(itemGlobalIndex);
+            //Getting Item with that Index.
+            int itemIndex = this.findItem(entry.second);
+            Item item = this.getItem(itemIndex);
             if(item == null) {//If don't exist, create new and add it.
                 item = new Item(entry.second);
                 aListItems.add(item);
+                itemIndex = aListItems.size() - 1;
             }
 
-            if (userGlobalIndex == -1) userGlobalIndex = aListUsers.size() - 1;
-            if (itemGlobalIndex == -1) itemGlobalIndex = aListItems.size() - 1;
-
             //Relating user with item.
-            user.addRating(entry.second, entry.third);
-            item.addRating(entry.first, entry.third);
+            user.addRating(itemIndex, entry.third);
+            item.addRating(userIndex, entry.third);
+
+            int sumEntries = aListUsers.size() + aListItems.size() + aListTestUsers.size() + aListTestItems.size();
+            min = Math.min(entry.third, min);
+            max = Math.max(entry.third, max);
+            average = (sumEntries <= 1) ? entry.third : ((average * (sumEntries-1)) + entry.third) / sumEntries;
         }
 
         //3.- Storing raw data to respective arrays.
@@ -107,51 +115,47 @@ public class DataModel implements Serializable {
         this.testUsers = aListTestUsers.toArray(new TestUser[aListTestUsers.size()]);
         this.items = aListItems.toArray(new Item[aListItems.size()]);
         this.testItems = aListTestItems.toArray(new TestItem[aListTestItems.size()]);
-
-        //4.- Calculate global metrics
-        calculateGlobalMetrics();
     }
 
     /**
      * This method adds a single test rating to the DataSet
-     * @param testUserGlobalIndex UserCode as string, of the rating.
-     * @param testItemGlobalIndex ItemCode to be rated.
+     * @param testUserIndex UserCode as string, of the rating.
+     * @param testItemIndex ItemCode to be rated.
      * @param rating Rating of the item.
      */
-    public boolean addTestRating (int testUserGlobalIndex, int testItemGlobalIndex, double rating) {
+    public boolean addTestRating (int testUserIndex, int testItemIndex, double rating) {
 
-        if (0 < testUserGlobalIndex && testUserGlobalIndex < this.getNumberOfTestUsers() &&
-                0 < testItemGlobalIndex && testItemGlobalIndex < this.getNumberOfTestItems())
+        if (0 < testUserIndex && testUserIndex < this.getNumberOfTestUsers() &&
+                0 < testItemIndex && testItemIndex < this.getNumberOfTestItems())
         {
 
-            TestUser testUser = this.getTestUser(testUserGlobalIndex);
-            TestItem testItem = this.getTestItem(testItemGlobalIndex);
+            TestUser testUser = this.getTestUser(testUserIndex);
+            TestItem testItem = this.getTestItem(testItemIndex);
 
-            testUser.addTestRating(testItem.itemCode, rating);
-            testItem.addTestRating(testUser.userCode, rating);
+            testUser.addTestRating(testItemIndex, rating);
+            testItem.addTestRating(testUserIndex, rating);
 
             return true;
         }
         else return false;
-
     }
 
     /**
      * This method adds a single rating to the DataSet.
-     * @param userGlobalIndex UserCode as string, of the rating.
-     * @param itemGlobalIndex ItemCode to be rated.
+     * @param userIndex UserCode as string, of the rating.
+     * @param itemIndex ItemCode to be rated.
      * @param rating Rating of the item.
      */
-    public boolean addRating (int userGlobalIndex, int itemGlobalIndex, double rating) {
+    public boolean addRating (int userIndex, int itemIndex, double rating) {
 
-        if (0 < userGlobalIndex && userGlobalIndex < this.getNumberOfUsers() &&
-                0 < itemGlobalIndex && itemGlobalIndex < this.getNumberOfItems())
+        if (0 < userIndex && userIndex < this.getNumberOfUsers() &&
+                0 < itemIndex && itemIndex < this.getNumberOfItems())
         {
-            User user = this.getUser(userGlobalIndex);
-            Item item = this.getItem(itemGlobalIndex);
+            User user = this.getUser(userIndex);
+            Item item = this.getItem(itemIndex);
 
-            user.addRating(item.itemCode, rating);
-            item.addRating(user.userCode, rating);
+            user.addRating(itemIndex, rating);
+            item.addRating(userIndex, rating);
 
             return true;
         }
@@ -159,33 +163,13 @@ public class DataModel implements Serializable {
         return false;
     }
 
-    private void calculateGlobalMetrics(){
-        min = Double.MAX_VALUE;
-        max = Double.MIN_VALUE;
-
-        double sumRatigns = 0;
-        int numRatings = 0;
-
-        for (int i = 0; i < this.getNumberOfUsers(); i++){
-            User user = this.getUser(i);
-            min = Math.min(user.getMin(), min);
-            max = Math.max(user.getMax(), max);
-
-            if (user.getNumberOfRatings() != 0)
-                sumRatigns += user.getAverage() * user.getNumberOfRatings();
-            numRatings += user.getNumberOfRatings();
-        }
-
-        average = sumRatigns / numRatings;
-    }
-
     /**
      * Getter of the stored data. This data allows you to store general calculation data inside the DataModel.
      * @return The databank who stores general information.
      */
-    //public DataBank getDataBank(){
-    //    return dataBank;
-    //}
+    public DataBank getDataBank(){
+        return dataBank;
+    }
 
     /**
      * Get the number of users
@@ -196,21 +180,21 @@ public class DataModel implements Serializable {
     }
 
     /**
-     * Get an user by his global index
-     * @param userGlobalIndex Index of the users array inside the datamodel
-     * @return User or null if userGlobalIndex is outside bounds.
+     * Get an user by his  index
+     * @param userIndex Index of the users array inside the datamodel
+     * @return User or null if userIndex is outside bounds.
      */
-    public User getUser(int userGlobalIndex) {
-        if (userGlobalIndex < 0 || userGlobalIndex > users.length)
+    public User getUser(int userIndex) {
+        if (userIndex < 0 || userIndex > users.length)
             return null;
 
-        return users[userGlobalIndex];
+        return users[userIndex];
     }
 
     /**
-     * Get the global index of an user at the users array
+     * Get the  index of an user at the users array
      * @param userCode User code
-     * @return Global Index if the user exists or -1 if doesn't
+     * @return  Index if the user exists or -1 if doesn't
      */
     public int findUser(String userCode) {
         for ( int i = 0; i < this.users.length; i++)
@@ -227,21 +211,21 @@ public class DataModel implements Serializable {
     public int getNumberOfTestUsers () { return this.testUsers.length; }
 
     /**
-     * Get an user by his global index
-     * @param testUserGlobalIndex Index of the testUsers array inside the datamodel
-     * @return TestUser or null if testUserGlobalIndex is outside bounds
+     * Get an user by his  index
+     * @param testUserIndex Index of the testUsers array inside the datamodel
+     * @return TestUser or null if testUserIndex is outside bounds
      */
-    public TestUser getTestUser(int testUserGlobalIndex) {
-        if (testUserGlobalIndex < 0 || testUserGlobalIndex > testUsers.length)
+    public TestUser getTestUser(int testUserIndex) {
+        if (testUserIndex < 0 || testUserIndex > testUsers.length)
             return null;
 
-        return testUsers[testUserGlobalIndex];
+        return testUsers[testUserIndex];
     }
 
     /**
      * Get the index of a test user at the test users array
      * @param testUserCode User code
-     * @return Global Index if the user exists or -1 if doesn't
+     * @return  Index if the user exists or -1 if doesn't
      */
     public int findTestUser(String testUserCode) {
         for ( int i = 0; i < this.testUsers.length; i++)
@@ -258,21 +242,21 @@ public class DataModel implements Serializable {
     public int getNumberOfItems () { return this.items.length; }
 
     /**
-     * Get an item by his global index
-     * @param itemGlobalIndex Index of the items array inside the datamodel
-     * @return Item or null if itemGlobalIndex is outside bounds.
+     * Get an item by his  index
+     * @param itemIndex Index of the items array inside the datamodel
+     * @return Item or null if itemIndex is outside bounds.
      */
-    public Item getItem (int itemGlobalIndex) {
-        if (itemGlobalIndex < 0 || itemGlobalIndex > items.length)
+    public Item getItem (int itemIndex) {
+        if (itemIndex < 0 || itemIndex > items.length)
             return null;
 
-        return this.items[itemGlobalIndex];
+        return this.items[itemIndex];
     }
 
     /**
-     * Get the global index of a item at the test items array
+     * Get the  index of a item at the test items array
      * @param itemCode Item code
-     * @return Global Index if the item exists or -1 if doesn't
+     * @return  Index if the item exists or -1 if doesn't
      */
     public int findItem(String itemCode) {
         for ( int i = 0; i < this.items.length; i++)
@@ -289,15 +273,15 @@ public class DataModel implements Serializable {
     public int getNumberOfTestItems () { return this.testItems.length; }
 
     /**
-     * Get a test item by his global index
-     * @param testItemGlobalIndex Code of the test item to retrieve
-     * @return TestItem or null if testItemGlobalIndex is outside bounds.
+     * Get a test item by his  index
+     * @param testItemIndex Code of the test item to retrieve
+     * @return TestItem or null if testItemIndex is outside bounds.
      */
-    public TestItem getTestItem (int testItemGlobalIndex) {
-        if (testItemGlobalIndex < 0 || testItemGlobalIndex > testItems.length)
+    public TestItem getTestItem (int testItemIndex) {
+        if (testItemIndex < 0 || testItemIndex > testItems.length)
             return null;
 
-        return this.testItems[testItemGlobalIndex];
+        return this.testItems[testItemIndex];
     }
 
     /**
@@ -313,13 +297,25 @@ public class DataModel implements Serializable {
         return -1;
     }
 
+    /**
+     * Get the minimum rating done
+     * @return minimum rating
+     */
     public double getMin(){ return min; }
+
+    /**
+     * Get the maximum rating done
+     * @return maximum rating
+     */
     public double getMax(){ return max; }
+
+    /**
+     * Get the average of ratings done
+     * @return average
+     */
     public double getAverage(){ return average; }
 
     public String toString() {
-
-        calculateGlobalMetrics();
 
         int numRatings = 0;
         for (int i = 0; i < this.users.length; i++)
@@ -339,5 +335,4 @@ public class DataModel implements Serializable {
                 "\nMax rating: " + max +
                 "\nAverage rating: " + average;
     }
-
 }
