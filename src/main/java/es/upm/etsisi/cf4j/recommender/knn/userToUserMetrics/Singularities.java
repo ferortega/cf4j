@@ -97,14 +97,14 @@ public class Singularities extends UserToUserMetric {
 
 		int i = 0, j = 0, common = 0;
 		while (i < user.getNumberOfRatings() && j < otherUser.getNumberOfRatings()) {
-			if (user.getItemAt(i) < otherUser.getItemAt(j)) {
+			if (user.getItem(i) < otherUser.getItem(j)) {
 				i++;
-			} else if (user.getItemAt(i) > otherUser.getItemAt(j)) {
+			} else if (user.getItem(i) > otherUser.getItem(j)) {
 				j++;
 			} else {
 				
 				// Get the ratings
-				int itemIndex = user.getItemAt(i);
+				int itemIndex = user.getItem(i);
 				double activeUserRating = user.getRatingAt(i);
 				double targetUserRating = otherUser.getRatingAt(j);
 

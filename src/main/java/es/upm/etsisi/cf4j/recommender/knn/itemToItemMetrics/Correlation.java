@@ -27,8 +27,8 @@ public class Correlation extends ItemToItemMetric {
 			} else if (item.getUser(u) > otherItem.getUser(v)) {
 				v++;
 			} else {
-				double fa = item.getRating(u) - item..getRatingAverage();
-				double ft = otherItem.getRating(v) - otherItem.getRatingAverage();
+				double fa = item.getRating(u) - item.getAverageRating();
+				double ft = otherItem.getRating(v) - otherItem.getAverageRating();
 				
 				num += fa * ft;
 				denActive += fa * fa;

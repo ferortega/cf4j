@@ -24,7 +24,7 @@ public abstract class Recommender {
         int userIndex = testUser.getUserIndex();
         double[] predictions = new double[testUser.getNumberOfTestRatings()];
         for (int i = 0; i < predictions.length; i++) {
-            int itemIndex = testUser.getTestItemAt(i);
+            int itemIndex = testUser.getTestItem(i);
             predictions[i] = this.predict(userIndex, itemIndex);
         }
         return predictions;

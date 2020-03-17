@@ -135,7 +135,7 @@ public class UserToUser extends Recommender {
             if (i != -1) {
                 double similarity = this.similarities[userIndex][neighborIndex];
                 double rating = neighbor.getRatingAt(i);
-                double avg = neighbor.getRatingAverage();
+                double avg = neighbor.getAverageRating();
 
                 num += similarity * (rating - avg);
                 den += similarity;
@@ -144,7 +144,7 @@ public class UserToUser extends Recommender {
 
         return (den == 0)
                 ? Double.NaN
-                : user.getRatingAverage() + num / den;
+                : user.getAverageRating() + num / den;
     }
 
     private class UserNeighbors implements Partible<User> {

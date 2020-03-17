@@ -69,7 +69,7 @@ public class PIP extends ItemToItemMetric {
 
 				int userIndex = item.getUser(u);
 				User user = this.datamodel.getUserAt(userIndex);
-				double userAvg = user.getRatingAverage();
+				double userAvg = user.getAverageRating();
 				
 				double popularity = 1;
 				if ((ra > userAvg && rt > userAvg) || (ra < userAvg && rt < userAvg)) {

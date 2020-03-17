@@ -46,7 +46,7 @@ public class Ndcg extends QualityMeasure {
 			int i = recommendations[pos];
 			if (i == -1) break;
 
-			double rating = testUser.getTestRatingAt(i);
+			double rating = testUser.getTestRating(i);
 			dcg += (Math.pow(2, rating) - 1) / (Math.log(pos + 2) / Math.log(2));
 		}
 
@@ -65,7 +65,7 @@ public class Ndcg extends QualityMeasure {
 			int i = idealRecommendations[pos];
 			if (i == -1) break;
 
-			double rating = testUser.getTestRatingAt(i);
+			double rating = testUser.getTestRating(i);
 			idcg += (Math.pow(2, rating) - 1) / (Math.log(pos + 2) / Math.log(2));
 		}
 

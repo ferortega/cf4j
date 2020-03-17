@@ -24,35 +24,30 @@ public class TestUser extends User {
 
 	/**
 	 * Creates a new instance of a test user. This constructor should not be used by developers.
-	 * @param userCode User code
+	 * @param id User code
+	 * @param index Index related with the datamodel array.
 	 */
-	public TestUser (String userCode) {
-		super(userCode);
+	public TestUser (String id, int index) {
+		super(id, index);
 		this.testItemsRatings = new SortedRatingList();
 	}
 
 	/**
 	 * Returns the test item code at index position. 
-	 * @param testItemLocalIndex Index.
-	 * @return Test item code at index. NULL: if received localIndex was out of bounds.
+	 * @param pos Index inside the local array.
+	 * @return Test item index in the datamodel.
 	 */
-	public Integer getTestItem(int testItemLocalIndex) {
-		if (testItemLocalIndex < 0 || testItemLocalIndex > this.testItemsRatings.size())
-			return null;
-
-		return this.testItemsRatings.get(testItemLocalIndex).getLeft();
+	public int getTestItem(int pos) {
+		return this.testItemsRatings.get(pos).getLeft();
 	}
 	
 	/**
 	 * Returns the test rating at index position. 
-	 * @param testItemLocalIndex Index.
-	 * @return Test rating at index. NULL: if received localIndex was out of bounds.
+	 * @param pos Index inside the local array.
+	 * @return Test rating in the datamodel.
 	 */
-	public Double getTestRating(int testItemLocalIndex) {
-		if (testItemLocalIndex < 0 || testItemLocalIndex > this.testItemsRatings.size())
-			return null;
-
-		return this.testItemsRatings.get(testItemLocalIndex).getRight();
+	public double getTestRating(int pos) {
+		return this.testItemsRatings.get(pos).getRight();
 	}
 	
 	/**
@@ -60,7 +55,7 @@ public class TestUser extends User {
 	 * @param itemIndex Item code
 	 * @return Test item index if the user has rated the item or -1 if don't
 	 */
-	public int findTestUserRating (int itemIndex) {
+	public int findTestUserRatingPosition(int itemIndex) {
 		return this.testItemsRatings.find(itemIndex);
 	}
 	
@@ -91,17 +86,17 @@ public class TestUser extends User {
 	 * Get the minimum rating done
 	 * @return minimum rating
 	 */
-	public double getMinTest(){ return min; }
+	public double getMinTestRating(){ return min; }
 
 	/**
 	 * Get the maximum rating done
 	 * @return maximum rating
 	 */
-	public double getMaxTest(){ return max; }
+	public double getMaxTestRating(){ return max; }
 
 	/**
 	 * Get the average of ratings done
 	 * @return average
 	 */
-	public double getAverageTest(){ return average; }
+	public double getAverageTestRating(){ return average; }
 }

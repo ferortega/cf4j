@@ -24,43 +24,37 @@ public class TestItem extends Item {
 
 	/**
 	 * Creates a new instance of a test item. This constructor should not be used by developers.
-	 * @param itemCode Item code
+	 * @param id Item code
 	 */
-	public TestItem (String itemCode) {
-		super(itemCode);
+	public TestItem (String id, int index) {
+		super(id, index);
 		this.testUsersRatings = new SortedRatingList();
 	}
 	
 	/**
 	 * Returns the test user code at index position. 
-	 * @param testUserLocalIndex Index.
-	 * @return Test user code at index. NULL: if received localIndex was out of bounds.
+	 * @param pos Index inside the local array.
+	 * @return Test user index in the datamodel.
 	 */
-	public Integer getTestUser(int testUserLocalIndex) {
-		if (testUserLocalIndex < 0 || testUserLocalIndex > this.testUsersRatings.size())
-			return null;
-
-		return this.testUsersRatings.get(testUserLocalIndex).getLeft();
+	public int getTestUser(int pos) {
+		return this.testUsersRatings.get(pos).getLeft();
 	}
 
 	/**
 	 * Returns the test rating at index position. 
- 	 * @param testUserLocalIndex Index.
-	 * @return Test rating at index. 
+ 	 * @param pos Index inside the local array.
+	 * @return Test rating at position inside the local array.
 	 */
-	public Double getTestRating(int testUserLocalIndex) {
-		if (testUserLocalIndex < 0 || testUserLocalIndex > this.testUsersRatings.size())
-			return null;
-
-		return this.testUsersRatings.get(testUserLocalIndex).getRight();
+	public double getTestRating(int pos) {
+		return this.testUsersRatings.get(pos).getRight();
 	}
 	
 	/**
 	 * Get the index of an user index a at the test user's item array.
 	 * @param userIndex User code
-	 * @return Test user index in the test testUser's item array if the user has rated the item or -1 if dont
+	 * @return Test user position in the test testUser's item array if the user has rated the item or -1 if dont
 	 */
-	public int findTestUserRating (int userIndex) {
+	public int findTestUserRatingPosition(int userIndex) {
 		return testUsersRatings.find(userIndex);
 	}
 	
@@ -80,7 +74,7 @@ public class TestItem extends Item {
 	 */
 	public void addTestRating(int userIndex, double rating){
 		if (!this.testUsersRatings.add(userIndex, rating))
-			throw new IllegalArgumentException("Provided rating already exist in item: " + itemCode);
+			throw new IllegalArgumentException("Provided rating already exist in item: " + id);
 
 		minTest = Math.min(rating, minTest);
 		maxTest = Math.max(rating, maxTest);
@@ -91,17 +85,17 @@ public class TestItem extends Item {
 	 * Get the minimum rating done
 	 * @return minimum rating
 	 */
-	public double getMinTest(){ return min; }
+	public double getMinTestRating(){ return min; }
 
 	/**
 	 * Get the maximum rating done
 	 * @return maximum rating
 	 */
-	public double getMaxTest(){ return max; }
+	public double getMaxTestRating(){ return max; }
 
 	/**
 	 * Get the average of ratings done
 	 * @return average
 	 */
-	public double getAverageTest(){ return average; }
+	public double getAverageTestRating(){ return average; }
 }

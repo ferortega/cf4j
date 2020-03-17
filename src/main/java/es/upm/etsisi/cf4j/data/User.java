@@ -24,7 +24,12 @@ public class User implements Serializable {
 	/**
 	 * User code
 	 */
-	protected String userCode;
+	protected String id;
+
+	/**
+	 * User code
+	 */
+	protected int index;
 	
 	/**
 	 * Map of the user
@@ -38,10 +43,12 @@ public class User implements Serializable {
 
 	/**
 	 * Creates a new instance of an user. This constructor should not be used by developers.
-	 * @param userCode User code
+	 * @param id User code
+	 * @param index Index related with the datamodel array.
 	 */
-	public User (String userCode) {
-		this.userCode = userCode;
+	public User (String id, int index) {
+		this.id = id;
+		this.index = index;
 		this.dataBank = new DataBank();
 		this.itemsRatings = new SortedRatingList();
 	}
@@ -54,40 +61,42 @@ public class User implements Serializable {
 	 * Returns the user code.
 	 * @return User code
 	 */
-	public String getUserCode() {
-		return this.userCode;
+	public String getId() {
+		return this.id;
+	}
+
+	/**
+	 * Returns the user index.
+	 * @return User index inside the datamodel
+	 */
+	public int getIndex() {
+		return this.index;
 	}
 
 	/**
 	 * Returns the item index at a local index position.
-	 * @param itemLocalIndex Index.
-	 * @return itemIndex in the datamodel. NULL: if received localIndex was out of bounds.
+	 * @param pos Index inside the local array.
+	 * @return Item index in the datamodel.
 	 */
-	public Integer getItem(int itemLocalIndex) {
-		if (itemLocalIndex < 0 || itemLocalIndex > this.itemsRatings.size())
-			return null;
-
-		return this.itemsRatings.get(itemLocalIndex).getLeft();
+	public int getItem(int pos) {
+		return this.itemsRatings.get(pos).getLeft();
 	}
 
 	/**
 	 * Returns the rating at index position. 
-	 * @param itemLocalIndex Index.
-	 * @return Rating at localIndex. Null if received localIndex was out of bounds.
+	 * @param pos Index inside the local array.
+	 * @return Rating at indicated position.
 	 */
-	public Double getRating(int itemLocalIndex) {
-		if (itemLocalIndex < 0 || itemLocalIndex > this.itemsRatings.size())
-			return null;
-
-		return this.itemsRatings.get(itemLocalIndex).getRight();
+	public double getRating(int pos) {
+		return this.itemsRatings.get(pos).getRight();
 	}
 	
 	/**
 	 * Get the index of an item code at the items array of the user.
 	 * @param itemIndex Item code
-	 * @return Item local index in the user's items array if the item has rated the item or -1 if don't
+	 * @return Item local position in the user's items array if the item has rated the item or -1 if don't
 	 */
-	public int findItemRating (int itemIndex) {
+	public int findItemRatingPosition(int itemIndex) {
 		return itemsRatings.find(itemIndex);
 	}
 
@@ -118,17 +127,17 @@ public class User implements Serializable {
 	 * Get the minimum rating done
 	 * @return minimum rating
 	 */
-	public double getMin(){ return min; }
+	public double getMinRating(){ return min; }
 
 	/**
 	 * Get the maximum rating done
 	 * @return maximum rating
 	 */
-	public double getMax(){ return max; }
+	public double getMaxRating(){ return max; }
 
 	/**
 	 * Get the average of ratings done
 	 * @return average
 	 */
-	public double getAverage(){ return average; }
+	public double getAverageRating(){ return average; }
 }

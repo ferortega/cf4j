@@ -21,9 +21,9 @@ public class Jaccard extends UserToUserMetric {
 		
 		int i = 0, j = 0, common = 0;
 		while (i < user.getNumberOfRatings() && j < otherUser.getNumberOfRatings()) {
-			if (user.getItemAt(i) < otherUser.getItemAt(j)) {
+			if (user.getItem(i) < otherUser.getItem(j)) {
 				i++;
-			} else if (user.getItemAt(i) > otherUser.getItemAt(j)) {
+			} else if (user.getItem(i) > otherUser.getItem(j)) {
 				j++;
 			} else {
 				common++;

@@ -19,7 +19,7 @@ public class MAE extends QualityMeasure {
 		
 		for (int i = 0; i < testUser.getNumberOfTestRatings(); i++) {
 			if (!Double.isNaN(predictions[i])) {
-				mae += Math.abs(predictions[i] - testUser.getTestRatingAt(i));
+				mae += Math.abs(predictions[i] - testUser.getTestRating(i));
 				count++;
 			}
 		}

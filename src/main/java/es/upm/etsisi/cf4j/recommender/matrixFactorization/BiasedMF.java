@@ -179,7 +179,7 @@ public class BiasedMF extends Recommender {
 	public double predict(int userIndex, int itemIndex) {
 		double[] pu = this.p[userIndex];
 		double[] qi = this.q[itemIndex];
-		return datamodel.getRatingAverage() + this.bu[userIndex] + this.bi[itemIndex] + Methods.dotProduct(pu, qi);
+		return datamodel.getAverageRating() + this.bu[userIndex] + this.bi[itemIndex] + Methods.dotProduct(pu, qi);
 	}
 
 	/**
@@ -197,7 +197,7 @@ public class BiasedMF extends Recommender {
 
 			for (int j = 0; j < user.getNumberOfRatings(); j++) {
 
-				int itemIndex = user.getItemAt(j);
+				int itemIndex = user.getItem(j);
 
 				double error = user.getRatingAt(j) - predict(userIndex, itemIndex);
 

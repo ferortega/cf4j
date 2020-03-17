@@ -184,7 +184,7 @@ public class Pmf extends Recommender {
 
 			for (int j = 0; j < user.getNumberOfRatings(); j++) {
 
-				int itemIndex = user.getItemAt(j);
+				int itemIndex = user.getItem(j);
 
 				double error = user.getRatingAt(j) - predict(userIndex, itemIndex);
 

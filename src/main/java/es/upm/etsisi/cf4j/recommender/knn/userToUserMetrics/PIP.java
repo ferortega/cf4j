@@ -47,9 +47,9 @@ public class PIP extends UserToUserMetric {
 		double PIP = 0d;
 		
 		while (i < user.getNumberOfRatings() && j < otherUser.getNumberOfRatings()) {
-			if (user.getItemAt(i) < otherUser.getItemAt(j)) {
+			if (user.getItem(i) < otherUser.getItem(j)) {
 				i++;
-			} else if (user.getItemAt(i) > otherUser.getItemAt(j)) {
+			} else if (user.getItem(i) > otherUser.getItem(j)) {
 				j++;
 			} else {
 				double ra = user.getRatingAt(i);
@@ -70,9 +70,9 @@ public class PIP extends UserToUserMetric {
 				double impact = (agreement) ? im : 1d / im;
 
 				// Compute popularity
-				int itemIndex = user.getItemAt(i);
+				int itemIndex = user.getItem(i);
 				Item item = super.datamodel.getItemAt(itemIndex);
-				double itemAvg = item.getRatingAverage();
+				double itemAvg = item.getAverageRating();
 				
 				double popularity = 1;
 				if ((ra > itemAvg && rt > itemAvg) || (ra < itemAvg && rt < itemAvg)) {

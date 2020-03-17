@@ -19,7 +19,7 @@ public class MSE extends QualityMeasure {
 		
 		for (int i = 0; i < testUser.getNumberOfTestRatings(); i++) {
 			if (!Double.isNaN(predictions[i])) {
-				double diff = predictions[i] -  testUser.getTestRatingAt(i);
+				double diff = predictions[i] -  testUser.getTestRating(i);
 				mse += diff * diff;
 				count++;
 			}

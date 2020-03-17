@@ -22,9 +22,9 @@ public class SpearmanRank extends UserToUserMetric {
 		double num = 0d;
 		
 		while (i < user.getNumberOfRatings() && j < otherUser.getNumberOfRatings()) {
-			if (user.getItemAt(i) < otherUser.getItemAt(j)) {
+			if (user.getItem(i) < otherUser.getItem(j)) {
 				i++;
-			} else if (user.getItemAt(i) > otherUser.getItemAt(j)) {
+			} else if (user.getItem(i) > otherUser.getItem(j)) {
 				j++;
 			} else {
 				double diff = user.getRatingAt(i) - otherUser.getRatingAt(j);

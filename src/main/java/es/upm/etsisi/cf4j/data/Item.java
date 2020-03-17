@@ -24,7 +24,12 @@ public class Item implements Serializable {
 	/**
 	 * Item code
 	 */
-	protected String itemCode;
+	protected String id;
+
+	/**
+	 * Item index in datamodel
+	 */
+	protected int index;
 	
 	/**
 	 * Map of the item
@@ -38,10 +43,12 @@ public class Item implements Serializable {
 
 	/**
 	 * Creates a new instance of an item. This constructor should not be users by developers.
-	 * @param itemCode Item code
+	 * @param id Item code
+	 * @param index Item Index
 	 */
-	public Item (String itemCode) {
-		this.itemCode = itemCode;
+	public Item (String id, int index) {
+		this.id = id;
+		this.index = index;
 		this.dataBank = new DataBank();
 		this.usersRatings = new SortedRatingList();
 	}
@@ -51,43 +58,45 @@ public class Item implements Serializable {
 	}
 
 	/**
-	 * Return the item code.
-	 * @return Item code
+	 * Return the item identification.
+	 * @return Item identification
 	 */
-	public String getItemCode() {
-		return this.itemCode;
+	public String getId() {
+		return this.id;
+	}
+
+	/**
+	 * Return the item index inside the datamodel.
+	 * @return Item index inside the datamodel
+	 */
+	public int getIndex() {
+		return this.index;
 	}
 	
 	/**
-	 * Returns the user index at a local index position.
-	 * @param userLocalIndex Index.
-	 * @return userIndex in the datamodel. NULL: if received localIndex was out of bounds.
+	 * Returns the user index at a local index pos.
+	 * @param pos Index inside the local array.
+	 * @return User index in the datamodel.
 	 */
-	public Integer getUser(int userLocalIndex) {
-		if (userLocalIndex < 0 || userLocalIndex > this.usersRatings.size())
-			return null;
-
-		return this.usersRatings.get(userLocalIndex).getLeft();
+	public int getUser(int pos) {
+		return this.usersRatings.get(pos).getLeft();
 	}
 
 	/**
 	 * Returns the rating at index position. 
-	 * @param userLocalIndex Index.
-	 * @return Rating at localIndex. Null if received localIndex was out of bounds.
+	 * @param pos Index inside the local array.
+	 * @return Rating at indicated position.
 	 */
-	public Double getRating(int userLocalIndex) {
-		if (userLocalIndex < 0 || userLocalIndex > this.usersRatings.size())
-			return null;
-
-		return this.usersRatings.get(userLocalIndex).getRight();
+	public double getRating(int pos) {
+		return this.usersRatings.get(pos).getRight();
 	}
 	
 	/**
 	 * Get the index of an user code at the user's item array.
-	 * @param userIndex User code
-	 * @return User local index in the items's user array if the user has rated the item or -1 if don't
+	 * @param userIndex User index.
+	 * @return User position in the items's user array if the user has rated the item or -1 if don't
 	 */
-	public int findUserRating (int userIndex) {
+	public int findUserRatingPosition(int userIndex) {
 		return usersRatings.find(userIndex);
 	}
 	
@@ -102,12 +111,13 @@ public class Item implements Serializable {
 	/**
 	 * Add a new rating to the item, associated to an user.
 	 * You cannot overwrite an existing relation, otherwise repeated relations will throw an exception.
-	 * @param userIndex user index which identify the specific user in the datamodel.
-	 * @param rating rated value by user, referencing this item.
+	 * @param userIndex User index which identify the specific user in the datamodel.
+	 * @param rating Rated value by user, referencing this item.
 	 */
 	public void addRating(int userIndex, double rating){
 		if (!this.usersRatings.add(userIndex, rating))
-			throw new IllegalArgumentException("Provided rating already exist in item: " + itemCode);
+			throw new IllegalArgumentException("Provided rating already exist in item: " + id);
+
 		min = Math.min(rating, min);
 		max = Math.max(rating, max);
 		average = (this.usersRatings.size() <= 1) ? rating : ((average * (this.usersRatings.size()-1)) + rating) / this.usersRatings.size();
@@ -117,17 +127,17 @@ public class Item implements Serializable {
 	 * Get the minimum rating done
 	 * @return minimum rating
 	 */
-	public double getMin(){ return min; }
+	public double getMinRating(){ return min; }
 
 	/**
 	 * Get the maximum rating done
 	 * @return maximum rating
 	 */
-	public double getMax(){ return max; }
+	public double getMaxRating(){ return max; }
 
 	/**
 	 * Get the average of ratings done
 	 * @return average
 	 */
-	public double getAverage(){ return average; }
+	public double getAverageRating(){ return average; }
 }

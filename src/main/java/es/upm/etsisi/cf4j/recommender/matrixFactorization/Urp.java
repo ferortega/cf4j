@@ -184,7 +184,7 @@ public class Urp extends Recommender {
                 for (int itemIndex = 0; itemIndex < datamodel.getNumberOfItems(); itemIndex++) {
                     Item item = datamodel.getItemAt(itemIndex);
 
-                    boolean rated = i < user.getNumberOfRatings() && user.getItemAt(i) == itemIndex;
+                    boolean rated = i < user.getNumberOfRatings() && user.getItem(i) == itemIndex;
 
                     int v = -1;
 
