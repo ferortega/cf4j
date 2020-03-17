@@ -82,11 +82,11 @@ public class UserToUser extends Recommender {
         for (int neighborIndex : this.neighbors[userIndex]) {
             if (neighborIndex == -1) break; // Neighbors array are filled with -1 when no more neighbors exists
 
-            User neighbor = this.datamodel.getUserAt(neighborIndex);
+            User neighbor = this.datamodel.getUser(neighborIndex);
 
-            int i = neighbor.getItemIndex(itemIndex);
-            if (i != -1) {
-                prediction += neighbor.getRatingAt(i);
+            int pos = neighbor.findItem(itemIndex);
+            if (pos != -1) {
+                prediction += neighbor.getRatingAt(pos);
                 count++;
             }
         }
@@ -106,12 +106,12 @@ public class UserToUser extends Recommender {
         for (int neighborIndex : this.neighbors[userIndex]) {
             if (neighborIndex == -1) break; // Neighbors array are filled with -1 when no more neighbors exists
 
-            User neighbor = this.datamodel.getUserAt(neighborIndex);
+            User neighbor = this.datamodel.getUser(neighborIndex);
 
-            int i = neighbor.getItemIndex(itemIndex);
-            if (i != -1) {
+            int pos = neighbor.findItem(itemIndex);
+            if (pos != -1) {
                 double similarity = this.similarities[userIndex][neighborIndex];
-                double rating = neighbor.getRatingAt(i);
+                double rating = neighbor.getRatingAt(pos);
                 num += similarity * rating;
                 den += similarity;
             }
@@ -121,7 +121,7 @@ public class UserToUser extends Recommender {
     }
 
     private double predictDeviationFromMean(int userIndex, int itemIndex) {
-        User user = this.datamodel.getUserAt(userIndex);
+        User user = this.datamodel.getUser(userIndex);
 
         double num = 0;
         double den = 0;
@@ -129,13 +129,13 @@ public class UserToUser extends Recommender {
         for (int neighborIndex : this.neighbors[userIndex]) {
             if (neighborIndex == -1) break; // Neighbors array are filled with -1 when no more neighbors exists
 
-            User neighbor = this.datamodel.getUserAt(neighborIndex);
+            User neighbor = this.datamodel.getUser(neighborIndex);
 
-            int i = neighbor.getItemIndex(itemIndex);
-            if (i != -1) {
+            int pos = neighbor.findItem(itemIndex);
+            if (pos != -1) {
                 double similarity = this.similarities[userIndex][neighborIndex];
-                double rating = neighbor.getRatingAt(i);
-                double avg = neighbor.getAverageRating();
+                double rating = neighbor.getRatingAt(pos);
+                double avg = neighbor.getRatingAverage();
 
                 num += similarity * (rating - avg);
                 den += similarity;
@@ -144,7 +144,7 @@ public class UserToUser extends Recommender {
 
         return (den == 0)
                 ? Double.NaN
-                : user.getAverageRating() + num / den;
+                : user.getRatingAverage() + num / den;
     }
 
     private class UserNeighbors implements Partible<User> {

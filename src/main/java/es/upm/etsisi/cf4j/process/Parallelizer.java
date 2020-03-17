@@ -74,7 +74,7 @@ public class Parallelizer {
 						t3++;
 					}
 					if (t3 > 20) {
-						System.out.println(((index - this.threadIndex * this.runsPerThread) * 100 / this.runsPerThread) + "%");
+						System.out.println(((userIndex - this.threadIndex * this.runsPerThread) * 100 / this.runsPerThread) + "%");
 						t3 = 0;
 					}
 				}*/

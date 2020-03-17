@@ -69,13 +69,13 @@ public class Singularities extends UserToUserMetric {
 		this.singularityOfNotRelevantRatings = new double [numItems];
 
 		for (int i = 0; i < numItems; i++) {
-			Item item = super.datamodel.getItemAt(i);
+			Item item = super.datamodel.getItem(i);
 
 			int numberOfRelevantRatings = 0;
 			int numberOfNotRelevantRatings = 0;
 
 			for (int j = 0; j < item.getNumberOfRatings(); j++){
-				double rating = item.getRating(j);
+				double rating = item.getRatingAt(j);
 				if (relevantRatings.contains(rating)) numberOfRelevantRatings++;
 				if (notRelevantRatings.contains(rating)) numberOfNotRelevantRatings++;
 			}
@@ -97,14 +97,14 @@ public class Singularities extends UserToUserMetric {
 
 		int i = 0, j = 0, common = 0;
 		while (i < user.getNumberOfRatings() && j < otherUser.getNumberOfRatings()) {
-			if (user.getItem(i) < otherUser.getItem(j)) {
+			if (user.getItemAt(i) < otherUser.getItemAt(j)) {
 				i++;
-			} else if (user.getItem(i) > otherUser.getItem(j)) {
+			} else if (user.getItemAt(i) > otherUser.getItemAt(j)) {
 				j++;
 			} else {
 				
 				// Get the ratings
-				int itemIndex = user.getItem(i);
+				int itemIndex = user.getItemAt(i);
 				double activeUserRating = user.getRatingAt(i);
 				double targetUserRating = otherUser.getRatingAt(j);
 

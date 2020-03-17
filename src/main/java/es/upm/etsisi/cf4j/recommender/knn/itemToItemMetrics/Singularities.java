@@ -1,9 +1,8 @@
-package cf4j.algorithms.knn.itemToItem.similarities;
+package es.upm.etsisi.cf4j.recommender.knn.itemToItemMetrics;
 
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
 import es.upm.etsisi.cf4j.data.User;
-import es.upm.etsisi.cf4j.recommender.knn.itemToItemMetrics.ItemToItemMetric;
 
 import java.util.HashSet;
 
@@ -70,7 +69,7 @@ public class Singularities extends ItemToItemMetric {
 		this.singularityOfNotRelevantRatings = new double [numUsers];
 
 		for (int userIndex = 0; userIndex < numUsers; userIndex++) {
-			User user = this.datamodel.getUserAt(userIndex);
+			User user = this.datamodel.getUser(userIndex);
 
 			int numberOfRelevantRatings = 0;
 			int numberOfNotReleavantRatings = 0;
@@ -98,16 +97,16 @@ public class Singularities extends ItemToItemMetric {
 
 		int u = 0, v = 0, common = 0;
 		while (u < item.getNumberOfRatings() && v < otherItem.getNumberOfRatings()) {
-			if (item.getUser(u) < otherItem.getUser(v)) {
+			if (item.getUserAt(u) < otherItem.getUserAt(v)) {
 				u++;
-			} else if (item.getUser(u) > otherItem.getUser(v)) {
+			} else if (item.getUserAt(u) > otherItem.getUserAt(v)) {
 				v++;
 			} else {
 				
 				// Get the ratings
-				int userIndex = item.getUser(u);
-				double activeItemRating = item.getRating(u);
-				double targetItemRating = otherItem.getRating(v);
+				int userIndex = item.getUserAt(u);
+				double activeItemRating = item.getRatingAt(u);
+				double targetItemRating = otherItem.getRatingAt(v);
 
 				// Both user have rated relevant
 				if (this.relevantRatings.contains(activeItemRating) && this.relevantRatings.contains(targetItemRating)) {

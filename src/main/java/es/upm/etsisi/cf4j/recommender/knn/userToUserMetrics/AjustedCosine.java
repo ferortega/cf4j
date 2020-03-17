@@ -23,14 +23,14 @@ public class AjustedCosine extends UserToUserMetric {
 		double num = 0d, denActive = 0d, denTarget = 0d;
 		
 		while (i < user.getNumberOfRatings() && j < otherUser.getNumberOfRatings()) {
-			if (user.getItem(i) < otherUser.getItem(j)) {
+			if (user.getItemAt(i) < otherUser.getItemAt(j)) {
 				i++;
-			} else if (user.getItem(i) > otherUser.getItem(j)) {
+			} else if (user.getItemAt(i) > otherUser.getItemAt(j)) {
 				j++;
 			} else {
-				int itemIndex = user.getItem(i);
-				Item item = super.datamodel.getItemAt(itemIndex);
-				double avg = item.getAverageRating();
+				int itemIndex = user.getItemAt(i);
+				Item item = super.datamodel.getItem(itemIndex);
+				double avg = item.getRatingAverage();
 				
 				double fa = user.getRatingAt(i) - avg;
 				double ft = otherUser.getRatingAt(j) - avg;

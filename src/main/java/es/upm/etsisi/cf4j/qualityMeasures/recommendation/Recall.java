@@ -46,7 +46,7 @@ public class Recall extends QualityMeasure {
 
 		int relevant = 0;
 		for (int i = 0; i < testUser.getNumberOfTestRatings(); i++){
-			double rating = testUser.getTestRating(i);
+			double rating = testUser.getTestRatingAt(i);
 			if (rating >= this.relevantThreshold) {
 				relevant++;
 			}
@@ -61,7 +61,7 @@ public class Recall extends QualityMeasure {
 		for (int i : recommendations) {
 			if (i == -1) break;
 
-			double rating = testUser.getTestRating(i);
+			double rating = testUser.getTestRatingAt(i);
 			if (rating >= this.relevantThreshold) {
 				recommendedAndRelevant++;
 			}			

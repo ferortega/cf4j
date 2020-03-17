@@ -8,6 +8,7 @@ import es.upm.etsisi.cf4j.data.User;
 import es.upm.etsisi.cf4j.process.Parallelizer;
 import es.upm.etsisi.cf4j.process.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
+import es.upm.etsisi.cf4j.utils.Methods;
 
 import java.util.Random;
 
@@ -69,7 +70,7 @@ public class BiasedMF extends Recommender {
 	 * @param numIters Number of iterations
 	 */
 	public BiasedMF(DataModel datamodel, int numFactors, int numIters)	{
-		this(datamodel, numFactors, numIters, DEFAULT_LAMBDA, DEFAULT_GAMMA);
+		this(datamodel, numFactors, numIters, DEFAULT_LAMBDA);
 	}
 
 	public BiasedMF(DataModel datamodel, int numFactors, int numIters, long seed)	{
@@ -172,14 +173,14 @@ public class BiasedMF extends Recommender {
 
 	/**
 	 * Computes a rating prediction
-	 * @param userIndex User index
-	 * @param itemIndex Item index
+	 * @param userIndex User userIndex
+	 * @param itemIndex Item userIndex
 	 * @return Prediction
 	 */
 	public double predict(int userIndex, int itemIndex) {
 		double[] pu = this.p[userIndex];
 		double[] qi = this.q[itemIndex];
-		return datamodel.getAverageRating() + this.bu[userIndex] + this.bi[itemIndex] + Methods.dotProduct(pu, qi);
+		return datamodel.getRatingAverage() + this.bu[userIndex] + this.bi[itemIndex] + Methods.dotProduct(pu, qi);
 	}
 
 	/**
@@ -193,11 +194,11 @@ public class BiasedMF extends Recommender {
 
 		@Override
 		public void run(User user) {
-			int userIndex = user.getIndex();
+			int userIndex = user.getUserIndex();
 
 			for (int j = 0; j < user.getNumberOfRatings(); j++) {
 
-				int itemIndex = user.getItem(j);
+				int itemIndex = user.getItemAt(j);
 
 				double error = user.getRatingAt(j) - predict(userIndex, itemIndex);
 
@@ -224,13 +225,13 @@ public class BiasedMF extends Recommender {
 
 		@Override
 		public void run(Item item) {
-			int itemIndex = item.getIndex();
+			int itemIndex = item.getItemIndex();
 
 			for (int v = 0; v < item.getNumberOfRatings(); v++) {
 
-				int userIndex = item.getUser(v);
+				int userIndex = item.getUserAt(v);
 
-				double error = item.getRating(v) - predict(userIndex, itemIndex);
+				double error = item.getRatingAt(v) - predict(userIndex, itemIndex);
 
 				for (int k = 0; k < numFactors; k++) {
 					q[itemIndex][k] += gamma * (error * p[userIndex][k] - lambda * q[itemIndex][k]);

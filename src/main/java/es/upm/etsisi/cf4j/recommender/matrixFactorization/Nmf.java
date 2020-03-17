@@ -29,7 +29,7 @@ public class Nmf extends Recommender {
 
 
 	public Nmf(DataModel datamodel, int numFactors, int numIters) {
-		this(datamodel, numFactors, numIters, (long) (Math.random() * 1E10))
+		this(datamodel, numFactors, numIters, (long) (Math.random() * 1E10));
 	}
 
 	public Nmf(DataModel datamodel, int numFactors, int numIters, long seed) {
@@ -84,13 +84,13 @@ public class Nmf extends Recommender {
 
 		@Override
 		public void run(User user) {
-			int userIndex = user.getIndex();
+			int userIndex = user.getUserIndex();
 
 			double [] wu = w[userIndex];
 
 			double [] predictions = new double [user.getNumberOfRatings()];
 			for (int i = 0; i < user.getNumberOfRatings(); i++) {
-				int itemIndex = user.getItem(i);
+				int itemIndex = user.getItemAt(i);
 				predictions[i] = predict(userIndex, itemIndex);
 			}
 
@@ -100,7 +100,7 @@ public class Nmf extends Recommender {
 				double sumPredictions = 0;
 
 				for (int i = 0; i < user.getNumberOfRatings(); i++) {
-					int itemIndex = user.getItem(i);
+					int itemIndex = user.getItemAt(i);
 					double [] hi = h[itemIndex];
 					sumRatings += hi[k] * user.getRatingAt(i);
 					sumPredictions += hi[k] * predictions[i];
@@ -122,13 +122,13 @@ public class Nmf extends Recommender {
 
 		@Override
 		public void run(Item item) {
-			int itemIndex = item.getIndex();
+			int itemIndex = item.getItemIndex();
 
 			double [] hi = h[itemIndex];
 
 			double [] predictions = new double [item.getNumberOfRatings()];
 			for (int u = 0; u < item.getNumberOfRatings(); u++) {
-				int userIndex = item.getUser(u);
+				int userIndex = item.getUserAt(u);
 				predictions[u] = predict(userIndex, itemIndex);
 			}
 
@@ -138,9 +138,9 @@ public class Nmf extends Recommender {
 				double sumPredictions = 0;
 
 				for (int u = 0; u < item.getNumberOfRatings(); u++) {
-					int userIndex = item.getUser(u);
+					int userIndex = item.getUserAt(u);
 					double [] wu = w[userIndex];
-					sumRatings += wu[k] * item.getRating(u);
+					sumRatings += wu[k] * item.getRatingAt(u);
 					sumPredictions += wu[k] * predictions[u];
 				}
 

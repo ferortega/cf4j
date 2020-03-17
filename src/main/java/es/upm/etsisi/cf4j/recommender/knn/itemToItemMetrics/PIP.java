@@ -48,13 +48,13 @@ public class PIP extends ItemToItemMetric {
 		double PIP = 0d;
 
 		while (u < item.getNumberOfRatings() && v < otherItem.getNumberOfRatings()) {
-			if (item.getUser(u) < otherItem.getUser(v)) {
+			if (item.getUserAt(u) < otherItem.getUserAt(v)) {
 				u++;
-			} else if (item.getUser(u) > otherItem.getUser(v)) {
+			} else if (item.getUserAt(u) > otherItem.getUserAt(v)) {
 				v++;
 			} else {
-				double ra = item.getRating(u);
-				double rt = otherItem.getRating(v);
+				double ra = item.getRatingAt(u);
+				double rt = otherItem.getRatingAt(v);
 
 				boolean agreement = true;
 				if ((ra > this.median && rt < this.median) || (ra < this.median && rt > this.median)) {
@@ -67,9 +67,9 @@ public class PIP extends ItemToItemMetric {
 				double im = (Math.abs(ra - this.median) + 1d) * (Math.abs(rt - this.median) + 1d);
 				double impact = (agreement) ? im : 1d / im;
 
-				int userIndex = item.getUser(u);
-				User user = this.datamodel.getUserAt(userIndex);
-				double userAvg = user.getAverageRating();
+				int userIndex = item.getUserAt(u);
+				User user = this.datamodel.getUser(userIndex);
+				double userAvg = user.getRatingAverage();
 				
 				double popularity = 1;
 				if ((ra > userAvg && rt > userAvg) || (ra < userAvg && rt < userAvg)) {

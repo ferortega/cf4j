@@ -21,14 +21,14 @@ public class Cosine extends ItemToItemMetric {
 		double num = 0d, denActive = 0d, denTarget = 0d;
 
 		while (u < item.getNumberOfRatings() && v < otherItem.getNumberOfRatings()) {
-			if (item.getUser(u) < otherItem.getUser(v)) {
+			if (item.getUserAt(u) < otherItem.getUserAt(v)) {
 				u++;
-			} else if (item.getUser(u) > otherItem.getUser(v)) {
+			} else if (item.getUserAt(u) > otherItem.getUserAt(v)) {
 				v++;
 			} else {
-				num += item.getRating(u) * otherItem.getRating(v);
-				denActive += item.getRating(u) * item.getRating(u);
-				denTarget += otherItem.getRating(v) * otherItem.getRating(v);
+				num += item.getRatingAt(u) * otherItem.getRatingAt(v);
+				denActive += item.getRatingAt(u) * item.getRatingAt(u);
+				denTarget += otherItem.getRatingAt(v) * otherItem.getRatingAt(v);
 				
 				common++;
 				u++; 

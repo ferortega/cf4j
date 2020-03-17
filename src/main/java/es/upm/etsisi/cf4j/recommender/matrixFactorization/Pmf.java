@@ -161,8 +161,8 @@ public class Pmf extends Recommender {
 
 	/**
 	 * Computes a rating prediction
-	 * @param userIndex User index
-	 * @param itemIndex Item index
+	 * @param userIndex User userIndex
+	 * @param itemIndex Item userIndex
 	 * @return Prediction
 	 */
 	public double predict(int userIndex, int itemIndex) {
@@ -180,11 +180,11 @@ public class Pmf extends Recommender {
 
 		@Override
 		public void run(User user) {
-			int userIndex = user.getIndex();
+			int userIndex = user.getUserIndex();
 
 			for (int j = 0; j < user.getNumberOfRatings(); j++) {
 
-				int itemIndex = user.getItem(j);
+				int itemIndex = user.getItemAt(j);
 
 				double error = user.getRatingAt(j) - predict(userIndex, itemIndex);
 
@@ -209,14 +209,14 @@ public class Pmf extends Recommender {
 
 		@Override
 		public void run(Item item) {
-			int itemIndex = item.getIndex();
+			int itemIndex = item.getItemIndex();
 
 			for (int v = 0; v < item.getNumberOfRatings(); v++) {
 
-				int userIndex = item.getUser(v);
+				int userIndex = item.getUserAt(v);
 
 				// Get error
-				double error = item.getRating(v) - predict(userIndex, itemIndex);
+				double error = item.getRatingAt(v) - predict(userIndex, itemIndex);
 
 				for (int k = 0; k < numFactors; k++) {
 					q[itemIndex][k] += gamma * (error * p[userIndex][k] - lambda * q[itemIndex][k]);

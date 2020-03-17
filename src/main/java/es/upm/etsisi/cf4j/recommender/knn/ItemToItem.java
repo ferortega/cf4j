@@ -14,7 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public class ItemToItem extends Recommender {
 
-    public enum AggregationApproach {MEAN, WEIGTHED_MEAN, DEVIATION_FROM_MEAN}
+    public enum AggregationApproach {MEAN, WEIGTHED_MEAN}
 
     protected int[][] neighbors;
 
@@ -59,7 +59,7 @@ public class ItemToItem extends Recommender {
         }
 
         Parallelizer.exec(this.datamodel.getItems(), metric);
-        Parallelizer.exec(this.datamodel.getItems(), new UserNeighbors());
+        Parallelizer.exec(this.datamodel.getItems(), new ItemNeighbors());
     }
 
     @Override
@@ -69,15 +69,13 @@ public class ItemToItem extends Recommender {
                 return predictMean(userIndex, itemIndex);
             case WEIGTHED_MEAN:
                 return predictWeigthedMean(userIndex, itemIndex);
-            case DEVIATION_FROM_MEAN:
-                return predictDeviationFromMean(userIndex, itemIndex);
             default:
                 return Double.NaN;
         }
     }
 
     private double predictMean(int userIndex, int itemIndex) {
-        User user = this.datamodel.getUserAt(userIndex);
+        User user = this.datamodel.getUser(userIndex);
 
         double prediction = 0;
         int count = 0;
@@ -85,9 +83,9 @@ public class ItemToItem extends Recommender {
         for (int neighborIndex : this.neighbors[itemIndex]) {
             if (neighborIndex == -1) break; // Neighbors array are filled with -1 when no more neighbors exists
 
-            int i = user.getItemIndex(neighborIndex);
-            if (i != -1) {
-                prediction += user.getRatingAt(i);
+            int pos = user.findItem(neighborIndex);
+            if (pos != -1) {
+                prediction += user.getRatingAt(pos);
                 count++;
             }
         }
@@ -101,7 +99,7 @@ public class ItemToItem extends Recommender {
     }
 
     private double predictWeigthedMean(int userIndex, int itemIndex) {
-        User user = this.datamodel.getUserAt(userIndex);
+        User user = this.datamodel.getUser(userIndex);
 
         double num = 0;
         double den = 0;
@@ -109,10 +107,10 @@ public class ItemToItem extends Recommender {
         for (int neighborIndex : this.neighbors[itemIndex]) {
             if (neighborIndex == -1) break; // Neighbors array are filled with -1 when no more neighbors exists
 
-            int i = user.getItemIndex(neighborIndex);
-            if (i != -1) {
+            int pos = user.findItem(neighborIndex);
+            if (pos != -1) {
                 double similarity = this.similarities[itemIndex][neighborIndex];
-                double rating = user.getRatingAt(i);
+                double rating = user.getRatingAt(pos);
                 num += similarity * rating;
                 den += similarity;
             }

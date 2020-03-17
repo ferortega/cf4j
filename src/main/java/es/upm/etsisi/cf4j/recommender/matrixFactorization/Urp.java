@@ -168,7 +168,7 @@ public class Urp extends Recommender {
 
         @Override
         public void run(User user) {
-            int userIndex = user.getIndex();
+            int userIndex = user.getUserIndex();
 
             for (int h = 0; h < user.getNumberOfRatings(); h++) {
 
@@ -184,7 +184,7 @@ public class Urp extends Recommender {
                 for (int itemIndex = 0; itemIndex < datamodel.getNumberOfItems(); itemIndex++) {
                     Item item = datamodel.getItemAt(itemIndex);
 
-                    boolean rated = i < user.getNumberOfRatings() && user.getItem(i) == itemIndex;
+                    boolean rated = i < user.getNumberOfRatings() && user.getItemAt(i) == itemIndex;
 
                     int v = -1;
 
@@ -235,7 +235,7 @@ public class Urp extends Recommender {
 
         @Override
         public void run(Item item) {
-            int itemIndex = item.getIndex();
+            int itemIndex = item.getItemIndex();
 
             beta[itemIndex] = new double[ratings.length][numFactors]; // reset beta
 
@@ -245,8 +245,8 @@ public class Urp extends Recommender {
             while (u < item.getNumberOfRatings() && userIndex < datamodel.getNumberOfUsers()) {
                 User user = datamodel.getUserAt(userIndex);
 
-                if (item.getUser(u) == userIndex) {
-                    double rating = item.getRating(u);
+                if (item.getUserAt(u) == userIndex) {
+                    double rating = item.getRatingAt(u);
                     int v = Arrays.binarySearch(ratings, rating);
 
                     for (int z = 0; z < numFactors; z++) {

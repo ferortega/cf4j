@@ -7,6 +7,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
 import es.upm.etsisi.cf4j.process.Parallelizer;
+import es.upm.etsisi.cf4j.process.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.utils.Methods;
 import org.apache.commons.math3.special.Gamma;
@@ -173,8 +174,8 @@ public class Bnmf extends Recommender {
 
 	/**
 	 * Computes a rating prediction
-	 * @param userIndex User index
-	 * @param itemIndex Item index
+	 * @param userIndex User userIndex
+	 * @param itemIndex Item userIndex
 	 * @return Prediction
 	 */
 	public double predict(int userIndex, int itemIndex) {
@@ -232,15 +233,15 @@ public class Bnmf extends Recommender {
 
 		@Override
 		public void run(Item item) {
-			int itemIndex = item.getIndex();
+			int itemIndex = item.getItemIndex();
 
 			for (int u = 0; u < item.getNumberOfRatings(); u++) {
 
-				int userIndex = item.getUser(u);
+				int userIndex = item.getUserAt(u);
 
 				double [] lambda = new double [Bnmf.this.numFactors];
 
-				double rating = (item.getRating(u) - datamodel.getMinRating()) / (datamodel.getMaxRatring() - dataModel.getMinRating());
+				double rating = (item.getRatingAt(u) - datamodel.getMinRating()) / (datamodel.getMaxRating() - datamodel.getMinRating());
 
 				double sum = 0;
 

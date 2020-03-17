@@ -1,9 +1,8 @@
-package cf4j.algorithms.knn.itemToItem.similarities;
+package es.upm.etsisi.cf4j.recommender.knn.itemToItemMetrics;
 
 
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
-import es.upm.etsisi.cf4j.recommender.knn.itemToItemMetrics.ItemToItemMetric;
 
 /**
  * Implements traditional Sepearman Rank as CF similarity metric for the items.
@@ -23,12 +22,12 @@ public class SpearmanRank extends ItemToItemMetric {
 		double num = 0d;
 		
 		while (u < item.getNumberOfRatings() && v < otherItem.getNumberOfRatings()) {
-			if (item.getUser(u) < otherItem.getUser(v)) {
+			if (item.getUserAt(u) < otherItem.getUserAt(v)) {
 				u++;
-			} else if (item.getUser(u) > otherItem.getUser(v)) {
+			} else if (item.getUserAt(u) > otherItem.getUserAt(v)) {
 				v++;
 			} else {
-				double diff = item.getRating(u) - otherItem.getRating(v);
+				double diff = item.getRatingAt(u) - otherItem.getRatingAt(v);
 				num += diff * diff;
 				common++;
 				u++; 

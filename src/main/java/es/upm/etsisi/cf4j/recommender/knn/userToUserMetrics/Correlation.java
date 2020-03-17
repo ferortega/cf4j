@@ -22,13 +22,13 @@ public class Correlation extends UserToUserMetric {
 		double num = 0d, denActive = 0d, denTarget = 0d;
 		
 		while (i < user.getNumberOfRatings() && j < otherUser.getNumberOfRatings()) {
-			if (user.getItem(i) < otherUser.getItem(j)) {
+			if (user.getItemAt(i) < otherUser.getItemAt(j)) {
 				i++;
-			} else if (user.getItem(i) > otherUser.getItem(j)) {
+			} else if (user.getItemAt(i) > otherUser.getItemAt(j)) {
 				j++;
 			} else {
-				double t = user.getRatingAt(i) - user.getAverageRating();
-				double o = otherUser.getRatingAt(j) - otherUser.getAverageRating();
+				double t = user.getRatingAt(i) - user.getRatingAverage();
+				double o = otherUser.getRatingAt(j) - otherUser.getRatingAverage();
 				
 				num += t * o;
 				denActive += t * t;

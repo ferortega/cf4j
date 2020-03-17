@@ -28,12 +28,12 @@ public class MSD extends ItemToItemMetric {
 		double msd = 0d;
 
 		while (u < item.getNumberOfRatings() && v < otherItem.getNumberOfRatings()) {
-			if (item.getUser(u) < otherItem.getUser(v)) {
+			if (item.getUserAt(u) < otherItem.getUserAt(v)) {
 				u++;
-			} else if (item.getUser(u) > otherItem.getUser(v)) {
+			} else if (item.getUserAt(u) > otherItem.getUserAt(v)) {
 				v++;
 			} else {
-				double diff = (item.getRating(u) - otherItem.getRating(v)) / this.maxDiff;
+				double diff = (item.getRatingAt(u) - otherItem.getRatingAt(v)) / this.maxDiff;
 				msd += diff * diff;
 				
 				common++;

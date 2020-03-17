@@ -157,7 +157,7 @@ public class DataModel implements Serializable {
      * Getter associated with the array of users
      * @return users array
      */
-    public User[] getUsersArray() {
+    public User[] getUsers() {
         return users;
     }
 
@@ -165,7 +165,7 @@ public class DataModel implements Serializable {
      * Getter associated with the array of test users
      * @return test users array
      */
-    public  TestUser[] getTestUsersArray() {
+    public  TestUser[] getTestUsers() {
         return testUsers;
     }
 
@@ -173,7 +173,7 @@ public class DataModel implements Serializable {
      * Getter associated with the array of items
      * @return items array
      */
-    public  Item[] getItemsArray() {
+    public  Item[] getItems() {
         return items;
     }
 
@@ -181,7 +181,7 @@ public class DataModel implements Serializable {
      * Getter associated with the array of test items
      * @return test items array
      */
-    public  TestItem[] getTestItemsArray() {
+    public  TestItem[] getTestItems() {
         return testItems;
     }
 
@@ -202,16 +202,16 @@ public class DataModel implements Serializable {
     }
 
     /**
-     * Get an user by his  index
+     * Get an user by his  userIndex
      * @param userIndex Index of the users array inside the datamodel
-     * @return User located at index
+     * @return User located at userIndex
      */
     public User getUser(int userIndex) {
         return users[userIndex];
     }
 
     /**
-     * Get the  index of an user at the users array
+     * Get the  userIndex of an user at the users array
      * @param userCode User code
      * @return  Index if the user exists or -1 if doesn't
      */
@@ -227,19 +227,19 @@ public class DataModel implements Serializable {
      * Get the number of test users
      * @return Number of test users
      */
-    public int getNumberOfTestUsers () { return this.testUsers.length; }
+    public int getNumberOfTestUsers() { return this.testUsers.length; }
 
     /**
-     * Get an user by his  index
+     * Get an user by his  userIndex
      * @param testUserIndex Index of the testUsers array inside the datamodel
-     * @return TestUser located at given index
+     * @return TestUser located at given userIndex
      */
-    public TestUser getTestUser (int testUserIndex) {
+    public TestUser getTestUser(int testUserIndex) {
         return testUsers[testUserIndex];
     }
 
     /**
-     * Get the index of a test user at the test users array
+     * Get the userIndex of a test user at the test users array
      * @param testUserCode User code
      * @return  Index if the user exists or -1 if doesn't
      */
@@ -255,23 +255,23 @@ public class DataModel implements Serializable {
      * Get the number of items
      * @return Number of items
      */
-    public int getNumberOfItems () { return this.items.length; }
+    public int getNumberOfItems() { return this.items.length; }
 
     /**
-     * Get an item by his  index
+     * Get an item by his  userIndex
      * @param itemIndex Index of the items array inside the datamodel
-     * @return Item located at given index
+     * @return Item located at given userIndex
      */
-    public Item getItem (int itemIndex) {
+    public Item getItem(int itemIndex) {
         return this.items[itemIndex];
     }
 
     /**
-     * Get the  index of a item at the test items array
+     * Get the  userIndex of a item at the test items array
      * @param itemCode Item code
      * @return  Index if the item exists or -1 if doesn't
      */
-    public int findItemIndex (String itemCode) {
+    public int findItemIndex(String itemCode) {
         for ( int i = 0; i < this.items.length; i++)
             if ( this.items[i].id.equals(itemCode))
                 return i;
@@ -283,23 +283,23 @@ public class DataModel implements Serializable {
      * Get the number of test items
      * @return Number of test items
      */
-    public int getNumberOfTestItems () { return this.testItems.length; }
+    public int getNumberOfTestItems() { return this.testItems.length; }
 
     /**
-     * Get a test item by his  index
+     * Get a test item by his  userIndex
      * @param testItemIndex Code of the test item to retrieve
-     * @return TestItem located at given index
+     * @return TestItem located at given userIndex
      */
-    public TestItem getTestItem (int testItemIndex) {
+    public TestItem getTestItem(int testItemIndex) {
         return this.testItems[testItemIndex];
     }
 
     /**
-     * Get the index of a test item at the test items array
+     * Get the userIndex of a test item at the test items array
      * @param testItemCode Test item code
      * @return Index if the item exists or -1 if doesn't
      */
-    public int findTestItemIndex (String testItemCode) {
+    public int findTestItemIndex(String testItemCode) {
         for ( int i = 0; i < this.testItems.length; i++)
             if ( this.testItems[i].id.equals(testItemCode))
                 return i;
@@ -311,19 +311,19 @@ public class DataModel implements Serializable {
      * Get the minimum rating done
      * @return minimum rating
      */
-    public double getMinRating (){ return min; }
+    public double getMinRating(){ return min; }
 
     /**
      * Get the maximum rating done
      * @return maximum rating
      */
-    public double getMaxRating (){ return max; }
+    public double getMaxRating(){ return max; }
 
     /**
      * Get the average of ratings done
      * @return average
      */
-    public double getAverageRating (){ return average; }
+    public double getRatingAverage(){ return average; }
 
     public String toString() {
 

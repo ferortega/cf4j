@@ -31,13 +31,13 @@ public class CorrelationConstrained extends ItemToItemMetric {
 		double num = 0d, denActive = 0d, denTarget = 0d;
 
 		while (u < item.getNumberOfRatings() && v < otherItem.getNumberOfRatings()) {
-			if (item.getUser(u) < otherItem.getUser(v)) {
+			if (item.getUserAt(u) < otherItem.getUserAt(v)) {
 				u++;
-			} else if (item.getUser(u) > otherItem.getUser(v)) {
+			} else if (item.getUserAt(u) > otherItem.getUserAt(v)) {
 				v++;
 			} else {
-				double fa = item.getRating(u) - this.median;
-				double ft = otherItem.getRating(v) - this.median;
+				double fa = item.getRatingAt(u) - this.median;
+				double ft = otherItem.getRatingAt(v) - this.median;
 				
 				num += fa * ft;
 				denActive += fa * fa;

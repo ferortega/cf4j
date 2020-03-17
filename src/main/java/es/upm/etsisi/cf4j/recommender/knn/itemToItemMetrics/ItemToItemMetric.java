@@ -29,7 +29,7 @@ public abstract class ItemToItemMetric implements Partible<Item> {
 		int itemIndex = item.getItemIndex();
 
 		for (int i = 0; i < this.datamodel.getNumberOfItems(); i++) {
-			Item otherItem = this.datamodel.getItemAt(i);
+			Item otherItem = this.datamodel.getItem(i);
 			if (itemIndex == otherItem.getItemIndex()) {
 				similarities[itemIndex][i] = Double.NEGATIVE_INFINITY;
 			} else {

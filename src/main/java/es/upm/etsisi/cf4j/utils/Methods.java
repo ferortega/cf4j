@@ -56,7 +56,7 @@ public class Methods {
 
 	
 	/**
-	 * Gets efficiently the index of an element in an array of integers
+	 * Gets efficiently the userIndex of an element in an array of integers
 	 * @param array Array of integers sorted from lowest to highest
 	 * @param value Value which calculates the position
 	 * @return Index of the item or -1 if not found

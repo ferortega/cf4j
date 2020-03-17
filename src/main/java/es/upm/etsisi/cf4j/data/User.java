@@ -29,7 +29,7 @@ public class User implements Serializable {
 	/**
 	 * User code
 	 */
-	protected int index;
+	protected int userIndex;
 	
 	/**
 	 * Map of the user
@@ -48,7 +48,7 @@ public class User implements Serializable {
 	 */
 	public User (String id, int index) {
 		this.id = id;
-		this.index = index;
+		this.userIndex = index;
 		this.dataBank = new DataBank();
 		this.itemsRatings = new SortedRatingList();
 	}
@@ -66,37 +66,37 @@ public class User implements Serializable {
 	}
 
 	/**
-	 * Returns the user index.
-	 * @return User index inside the datamodel
+	 * Returns the user userIndex.
+	 * @return User userIndex inside the datamodel
 	 */
-	public int getIndex() {
-		return this.index;
+	public int getUserIndex() {
+		return this.userIndex;
 	}
 
 	/**
-	 * Returns the item index at a local index position.
+	 * Returns the item userIndex at a local userIndex position.
 	 * @param pos Index inside the local array.
-	 * @return Item index in the datamodel.
+	 * @return Item userIndex in the datamodel.
 	 */
-	public int getItem(int pos) {
+	public int getItemAt(int pos) {
 		return this.itemsRatings.get(pos).getLeft();
 	}
 
 	/**
-	 * Returns the rating at index position. 
+	 * Returns the rating at userIndex position.
 	 * @param pos Index inside the local array.
 	 * @return Rating at indicated position.
 	 */
-	public double getRating(int pos) {
+	public double getRatingAt(int pos) {
 		return this.itemsRatings.get(pos).getRight();
 	}
 	
 	/**
-	 * Get the index of an item code at the items array of the user.
+	 * Get the userIndex of an item code at the items array of the user.
 	 * @param itemIndex Item code
 	 * @return Item local position in the user's items array if the item has rated the item or -1 if don't
 	 */
-	public int findItemRatingPosition(int itemIndex) {
+	public int findItem(int itemIndex) {
 		return itemsRatings.find(itemIndex);
 	}
 
@@ -139,5 +139,5 @@ public class User implements Serializable {
 	 * Get the average of ratings done
 	 * @return average
 	 */
-	public double getAverageRating(){ return average; }
+	public double getRatingAverage(){ return average; }
 }

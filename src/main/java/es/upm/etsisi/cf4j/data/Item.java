@@ -27,9 +27,9 @@ public class Item implements Serializable {
 	protected String id;
 
 	/**
-	 * Item index in datamodel
+	 * Item userIndex in datamodel
 	 */
-	protected int index;
+	protected int itemIndex;
 	
 	/**
 	 * Map of the item
@@ -48,7 +48,7 @@ public class Item implements Serializable {
 	 */
 	public Item (String id, int index) {
 		this.id = id;
-		this.index = index;
+		this.itemIndex = index;
 		this.dataBank = new DataBank();
 		this.usersRatings = new SortedRatingList();
 	}
@@ -66,37 +66,37 @@ public class Item implements Serializable {
 	}
 
 	/**
-	 * Return the item index inside the datamodel.
-	 * @return Item index inside the datamodel
+	 * Return the item userIndex inside the datamodel.
+	 * @return Item userIndex inside the datamodel
 	 */
-	public int getIndex() {
-		return this.index;
+	public int getItemIndex() {
+		return this.itemIndex;
 	}
 	
 	/**
-	 * Returns the user index at a local index pos.
+	 * Returns the user userIndex at a local userIndex pos.
 	 * @param pos Index inside the local array.
-	 * @return User index in the datamodel.
+	 * @return User userIndex in the datamodel.
 	 */
-	public int getUser(int pos) {
+	public int getUserAt(int pos) {
 		return this.usersRatings.get(pos).getLeft();
 	}
 
 	/**
-	 * Returns the rating at index position. 
+	 * Returns the rating at userIndex position.
 	 * @param pos Index inside the local array.
 	 * @return Rating at indicated position.
 	 */
-	public double getRating(int pos) {
+	public double getRatingAt(int pos) {
 		return this.usersRatings.get(pos).getRight();
 	}
 	
 	/**
-	 * Get the index of an user code at the user's item array.
-	 * @param userIndex User index.
+	 * Get the userIndex of an user code at the user's item array.
+	 * @param userIndex User userIndex.
 	 * @return User position in the items's user array if the user has rated the item or -1 if don't
 	 */
-	public int findUserRatingPosition(int userIndex) {
+	public int findUser(int userIndex) {
 		return usersRatings.find(userIndex);
 	}
 	
@@ -111,7 +111,7 @@ public class Item implements Serializable {
 	/**
 	 * Add a new rating to the item, associated to an user.
 	 * You cannot overwrite an existing relation, otherwise repeated relations will throw an exception.
-	 * @param userIndex User index which identify the specific user in the datamodel.
+	 * @param userIndex User userIndex which identify the specific user in the datamodel.
 	 * @param rating Rated value by user, referencing this item.
 	 */
 	public void addRating(int userIndex, double rating){
@@ -139,5 +139,5 @@ public class Item implements Serializable {
 	 * Get the average of ratings done
 	 * @return average
 	 */
-	public double getAverageRating(){ return average; }
+	public double getRatingAverage(){ return average; }
 }
