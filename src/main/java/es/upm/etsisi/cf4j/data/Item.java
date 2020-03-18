@@ -97,7 +97,7 @@ public class Item implements Serializable {
 	 * @return User position in the items's user array if the user has rated the item or -1 if don't
 	 */
 	public int findUser(int userIndex) {
-		return usersRatings.find(userIndex);
+		return this.usersRatings.find(userIndex);
 	}
 	
 	/**

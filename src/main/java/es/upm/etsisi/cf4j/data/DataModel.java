@@ -49,12 +49,13 @@ public class DataModel implements Serializable {
 
             //Getting TestUser with Index.
             int testUserIndex = this.findTestUserIndex(entry.first);
+
             TestUser testUser;
             if(testUserIndex != -1)
                 testUser = this.getTestUser(testUserIndex);
             else { //If don't exist, create new and add it to the arrays.
                 testUserIndex = aListTestUsers.size();
-                testUser = new TestUser(entry.first, testUserIndex); //<-
+                testUser = new TestUser(entry.first, testUserIndex, aListUsers.size()); //<-
                 aListUsers.add(testUser);
                 aListTestUsers.add(testUser);
             }
@@ -66,7 +67,7 @@ public class DataModel implements Serializable {
                 testItem = this.getTestItem(testItemIndex);
             else {//If don't exist, create new and add it to the arrays..
                 testItemIndex = aListTestItems.size();
-                testItem = new TestItem(entry.second, testItemIndex); //<-
+                testItem = new TestItem(entry.second, testItemIndex, aListUsers.size()); //<-
                 aListItems.add(testItem);
                 aListTestItems.add(testItem);
             }

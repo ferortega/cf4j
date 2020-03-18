@@ -89,17 +89,17 @@ public class TestItem extends Item {
 	 * Get the minimum rating done
 	 * @return minimum rating
 	 */
-	public double getMinTestRating(){ return min; }
+	public double getMinTestRating(){ return minTest; }
 
 	/**
 	 * Get the maximum rating done
 	 * @return maximum rating
 	 */
-	public double getMaxTestRating(){ return max; }
+	public double getMaxTestRating(){ return maxTest; }
 
 	/**
 	 * Get the average of ratings done
 	 * @return average
 	 */
-	public double getTestRatingAverage(){ return average; }
+	public double getTestRatingAverage(){ return averageTest; }
 }
