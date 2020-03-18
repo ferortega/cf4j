@@ -72,7 +72,7 @@ public class PIP extends UserToUserMetric {
 				// Compute popularity
 				int itemIndex = user.getItemAt(i);
 				Item item = super.datamodel.getItem(itemIndex);
-				double itemAvg = item.getAverageRating();
+				double itemAvg = item.getRatingAverage();
 				
 				double popularity = 1;
 				if ((ra > itemAvg && rt > itemAvg) || (ra < itemAvg && rt < itemAvg)) {

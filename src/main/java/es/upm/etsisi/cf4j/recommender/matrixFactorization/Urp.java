@@ -182,7 +182,7 @@ public class Urp extends Recommender {
                 int i = 0;
 
                 for (int itemIndex = 0; itemIndex < datamodel.getNumberOfItems(); itemIndex++) {
-                    Item item = datamodel.getItemAt(itemIndex);
+                    Item item = datamodel.getItem(itemIndex);
 
                     boolean rated = i < user.getNumberOfRatings() && user.getItemAt(i) == itemIndex;
 
@@ -243,7 +243,7 @@ public class Urp extends Recommender {
             int u = 0;
 
             while (u < item.getNumberOfRatings() && userIndex < datamodel.getNumberOfUsers()) {
-                User user = datamodel.getUserAt(userIndex);
+                User user = datamodel.getUser(userIndex);
 
                 if (item.getUserAt(u) == userIndex) {
                     double rating = item.getRatingAt(u);

@@ -45,7 +45,7 @@ import es.upm.etsisi.cf4j.process.Partible;
 		int userIndex = user.getUserIndex();
 
 		for (int u = 0; u < datamodel.getNumberOfUsers(); u++) {
-		    User otherUser = datamodel.getUserAt(u);
+		    User otherUser = datamodel.getUser(u);
 			if (userIndex == otherUser.getUserIndex()) {
 				similarities[userIndex][u] = Double.NEGATIVE_INFINITY;
 			} else { 

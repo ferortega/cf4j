@@ -22,68 +22,68 @@ public class RandomSplitDataSet implements DataSet
      * <p>Generates a DataSet form a text file, filling the dataModel attribute.</p>
      * <p> The lines of the file must have the format: userCode;itemCode;rating</p>
      * <p>The dataset is loaded without test items and test users</p>
-     * @param fileName File with the ratings
+     * @param filename File with the ratings
      */
-    public RandomSplitDataSet (String fileName) {
-        this(fileName, 0.0 , 0.0, System.currentTimeMillis(), DEFAULT_SPARATOR);
+    public RandomSplitDataSet (String filename) {
+        this(filename, 0.0 , 0.0);
     }
 
     /**
      * <p>Generates a DataSet form a text file, filling the dataModel attribute. </p>
      * <p>The lines of the file must have the format: userCode SEPARATOR item SEPARATOR Coderating</p>
-     * @param fileName File with the ratings
+     * @param filename File with the ratings
      * @param testUsersPercent Percentage of users that will be of test
      * @param testItemsPercent Percentage of items that will be of test
      */
-    public RandomSplitDataSet (String fileName, double testUsersPercent, double testItemsPercent) {
-        this(fileName, testUsersPercent, testItemsPercent, System.currentTimeMillis(), DEFAULT_SPARATOR);
+    public RandomSplitDataSet (String filename, double testUsersPercent, double testItemsPercent) {
+        this(filename, testUsersPercent, testItemsPercent, DEFAULT_SPARATOR);
     }
 
     /**
      * <p>Generates a DataSet form a text file, filling the dataModel attribute. </p>
      * <p>The lines of the file must have the format: userCode SEPARATOR item SEPARATOR Coderating</p>
-     * @param fileName File with the ratings
+     * @param filename File with the ratings
      * @param testUsersPercent Percentage of users that will be of test
      * @param testItemsPercent Percentage of items that will be of test
      * @param seed Seed applied to the random number generator
      */
-    public RandomSplitDataSet (String fileName, double testUsersPercent, double testItemsPercent, long seed) {
-        this(fileName, testUsersPercent, testItemsPercent, seed, DEFAULT_SPARATOR);
+    public RandomSplitDataSet (String filename, double testUsersPercent, double testItemsPercent, long seed) {
+        this(filename, testUsersPercent, testItemsPercent, DEFAULT_SPARATOR, seed);
     }
 
     /**
      * <p>Generates a DataSet form a text file, filling the dataModel attribute. </p>
      * <p>The lines of the file must have the format: userCode SEPARATOR item SEPARATOR Coderating</p>
-     * @param fileName File with the ratings
+     * @param filename File with the ratings
      * @param testUsersPercent Percentage of users that will be of test
      * @param testItemsPercent Percentage of items that will be of test
      * @param separator Separator char between file fields
      */
-    public RandomSplitDataSet (String fileName, double testUsersPercent, double testItemsPercent, String separator) {
-        this(fileName, testUsersPercent, testItemsPercent, System.currentTimeMillis(), separator);
+    public RandomSplitDataSet (String filename, double testUsersPercent, double testItemsPercent, String separator) {
+        this(filename, testUsersPercent, testItemsPercent, separator, System.currentTimeMillis());
     }
 
     /**
      * <p>Generates a DataSet form a text file, filling the dataModel attribute.</p>
      * <p> The lines of the file must have the format: userCode SEPARATOR itemCode SEPARATOR rating</p>
      * <p>The dataset is loaded without test items and test users</p>
-     * @param fileName File with the ratings
+     * @param filename File with the ratings
      * @param separator Separator char between file fields
      */
-    public RandomSplitDataSet (String fileName, String separator) {
-        this(fileName, 0.0 , 0.0, System.currentTimeMillis(), separator);
+    public RandomSplitDataSet (String filename, String separator) {
+        this(filename, 0.0 , 0.0, separator, System.currentTimeMillis());
     }
 
     /**
      * <p>Generates a DataSet form a text file, filling the dataModel attribute. </p>
      * <p>The lines of the file must have the format: userCode;itemCode;rating</p>
-     * @param fileName File with the ratings
+     * @param filename File with the ratings
      * @param testUsersPercent Percentage of users that will be of test
      * @param testItemsPercent Percentage of items that will be of test
      * @param seed Seed applied to the random number generator
      * @param separator Separator char between file fields
      */
-    public RandomSplitDataSet (String fileName, double testUsersPercent, double testItemsPercent, long seed, String separator) {
+    public RandomSplitDataSet (String filename, double testUsersPercent, double testItemsPercent, String separator, long seed) {
 
         Random rand = new Random (seed);
 
@@ -94,11 +94,11 @@ public class RandomSplitDataSet implements DataSet
 
         try{
             // Dataset reader
-            BufferedReader datasetFile = new BufferedReader (new FileReader(new File(fileName)));
+            BufferedReader datasetFile = new BufferedReader (new FileReader(new File(filename)));
 
             // Test selectors
-            TreeMap<String, Boolean> testUsersFiltered = new TreeMap<String, Boolean> ();
-            TreeMap<String, Boolean> testItemsFiltered = new TreeMap<String, Boolean> ();
+            TreeMap<String, Boolean> testUsersFiltered = new TreeMap<> ();
+            TreeMap<String, Boolean> testItemsFiltered = new TreeMap<> ();
 
             String line = ""; int numLines = 0;
             while ((line = datasetFile.readLine()) != null) {
