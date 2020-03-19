@@ -61,7 +61,7 @@ public class DataModel implements Serializable {
             //If don't exist, create new and add it to the arrays.
             if(testUser == null) {
                 testUserIndex = aListTestUsers.size();
-                testUser = new TestUser(entry.first, testUserIndex, aListUsers.size()); //<-
+                testUser = new TestUser(entry.first, aListUsers.size(), testUserIndex); //<-
                 aListUsers.add(testUser);
                 aListTestUsers.add(testUser);
             }
@@ -80,7 +80,7 @@ public class DataModel implements Serializable {
             //If don't exist, create new and add it to the arrays..
             if (testItem == null) {
                 testItemIndex = aListTestItems.size();
-                testItem = new TestItem(entry.second, testItemIndex, aListUsers.size()); //<-
+                testItem = new TestItem(entry.second, aListItems.size(), testItemIndex); //<-
                 aListItems.add(testItem);
                 aListTestItems.add(testItem);
             }
