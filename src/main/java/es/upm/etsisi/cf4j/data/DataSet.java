@@ -1,6 +1,6 @@
 package es.upm.etsisi.cf4j.data;
 
-import es.upm.etsisi.cf4j.data.types.Triplet;
+import es.upm.etsisi.cf4j.data.types.DataSetEntry;
 import java.util.Iterator;
 
 public interface DataSet{
@@ -27,14 +27,5 @@ public interface DataSet{
      * @return Number of elements of the test stored data.
      */
     int getTestRatingsSize();
-
-    /**
-     * This is the class that contains the specific structure needed to send entries to the data model.
-     */
-    class DataSetEntry extends Triplet<String,String,Double>{
-        public DataSetEntry(String first, String second, Double third) {
-            super(first, second, third);
-        }
-    };
 }
 
