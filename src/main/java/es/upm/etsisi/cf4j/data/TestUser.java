@@ -73,12 +73,12 @@ public class TestUser extends User {
 	/**
 	 * Add a new test rating to the test user, associated to a item.
 	 * You cannot overwrite an existing relation, otherwise repeated relations will throw an exception.
-	 * @param itemIndex item global userIndex which identify the specific item in the datamodel.
+	 * @param testItemIndex item global userIndex which identify the specific item in the datamodel.
 	 * @param rating rated value by user, referencing this item.
 	 */
-	public void addTestRating(int itemIndex, double rating){
-		if (!this.testItemsRatings.add(itemIndex, rating))
-			throw new IllegalArgumentException("Provided rating already exist in item: " + itemIndex);
+	public void addTestRating(int testItemIndex, double rating){
+		if (!this.testItemsRatings.add(testItemIndex, rating))
+			throw new IllegalArgumentException("Provided rating already exist in item: " + testItemIndex);
 
 		minTest = Math.min(rating, minTest);
 		maxTest = Math.max(rating, maxTest);

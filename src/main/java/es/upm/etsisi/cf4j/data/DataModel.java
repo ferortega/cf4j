@@ -47,47 +47,45 @@ public class DataModel implements Serializable {
         for (Iterator<DataSet.DataSetEntry> it = dataset.getTestRatingsIterator(); it.hasNext(); ){
             DataSet.DataSetEntry entry = it.next();
 
-            //Getting TestUser with Index.
-            int testUserIndex = -1;
+            String userId = entry.first;
+            String itemId = entry.second;
+            double rating = entry.third;
+
+            // Getting TestUser with Index.
             TestUser testUser = null;
             for (TestUser auxTestUser : aListTestUsers) {
-                if (auxTestUser.getId().equals(entry.first)) {
+                if (auxTestUser.getId().equals(userId)) {
                     testUser = auxTestUser;
-                    testUserIndex = auxTestUser.getTestUserIndex();
                     break;
                 }
             }
 
             //If don't exist, create new and add it to the arrays.
             if(testUser == null) {
-                testUserIndex = aListTestUsers.size();
-                testUser = new TestUser(entry.first, aListUsers.size(), testUserIndex); //<-
+                testUser = new TestUser(userId, aListUsers.size(),  aListTestUsers.size());
                 aListUsers.add(testUser);
                 aListTestUsers.add(testUser);
             }
 
             //Getting TestItem with Index.
-            int testItemIndex = -1;
             TestItem testItem = null;
             for (TestItem auxTestItem: aListTestItems) {
-                if (auxTestItem.getId().equals(entry.second)) {
+                if (auxTestItem.getId().equals(itemId)) {
                     testItem = auxTestItem;
-                    testItemIndex = auxTestItem.getTestItemIndex();
                     break;
                 }
             }
 
             //If don't exist, create new and add it to the arrays..
             if (testItem == null) {
-                testItemIndex = aListTestItems.size();
-                testItem = new TestItem(entry.second, aListItems.size(), testItemIndex); //<-
+                testItem = new TestItem(itemId, aListItems.size(), aListTestItems.size());
                 aListItems.add(testItem);
                 aListTestItems.add(testItem);
             }
 
             //Relating user with item.
-            testUser.addTestRating(testItemIndex, entry.third);
-            testItem.addTestRating(testUserIndex, entry.third);
+            testUser.addTestRating(testItem.getTestItemIndex(), rating);
+            testItem.addTestRating(testUser.getTestUserIndex(), rating);
 
             int sumEntries = aListUsers.size() + aListItems.size() + aListTestUsers.size() + aListTestItems.size();
             min = Math.min(entry.third, min);
@@ -99,48 +97,46 @@ public class DataModel implements Serializable {
         for (Iterator<DataSet.DataSetEntry> it = dataset.getRatingsIterator(); it.hasNext(); ){
             DataSet.DataSetEntry entry = it.next();
 
+            String userId = entry.first;
+            String itemId = entry.second;
+            double rating = entry.third;
+
             //Getting User with that Index.
-            int userIndex = -1;
             User user = null;
             for (User auxUser : aListUsers) {
-                if (auxUser.getId().equals(entry.first)) {
+                if (auxUser.getId().equals(userId)) {
                     user = auxUser;
-                    userIndex = auxUser.getUserIndex();
                     break;
                 }
             }
 
             //If don't exist, create new and add it.
             if(user == null) {
-                userIndex = aListUsers.size();
-                user = new User(entry.first, userIndex);
+                user = new User(userId, aListUsers.size());
                 aListUsers.add(user);
             }
 
             //Getting Item with that Index.
-            int itemIndex = -1;
             Item item = null;
             for (Item auxItem : aListItems) {
-                if (auxItem.getId().equals(entry.second)) {
+                if (auxItem.getId().equals(itemId)) {
                     item = auxItem;
-                    itemIndex = auxItem.getItemIndex();
                 }
             }
 
             //If don't exist, create new and add it.
             if(item == null) {
-                itemIndex = aListItems.size();
-                item = new Item(entry.second, itemIndex);
+                item = new Item(entry.second, aListItems.size());
                 aListItems.add(item);
             }
 
             //Relating user with item.
-            user.addRating(itemIndex, entry.third);
-            item.addRating(userIndex, entry.third);
+            user.addRating(item.getItemIndex(), rating);
+            item.addRating(user.getUserIndex(), rating);
 
             int sumEntries = aListUsers.size() + aListItems.size() + aListTestUsers.size() + aListTestItems.size();
-            min = Math.min(entry.third, min);
-            max = Math.max(entry.third, max);
+            min = Math.min(rating, min);
+            max = Math.max(rating, max);
             average = (sumEntries <= 1) ? entry.third : ((average * (sumEntries-1)) + entry.third) / sumEntries;
         }
 
