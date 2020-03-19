@@ -1,5 +1,6 @@
 package es.upm.etsisi.cf4j.data;
 
+import es.upm.etsisi.cf4j.data.types.DataSetEntry;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,90 +60,81 @@ public class DataModel implements Serializable {
         HashMap<String, Integer> mapTestItems = new HashMap<String, Integer>();
 
         //2.1.- First: Adding test cases to our DataModel.
-        for (Iterator<DataSet.DataSetEntry> it = dataset.getTestRatingsIterator(); it.hasNext(); ){
-            DataSet.DataSetEntry entry = it.next();
-
-            //To improve readability
-            String testUserId = entry.first;
-            String testItemId = entry.second;
-            double testRating = entry.third;
+        for (Iterator<DataSetEntry> it = dataset.getTestRatingsIterator(); it.hasNext(); ){
+            DataSetEntry entry = it.next();
 
             // Getting TestUser with Index.
             TestUser testUser;
-            Integer testUserIndex = mapTestUsers.get(testUserId);
+            Integer testUserIndex = mapTestUsers.get(entry.userId);
             if ( testUserIndex != null )
                 testUser =  aListTestUsers.get(testUserIndex);
             else {
-                testUser = new TestUser(testUserId, aListUsers.size(),  aListTestUsers.size());
-                mapUsers.put(testUserId, aListUsers.size());
-                mapTestUsers.put(testUserId, aListTestUsers.size());
+                testUser = new TestUser(entry.userId, aListUsers.size(),  aListTestUsers.size());
+                mapUsers.put(entry.userId, aListUsers.size());
+                mapTestUsers.put(entry.userId, aListTestUsers.size());
                 aListUsers.add(testUser);
                 aListTestUsers.add(testUser);
             }
 
             //Getting TestItem with Index.
             TestItem testItem;
-            Integer testItemIndex = mapTestItems.get(testItemId);
+            Integer testItemIndex = mapTestItems.get(entry.itemId);
             if ( testItemIndex != null)
                 testItem = aListTestItems.get(testItemIndex);
             else {
-                testItem = new TestItem(testItemId, aListItems.size(), aListTestItems.size());
-                mapItems.put (testItemId, aListItems.size());
-                mapTestItems.put (testItemId, aListTestItems.size());
+                testItem = new TestItem(entry.itemId, aListItems.size(), aListTestItems.size());
+                mapItems.put (entry.itemId, aListItems.size());
+                mapTestItems.put (entry.itemId, aListTestItems.size());
                 aListItems.add(testItem);
                 aListTestItems.add(testItem);
             }
 
             //Relating user with item.
-            testUser.addTestRating(testItem.getTestItemIndex(), testRating);
-            testItem.addTestRating(testUser.getTestUserIndex(), testRating);
+            testUser.addTestRating(testItem.getTestItemIndex(), entry.rating);
+            testItem.addTestRating(testUser.getTestUserIndex(), entry.rating);
 
-            this.minTest = Math.min(testRating, this.minTest);
-            this.maxTest = Math.max(testRating, this.maxTest);
+            this.minTest = Math.min(entry.rating, this.minTest);
+            this.maxTest = Math.max(entry.rating, this.maxTest);
 
             this.numberOfTestRatings++;
-            this.testRatingAverage = (this.testRatingAverage * (this.numberOfTestRatings - 1) + testRating) / this.numberOfTestRatings;
+            this.testRatingAverage = (this.testRatingAverage * (this.numberOfTestRatings - 1) + entry.rating) / this.numberOfTestRatings;
         }
 
         //2.2.- Second: Adding non-test cases to our data structure
-        for (Iterator<DataSet.DataSetEntry> it = dataset.getRatingsIterator(); it.hasNext(); ){
-            DataSet.DataSetEntry entry = it.next();
-
-            String userId = entry.first;
-            String itemId = entry.second;
-            double rating = entry.third;
+        for (Iterator<DataSetEntry> it = dataset.getRatingsIterator(); it.hasNext(); ){
+            DataSetEntry entry = it.next();
 
             //Getting User with that Index.
             User user;
-            Integer userIndex = mapUsers.get(userId);
+            Integer userIndex = mapUsers.get(entry.userId);
             if ( userIndex != null)
                 user = aListUsers.get(userIndex);
             else {
-                user = new User(userId, aListUsers.size());
-                mapUsers.put(userId, aListUsers.size());
+                user = new User(entry.userId, aListUsers.size());
+                mapUsers.put(entry.userId, aListUsers.size());
                 aListUsers.add(user);
             }
 
             //Getting Item with that Index.
             Item item;
-            Integer itemIndex = mapItems.get(itemId);
+            Integer itemIndex = mapItems.get(entry.itemId);
             if ( itemIndex != null)
                 item = aListItems.get(itemIndex);
             else {
-                item = new Item(entry.second, aListItems.size());
-                mapItems.put(itemId, aListItems.size());
+                item = new Item(entry.itemId, aListItems.size());
+                mapItems.put(entry.itemId, aListItems.size());
                 aListItems.add(item);
             }
 
             //Relating user with item.
-            user.addRating(item.getItemIndex(), rating);
-            item.addRating(user.getUserIndex(), rating);
+            user.addRating(item.getItemIndex(), entry.rating);
+            item.addRating(user.getUserIndex(), entry.rating);
 
-            this.min = Math.min(rating, this.min);
-            this.max = Math.max(rating, this.max);
+            this.min = Math.min(entry.rating, this.min);
+            this.max = Math.max(entry.rating, this.max);
 
             this.numberOfRatings++;
-            this.ratingAverage = (this.ratingAverage * (this.numberOfRatings - 1) + rating) / this.numberOfRatings;
+            this.ratingAverage = (this.ratingAverage * (this.numberOfRatings - 1) + entry.rating) / this.numberOfRatings;
         }
 
         //3.- Storing raw data to respective arrays.

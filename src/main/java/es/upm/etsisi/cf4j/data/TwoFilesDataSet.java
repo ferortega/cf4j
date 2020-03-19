@@ -1,5 +1,6 @@
 package es.upm.etsisi.cf4j.data;
 
+import es.upm.etsisi.cf4j.data.types.DataSetEntry;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
