@@ -2,9 +2,7 @@ package es.upm.etsisi.cf4j.data;
 
 import es.upm.etsisi.cf4j.data.types.DataSetEntry;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * <p>Class that manages all information of the Collaborative Filtering kernel. Contains the users and
@@ -25,14 +23,14 @@ public class DataModel implements Serializable {
     private TestItem[] testItems;
 
     //Stored metrics
-    private double min = Double.MAX_VALUE;
-    private double max = Double.MIN_VALUE;
+    private double minRating = Double.MAX_VALUE;
+    private double maxRating = Double.MIN_VALUE;
     private int numberOfRatings = 0;
     private double ratingAverage = 0.0;
 
     //Stored test metrics
-    private double minTest = Double.MAX_VALUE;
-    private double maxTest = Double.MIN_VALUE;
+    private double minTestRating = Double.MAX_VALUE;
+    private double maxTestRating = Double.MIN_VALUE;
     private int numberOfTestRatings = 0;
     private double testRatingAverage = 0.0;
 
@@ -50,51 +48,62 @@ public class DataModel implements Serializable {
         this.dataBank = new DataBank();
 
         //1.- Initializing the auxiliary arrays to the estimated initial size (taking into account the DataSet entries)
-        ArrayList<User> aListUsers = new ArrayList<User>(dataset.getRatingsSize()/40);
-        ArrayList<TestUser> aListTestUsers = new ArrayList<TestUser>(dataset.getTestRatingsSize()/40);
-        ArrayList<Item> aListItems = new ArrayList<Item>(dataset.getRatingsSize()/40);
-        ArrayList<TestItem> aListTestItems = new ArrayList<TestItem>(dataset.getTestRatingsSize()/40);
-        HashMap<String, Integer> mapUsers = new HashMap<String, Integer>();
-        HashMap<String, Integer> mapTestUsers = new HashMap<String, Integer>();
-        HashMap<String, Integer> mapItems = new HashMap<String, Integer>();
-        HashMap<String, Integer> mapTestItems = new HashMap<String, Integer>();
+        List<User> usersList = new ArrayList<>(dataset.getRatingsSize()/40);
+        List<TestUser> testUsersList = new ArrayList<>(dataset.getTestRatingsSize()/40);
+        List<Item> itemsList = new ArrayList<>(dataset.getRatingsSize()/40);
+        List<TestItem> testItemsLists = new ArrayList<>(dataset.getTestRatingsSize()/40);
+
+        Map<String, Integer> id2userIndex = new HashMap<>();
+        Map<String, Integer> id2testUserIndex = new HashMap<>();
+        Map<String, Integer> id2itemIndex = new HashMap<>();
+        Map<String, Integer> id2testItemIndex = new HashMap<>();
 
         //2.1.- First: Adding test cases to our DataModel.
+
         for (Iterator<DataSetEntry> it = dataset.getTestRatingsIterator(); it.hasNext(); ){
             DataSetEntry entry = it.next();
 
             // Getting TestUser with Index.
             TestUser testUser;
-            Integer testUserIndex = mapTestUsers.get(entry.userId);
-            if ( testUserIndex != null )
-                testUser =  aListTestUsers.get(testUserIndex);
-            else {
-                testUser = new TestUser(entry.userId, aListUsers.size(),  aListTestUsers.size());
-                mapUsers.put(entry.userId, aListUsers.size());
-                mapTestUsers.put(entry.userId, aListTestUsers.size());
-                aListUsers.add(testUser);
-                aListTestUsers.add(testUser);
+            if (id2testUserIndex.containsKey(entry.userId)) {
+                int testUserIndex = id2testUserIndex.get(entry.userId);
+                testUser = testUsersList.get(testUserIndex);
+            } else {
+                int userIndex = usersList.size();
+                int testUserIndex = testUsersList.size();
+                testUser = new TestUser(entry.userId, userIndex, testUserIndex);
+
+                usersList.add(testUser);
+                testUsersList.add(testUser);
+
+                id2userIndex.put(entry.userId, userIndex);
+                id2testUserIndex.put(entry.userId, testUserIndex);
             }
 
             //Getting TestItem with Index.
             TestItem testItem;
-            Integer testItemIndex = mapTestItems.get(entry.itemId);
-            if ( testItemIndex != null)
-                testItem = aListTestItems.get(testItemIndex);
-            else {
-                testItem = new TestItem(entry.itemId, aListItems.size(), aListTestItems.size());
-                mapItems.put (entry.itemId, aListItems.size());
-                mapTestItems.put (entry.itemId, aListTestItems.size());
-                aListItems.add(testItem);
-                aListTestItems.add(testItem);
+            if (id2testItemIndex.containsKey(entry.itemId)) {
+                int testItemIndex = id2testItemIndex.get(entry.itemId);
+                testItem = testItemsLists.get(testItemIndex);
+            } else {
+                int itemIndex = itemsList.size();
+                int testItemIndex = testItemsLists.size();
+
+                testItem = new TestItem(entry.itemId, itemIndex, testItemIndex);
+
+                itemsList.add(testItem);
+                testItemsLists.add(testItem);
+
+                id2itemIndex.put(entry.itemId, itemIndex);
+                id2testItemIndex.put(entry.itemId, testItemIndex);
             }
 
             //Relating user with item.
             testUser.addTestRating(testItem.getTestItemIndex(), entry.rating);
             testItem.addTestRating(testUser.getTestUserIndex(), entry.rating);
 
-            this.minTest = Math.min(entry.rating, this.minTest);
-            this.maxTest = Math.max(entry.rating, this.maxTest);
+            this.minTestRating = Math.min(entry.rating, this.minTestRating);
+            this.maxTestRating = Math.max(entry.rating, this.maxTestRating);
 
             this.numberOfTestRatings++;
             this.testRatingAverage = (this.testRatingAverage * (this.numberOfTestRatings - 1) + entry.rating) / this.numberOfTestRatings;
@@ -106,42 +115,44 @@ public class DataModel implements Serializable {
 
             //Getting User with that Index.
             User user;
-            Integer userIndex = mapUsers.get(entry.userId);
-            if ( userIndex != null)
-                user = aListUsers.get(userIndex);
-            else {
-                user = new User(entry.userId, aListUsers.size());
-                mapUsers.put(entry.userId, aListUsers.size());
-                aListUsers.add(user);
+            if (id2userIndex.containsKey(entry.userId)) {
+                int userIndex = id2userIndex.get(entry.userId);
+                user = usersList.get(userIndex);
+            } else {
+                int userIndex = usersList.size();
+                user = new User(entry.userId, userIndex);
+                usersList.add(user);
+                id2userIndex.put(entry.userId, userIndex);
             }
 
             //Getting Item with that Index.
             Item item;
-            Integer itemIndex = mapItems.get(entry.itemId);
-            if ( itemIndex != null)
-                item = aListItems.get(itemIndex);
-            else {
-                item = new Item(entry.itemId, aListItems.size());
-                mapItems.put(entry.itemId, aListItems.size());
-                aListItems.add(item);
+            if (id2itemIndex.containsKey(entry.itemId)) {
+                int itemIndex = id2itemIndex.get(entry.itemId);
+                item = itemsList.get(itemIndex);
+            } else {
+                int itemIndex = itemsList.size();
+                item = new Item(entry.itemId, itemIndex);
+                itemsList.add(item);
+                id2itemIndex.put(entry.itemId, itemIndex);
             }
 
             //Relating user with item.
             user.addRating(item.getItemIndex(), entry.rating);
             item.addRating(user.getUserIndex(), entry.rating);
 
-            this.min = Math.min(entry.rating, this.min);
-            this.max = Math.max(entry.rating, this.max);
+            this.minRating = Math.min(entry.rating, this.minRating);
+            this.maxRating = Math.max(entry.rating, this.maxRating);
 
             this.numberOfRatings++;
             this.ratingAverage = (this.ratingAverage * (this.numberOfRatings - 1) + entry.rating) / this.numberOfRatings;
         }
 
         //3.- Storing raw data to respective arrays.
-        this.users = aListUsers.toArray(new User[aListUsers.size()]);
-        this.testUsers = aListTestUsers.toArray(new TestUser[aListTestUsers.size()]);
-        this.items = aListItems.toArray(new Item[aListItems.size()]);
-        this.testItems = aListTestItems.toArray(new TestItem[aListTestItems.size()]);
+        this.users = usersList.toArray(new User[usersList.size()]);
+        this.testUsers = testUsersList.toArray(new TestUser[testUsersList.size()]);
+        this.items = itemsList.toArray(new Item[itemsList.size()]);
+        this.testItems = testItemsLists.toArray(new TestItem[testItemsLists.size()]);
     }
 
     /**
@@ -157,8 +168,8 @@ public class DataModel implements Serializable {
         testUser.addTestRating(testItemIndex, rating);
         testItem.addTestRating(testUserIndex, rating);
 
-        this.minTest = Math.min(rating, this.minTest);
-        this.maxTest = Math.max(rating, this.maxTest);
+        this.minTestRating = Math.min(rating, this.minTestRating);
+        this.maxTestRating = Math.max(rating, this.maxTestRating);
 
         this.numberOfTestRatings++;
         this.testRatingAverage = (this.testRatingAverage * (this.numberOfTestRatings - 1) + rating) / this.numberOfTestRatings;
@@ -177,8 +188,8 @@ public class DataModel implements Serializable {
         user.addRating(itemIndex, rating);
         item.addRating(userIndex, rating);
 
-        this.min = Math.min(rating, this.min);
-        this.max = Math.max(rating, this.max);
+        this.minRating = Math.min(rating, this.minRating);
+        this.maxRating = Math.max(rating, this.maxRating);
 
         this.numberOfRatings++;
         this.ratingAverage = (this.ratingAverage * (this.numberOfRatings - 1) + rating) / this.numberOfRatings;
@@ -343,7 +354,7 @@ public class DataModel implements Serializable {
      * @return minimum rating
      */
     public double getMinRating(){
-        return min;
+        return minRating;
     }
 
     /**
@@ -351,7 +362,7 @@ public class DataModel implements Serializable {
      * @return maximum rating
      */
     public double getMaxRating(){
-        return max;
+        return maxRating;
     }
 
     /**
@@ -367,7 +378,7 @@ public class DataModel implements Serializable {
      * @return minimum rating
      */
     public double getMinTestRating(){
-        return this.minTest;
+        return this.minTestRating;
     }
 
     /**
@@ -375,7 +386,7 @@ public class DataModel implements Serializable {
      * @return maximum rating
      */
     public double getMaxTestRating(){
-        return this.maxTest;
+        return this.maxTestRating;
     }
 
     /**
@@ -409,10 +420,10 @@ public class DataModel implements Serializable {
                 "\nNumber of items: " + this.items.length +
                 "\nNumber of test items: " + this.testItems.length +
                 "\nNumber of ratings: " + this.getNumberOfRatings() +
-                "\nNumber of test ratings: " + this.getNumberOfTestRatings() +
                 "\nMin rating: " + this.getMinRating() +
                 "\nMax rating: " + this.getMaxRating() +
                 "\nAverage rating: " + this.getRatingAverage() +
+                "\nNumber of test ratings: " + this.getNumberOfTestRatings() +
                 "\nMin test rating: " + this.getMinTestRating() +
                 "\nMax test rating: " + this.getMaxTestRating() +
                 "\nAverage test rating: " + this.getTestRatingAverage();
