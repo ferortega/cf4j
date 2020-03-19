@@ -48,12 +48,18 @@ public class DataModel implements Serializable {
             DataSet.DataSetEntry entry = it.next();
 
             //Getting TestUser with Index.
-            int testUserIndex = this.findTestUserIndex(entry.first);
+            int testUserIndex = -1;
+            TestUser testUser = null;
+            for (TestUser auxTestUser : aListTestUsers) {
+                if (auxTestUser.getId().equals(entry.first)) {
+                    testUser = auxTestUser;
+                    testUserIndex = auxTestUser.getTestUserIndex();
+                    break;
+                }
+            }
 
-            TestUser testUser;
-            if(testUserIndex != -1)
-                testUser = this.getTestUser(testUserIndex);
-            else { //If don't exist, create new and add it to the arrays.
+            //If don't exist, create new and add it to the arrays.
+            if(testUser == null) {
                 testUserIndex = aListTestUsers.size();
                 testUser = new TestUser(entry.first, testUserIndex, aListUsers.size()); //<-
                 aListUsers.add(testUser);
@@ -61,11 +67,18 @@ public class DataModel implements Serializable {
             }
 
             //Getting TestItem with Index.
-            int testItemIndex = this.findTestItemIndex(entry.second);
-            TestItem testItem;
-            if(testItemIndex != -1)
-                testItem = this.getTestItem(testItemIndex);
-            else {//If don't exist, create new and add it to the arrays..
+            int testItemIndex = -1;
+            TestItem testItem = null;
+            for (TestItem auxTestItem: aListTestItems) {
+                if (auxTestItem.getId().equals(entry.second)) {
+                    testItem = auxTestItem;
+                    testItemIndex = auxTestItem.getTestItemIndex();
+                    break;
+                }
+            }
+
+            //If don't exist, create new and add it to the arrays..
+            if (testItem == null) {
                 testItemIndex = aListTestItems.size();
                 testItem = new TestItem(entry.second, testItemIndex, aListUsers.size()); //<-
                 aListItems.add(testItem);
@@ -86,24 +99,36 @@ public class DataModel implements Serializable {
         for (Iterator<DataSet.DataSetEntry> it = dataset.getRatingsIterator(); it.hasNext(); ){
             DataSet.DataSetEntry entry = it.next();
 
-            //Also to testUsers
             //Getting User with that Index.
-            int userIndex = this.findUserIndex(entry.first);
-            User user;
-            if(userIndex != -1)
-                user = this.getUser(userIndex);
-            else { //If don't exist, create new and add it.
+            int userIndex = -1;
+            User user = null;
+            for (User auxUser : aListUsers) {
+                if (auxUser.getId().equals(entry.first)) {
+                    user = auxUser;
+                    userIndex = auxUser.getUserIndex();
+                    break;
+                }
+            }
+
+            //If don't exist, create new and add it.
+            if(user == null) {
                 userIndex = aListUsers.size();
                 user = new User(entry.first, userIndex);
                 aListUsers.add(user);
             }
 
             //Getting Item with that Index.
-            int itemIndex = this.findItemIndex(entry.second);
-            Item item;
-            if(itemIndex != -1)
-                item = this.getItem(itemIndex);
-            else {//If don't exist, create new and add it.
+            int itemIndex = -1;
+            Item item = null;
+            for (Item auxItem : aListItems) {
+                if (auxItem.getId().equals(entry.second)) {
+                    item = auxItem;
+                    itemIndex = auxItem.getItemIndex();
+                }
+            }
+
+            //If don't exist, create new and add it.
+            if(item == null) {
                 itemIndex = aListItems.size();
                 item = new Item(entry.second, itemIndex);
                 aListItems.add(item);
@@ -218,7 +243,7 @@ public class DataModel implements Serializable {
      */
     public int findUserIndex(String userCode) {
         for ( int i = 0; i < this.users.length; i++)
-            if ( this.users[i].id.equals(userCode))
+            if ( this.users[i].getId().equals(userCode))
                 return i;
 
         return -1;
@@ -246,7 +271,7 @@ public class DataModel implements Serializable {
      */
     public int findTestUserIndex(String testUserCode) {
         for ( int i = 0; i < this.testUsers.length; i++)
-            if ( this.testUsers[i].id.equals(testUserCode))
+            if ( this.testUsers[i].getId().equals(testUserCode))
                 return i;
 
         return -1;
@@ -274,7 +299,7 @@ public class DataModel implements Serializable {
      */
     public int findItemIndex(String itemCode) {
         for ( int i = 0; i < this.items.length; i++)
-            if ( this.items[i].id.equals(itemCode))
+            if ( this.items[i].getId().equals(itemCode))
                 return i;
 
         return -1;
@@ -302,7 +327,7 @@ public class DataModel implements Serializable {
      */
     public int findTestItemIndex(String testItemCode) {
         for ( int i = 0; i < this.testItems.length; i++)
-            if ( this.testItems[i].id.equals(testItemCode))
+            if ( this.testItems[i].getId().equals(testItemCode))
                 return i;
 
         return -1;
