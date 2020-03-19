@@ -25,7 +25,12 @@ public class DataModel implements Serializable {
     //Stored metrics
     private double min = Double.MAX_VALUE;
     private double max = Double.MIN_VALUE;
-    private double average = 0.0;
+
+    private double ratingAverage = 0.0;
+    private double testRatingAverage = 0.0;
+
+    private int numberOfTestRatings = 0;
+    private int numberOfRatings = 0;
 
     private DataBank dataBank;
 
@@ -87,10 +92,11 @@ public class DataModel implements Serializable {
             testUser.addTestRating(testItem.getTestItemIndex(), rating);
             testItem.addTestRating(testUser.getTestUserIndex(), rating);
 
-            int sumEntries = aListUsers.size() + aListItems.size() + aListTestUsers.size() + aListTestItems.size();
-            min = Math.min(entry.third, min);
-            max = Math.max(entry.third, max);
-            average = (sumEntries <= 1) ? entry.third : ((average * (sumEntries-1)) + entry.third) / sumEntries;
+            this.min = Math.min(rating, this.min);
+            this.max = Math.max(rating, this.max);
+
+            this.numberOfTestRatings++;
+            this.testRatingAverage = (this.testRatingAverage * (this.numberOfTestRatings - 1) + rating) / this.numberOfTestRatings;
         }
 
         //2.2.- Second: Adding non-test cases to our data structure
@@ -134,10 +140,11 @@ public class DataModel implements Serializable {
             user.addRating(item.getItemIndex(), rating);
             item.addRating(user.getUserIndex(), rating);
 
-            int sumEntries = aListUsers.size() + aListItems.size() + aListTestUsers.size() + aListTestItems.size();
-            min = Math.min(rating, min);
-            max = Math.max(rating, max);
-            average = (sumEntries <= 1) ? entry.third : ((average * (sumEntries-1)) + entry.third) / sumEntries;
+            this.min = Math.min(rating, this.min);
+            this.max = Math.max(rating, this.max);
+
+            this.numberOfRatings++;
+            this.ratingAverage = (this.ratingAverage * (this.numberOfRatings - 1) + rating) / this.numberOfRatings;
         }
 
         //3.- Storing raw data to respective arrays.
@@ -342,29 +349,43 @@ public class DataModel implements Serializable {
     public double getMaxRating(){ return max; }
 
     /**
-     * Get the average of ratings done
+     * Get the average of ratings
      * @return average
      */
-    public double getRatingAverage(){ return average; }
+    public double getRatingAverage(){ return this.ratingAverage; }
+
+    /**
+     * Get the average of test ratings
+     * @return average
+     */
+    public double getTestRatingAverage(){ return this.testRatingAverage; }
+
+    /**
+     * Return the number of ratings
+     * @return number of ratings
+     */
+    public int getNumberOfRatings() {
+        return this.numberOfRatings;
+    }
+
+    /**
+     * Return the number of test ratings
+     * @return number of test ratings
+     */
+    public int getNumberOfTestRatings() {
+        return this.numberOfTestRatings;
+    }
 
     public String toString() {
-
-        int numRatings = 0;
-        for (User user : this.users)
-            numRatings += user.getNumberOfRatings();
-
-        int numTestRatings = 0;
-        for (TestUser testUser : this.testUsers)
-            numTestRatings += testUser.getNumberOfTestRatings();
-
         return "\nNumber of users: " + this.users.length +
                 "\nNumber of test users: " + this.testUsers.length +
                 "\nNumber of items: " + this.items.length +
                 "\nNumber of test items: " + this.testItems.length +
-                "\nNumber of ratings: " + numRatings +
-                "\nNumber of test ratings: " + numTestRatings +
+                "\nNumber of ratings: " + this.numberOfRatings +
+                "\nNumber of test ratings: " + this.numberOfTestRatings +
                 "\nMin rating: " + min +
                 "\nMax rating: " + max +
-                "\nAverage rating: " + average;
+                "\nAverage rating: " + this.ratingAverage +
+                "\nAverage test rating: " + this.testRatingAverage;
     }
 }
