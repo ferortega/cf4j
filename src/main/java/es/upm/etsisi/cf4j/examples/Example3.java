@@ -23,6 +23,6 @@ public class Example3 {
 		pmf.fit();
 
 		QualityMeasure mae = new MAE(pmf);
-		System.out.println(mae.getScore());
+		System.out.println("\nMAE: " + mae.getScore());
 	}
 }
