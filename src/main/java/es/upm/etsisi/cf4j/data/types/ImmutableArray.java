@@ -1,16 +1,18 @@
 package es.upm.etsisi.cf4j.data.types;
 
-public class Immutable<T> {
+public class ImmutableArray<T> {
 
     final T[] immutableArray;
 
-    Immutable(T[] array){
+    public ImmutableArray(T[] array){
         this.immutableArray = array;
     }
 
-    public final T get(int index) {
+    public T get(int index) {
         return immutableArray[index];
     }
 
-    
+    public int getNumElements(){
+        return immutableArray.length;
+    }
 }

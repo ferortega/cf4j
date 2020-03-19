@@ -1,14 +1,16 @@
 package es.upm.etsisi.cf4j.process;
 
 
+import es.upm.etsisi.cf4j.data.types.ImmutableArray;
+
 public class Parallelizer {
 
-	public static void exec(Object[] array, Partible partible) {
+	public static void exec(ImmutableArray array, Partible partible) {
 		exec(array, partible, -1);
 	}
 
 
-	public static void exec(Object[] objects, Partible partible, int numThreads) {
+	public static void exec(ImmutableArray objects, Partible partible, int numThreads) {
 
 		// use all processors if required
 		if (numThreads <= 0) numThreads = Runtime.getRuntime().availableProcessors();
@@ -40,10 +42,10 @@ public class Parallelizer {
 		private Thread thread;
 		private int threadIndex;
 		private int numThreads;
-		private Object[] objects;
+		private ImmutableArray objects;
 		private Partible partible;
 
-		public PartibleThread(int threadIndex, Partible partible, Object[] objects, int numThreads) {
+		public PartibleThread(int threadIndex, Partible partible, ImmutableArray objects, int numThreads) {
 			this.threadIndex = threadIndex;
 			this.partible = partible;
 			this.objects = objects;
@@ -65,7 +67,7 @@ public class Parallelizer {
 		public void run() {
 			//long t1 = (new Date()).getTime() / 1000, t2, t3 = 0;
 
-			for (int i = this.threadIndex; i < this.objects.length; i += this.numThreads ) {
+			for (int i = this.threadIndex; i < this.objects.getNumElements(); i += this.numThreads ) {
 				/*if (this.threadIndex == 0 && this.verbose) {
 					t2 = (new Date()).getTime() / 1000;
 					if ((t2 - t1) > 5) {
@@ -79,7 +81,7 @@ public class Parallelizer {
 					}
 				}*/
 
-				partible.run(this.objects[i]);
+				partible.run(this.objects.get(i));
 			}
 		}
 	}
