@@ -22,14 +22,14 @@ public class DataModel implements Serializable {
     private TestItem[] testItems;
 
     //Stored metrics
-    private double min = Double.MAX_VALUE;
-    private double max = Double.MIN_VALUE;
+    private double minRating = Double.MAX_VALUE;
+    private double maxRating = Double.MIN_VALUE;
     private int numberOfRatings = 0;
     private double ratingAverage = 0.0;
 
     //Stored test metrics
-    private double minTest = Double.MAX_VALUE;
-    private double maxTest = Double.MIN_VALUE;
+    private double minTestRating = Double.MAX_VALUE;
+    private double maxTestRating = Double.MIN_VALUE;
     private int numberOfTestRatings = 0;
     private double testRatingAverage = 0.0;
 
@@ -62,45 +62,54 @@ public class DataModel implements Serializable {
             DataSet.DataSetEntry entry = it.next();
 
             //To improve readability
-            String testUserId = entry.first;
-            String testItemId = entry.second;
-            double testRating = entry.third;
+            String userId = entry.first;
+            String itemId = entry.second;
+            double rating = entry.third;
 
             // Getting TestUser with Index.
             TestUser testUser;
-            Integer testUserIndex = id2testUserIndex.get(testUserId);
-            if ( testUserIndex != null )
-                testUser =  testUsersList.get(testUserIndex);
-            else {
-                testUser = new TestUser(testUserId, usersList.size(),  testUsersList.size());
-                id2userIndex.put(testUserId, usersList.size());
-                id2testUserIndex.put(testUserId, testUsersList.size());
+            if (id2testUserIndex.containsKey(userId)) {
+                int testUserIndex = id2testUserIndex.get(userId);
+                testUser = testUsersList.get(testUserIndex);
+            } else {
+                int userIndex = usersList.size();
+                int testUserIndex = testUsersList.size();
+                testUser = new TestUser(userId, userIndex, testUserIndex);
+
                 usersList.add(testUser);
                 testUsersList.add(testUser);
+
+                id2userIndex.put(userId, userIndex);
+                id2testUserIndex.put(userId, testUserIndex);
             }
 
             //Getting TestItem with Index.
             TestItem testItem;
-            Integer testItemIndex = id2testItemIndex.get(testItemId);
-            if ( testItemIndex != null)
+            if (id2testItemIndex.containsKey(itemId)) {
+                int testItemIndex = id2testItemIndex.get(itemId);
                 testItem = testItemsLists.get(testItemIndex);
-            else {
-                testItem = new TestItem(testItemId, itemsList.size(), testItemsLists.size());
-                id2itemIndex.put (testItemId, itemsList.size());
-                id2testItemIndex.put (testItemId, testItemsLists.size());
+            } else {
+                int itemIndex = itemsList.size();
+                int testItemIndex = testItemsLists.size();
+
+                testItem = new TestItem(itemId, itemIndex, testItemIndex);
+
                 itemsList.add(testItem);
                 testItemsLists.add(testItem);
+
+                id2itemIndex.put(itemId, itemIndex);
+                id2testItemIndex.put(itemId, testItemIndex);
             }
 
             //Relating user with item.
-            testUser.addTestRating(testItem.getTestItemIndex(), testRating);
-            testItem.addTestRating(testUser.getTestUserIndex(), testRating);
+            testUser.addTestRating(testItem.getTestItemIndex(), rating);
+            testItem.addTestRating(testUser.getTestUserIndex(), rating);
 
-            this.minTest = Math.min(testRating, this.minTest);
-            this.maxTest = Math.max(testRating, this.maxTest);
+            this.minTestRating = Math.min(rating, this.minTestRating);
+            this.maxTestRating = Math.max(rating, this.maxTestRating);
 
             this.numberOfTestRatings++;
-            this.testRatingAverage = (this.testRatingAverage * (this.numberOfTestRatings - 1) + testRating) / this.numberOfTestRatings;
+            this.testRatingAverage = (this.testRatingAverage * (this.numberOfTestRatings - 1) + rating) / this.numberOfTestRatings;
         }
 
         //2.2.- Second: Adding non-test cases to our data structure
@@ -113,32 +122,34 @@ public class DataModel implements Serializable {
 
             //Getting User with that Index.
             User user;
-            Integer userIndex = id2userIndex.get(userId);
-            if ( userIndex != null)
+            if (id2userIndex.containsKey(userId)) {
+                int userIndex = id2userIndex.get(userId);
                 user = usersList.get(userIndex);
-            else {
-                user = new User(userId, usersList.size());
-                id2userIndex.put(userId, usersList.size());
+            } else {
+                int userIndex = usersList.size();
+                user = new User(userId, userIndex);
                 usersList.add(user);
+                id2userIndex.put(userId, userIndex);
             }
 
             //Getting Item with that Index.
             Item item;
-            Integer itemIndex = id2itemIndex.get(itemId);
-            if ( itemIndex != null)
+            if (id2itemIndex.containsKey(itemId)) {
+                int itemIndex = id2itemIndex.get(itemId);
                 item = itemsList.get(itemIndex);
-            else {
-                item = new Item(entry.second, itemsList.size());
-                id2itemIndex.put(itemId, itemsList.size());
+            } else {
+                int itemIndex = itemsList.size();
+                item = new Item(itemId, itemIndex);
                 itemsList.add(item);
+                id2itemIndex.put(itemId, itemIndex);
             }
 
             //Relating user with item.
             user.addRating(item.getItemIndex(), rating);
             item.addRating(user.getUserIndex(), rating);
 
-            this.min = Math.min(rating, this.min);
-            this.max = Math.max(rating, this.max);
+            this.minRating = Math.min(rating, this.minRating);
+            this.maxRating = Math.max(rating, this.maxRating);
 
             this.numberOfRatings++;
             this.ratingAverage = (this.ratingAverage * (this.numberOfRatings - 1) + rating) / this.numberOfRatings;
@@ -164,8 +175,8 @@ public class DataModel implements Serializable {
         testUser.addTestRating(testItemIndex, rating);
         testItem.addTestRating(testUserIndex, rating);
 
-        this.minTest = Math.min(rating, this.minTest);
-        this.maxTest = Math.max(rating, this.maxTest);
+        this.minTestRating = Math.min(rating, this.minTestRating);
+        this.maxTestRating = Math.max(rating, this.maxTestRating);
 
         this.numberOfTestRatings++;
         this.testRatingAverage = (this.testRatingAverage * (this.numberOfTestRatings - 1) + rating) / this.numberOfTestRatings;
@@ -184,8 +195,8 @@ public class DataModel implements Serializable {
         user.addRating(itemIndex, rating);
         item.addRating(userIndex, rating);
 
-        this.min = Math.min(rating, this.min);
-        this.max = Math.max(rating, this.max);
+        this.minRating = Math.min(rating, this.minRating);
+        this.maxRating = Math.max(rating, this.maxRating);
 
         this.numberOfRatings++;
         this.ratingAverage = (this.ratingAverage * (this.numberOfRatings - 1) + rating) / this.numberOfRatings;
@@ -350,7 +361,7 @@ public class DataModel implements Serializable {
      * @return minimum rating
      */
     public double getMinRating(){
-        return min;
+        return minRating;
     }
 
     /**
@@ -358,7 +369,7 @@ public class DataModel implements Serializable {
      * @return maximum rating
      */
     public double getMaxRating(){
-        return max;
+        return maxRating;
     }
 
     /**
@@ -374,7 +385,7 @@ public class DataModel implements Serializable {
      * @return minimum rating
      */
     public double getMinTestRating(){
-        return this.minTest;
+        return this.minTestRating;
     }
 
     /**
@@ -382,7 +393,7 @@ public class DataModel implements Serializable {
      * @return maximum rating
      */
     public double getMaxTestRating(){
-        return this.maxTest;
+        return this.maxTestRating;
     }
 
     /**
@@ -416,10 +427,10 @@ public class DataModel implements Serializable {
                 "\nNumber of items: " + this.items.length +
                 "\nNumber of test items: " + this.testItems.length +
                 "\nNumber of ratings: " + this.getNumberOfRatings() +
-                "\nNumber of test ratings: " + this.getNumberOfTestRatings() +
                 "\nMin rating: " + this.getMinRating() +
                 "\nMax rating: " + this.getMaxRating() +
                 "\nAverage rating: " + this.getRatingAverage() +
+                "\nNumber of test ratings: " + this.getNumberOfTestRatings() +
                 "\nMin test rating: " + this.getMinTestRating() +
                 "\nMax test rating: " + this.getMaxTestRating() +
                 "\nAverage test rating: " + this.getTestRatingAverage();
