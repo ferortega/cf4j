@@ -1,9 +1,7 @@
 package es.upm.etsisi.cf4j.data;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * <p>Class that manages all information of the Collaborative Filtering kernel. Contains the users and
@@ -49,14 +47,15 @@ public class DataModel implements Serializable {
         this.dataBank = new DataBank();
 
         //1.- Initializing the auxiliary arrays to the estimated initial size (taking into account the DataSet entries)
-        ArrayList<User> aListUsers = new ArrayList<User>(dataset.getRatingsSize()/40);
-        ArrayList<TestUser> aListTestUsers = new ArrayList<TestUser>(dataset.getTestRatingsSize()/40);
-        ArrayList<Item> aListItems = new ArrayList<Item>(dataset.getRatingsSize()/40);
-        ArrayList<TestItem> aListTestItems = new ArrayList<TestItem>(dataset.getTestRatingsSize()/40);
-        HashMap<String, Integer> mapUsers = new HashMap<String, Integer>();
-        HashMap<String, Integer> mapTestUsers = new HashMap<String, Integer>();
-        HashMap<String, Integer> mapItems = new HashMap<String, Integer>();
-        HashMap<String, Integer> mapTestItems = new HashMap<String, Integer>();
+        List<User> usersList = new ArrayList<>(dataset.getRatingsSize()/40);
+        List<TestUser> testUsersList = new ArrayList<>(dataset.getTestRatingsSize()/40);
+        List<Item> itemsList = new ArrayList<>(dataset.getRatingsSize()/40);
+        List<TestItem> testItemsLists = new ArrayList<>(dataset.getTestRatingsSize()/40);
+
+        Map<String, Integer> id2userIndex = new HashMap<>();
+        Map<String, Integer> id2testUserIndex = new HashMap<>();
+        Map<String, Integer> id2itemIndex = new HashMap<>();
+        Map<String, Integer> id2testItemIndex = new HashMap<>();
 
         //2.1.- First: Adding test cases to our DataModel.
         for (Iterator<DataSet.DataSetEntry> it = dataset.getTestRatingsIterator(); it.hasNext(); ){
@@ -69,28 +68,28 @@ public class DataModel implements Serializable {
 
             // Getting TestUser with Index.
             TestUser testUser;
-            Integer testUserIndex = mapTestUsers.get(testUserId);
+            Integer testUserIndex = id2testUserIndex.get(testUserId);
             if ( testUserIndex != null )
-                testUser =  aListTestUsers.get(testUserIndex);
+                testUser =  testUsersList.get(testUserIndex);
             else {
-                testUser = new TestUser(testUserId, aListUsers.size(),  aListTestUsers.size());
-                mapUsers.put(testUserId, aListUsers.size());
-                mapTestUsers.put(testUserId, aListTestUsers.size());
-                aListUsers.add(testUser);
-                aListTestUsers.add(testUser);
+                testUser = new TestUser(testUserId, usersList.size(),  testUsersList.size());
+                id2userIndex.put(testUserId, usersList.size());
+                id2testUserIndex.put(testUserId, testUsersList.size());
+                usersList.add(testUser);
+                testUsersList.add(testUser);
             }
 
             //Getting TestItem with Index.
             TestItem testItem;
-            Integer testItemIndex = mapTestItems.get(testItemId);
+            Integer testItemIndex = id2testItemIndex.get(testItemId);
             if ( testItemIndex != null)
-                testItem = aListTestItems.get(testItemIndex);
+                testItem = testItemsLists.get(testItemIndex);
             else {
-                testItem = new TestItem(testItemId, aListItems.size(), aListTestItems.size());
-                mapItems.put (testItemId, aListItems.size());
-                mapTestItems.put (testItemId, aListTestItems.size());
-                aListItems.add(testItem);
-                aListTestItems.add(testItem);
+                testItem = new TestItem(testItemId, itemsList.size(), testItemsLists.size());
+                id2itemIndex.put (testItemId, itemsList.size());
+                id2testItemIndex.put (testItemId, testItemsLists.size());
+                itemsList.add(testItem);
+                testItemsLists.add(testItem);
             }
 
             //Relating user with item.
@@ -114,24 +113,24 @@ public class DataModel implements Serializable {
 
             //Getting User with that Index.
             User user;
-            Integer userIndex = mapUsers.get(userId);
+            Integer userIndex = id2userIndex.get(userId);
             if ( userIndex != null)
-                user = aListUsers.get(userIndex);
+                user = usersList.get(userIndex);
             else {
-                user = new User(userId, aListUsers.size());
-                mapUsers.put(userId, aListUsers.size());
-                aListUsers.add(user);
+                user = new User(userId, usersList.size());
+                id2userIndex.put(userId, usersList.size());
+                usersList.add(user);
             }
 
             //Getting Item with that Index.
             Item item;
-            Integer itemIndex = mapItems.get(itemId);
+            Integer itemIndex = id2itemIndex.get(itemId);
             if ( itemIndex != null)
-                item = aListItems.get(itemIndex);
+                item = itemsList.get(itemIndex);
             else {
-                item = new Item(entry.second, aListItems.size());
-                mapItems.put(itemId, aListItems.size());
-                aListItems.add(item);
+                item = new Item(entry.second, itemsList.size());
+                id2itemIndex.put(itemId, itemsList.size());
+                itemsList.add(item);
             }
 
             //Relating user with item.
@@ -146,10 +145,10 @@ public class DataModel implements Serializable {
         }
 
         //3.- Storing raw data to respective arrays.
-        this.users = aListUsers.toArray(new User[aListUsers.size()]);
-        this.testUsers = aListTestUsers.toArray(new TestUser[aListTestUsers.size()]);
-        this.items = aListItems.toArray(new Item[aListItems.size()]);
-        this.testItems = aListTestItems.toArray(new TestItem[aListTestItems.size()]);
+        this.users = usersList.toArray(new User[usersList.size()]);
+        this.testUsers = testUsersList.toArray(new TestUser[testUsersList.size()]);
+        this.items = itemsList.toArray(new Item[itemsList.size()]);
+        this.testItems = testItemsLists.toArray(new TestItem[testItemsLists.size()]);
     }
 
     /**
