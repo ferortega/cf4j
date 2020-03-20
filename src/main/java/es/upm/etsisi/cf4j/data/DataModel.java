@@ -1,7 +1,6 @@
 package es.upm.etsisi.cf4j.data;
 
 import es.upm.etsisi.cf4j.data.types.DataSetEntry;
-import es.upm.etsisi.cf4j.data.types.ImmutableArray;
 
 import java.io.Serializable;
 import java.util.*;
@@ -201,32 +200,32 @@ public class DataModel implements Serializable {
      * Getter associated with the array of users
      * @return users array
      */
-    public ImmutableArray<User> getUsers() {
-        return new ImmutableArray<User>(users);
+    public User[] getUsers() {
+        return this.users;
     }
 
     /**
      * Getter associated with the array of test users
      * @return test users array
      */
-    public ImmutableArray<TestUser> getTestUsers() {
-        return new ImmutableArray<TestUser>(testUsers);
+    public TestUser[] getTestUsers() {
+        return this.testUsers;
     }
 
     /**
      * Getter associated with the array of items
      * @return items array
      */
-    public ImmutableArray<Item> getItems() {
-        return new ImmutableArray<Item>(items);
+    public Item[] getItems() {
+        return this.items;
     }
 
     /**
      * Getter associated with the array of test items
      * @return test items array
      */
-    public  ImmutableArray<TestItem> getTestItems() {
-        return new ImmutableArray<TestItem>(testItems);
+    public  TestItem[] getTestItems() {
+        return this.testItems;
     }
 
     /**
