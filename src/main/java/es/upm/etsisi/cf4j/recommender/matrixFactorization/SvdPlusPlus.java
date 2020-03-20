@@ -40,7 +40,6 @@ public class SvdPlusPlus extends Recommender {
      */
     private double lambda;
 
-
     /**
      * bu parameter
      */
@@ -65,8 +64,7 @@ public class SvdPlusPlus extends Recommender {
      * y parameter
      */
     private double[][] y;
-
-
+    
     /**
      * Model constructor
      * @param datamodel DataModel instance
