@@ -1,6 +1,5 @@
 package es.upm.etsisi.cf4j.recommender.matrixFactorization;
 
-
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
 import es.upm.etsisi.cf4j.data.User;
@@ -11,6 +10,11 @@ import es.upm.etsisi.cf4j.utils.Methods;
 
 import java.util.Random;
 
+/**
+ * Implements Lee, D. D., &amp;  Seung, H. S. (2001). Algorithms for non-negative matrix factorization. In Advances
+ * in neural information processing systems (pp. 556-562).
+ * @author Fernando Ortega
+ */
 public class Nmf extends Recommender {
 
 	/**
@@ -23,15 +27,33 @@ public class Nmf extends Recommender {
 	 */
 	private double[][] h;
 
+	/**
+	 * Number of factors
+	 */
 	private int numFactors;
 
+	/**
+	 * Number of iterations
+	 */
 	private int numIters;
 
-
+	/**
+	 * Model constructor
+	 * @param datamodel DataModel instance
+	 * @param numFactors Number of factors
+	 * @param numIters Number of iterations
+	 */
 	public Nmf(DataModel datamodel, int numFactors, int numIters) {
-		this(datamodel, numFactors, numIters, (long) (Math.random() * 1E10));
+		this(datamodel, numFactors, numIters, System.currentTimeMillis());
 	}
 
+	/**
+	 * Model constructor
+	 * @param datamodel DataModel instance
+	 * @param numFactors Number of factors
+	 * @param numIters Number of iterations
+	 * @param seed Seed for random numbers generation
+	 */
 	public Nmf(DataModel datamodel, int numFactors, int numIters, long seed) {
 		super(datamodel);
 
@@ -57,11 +79,23 @@ public class Nmf extends Recommender {
 		}
 	}
 
-
-	public int getNumberOfTopics () {
+	/**
+	 * Get the number of factors of the model
+	 * @return Number of factors
+	 */
+	public int getNumFactors() {
 		return this.numFactors;
 	}
 
+	/**
+	 * Get the number of iterations
+	 * @return Number of iterations
+	 */
+	public int getNumIters() {
+		return this.numIters;
+	}
+
+	@Override
 	public void fit() {
 
 		System.out.println("\nProcessing NMF...");
@@ -72,11 +106,14 @@ public class Nmf extends Recommender {
 		}
 	}
 
+	@Override
 	public double predict(int userIndex, int itemIndex) {
 		return Methods.dotProduct(this.w[userIndex], this.h[itemIndex]);
 	}
 
-	
+	/**
+	 * Auxiliary inner class to parallelize user factors computation
+	 */
 	private class UpdateUsersFactors implements Partible<User> {
 
 		@Override
@@ -114,7 +151,9 @@ public class Nmf extends Recommender {
 		public void afterRun() { }
 	}
 
-	
+	/**
+	 * Auxiliary inner class to parallelize item factors computation
+	 */
 	private class UpdateItemsFactors implements Partible<Item> {
 
 		@Override

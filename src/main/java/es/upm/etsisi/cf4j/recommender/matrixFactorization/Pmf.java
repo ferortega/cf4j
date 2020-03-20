@@ -1,7 +1,5 @@
 package es.upm.etsisi.cf4j.recommender.matrixFactorization;
 
-
-
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
 import es.upm.etsisi.cf4j.data.User;
@@ -13,9 +11,8 @@ import es.upm.etsisi.cf4j.utils.Methods;
 import java.util.Random;
 
 /**
- * Implements Probabilist Matrix Factorization: Koren, Y., Bell, R., &amp; Volinsky, C. (2009). 
- * Matrix factorization techniques for recommender systems. Computer, (8), 30-37.
- *
+ * Implements Mnih, A., &amp; Salakhutdinov, R. R. (2008). Probabilistic matrix factorization. In Advances in neural
+ * information processing systems (pp. 1257-1264).
  * @author Fernando Ortega
  */
 public class Pmf extends Recommender {
@@ -34,12 +31,12 @@ public class Pmf extends Recommender {
 	private double[][] q;
 
 	/**
-	 * Learning rate: 0.01 by default
+	 * Learning rate
 	 */
 	private double gamma;
 
 	/**
-	 * Regularization parameter: 0.1 by default
+	 * Regularization parameter
 	 */
 	private double lambda;
 
@@ -55,7 +52,7 @@ public class Pmf extends Recommender {
 
 	/**
 	 * Model constructor
-	 * @param datamodel
+	 * @param datamodel DataModel instance
 	 * @param numFactors Number of factors
 	 * @param numIters Number of iterations
 	 */
@@ -63,6 +60,13 @@ public class Pmf extends Recommender {
 		this(datamodel, numFactors, numIters, DEFAULT_LAMBDA);
 	}
 
+	/**
+	 * Model constructor
+	 * @param datamodel DataModel instance
+	 * @param numFactors Number of factors
+	 * @param numIters Number of iterations
+	 * @param seed Seed for random numbers generation
+	 */
 	public Pmf(DataModel datamodel, int numFactors, int numIters, long seed)	{
 		this(datamodel, numFactors, numIters, DEFAULT_LAMBDA, DEFAULT_GAMMA, seed);
 	}
@@ -75,20 +79,29 @@ public class Pmf extends Recommender {
 	 * @param lambda Regularization parameter
 	 */
 	public Pmf(DataModel datamodel, int numFactors, int numIters, double lambda) {
-		this(datamodel, numFactors, numIters, lambda, DEFAULT_GAMMA, (long) (Math.random() * 1E10));
+		this(datamodel, numFactors, numIters, lambda, DEFAULT_GAMMA, System.currentTimeMillis());
 	}
 
+	/**
+	 * Model constructor
+	 * @param datamodel DataModel instance
+	 * @param numFactors Number of factors
+	 * @param numIters Number of iterations
+	 * @param lambda Regularization parameter
+	 * @param seed Seed for random numbers generation
+	 */
 	public Pmf(DataModel datamodel, int numFactors, int numIters, double lambda, long seed) {
 		this(datamodel, numFactors, numIters, lambda, DEFAULT_GAMMA, seed);
 	}
 
 	/**
 	 * Model constructor
-	 * @param datamodel
+	 * @param datamodel DataModel instance
 	 * @param numFactors Number of factors
 	 * @param numIters Number of iterations
 	 * @param lambda Regularization parameter
 	 * @param gamma Learning rate parameter
+	 * @param seed Seed for random numbers generation
 	 */
 	public Pmf(DataModel datamodel, int numFactors, int numIters, double lambda, double gamma, long seed) {
 		super(datamodel);
@@ -118,11 +131,19 @@ public class Pmf extends Recommender {
 	}
 
 	/**
-	 * Get the number of topics of the model
-	 * @return Number of topics
+	 * Get the number of factors of the model
+	 * @return Number of factors
 	 */
-	public int getNumberOfTopics() {
+	public int getNumFactors() {
 		return this.numFactors;
+	}
+
+	/**
+	 * Get the number of iterations
+	 * @return Number of iterations
+	 */
+	public int getNumIters() {
+		return this.numIters;
 	}
 
 	/**
@@ -141,9 +162,7 @@ public class Pmf extends Recommender {
 		return this.gamma;
 	}
 
-	/**
-	 * Estimate the latent model factors
-	 */
+	@Override
 	public void fit() {
 
 		System.out.println("\nProcessing PMF...");
@@ -159,19 +178,13 @@ public class Pmf extends Recommender {
 		}
 	}
 
-	/**
-	 * Computes a rating prediction
-	 * @param userIndex User userIndex
-	 * @param itemIndex Item userIndex
-	 * @return Prediction
-	 */
+	@Override
 	public double predict(int userIndex, int itemIndex) {
 		return Methods.dotProduct(this.p[userIndex], this.q[itemIndex]);
 	}
 
 	/**
 	 * Auxiliary inner class to parallelize user factors computation
-	 * @author Fernando Ortega
 	 */
 	private class UpdateUsersFactors implements Partible<User> {
 
@@ -200,7 +213,6 @@ public class Pmf extends Recommender {
 
 	/**
 	 * Auxiliary inner class to parallelize item factors computation
-	 * @author Fernando Ortega
 	 */
 	private class UpdateItemsFactors implements Partible<Item> {
 

@@ -1,39 +1,80 @@
 package es.upm.etsisi.cf4j.recommender.matrixFactorization;
 
-
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
 import es.upm.etsisi.cf4j.data.User;
 import es.upm.etsisi.cf4j.process.Parallelizer;
 import es.upm.etsisi.cf4j.process.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
+
 import org.apache.commons.math3.special.Gamma;
 
 import java.util.Arrays;
 import java.util.Random;
 
+/**
+ * Implements Marlin, B. M. (2004). Modeling user rating profiles for collaborative filtering. In Advances in neural
+ * information processing systems (pp. 627-634).
+ * @author Fernando Ortega
+ */
 public class Urp extends Recommender {
 
     private final static double EPSILON = 1E-2;
 
+    /**
+     * Number of iterstions
+     */
     private int numIters;
 
+    /**
+     * Number of latent factors
+     */
     private int numFactors;
 
-    private double[] ratings; // must be sorted
+    /**
+     * Plausible ratings (must be sorted in ascending order)
+     */
+    private double[] ratings;
 
+    /**
+     * Gamma parameter
+     */
     private double[][] gamma;
 
+    /**
+     * Beta parameter
+     */
     private double[][][] beta;
 
+    /**
+     * Alpha parameter
+     */
     private double[] alpha;
 
+    /**
+     * Phi parameter
+     */
     private double[][][] phi;
 
+    /**
+     * Model constructor
+     * @param datamodel DataModel instance
+     * @param numFactors Number of latent factors
+     * @param ratings Plausible ratings (must be sorted in ascending order)
+     * @param numIters Number of iterstions
+     */
     public Urp(DataModel datamodel, int numFactors, double [] ratings, int numIters) {
         this(datamodel, numFactors, ratings, numIters, new Double(Math.random() * 1E100).longValue());
     }
 
+    /**
+     * Model constructor
+     * @param datamodel DataModel instance
+     * @param numFactors Number of latent factors
+     * @param ratings Plausible ratings (must be sorted in ascending order)
+     * @param numIters Number of iterstions
+     * @param seed Seed for random numbers generation
+     */
     public Urp(DataModel datamodel, int numFactors, double [] ratings, int numIters, long seed) {
         super(datamodel);
 
@@ -69,6 +110,22 @@ public class Urp extends Recommender {
         }
 
         this.phi = new double[numUsers][numItems][numFactors];
+    }
+
+    /**
+     * Get the number of factors of the model
+     * @return Number of factors
+     */
+    public int getNumFactors() {
+        return this.numFactors;
+    }
+
+    /**
+     * Get the number of iterations
+     * @return Number of iterations
+     */
+    public int getNumIters() {
+        return this.numIters;
     }
 
     @Override
@@ -144,10 +201,13 @@ public class Urp extends Recommender {
         return prediction;
     }
 
+    /**
+     * Computes the inverse of the PSI function.
+     * Source:  http://bariskurt.com/calculating-the-inverse-of-digamma-function/
+     * @param value value
+     * @return PSI^-1(value)
+     */
     private double inversePsi(double value) {
-
-        // source: http://bariskurt.com/calculating-the-inverse-of-digamma-function/
-
         double inv = (value >= -2.22)
                 ? Math.exp(value) + 0.5
                 : -1.0 / (value - Gamma.digamma(1));
@@ -159,12 +219,13 @@ public class Urp extends Recommender {
         return inv;
     }
 
+    /**
+     * Auxiliary inner class to parallelize user factors computation
+     */
     private class UpdatePhiGamma implements Partible<User> {
 
         @Override
-        public void beforeRun() {
-
-        }
+        public void beforeRun() { }
 
         @Override
         public void run(User user) {
@@ -223,11 +284,12 @@ public class Urp extends Recommender {
         }
 
         @Override
-        public void afterRun() {
-
-        }
+        public void afterRun() { }
     }
 
+    /**
+     * Auxiliary inner class to parallelize item factors computation
+     */
     private class UpdateBeta implements Partible<Item> {
 
         @Override
