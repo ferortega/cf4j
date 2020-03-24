@@ -16,8 +16,7 @@ public class MSD extends ItemToItemMetric {
 	 */
 	private double maxDiff;
 
-	public MSD(DataModel datamodel, double[][] similarities) {
-		super(datamodel, similarities);
+	public MSD() {
 		this.maxDiff = super.datamodel.getMaxRating() - super.datamodel.getMinRating();
 	}
 

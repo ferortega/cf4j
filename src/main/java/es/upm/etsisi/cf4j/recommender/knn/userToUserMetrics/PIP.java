@@ -31,9 +31,7 @@ public class PIP extends UserToUserMetric {
 	/**
 	 * Constructor of the similarity metric
 	 */
-	public PIP (DataModel datamodel, double[][] similarities) {
-		super(datamodel, similarities);
-
+	public PIP() {
 		this.max = super.datamodel.getMaxRating();
 		this.min = super.datamodel.getMinRating();
 

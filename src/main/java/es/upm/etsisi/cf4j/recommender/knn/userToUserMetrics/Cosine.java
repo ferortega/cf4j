@@ -11,10 +11,6 @@ import es.upm.etsisi.cf4j.data.User;
  */
 public class Cosine extends UserToUserMetric {
 
-	public Cosine(DataModel datamodel, double[][] similarities) {
-		super(datamodel, similarities);
-	}
-
 	@Override
 	public double similarity(User user, User otherUser) {
 

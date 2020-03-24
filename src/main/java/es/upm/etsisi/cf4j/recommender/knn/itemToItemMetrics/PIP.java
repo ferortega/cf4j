@@ -32,9 +32,7 @@ public class PIP extends ItemToItemMetric {
 	/**
 	 * Constructor of the similarity metric
 	 */
-	public PIP (DataModel datamodel, double[][] similarities) {
-		super(datamodel, similarities);
-
+	public PIP () {
 		this.max = this.datamodel.getMaxRating();
 		this.min = this.datamodel.getMinRating();
 

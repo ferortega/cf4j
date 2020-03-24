@@ -18,8 +18,7 @@ public class CJMSD extends UserToUserMetric {
 	 */
 	private double maxDiff;
 
-	public CJMSD(DataModel datamodel, double[][] similarities) {
-		super(datamodel, similarities);
+	public CJMSD() {
 		this.maxDiff = super.datamodel.getMaxRating() - super.datamodel.getMinRating();
 	}
 

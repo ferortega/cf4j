@@ -11,10 +11,6 @@ import es.upm.etsisi.cf4j.data.User;
  */
 public class AjustedCosine extends ItemToItemMetric {
 
-	public AjustedCosine(DataModel datamodel, double[][] similarities) {
-		super(datamodel, similarities);
-	}
-
 	@Override
 	public double similarity(Item item, Item otherItem) {
 		

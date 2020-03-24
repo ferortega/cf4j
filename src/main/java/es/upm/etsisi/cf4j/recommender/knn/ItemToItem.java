@@ -22,12 +22,12 @@ public class ItemToItem extends Recommender {
 
     protected int K;
 
-    private Class<? extends ItemToItemMetric> metricClass;
+    private ItemToItemMetric metric;
 
     private AggregationApproach aa;
 
 
-    public ItemToItem(DataModel datamodel, int K, Class<? extends ItemToItemMetric> metricClass, AggregationApproach aa) {
+    public ItemToItem(DataModel datamodel, int K, ItemToItemMetric metric, AggregationApproach aa) {
         super(datamodel);
 
         this.K = K;
@@ -39,26 +39,14 @@ public class ItemToItem extends Recommender {
 
         this.aa = aa;
 
-        this.metricClass = metricClass;
+        this.metric = metric;
+        this.metric.setDatamodel(this.datamodel);
+        this.metric.setSimilarities(this.similarities);
     }
 
     @Override
     public void fit() {
-        ItemToItemMetric metric = null;
-
-        try {
-            metric = metricClass.getDeclaredConstructor(DataModel.class, double[][].class).newInstance(this.datamodel, this.similarities);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-
-        Parallelizer.exec(this.datamodel.getItems(), metric);
+        Parallelizer.exec(this.datamodel.getItems(), this.metric);
         Parallelizer.exec(this.datamodel.getItems(), new ItemNeighbors());
     }
 

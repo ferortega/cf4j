@@ -4,6 +4,7 @@ package es.upm.etsisi.cf4j.recommender.knn.userToUserMetrics;
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.User;
 import es.upm.etsisi.cf4j.process.Partible;
+import es.upm.etsisi.cf4j.recommender.knn.UserToUser;
 
 /**
  * <p>This class process the similarity measure between two users. If you want to define your own similarity
@@ -22,8 +23,11 @@ import es.upm.etsisi.cf4j.process.Partible;
  	protected DataModel datamodel;
 	protected double[][] similarities;
 
-	public UserToUserMetric(DataModel datamodel, double[][] similarities) {
+	public void setDatamodel(DataModel datamodel) {
 		this.datamodel = datamodel;
+	}
+
+	public void setSimilarities(double[][] similarities) {
 		this.similarities = similarities;
 	}
 

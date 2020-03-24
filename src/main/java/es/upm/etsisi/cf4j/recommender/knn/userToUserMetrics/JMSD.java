@@ -18,8 +18,7 @@ public class JMSD extends UserToUserMetric {
 	 */
 	private double maxDiff;
 
-	public JMSD(DataModel datamodel, double[][] similarities) {
-		super(datamodel, similarities);
+	public JMSD() {
 		this.maxDiff = super.datamodel.getMaxRating() - super.datamodel.getMinRating();
 	}
 	

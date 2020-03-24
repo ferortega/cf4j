@@ -13,11 +13,13 @@ public abstract class ItemToItemMetric implements Partible<Item> {
 	protected DataModel datamodel;
 	protected double[][] similarities;
 
-	public ItemToItemMetric(DataModel datamodel, double[][] similarities) {
+	public void setDatamodel(DataModel datamodel) {
 		this.datamodel = datamodel;
-		this.similarities = similarities;
 	}
 
+	public void setSimilarities(double[][] similarities) {
+		this.similarities = similarities;
+	}
 
 	abstract public double similarity(Item item, Item otherItem);
 

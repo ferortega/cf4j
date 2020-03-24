@@ -10,10 +10,6 @@ import es.upm.etsisi.cf4j.data.Item;
  */
 public class Jaccard extends ItemToItemMetric {
 
-	public Jaccard(DataModel datamodel, double[][] similarities) {
-		super(datamodel, similarities);
-	}
-
 	@Override
 	public double similarity(Item item, Item otherItem) {
 		int u = 0, v = 0, common = 0;

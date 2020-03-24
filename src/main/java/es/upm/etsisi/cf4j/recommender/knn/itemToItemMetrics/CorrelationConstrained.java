@@ -19,8 +19,7 @@ public class CorrelationConstrained extends ItemToItemMetric {
 	 * Constructor of the similarity metric
 	 * @param median Median of the ratings of the dataset
 	 */
-	public CorrelationConstrained(DataModel datamodel, double[][] similarities, double median) {
-		super(datamodel, similarities);
+	public CorrelationConstrained(double median) {
 		this.median = median;
 	}
 	

@@ -21,12 +21,12 @@ public class UserToUser extends Recommender {
 
     protected int K;
 
-    private Class<? extends UserToUserMetric> metricClass;
+    private UserToUserMetric metric;
 
     private AggregationApproach aa;
 
 
-    public UserToUser(DataModel datamodel, int K, Class<? extends UserToUserMetric> metricClass, AggregationApproach aa) {
+    public UserToUser(DataModel datamodel, int K, UserToUserMetric metric, AggregationApproach aa) {
         super(datamodel);
 
         this.K = K;
@@ -38,26 +38,14 @@ public class UserToUser extends Recommender {
 
         this.aa = aa;
 
-        this.metricClass = metricClass;
+        this.metric = metric;
+        this.metric.setDatamodel(datamodel);
+        this.metric.setSimilarities(this.similarities);
     }
 
     @Override
     public void fit() {
-        UserToUserMetric metric = null;
-
-        try {
-            metric = metricClass.getDeclaredConstructor(DataModel.class, double[][].class).newInstance(this.datamodel, this.similarities);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-
-        Parallelizer.exec(this.datamodel.getUsers(), metric);
+        Parallelizer.exec(this.datamodel.getUsers(), this.metric);
         Parallelizer.exec(this.datamodel.getUsers(), new UserNeighbors());
     }
 

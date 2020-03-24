@@ -11,10 +11,6 @@ import es.upm.etsisi.cf4j.data.Item;
  */
 public class SpearmanRank extends ItemToItemMetric {
 
-	public SpearmanRank(DataModel datamodel, double[][] similarities) {
-		super(datamodel, similarities);
-	}
-
 	@Override
 	public double similarity(Item item, Item otherItem) {
 

@@ -45,9 +45,7 @@ public class Singularities extends UserToUserMetric {
 	 * @param relevantRatings Relevant ratings array
 	 * @param notRelevantRatings Not relevant ratings array
 	 */
-	public Singularities(DataModel datamodel, double[][] similarities, double [] relevantRatings, double [] notRelevantRatings) {
-		super(datamodel, similarities);
-
+	public Singularities(double [] relevantRatings, double [] notRelevantRatings) {
 		this.relevantRatings = new HashSet <Double> ();
 		for (double r : relevantRatings) this.relevantRatings.add(r);
 
