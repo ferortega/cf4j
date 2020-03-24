@@ -3,7 +3,6 @@
 .project
 .settings
 .class
-.idea
 
 dependency-reduced-pom.xml
 
