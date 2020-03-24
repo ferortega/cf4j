@@ -63,9 +63,9 @@ Let's encode our first experiment with CF4J. In this experiment, we will compare
    DataModel datamodel = new DataModel(ml1m);
    ```
    
-3. Once all the data are loaded, we are going to build and train our first recommendation models. To create a recommendation model it is necessary to instantiate a `Recommender` from a `DataModel`. `Recommender` is an abstract class that contains all the methods and attributes required to perform a recommendation. CF4J contains several implementations of `Recommender` (see [algorithms list](#algorithm-list)). 
+3. Once all the data are loaded, we are going to build and train our first recommendation model. To create a recommendation model it is necessary to instantiate a `Recommender` from a `DataModel`. `Recommender` is an abstract class that contains all the methods and attributes required to perform a recommendation. CF4J contains several implementations of `Recommender` (see [algorithms list](#algorithm-list)). 
 
-   First, we instantiate the `Pmf` recommender. We set the model's hyper-parameters using the `Pmf` class constructor: `numFactors` = 10, `gamma = 0.01`, `lambda = 0.1` and `numIters = 100`. We also fix the random seed to ensure the reproducibility of this experiment. Once the model is instantiate, we train the model parameters using `fit()` method.
+   First, we instantiate the `Pmf` recommender. We set the model's hyper-parameters using the `Pmf` class constructor: `numFactors = 10`, `gamma = 0.01`, `lambda = 0.1` and `numIters = 100`. We also fix the random seed to ensure the reproducibility of this experiment. Once the model is instantiated, we train the model parameters using `fit()` method.
    
    ```Java
    Pmf pmf = new Pmf(datamodel, 10, 100, 0.1, 0.01, 43);
@@ -98,7 +98,7 @@ Let's encode our first experiment with CF4J. In this experiment, we will compare
    MSE (NMF): 0.9438406097978671
    ```
    
-   You can find the full code of this example into `es.upm.etsisi.cf4j.examples.GettingStartedExamen` class:
+   You can find the full code of this example into `es.upm.etsisi.cf4j.examples.GettingStartedExample` class:
 
 ## Project Structure
 
