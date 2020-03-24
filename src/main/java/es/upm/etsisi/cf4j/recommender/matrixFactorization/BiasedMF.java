@@ -11,8 +11,8 @@ import es.upm.etsisi.cf4j.utils.Methods;
 import java.util.Random;
 
 /**
- * Implements Probabilist Matrix Factorization: Koren, Y., Bell, R., &amp; Volinsky, C. (2009). 
- * Matrix factorization techniques for recommender systems. Computer, (8), 30-37.
+ * Implements Koren, Y., Bell, R., &amp; Volinsky, C. (2009). Matrix factorization techniques for recommender systems.
+ * Computer, (8), 30-37.
  * @author Fernando Ortega
  */
 public class BiasedMF extends Recommender {
