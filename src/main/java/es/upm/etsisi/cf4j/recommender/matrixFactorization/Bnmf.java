@@ -221,8 +221,10 @@ public class Bnmf extends Recommender {
 
 	@Override
 	public double predict(int userIndex, int itemIndex) {
-		double prediction = Methods.dotProduct(this.a[userIndex], this.b[itemIndex]);
-		return prediction * (datamodel.getMaxRating() - datamodel.getMinRating()) + datamodel.getMinRating(); // TODO review this
+		double prob = Methods.dotProduct(this.a[userIndex], this.b[itemIndex]);
+		prob = Math.max(prob, 1E-10);
+		double prediction = Math.ceil(prob * (super.datamodel.getMaxRating() - super.datamodel.getMinRating() + 1));
+		return prediction;
 	}
 
 	/**
