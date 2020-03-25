@@ -1,18 +1,32 @@
 package es.upm.etsisi.cf4j.process;
 
+/**
+ * This class is used to simplify the parallelization of collaborative filtering algorithms
+ */
 public class Parallelizer {
 
-	public static void exec(Object[] array, Partible partible) {
-		exec(array, partible, -1);
+	/**
+	 * Execs partible for each object contained in the objects array. Each execution is run in parallel way. All
+	 * available threads of the CPU will be used.
+	 * @param objects Array of objects to be executed in parallel
+	 * @param partible Partible to be executed for each object of the array
+	 */
+	public static void exec(Object[] objects, Partible partible) {
+		exec(objects, partible, -1);
 	}
 
-
+	/**
+	 * Execs partible for each object contained in the objects array. Each execution is run in parallel way.
+	 * @param objects Array of objects to be executed in parallel
+	 * @param partible Partible to be executed for each object of the array
+	 * @param numThreads Number of threads to be launched in parallel
+	 */
 	public static void exec(Object[] objects, Partible partible, int numThreads) {
 
 		// use all processors if required
 		if (numThreads <= 0) numThreads = Runtime.getRuntime().availableProcessors();
 
-		// execute before exec method
+		// execute beforeRun method once
 		partible.beforeRun();
 
 		// create and launch threads
@@ -23,18 +37,21 @@ public class Parallelizer {
 
 		// wait until all threads end
 		try {
-			for (int i = 0; i < pt.length; i++) {
-				pt[i].getThread().join();
+			for (PartibleThread partibleThread : pt) {
+				partibleThread.getThread().join();
 			}
 		} catch (InterruptedException ie) {
-			System.out.println("ERROR: " + ie);
+			System.err.println("ERROR: " + ie);
 		}
 
-		// execute after exec method
+		// execute afterRun method once
 		partible.afterRun();
 	}
 
-	public static class PartibleThread implements Runnable {
+	/**
+	 * Inner class used to handle parallel execution of the objects in the array
+	 */
+	private static class PartibleThread implements Runnable {
 
 		private Thread thread;
 		private int threadIndex;
@@ -58,26 +75,10 @@ public class Parallelizer {
 
 		/*
 		 * (non-Javadoc)
-		 *
 		 * @see java.lang.Runnable#exec()
 		 */
 		public void run() {
-			//long t1 = (new Date()).getTime() / 1000, t2, t3 = 0;
-
 			for (int i = this.threadIndex; i < this.objects.length; i += this.numThreads ) {
-				/*if (this.threadIndex == 0 && this.verbose) {
-					t2 = (new Date()).getTime() / 1000;
-					if ((t2 - t1) > 5) {
-						System.out.print(".");
-						t1 = t2;
-						t3++;
-					}
-					if (t3 > 20) {
-						System.out.println(((userIndex - this.threadIndex * this.runsPerThread) * 100 / this.runsPerThread) + "%");
-						t3 = 0;
-					}
-				}*/
-
 				partible.run(this.objects[i]);
 			}
 		}
