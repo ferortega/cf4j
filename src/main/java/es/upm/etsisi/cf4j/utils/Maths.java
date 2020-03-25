@@ -11,7 +11,7 @@ public class Maths {
 	  * @param array Array of double from which to calculate the mean
 	  * @return Array mean
 	  */
-	 public static double arrayAverage (double[] array) {
+	 public static double arrayAverage(double[] array) {
 		 double average = 0f;
 		 for (double d : array) average += d;
 		 return average / (double) array.length;
@@ -22,7 +22,7 @@ public class Maths {
 	 * @param array Array of double from which to calculate the standard deviation
 	 * @return Standard deviation of the array
 	 */
-	public static double arrayStandardDeviation (double[] array) {
+	public static double arrayStandardDeviation(double[] array) {
 		double average = Maths.arrayAverage(array);
 		double standard_deviation = 0f;
 		for (double d : array) standard_deviation += (d - average) * (d - average);
@@ -34,7 +34,7 @@ public class Maths {
 	  * @param array Array of int from which to calculate the mean
 	  * @return Array mean
 	  */
-	 public static double arrayAverage (int[] array) {
+	 public static double arrayAverage(int[] array) {
 		 double average = 0f;
 		 for (int i : array) average += i;
 		 return average / (double) array.length;
@@ -45,14 +45,13 @@ public class Maths {
 	 * @param array Array of int from which to calculate the standard deviation
 	 * @return Standard deviation of the array
 	 */
-	public static double arrayStandardDeviation (int[] array) {
+	public static double arrayStandardDeviation(int[] array) {
 		double average = Maths.arrayAverage(array);
 		double standard_deviation = 0f;
 		for (int i : array) standard_deviation += (i - average) * (i - average);
 		return Math.sqrt(standard_deviation / (double) array.length);
 	}
-
-
+	
 	/**
 	 * Dot product between two vectors
 	 * @param a Vector A

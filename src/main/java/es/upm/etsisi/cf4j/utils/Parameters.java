@@ -28,7 +28,7 @@ public class Parameters {
 	 * Creates a new Parameters instance from a file.
 	 * @param filename File name
 	 */
-	public Parameters (String filename) {
+	public Parameters(String filename) {
 		this.properties = new Properties();
 		try {
 			this.properties.load(new FileInputStream(filename));
@@ -50,7 +50,7 @@ public class Parameters {
 	 * @param key Parameter name
 	 * @return Parameter value
 	 */
-	public String getString (String key) {
+	public String getString(String key) {
 		return properties.getProperty(key);
 	}
 	
@@ -59,7 +59,7 @@ public class Parameters {
 	 * @param key Parameter name
 	 * @return Parameter value
 	 */
-	public int getInteger (String key) {
+	public int getInteger(String key) {
 		return Integer.parseInt(properties.getProperty(key));
 	}
 	
@@ -68,7 +68,7 @@ public class Parameters {
 	 * @param key Parameter name
 	 * @return Parameter value
 	 */
-	public double getDouble (String key) {
+	public double getDouble(String key) {
 		return Double.parseDouble(properties.getProperty(key));
 	}
 	
@@ -77,7 +77,7 @@ public class Parameters {
 	 * @param key Parameter name
 	 * @return Parameter value
 	 */
-	public int [] getIntegerArray (String key) {
+	public int[] getIntegerArray(String key) {
 		String [] s = properties.getProperty(key).split(",");
 		int [] array = new int [s.length];
 		for (int i  = 0; i < s.length; i++) array[i] = Integer.parseInt(s[i]);
@@ -89,7 +89,7 @@ public class Parameters {
 	 * @param key Parameter name
 	 * @return Parameter value
 	 */
-	public double [] getDoubleArray (String key) {
+	public double[] getDoubleArray(String key) {
 		String [] s = properties.getProperty(key).split(",");
 		double [] array = new double [s.length];
 		for (int i  = 0; i < s.length; i++) array[i] = Double.parseDouble(s[i]);
@@ -101,7 +101,7 @@ public class Parameters {
 	 * @param key Parameter name
 	 * @return Parameter value
 	 */
-	public boolean getBoolean (String key) {
+	public boolean getBoolean(String key) {
 		return Boolean.parseBoolean(properties.getProperty(key));
 	}
 }

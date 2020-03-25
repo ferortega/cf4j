@@ -11,7 +11,7 @@ public class Search {
      * @param value Value which calculates the position
      * @return Index of the item or -1 if not found
      */
-    public static int getIndex (int[] array, int value) {
+    public static int getIndex(int[] array, int value) {
         int min = 0, max = array.length -1;
         while (min <= max) {
             int center = ((max - min) / 2) + min;
