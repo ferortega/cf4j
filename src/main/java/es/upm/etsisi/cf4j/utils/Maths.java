@@ -51,7 +51,7 @@ public class Maths {
 		for (int i : array) standard_deviation += (i - average) * (i - average);
 		return Math.sqrt(standard_deviation / (double) array.length);
 	}
-	
+
 	/**
 	 * Dot product between two vectors
 	 * @param a Vector A
