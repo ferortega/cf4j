@@ -15,7 +15,7 @@ import java.util.Random;
  * Implements Gopalan, P., Hofman, J. M., &amp; Blei, D. M. (2015, July). Scalable Recommendation with Hierarchical
  * Poisson Factorization. In UAI (pp. 326-335).
  */
-public class Hpf extends Recommender {
+public class HPF extends Recommender {
 
     /**
      * Number of latent factors
@@ -53,7 +53,7 @@ public class Hpf extends Recommender {
      * @param numFactors Number of latent factors
      * @param numIters Number of iterations
      */
-    public Hpf(DataModel datamodel, int numFactors, int numIters) {
+    public HPF(DataModel datamodel, int numFactors, int numIters) {
         this(datamodel, numFactors, numIters, System.currentTimeMillis());
     }
 
@@ -64,7 +64,7 @@ public class Hpf extends Recommender {
      * @param numIters Number of iterations
      * @param seed Seed for random numbers generation
      */
-    public Hpf(DataModel datamodel, int numFactors, int numIters, long seed) {
+    public HPF(DataModel datamodel, int numFactors, int numIters, long seed) {
         this(datamodel, numFactors, numIters, 0.3, 0.3, 1.0, 0.3, 0.3, 1.0, seed);
     }
 
@@ -80,7 +80,7 @@ public class Hpf extends Recommender {
      * @param cPrime Model hyper-parameter. Read the paper for more informacion related to this hyper-parameter.
      * @param dPrime Model hyper-parameter. Read the paper for more informacion related to this hyper-parameter.
      */
-    public Hpf (DataModel datamodel, int numFactors, int numIters, double a, double aPrime,  double bPrime, double c, double cPrime, double dPrime) {
+    public HPF(DataModel datamodel, int numFactors, int numIters, double a, double aPrime, double bPrime, double c, double cPrime, double dPrime) {
         this(datamodel, numFactors, numIters, a, aPrime, bPrime, c, cPrime, dPrime, System.currentTimeMillis());
     }
 
@@ -97,7 +97,7 @@ public class Hpf extends Recommender {
      * @param dPrime Model hyper-parameter. Read the paper for more informacion related to this hyper-parameter.
      * @param seed Seed for random numbers generation
      */
-    public Hpf (DataModel datamodel, int numFactors, int numIters, double a, double aPrime, double bPrime, double c, double cPrime, double dPrime, long seed) {
+    public HPF(DataModel datamodel, int numFactors, int numIters, double a, double aPrime, double bPrime, double c, double cPrime, double dPrime, long seed) {
         super(datamodel);
 
         this.numFactors = numFactors;
@@ -157,8 +157,7 @@ public class Hpf extends Recommender {
     @Override
     public double predict(int userIndex, int itemIndex) {
         double dot = Maths.dotProduct(this.gamma[userIndex], this.lambda[itemIndex]);
-        double prob = 1 - Math.exp(-1 * dot);
-        return prob;
+        return 1 - Math.exp(-1 * dot);
     }
 
     /**

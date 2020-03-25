@@ -15,7 +15,7 @@ import java.util.Random;
  * in neural information processing systems (pp. 556-562).
  * @author Fernando Ortega
  */
-public class Nmf extends Recommender {
+public class NMF extends Recommender {
 
 	/**
 	 * User factors
@@ -43,7 +43,7 @@ public class Nmf extends Recommender {
 	 * @param numFactors Number of factors
 	 * @param numIters Number of iterations
 	 */
-	public Nmf(DataModel datamodel, int numFactors, int numIters) {
+	public NMF(DataModel datamodel, int numFactors, int numIters) {
 		this(datamodel, numFactors, numIters, System.currentTimeMillis());
 	}
 
@@ -54,7 +54,7 @@ public class Nmf extends Recommender {
 	 * @param numIters Number of iterations
 	 * @param seed Seed for random numbers generation
 	 */
-	public Nmf(DataModel datamodel, int numFactors, int numIters, long seed) {
+	public NMF(DataModel datamodel, int numFactors, int numIters, long seed) {
 		super(datamodel);
 
 		this.numFactors = numFactors;
@@ -131,7 +131,7 @@ public class Nmf extends Recommender {
 				predictions[i] = predict(userIndex, itemIndex);
 			}
 
-			for (int k = 0; k < Nmf.this.numFactors; k++) {
+			for (int k = 0; k < NMF.this.numFactors; k++) {
 
 				double sumRatings = 0;
 				double sumPredictions = 0;
@@ -171,7 +171,7 @@ public class Nmf extends Recommender {
 				predictions[u] = predict(userIndex, itemIndex);
 			}
 
-			for (int k = 0; k < Nmf.this.numFactors; k++) {
+			for (int k = 0; k < NMF.this.numFactors; k++) {
 
 				double sumRatings = 0;
 				double sumPredictions = 0;

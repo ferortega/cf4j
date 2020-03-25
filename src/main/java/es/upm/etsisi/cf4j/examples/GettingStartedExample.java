@@ -5,8 +5,8 @@ import es.upm.etsisi.cf4j.data.DataSet;
 import es.upm.etsisi.cf4j.data.RandomSplitDataSet;
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.qualityMeasure.prediction.MSE;
-import es.upm.etsisi.cf4j.recommender.matrixFactorization.Nmf;
-import es.upm.etsisi.cf4j.recommender.matrixFactorization.Pmf;
+import es.upm.etsisi.cf4j.recommender.matrixFactorization.NMF;
+import es.upm.etsisi.cf4j.recommender.matrixFactorization.PMF;
 
 public class GettingStartedExample {
     public static void main (String [] args) {
@@ -20,10 +20,10 @@ public class GettingStartedExample {
 
         DataModel datamodel = new DataModel(ml1m);
 
-        Pmf pmf = new Pmf(datamodel, 10, 100, 0.1, 0.01, 43);
+        PMF pmf = new PMF(datamodel, 10, 100, 0.1, 0.01, 43);
         pmf.fit();
 
-        Nmf nmf = new Nmf(datamodel, 10, 100, 43);
+        NMF nmf = new NMF(datamodel, 10, 100, 43);
         nmf.fit();
 
         QualityMeasure mse;

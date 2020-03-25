@@ -17,7 +17,7 @@ import org.apache.commons.math3.special.Gamma;
  * collaborative filtering recommender systems on a Bayesian probabilistic model. Knowledge-Based Systems, 97, 188-202.
  * @author Fernando Ortega
  */
-public class Bnmf extends Recommender {
+public class BNMF extends Recommender {
 
 	private final static double DEFAULT_R = 4;
 
@@ -82,7 +82,7 @@ public class Bnmf extends Recommender {
 	 *                 same tastes
 	 * @param beta Amount of evidence that the algorithm requires to deduce that a group of users likes an item
 	 */
-	public Bnmf(DataModel datamodel, int numFactors, int numIters, double alpha, double beta) {
+	public BNMF(DataModel datamodel, int numFactors, int numIters, double alpha, double beta) {
 		this(datamodel, numFactors, numIters, alpha, beta, DEFAULT_R, System.currentTimeMillis());
 	}
 
@@ -96,7 +96,7 @@ public class Bnmf extends Recommender {
 	 * @param beta Amount of evidence that the algorithm requires to deduce that a group of users likes an item
 	 * @param seed Seed for random numbers generation
 	 */
-	public Bnmf(DataModel datamodel, int numFactors, int numIters, double alpha, double beta, long seed) {
+	public BNMF(DataModel datamodel, int numFactors, int numIters, double alpha, double beta, long seed) {
 		this(datamodel, numFactors, numIters, alpha, beta, DEFAULT_R, seed);
 	}
 
@@ -111,7 +111,7 @@ public class Bnmf extends Recommender {
 	 * @param r Parameter of the binomial distribution (fixed to 4)
 	 * @param seed Seed for random numbers generation
 	 */
-	public Bnmf(DataModel datamodel, int numFactors, int numIters, double alpha, double beta, double r, long seed) {
+	public BNMF(DataModel datamodel, int numFactors, int numIters, double alpha, double beta, double r, long seed) {
 		super(datamodel);
 
 		this.numFactors = numFactors;
@@ -223,8 +223,7 @@ public class Bnmf extends Recommender {
 	public double predict(int userIndex, int itemIndex) {
 		double prob = Maths.dotProduct(this.a[userIndex], this.b[itemIndex]);
 		prob = Math.max(prob, 1E-10);
-		double prediction = Math.ceil(prob * (super.datamodel.getMaxRating() - super.datamodel.getMinRating() + 1));
-		return prediction;
+		return Math.ceil(prob * (super.datamodel.getMaxRating() - super.datamodel.getMinRating() + 1));
 	}
 
 	/**
@@ -261,15 +260,15 @@ public class Bnmf extends Recommender {
 			// Init gamma
 			for (int i = 0; i < this.gamma.length; i++) {
 				for (int j = 0; j < this.gamma[i].length; j++) {
-					this.gamma[i][j] = Bnmf.this.alpha;
+					this.gamma[i][j] = BNMF.this.alpha;
 				}
 			}
 
 			// Init E+ & E-
 			for (int i = 0; i < this.epsilonPlus.length; i++) {
 				for (int j = 0; j < this.epsilonPlus[i].length; j++) {
-					this.epsilonPlus[i][j] = Bnmf.this.beta;
-					this.epsilonMinus[i][j] = Bnmf.this.beta;
+					this.epsilonPlus[i][j] = BNMF.this.beta;
+					this.epsilonMinus[i][j] = BNMF.this.beta;
 				}
 			}
 		}
@@ -282,32 +281,32 @@ public class Bnmf extends Recommender {
 
 				int userIndex = item.getUserAt(u);
 
-				double [] lambda = new double [Bnmf.this.numFactors];
+				double [] lambda = new double [BNMF.this.numFactors];
 
 				double rating = (item.getRatingAt(u) - datamodel.getMinRating()) / (datamodel.getMaxRating() - datamodel.getMinRating());
 
 				double sum = 0;
 
 				// Compute lambda
-				for (int k = 0; k < Bnmf.this.numFactors; k++) {
+				for (int k = 0; k < BNMF.this.numFactors; k++) {
 					lambda[k] = Math.exp(
-						Gamma.digamma(Bnmf.this.gamma[userIndex][k]) +
-						Bnmf.this.r * rating * Gamma.digamma(Bnmf.this.epsilonPlus[itemIndex][k]) +
-						Bnmf.this.r * (1 - rating) * Gamma.digamma(Bnmf.this.epsilonMinus[itemIndex][k]) -
-						Bnmf.this.r * Gamma.digamma(Bnmf.this.epsilonPlus[itemIndex][k] + Bnmf.this.epsilonMinus[itemIndex][k])
+						Gamma.digamma(BNMF.this.gamma[userIndex][k]) +
+						BNMF.this.r * rating * Gamma.digamma(BNMF.this.epsilonPlus[itemIndex][k]) +
+						BNMF.this.r * (1 - rating) * Gamma.digamma(BNMF.this.epsilonMinus[itemIndex][k]) -
+						BNMF.this.r * Gamma.digamma(BNMF.this.epsilonPlus[itemIndex][k] + BNMF.this.epsilonMinus[itemIndex][k])
 					);
 
 					sum += lambda[k];
 				}
 
 				// Update model
-				for (int k = 0; k < Bnmf.this.numFactors; k++) {
+				for (int k = 0; k < BNMF.this.numFactors; k++) {
 
 					double l = lambda[k] / sum;
 
 					// Update E+ & E-
-					this.epsilonPlus[itemIndex][k] += l * Bnmf.this.r * rating;
-					this.epsilonMinus[itemIndex][k] += l * Bnmf.this.r * (1 - rating);
+					this.epsilonPlus[itemIndex][k] += l * BNMF.this.r * rating;
+					this.epsilonMinus[itemIndex][k] += l * BNMF.this.r * (1 - rating);
 
 					// Update gamma: user must be block to avoid concurrency problems
 					int lockIndex = userIndex % this.locks.length;
@@ -320,9 +319,9 @@ public class Bnmf extends Recommender {
 
 		@Override
 		public void afterRun() {
-			Bnmf.this.gamma = this.gamma;
-			Bnmf.this.epsilonPlus = this.epsilonPlus;
-			Bnmf.this.epsilonMinus = this.epsilonMinus;
+			BNMF.this.gamma = this.gamma;
+			BNMF.this.epsilonPlus = this.epsilonPlus;
+			BNMF.this.epsilonMinus = this.epsilonMinus;
 		}
 	}
 }

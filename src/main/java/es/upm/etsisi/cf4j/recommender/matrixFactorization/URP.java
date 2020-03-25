@@ -17,7 +17,7 @@ import java.util.Random;
  * information processing systems (pp. 627-634).
  * @author Fernando Ortega
  */
-public class Urp extends Recommender {
+public class URP extends Recommender {
 
     private final static double EPSILON = 1E-2;
 
@@ -63,7 +63,7 @@ public class Urp extends Recommender {
      * @param ratings Plausible ratings (must be sorted in ascending order)
      * @param numIters Number of iterstions
      */
-    public Urp(DataModel datamodel, int numFactors, double [] ratings, int numIters) {
+    public URP(DataModel datamodel, int numFactors, double [] ratings, int numIters) {
         this(datamodel, numFactors, ratings, numIters, new Double(Math.random() * 1E100).longValue());
     }
 
@@ -75,7 +75,7 @@ public class Urp extends Recommender {
      * @param numIters Number of iterstions
      * @param seed Seed for random numbers generation
      */
-    public Urp(DataModel datamodel, int numFactors, double [] ratings, int numIters, long seed) {
+    public URP(DataModel datamodel, int numFactors, double [] ratings, int numIters, long seed) {
         super(datamodel);
 
         this.numFactors = numFactors;
@@ -196,9 +196,7 @@ public class Urp extends Recommender {
             acc += probs[v] / sumProbs;
         } while(acc < 0.5);
 
-        double prediction = this.ratings[v];
-
-        return prediction;
+        return this.ratings[v];
     }
 
     /**
@@ -256,7 +254,7 @@ public class Urp extends Recommender {
 
                     double sum = 0;
 
-                    for (int z = 0; z < Urp.this.numFactors; z++) {
+                    for (int z = 0; z < URP.this.numFactors; z++) {
                         phi[userIndex][itemIndex][z] = Math.exp(Gamma.digamma(gamma[userIndex][z]) - Gamma.digamma(gs));
 
                         if (rated) {
@@ -266,7 +264,7 @@ public class Urp extends Recommender {
                         sum += phi[userIndex][itemIndex][z];
                     }
 
-                    for (int z = 0; z < Urp.this.numFactors; z++) {
+                    for (int z = 0; z < URP.this.numFactors; z++) {
                         phi[userIndex][itemIndex][z] /= sum;
                     }
                 }
@@ -274,7 +272,7 @@ public class Urp extends Recommender {
                 // update gamma
 
                 for (int z = 0; z < numFactors; z++) {
-                    gamma[userIndex][z] = Urp.this.alpha[z];
+                    gamma[userIndex][z] = URP.this.alpha[z];
                     for (int itemIndex = 0; itemIndex < datamodel.getNumberOfItems(); itemIndex++) {
                         gamma[userIndex][z] += phi[userIndex][itemIndex][z];
                     }

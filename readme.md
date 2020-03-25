@@ -68,14 +68,14 @@ Let's encode our first experiment with CF4J. In this experiment, we will compare
    First, we instantiate the `Pmf` recommender. We set the model's hyper-parameters using the `Pmf` class constructor: `numFactors = 10`, `gamma = 0.01`, `lambda = 0.1` and `numIters = 100`. We also fix the random seed to ensure the reproducibility of this experiment. Once the model is instantiated, we train the model parameters using `fit()` method.
    
    ```Java
-   Pmf pmf = new Pmf(datamodel, 10, 100, 0.1, 0.01, 43);
+   PMF pmf = new PMF(datamodel, 10, 100, 0.1, 0.01, 43);
    pmf.fit();
    ```
    
    We can now repeat this process for the `Nmf` recommender. 
    
    ```Java
-   Nmf nmf = new Nmf(datamodel, 10, 100, 43);
+   NMF nmf = new NMF(datamodel, 10, 100, 43);
    nmf.fit();
    ```
    
@@ -138,13 +138,13 @@ In this section we include the full list of algorithms implemented in the librar
    | Acronym  | Class                                                            | Publication |
    |----------|------------------------------------------------------------------|-------------|
    | BiasedMF | `es.upm.etsisi.cf4j.recommender.matrixFactorization.BiasedMF`    | Koren, Y., Bell, R., &amp; Volinsky, C. (2009). Matrix factorization techniques for recommender systems. Computer, (8), 30-37 |
-   | BNMF     | `es.upm.etsisi.cf4j.recommender.matrixFactorization.Bnmf`        | Hernando, A., Bobadilla, J., &amp; Ortega, F. (2016). A non negative matrix factorization for collaborative filtering recommender systems on a Bayesian probabilistic model. Knowledge-Based Systems, 97, 188-202 |
+   | BNMF     | `es.upm.etsisi.cf4j.recommender.matrixFactorization.BNMF`        | Hernando, A., Bobadilla, J., &amp; Ortega, F. (2016). A non negative matrix factorization for collaborative filtering recommender systems on a Bayesian probabilistic model. Knowledge-Based Systems, 97, 188-202 |
    | CLiMF    | `es.upm.etsisi.cf4j.recommender.matrixFactorization.CLiMF`       | Shi, Y., Karatzoglou, A., Baltrunas, L., Larson, M., Oliver, N., &amp; Hanjalic, A. (2012, September). CLiMF: learning to maximize reciprocal rank with collaborative less-is-more filtering. In Proceedings of the sixth ACM conference on Recommender systems (pp. 139-146) |
-   | HPF      | `es.upm.etsisi.cf4j.recommender.matrixFactorization.Hpf`         | Gopalan, P., Hofman, J. M., &amp; Blei, D. M. (2015, July). Scalable Recommendation with Hierarchical Poisson Factorization. In UAI (pp. 326-335) |
-   | NMF      | `es.upm.etsisi.cf4j.recommender.matrixFactorization.Nmf`         | Lee, D. D., &amp;  Seung, H. S. (2001). Algorithms for non-negative matrix factorization. In Advances * in neural information processing systems (pp. 556-562) |
-   | PMF      | `es.upm.etsisi.cf4j.recommender.matrixFactorization.Pmf`         | Mnih, A., &amp; Salakhutdinov, R. R. (2008). Probabilistic matrix factorization. In Advances in neural information processing systems (pp. 1257-1264) |
-   | Svd++    | `es.upm.etsisi.cf4j.recommender.matrixFactorization.SvdPlusPlus` | Koren, Y. (2008, August). Factorization meets the neighborhood: a multifaceted collaborative filtering model. In Proceedings of the 14th ACM SIGKDD international conference on Knowledge discovery and data mining (pp. 426-434) |
-   | URP      | `es.upm.etsisi.cf4j.recommender.matrixFactorization.Urp`         | Marlin, B. M. (2004). Modeling user rating profiles for collaborative filtering. In Advances in neural information processing systems (pp. 627-634) |
+   | HPF      | `es.upm.etsisi.cf4j.recommender.matrixFactorization.HPF`         | Gopalan, P., Hofman, J. M., &amp; Blei, D. M. (2015, July). Scalable Recommendation with Hierarchical Poisson Factorization. In UAI (pp. 326-335) |
+   | NMF      | `es.upm.etsisi.cf4j.recommender.matrixFactorization.NMF`         | Lee, D. D., &amp;  Seung, H. S. (2001). Algorithms for non-negative matrix factorization. In Advances * in neural information processing systems (pp. 556-562) |
+   | PMF      | `es.upm.etsisi.cf4j.recommender.matrixFactorization.PMF`         | Mnih, A., &amp; Salakhutdinov, R. R. (2008). Probabilistic matrix factorization. In Advances in neural information processing systems (pp. 1257-1264) |
+   | Svd++    | `es.upm.etsisi.cf4j.recommender.matrixFactorization.SVDPlusPlus` | Koren, Y. (2008, August). Factorization meets the neighborhood: a multifaceted collaborative filtering model. In Proceedings of the 14th ACM SIGKDD international conference on Knowledge discovery and data mining (pp. 426-434) |
+   | URP      | `es.upm.etsisi.cf4j.recommender.matrixFactorization.URP`         | Marlin, B. M. (2004). Modeling user rating profiles for collaborative filtering. In Advances in neural information processing systems (pp. 627-634) |
 
 * Quality measures:
 

@@ -6,7 +6,7 @@ import es.upm.etsisi.cf4j.data.RandomSplitDataSet;
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.qualityMeasure.prediction.MAE;
 import es.upm.etsisi.cf4j.recommender.Recommender;
-import es.upm.etsisi.cf4j.recommender.matrixFactorization.Pmf;
+import es.upm.etsisi.cf4j.recommender.matrixFactorization.PMF;
 
 /**
  * Compare MAE and Precision of PMF and BMF.
@@ -19,7 +19,7 @@ public class Example3 {
 		DataSet ml1m = new RandomSplitDataSet("src/main/resources/datasets/ml1m.dat", 0.2, 0.2, "::", 43);
 		DataModel datamodel = new DataModel(ml1m);
 
-		Recommender pmf = new Pmf(datamodel, 10, 50, 43);
+		Recommender pmf = new PMF(datamodel, 10, 50, 43);
 		pmf.fit();
 
 		QualityMeasure mae = new MAE(pmf);

@@ -15,7 +15,7 @@ import java.util.Random;
  * information processing systems (pp. 1257-1264).
  * @author Fernando Ortega
  */
-public class Pmf extends Recommender {
+public class PMF extends Recommender {
 
 	private final static double DEFAULT_GAMMA = 0.01;
 	private final static double DEFAULT_LAMBDA = 0.1;
@@ -56,7 +56,7 @@ public class Pmf extends Recommender {
 	 * @param numFactors Number of factors
 	 * @param numIters Number of iterations
 	 */
-	public Pmf(DataModel datamodel, int numFactors, int numIters)	{
+	public PMF(DataModel datamodel, int numFactors, int numIters)	{
 		this(datamodel, numFactors, numIters, DEFAULT_LAMBDA);
 	}
 
@@ -67,18 +67,18 @@ public class Pmf extends Recommender {
 	 * @param numIters Number of iterations
 	 * @param seed Seed for random numbers generation
 	 */
-	public Pmf(DataModel datamodel, int numFactors, int numIters, long seed)	{
+	public PMF(DataModel datamodel, int numFactors, int numIters, long seed)	{
 		this(datamodel, numFactors, numIters, DEFAULT_LAMBDA, DEFAULT_GAMMA, seed);
 	}
 
 	/**
 	 * Model constructor
-	 * @param datamodel
+	 * @param datamodel DataModel instance
 	 * @param numFactors Number of factors
 	 * @param numIters Number of iterations
 	 * @param lambda Regularization parameter
 	 */
-	public Pmf(DataModel datamodel, int numFactors, int numIters, double lambda) {
+	public PMF(DataModel datamodel, int numFactors, int numIters, double lambda) {
 		this(datamodel, numFactors, numIters, lambda, DEFAULT_GAMMA, System.currentTimeMillis());
 	}
 
@@ -90,7 +90,7 @@ public class Pmf extends Recommender {
 	 * @param lambda Regularization parameter
 	 * @param seed Seed for random numbers generation
 	 */
-	public Pmf(DataModel datamodel, int numFactors, int numIters, double lambda, long seed) {
+	public PMF(DataModel datamodel, int numFactors, int numIters, double lambda, long seed) {
 		this(datamodel, numFactors, numIters, lambda, DEFAULT_GAMMA, seed);
 	}
 
@@ -103,7 +103,7 @@ public class Pmf extends Recommender {
 	 * @param gamma Learning rate parameter
 	 * @param seed Seed for random numbers generation
 	 */
-	public Pmf(DataModel datamodel, int numFactors, int numIters, double lambda, double gamma, long seed) {
+	public PMF(DataModel datamodel, int numFactors, int numIters, double lambda, double gamma, long seed) {
 		super(datamodel);
 
 		this.numFactors = numFactors;

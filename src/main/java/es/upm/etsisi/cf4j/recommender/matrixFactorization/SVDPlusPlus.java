@@ -13,7 +13,7 @@ import java.util.Random;
  * model. In Proceedings of the 14th ACM SIGKDD international conference on Knowledge discovery and data mining
  * (pp. 426-434).
  */
-public class SvdPlusPlus extends Recommender {
+public class SVDPlusPlus extends Recommender {
 
     private final static double DEFAULT_GAMMA = 0.001;
     private final static double DEFAULT_LAMBDA = 0.01;
@@ -69,7 +69,7 @@ public class SvdPlusPlus extends Recommender {
      * @param numFactors Number of latent factors
      * @param numIters Number of iterations
      */
-    public SvdPlusPlus(DataModel datamodel, int numFactors, int numIters) {
+    public SVDPlusPlus(DataModel datamodel, int numFactors, int numIters) {
         this(datamodel, numFactors, numIters, DEFAULT_GAMMA, DEFAULT_LAMBDA);
     }
 
@@ -80,7 +80,7 @@ public class SvdPlusPlus extends Recommender {
      * @param numIters Number of iterations
      * @param seed Seed for random numbers generation
      */
-    public SvdPlusPlus(DataModel datamodel, int numFactors, int numIters, long seed) {
+    public SVDPlusPlus(DataModel datamodel, int numFactors, int numIters, long seed) {
         this(datamodel, numFactors, numIters, DEFAULT_GAMMA, DEFAULT_LAMBDA, seed);
     }
 
@@ -92,7 +92,7 @@ public class SvdPlusPlus extends Recommender {
      * @param gamma Learning rate hyper-parameter
      * @param lambda Regularization hyper-parameter
      */
-    public SvdPlusPlus(DataModel datamodel, int numFactors, int numIters, double gamma, double lambda) {
+    public SVDPlusPlus(DataModel datamodel, int numFactors, int numIters, double gamma, double lambda) {
         this(datamodel, numFactors, numIters, gamma, lambda, System.currentTimeMillis());
     }
 
@@ -105,7 +105,7 @@ public class SvdPlusPlus extends Recommender {
      * @param lambda Regularization hyper-parameter
      * @param seed Seed for random numbers generation
      */
-    public SvdPlusPlus(DataModel datamodel, int numFactors, int numIters, double gamma, double lambda, long seed) {
+    public SVDPlusPlus(DataModel datamodel, int numFactors, int numIters, double gamma, double lambda, long seed) {
         super(datamodel);
 
         this.numFactors = numFactors;
