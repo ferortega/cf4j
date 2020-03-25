@@ -1,18 +1,16 @@
-package es.upm.etsisi.cf4j.recommender.knn.itemToItemMetrics;
+package es.upm.etsisi.cf4j.recommender.knn.itemSimilarityMetric;
 
-
-import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
 
 /**
- * Implements Cosine as CF similarity metric for the items.
- * 
+ * This class Implements Pearson Correlation as CF similarity metric for the items.
  * @author Fernando Ortega
  */
-public class Cosine extends ItemToItemMetric {
+public class Correlation extends ItemSimilarityMetric {
 
 	@Override
 	public double similarity(Item item, Item otherItem) {
+
 		int u = 0, v = 0, common = 0; 
 		double num = 0d, denActive = 0d, denTarget = 0d;
 
@@ -22,12 +20,15 @@ public class Cosine extends ItemToItemMetric {
 			} else if (item.getUserAt(u) > otherItem.getUserAt(v)) {
 				v++;
 			} else {
-				num += item.getRatingAt(u) * otherItem.getRatingAt(v);
-				denActive += item.getRatingAt(u) * item.getRatingAt(u);
-				denTarget += otherItem.getRatingAt(v) * otherItem.getRatingAt(v);
+				double fa = item.getRatingAt(u) - item.getRatingAverage();
+				double ft = otherItem.getRatingAt(v) - otherItem.getRatingAverage();
+				
+				num += fa * ft;
+				denActive += fa * fa;
+				denTarget += ft * ft;
 				
 				common++;
-				u++; 
+				u++;
 				v++;
 			}	
 		}
@@ -35,7 +36,10 @@ public class Cosine extends ItemToItemMetric {
 		// If there is not ratings in common, similarity does not exists
 		if (common == 0) return Double.NEGATIVE_INFINITY;
 
+		// Denominator can not be zero
+		if (denActive == 0 || denTarget == 0) return Double.NEGATIVE_INFINITY;
+
 		// Return similarity
-		return num / (Math.sqrt(denActive) * Math.sqrt(denTarget));
+		return num / Math.sqrt(denActive * denTarget);
 	}
 }

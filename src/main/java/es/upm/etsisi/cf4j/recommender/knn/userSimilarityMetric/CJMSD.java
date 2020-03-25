@@ -1,23 +1,23 @@
-package es.upm.etsisi.cf4j.recommender.knn.userToUserMetrics;
+package es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetric;
 
-
-import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.User;
 
 /**
  * Implements the following CF similarity metric: Bobadilla, J., Ortega, F., Hernando, A., 
  * &amp; Arroyo, A. (2012). A Balanced Memory-Based Collaborative Filtering Similarity 
  * Measure, International Journal of Intelligent Systems, 27, 939-946.
- * 
  * @author Fernando Ortega
  */
-public class CJMSD extends UserToUserMetric {
+public class CJMSD extends UserSimilarityMetric {
 
 	/**
 	 * Maximum difference between the ratings
 	 */
 	private double maxDiff;
 
+	/**
+	 * Similarity metric constructor
+	 */
 	public CJMSD() {
 		this.maxDiff = super.datamodel.getMaxRating() - super.datamodel.getMinRating();
 	}

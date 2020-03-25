@@ -1,14 +1,12 @@
-package es.upm.etsisi.cf4j.recommender.knn.itemToItemMetrics;
+package es.upm.etsisi.cf4j.recommender.knn.itemSimilarityMetric;
 
-import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
 
 /**
  * This class implements the Constrained Correlation as CF similarity metric for items.
- * 
  * @author Fernando Ortega
  */
-public class CorrelationConstrained extends ItemToItemMetric {
+public class CorrelationConstrained extends ItemSimilarityMetric {
 
 	/**
 	 * Median of the ratings of the dataset
@@ -17,7 +15,7 @@ public class CorrelationConstrained extends ItemToItemMetric {
 	
 	/**
 	 * Constructor of the similarity metric
-	 * @param median Median of the ratings of the dataset
+	 * @param median Median of the ratings of the DataSet instance
 	 */
 	public CorrelationConstrained(double median) {
 		this.median = median;

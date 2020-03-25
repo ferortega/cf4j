@@ -1,19 +1,17 @@
-package es.upm.etsisi.cf4j.recommender.knn.itemToItemMetrics;
+package es.upm.etsisi.cf4j.recommender.knn.itemSimilarityMetric;
 
-import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
 import es.upm.etsisi.cf4j.data.User;
 
 import java.util.HashSet;
 
 /**
- * This class implements the singularities CF similarity metric. The similarity metric 
- * is described here: Bobadilla, J., Ortega, F., 	&amp; Hernando, A. (2012). A collaborative filtering
- * similarity measure based on singularities, Information Processing and Management, 48 (2), 204-217
- * 
+ * This class implements the singularities CF similarity metric. The similarity metric  is described here:
+ * Bobadilla, J., Ortega, F., 	&amp; Hernando, A. (2012). A collaborative filtering similarity measure based on
+ * singularities, Information Processing and Management, 48 (2), 204-217
  * @author Fernando Ortega
  */
-public class Singularities extends ItemToItemMetric {
+public class Singularities extends ItemSimilarityMetric {
 
 	/**
 	 * Maximum difference between the ratings
@@ -46,10 +44,10 @@ public class Singularities extends ItemToItemMetric {
 	 * @param notRelevantRatings Not relevant ratings array
 	 */
 	public Singularities (double [] relevantRatings, double [] notRelevantRatings) {
-		this.relevantRatings = new HashSet <Double> ();
+		this.relevantRatings = new HashSet <> ();
 		for (double r : relevantRatings) this.relevantRatings.add(r);
 
-		this.notRelevantRatings = new HashSet <Double> ();
+		this.notRelevantRatings = new HashSet <> ();
 		for (double r : notRelevantRatings)  this.notRelevantRatings.add(r);
 
 		this.maxDiff = super.datamodel.getMaxRating() - super.datamodel.getMinRating();
@@ -112,7 +110,7 @@ public class Singularities extends ItemToItemMetric {
 
 					double sing_p = this.singularityOfRelevantRatings[userIndex];
 
-					double diff = ((double) (activeItemRating - targetItemRating)) / this.maxDiff;
+					double diff = (activeItemRating - targetItemRating) / this.maxDiff;
 					metric_a += (1d - diff * diff) * sing_p * sing_p;
 
 				// Both users have rated no relevant
@@ -121,7 +119,7 @@ public class Singularities extends ItemToItemMetric {
 
 					double sing_n = this.singularityOfNotRelevantRatings[userIndex];
 
-					double diff = ((double) (activeItemRating - targetItemRating)) / this.maxDiff;
+					double diff = (activeItemRating - targetItemRating) / this.maxDiff;
 					metric_b += (1d - diff * diff) * sing_n * sing_n;
 
 				//  One user has rated relevant and the other one has rated no relevat
@@ -131,7 +129,7 @@ public class Singularities extends ItemToItemMetric {
 					double sing_p = this.singularityOfRelevantRatings[userIndex];
 					double sing_n = this.singularityOfNotRelevantRatings[userIndex];
 
-					double diff = ((double) (activeItemRating - targetItemRating)) / this.maxDiff;
+					double diff = (activeItemRating - targetItemRating) / this.maxDiff;
 					metric_c += (1d - diff * diff) * sing_p * sing_n;
 				}
 				

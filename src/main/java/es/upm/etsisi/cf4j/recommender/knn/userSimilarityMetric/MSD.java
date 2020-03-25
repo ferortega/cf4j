@@ -1,31 +1,29 @@
-package es.upm.etsisi.cf4j.recommender.knn.userToUserMetrics;
+package es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetric;
 
-
-import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.User;
 
 /**
- * Implements the following CF similarity metric: Bobadilla, J., Serradilla, F., 
- * &amp; Bernal, J. (2010). A new collaborative filtering metric that improves 
- * the behavior of Recommender Systems, Knowledge-Based Systems, 23 (6), 520-528.
- * 
+ * Implements traditional MSD as CF similarity metric. The returned value is 1 - MSD.
  * @author Fernando Ortega
  */
-public class JMSD extends UserToUserMetric {
+public class MSD extends UserSimilarityMetric {
 
 	/**
 	 * Maximum difference between the ratings
 	 */
 	private double maxDiff;
 
-	public JMSD() {
+	/**
+	 * Constructor of MSD similarity metric
+	 */
+	public MSD() {
 		this.maxDiff = super.datamodel.getMaxRating() - super.datamodel.getMinRating();
 	}
 	
 	@Override
 	public double similarity(User user, User otherUser) {
 
-		int i = 0, j = 0, intersection = 0;
+		int i = 0, j = 0, common = 0; 
 		double msd = 0d;
 		
 		while (i < user.getNumberOfRatings() && j < otherUser.getNumberOfRatings()) {
@@ -35,19 +33,18 @@ public class JMSD extends UserToUserMetric {
 				j++;
 			} else {
 				double diff = (user.getRatingAt(i) - otherUser.getRatingAt(j)) / this.maxDiff;
-				msd += diff * diff;
-				intersection++;
+				msd += diff * diff;				
+				
+				common++;
 				i++; 
 				j++;
 			}	
 		}
 
 		// If there is not items in common, similarity does not exists
-		if (intersection == 0) return Double.NEGATIVE_INFINITY;
-		
+		if (common == 0) return Double.NEGATIVE_INFINITY;
+
 		// Return similarity
-		double union = user.getNumberOfRatings() + otherUser.getNumberOfRatings() - intersection;
-		double jaccard = intersection / union;
-		return jaccard * (1d - (msd / intersection));
+		return 1d - (msd / common);
 	}
 }

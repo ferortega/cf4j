@@ -1,19 +1,16 @@
-package es.upm.etsisi.cf4j.recommender.knn.userToUserMetrics;
+package es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetric;
 
-import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
 import es.upm.etsisi.cf4j.data.User;
 
 import java.util.HashSet;
 
 /**
- * Implements the following CF similarity metric: Bobadilla, J., Ortega, F., &amp;
- * Hernando, A. (2012). A collaborative filtering similarity measure based on
- * singularities, Information Processing and Management, 48 (2), 204-217.
- * 
+ * Implements the following CF similarity metric: Bobadilla, J., Ortega, F., &amp; Hernando, A. (2012). A collaborative
+ * filtering similarity measure based on singularities, Information Processing and Management, 48 (2), 204-217.
  * @author Fernando Ortega
  */
-public class Singularities extends UserToUserMetric {
+public class Singularities extends UserSimilarityMetric {
 
 	/**
 	 * Maximum difference between the ratings
@@ -46,10 +43,10 @@ public class Singularities extends UserToUserMetric {
 	 * @param notRelevantRatings Not relevant ratings array
 	 */
 	public Singularities(double [] relevantRatings, double [] notRelevantRatings) {
-		this.relevantRatings = new HashSet <Double> ();
+		this.relevantRatings = new HashSet <> ();
 		for (double r : relevantRatings) this.relevantRatings.add(r);
 
-		this.notRelevantRatings = new HashSet <Double> ();
+		this.notRelevantRatings = new HashSet <> ();
 		for (double r : notRelevantRatings)  this.notRelevantRatings.add(r);
 
 		this.maxDiff = super.datamodel.getMaxRating() - super.datamodel.getMinRating();
@@ -112,7 +109,7 @@ public class Singularities extends UserToUserMetric {
 
 					double sing_p = this.singularityOfRelevantRatings[itemIndex];
 
-					double diff = ((double) (activeUserRating - targetUserRating)) / this.maxDiff;
+					double diff = (activeUserRating - targetUserRating) / this.maxDiff;
 					metric_a += (1d - diff * diff) * sing_p * sing_p;
 
 				// Both users have rated no relevant
@@ -121,7 +118,7 @@ public class Singularities extends UserToUserMetric {
 
 					double sing_n = this.singularityOfNotRelevantRatings[itemIndex];
 
-					double diff = ((double) (activeUserRating - targetUserRating)) / this.maxDiff;
+					double diff = (activeUserRating - targetUserRating) / this.maxDiff;
 					metric_b += (1d - diff * diff) * sing_n * sing_n;
 
 				//  One user has rated relevant and the other one has rated no relevat
@@ -131,7 +128,7 @@ public class Singularities extends UserToUserMetric {
 					double sing_p = this.singularityOfRelevantRatings[itemIndex];
 					double sing_n = this.singularityOfNotRelevantRatings[itemIndex];
 
-					double diff = ((double) (activeUserRating - targetUserRating)) / this.maxDiff;
+					double diff = (activeUserRating - targetUserRating) / this.maxDiff;
 					metric_c += (1d - diff * diff) * sing_p * sing_n;
 				}
 				

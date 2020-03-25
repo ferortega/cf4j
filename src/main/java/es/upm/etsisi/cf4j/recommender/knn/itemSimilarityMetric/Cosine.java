@@ -1,24 +1,28 @@
-package es.upm.etsisi.cf4j.recommender.knn.itemToItemMetrics;
+package es.upm.etsisi.cf4j.recommender.knn.itemSimilarityMetric;
 
-import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
 
 /**
- * This class Implements Jaccard Index as CF similarity metric for the items.
- * 
+ * Implements Cosine as CF similarity metric for the items.
  * @author Fernando Ortega
  */
-public class Jaccard extends ItemToItemMetric {
+public class Cosine extends ItemSimilarityMetric {
 
 	@Override
 	public double similarity(Item item, Item otherItem) {
-		int u = 0, v = 0, common = 0;
+		int u = 0, v = 0, common = 0; 
+		double num = 0d, denActive = 0d, denTarget = 0d;
+
 		while (u < item.getNumberOfRatings() && v < otherItem.getNumberOfRatings()) {
 			if (item.getUserAt(u) < otherItem.getUserAt(v)) {
 				u++;
 			} else if (item.getUserAt(u) > otherItem.getUserAt(v)) {
 				v++;
 			} else {
+				num += item.getRatingAt(u) * otherItem.getRatingAt(v);
+				denActive += item.getRatingAt(u) * item.getRatingAt(u);
+				denTarget += otherItem.getRatingAt(v) * otherItem.getRatingAt(v);
+				
 				common++;
 				u++; 
 				v++;
@@ -29,6 +33,6 @@ public class Jaccard extends ItemToItemMetric {
 		if (common == 0) return Double.NEGATIVE_INFINITY;
 
 		// Return similarity
-		return (double) common / (double) (item.getNumberOfRatings() + otherItem.getNumberOfRatings() - common);
+		return num / (Math.sqrt(denActive) * Math.sqrt(denTarget));
 	}
 }

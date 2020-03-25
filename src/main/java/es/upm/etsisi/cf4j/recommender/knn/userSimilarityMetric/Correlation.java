@@ -1,15 +1,12 @@
-package es.upm.etsisi.cf4j.recommender.knn.userToUserMetrics;
+package es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetric;
 
-
-import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.User;
 
 /**
- * Implements traditional Cosine as CF similarity metric.
- * 
+ * Implements traditional Pearson Correlation as CF similarity metric.
  * @author Fernando Ortega
  */
-public class Cosine extends UserToUserMetric {
+public class Correlation extends UserSimilarityMetric {
 
 	@Override
 	public double similarity(User user, User otherUser) {
@@ -23,12 +20,15 @@ public class Cosine extends UserToUserMetric {
 			} else if (user.getItemAt(i) > otherUser.getItemAt(j)) {
 				j++;
 			} else {
-				num += user.getRatingAt(i) * otherUser.getRatingAt(j);
-				denActive += user.getRatingAt(i) * user.getRatingAt(i);
-				denTarget += otherUser.getRatingAt(j) * otherUser.getRatingAt(j);
+				double t = user.getRatingAt(i) - user.getRatingAverage();
+				double o = otherUser.getRatingAt(j) - otherUser.getRatingAverage();
+				
+				num += t * o;
+				denActive += t * t;
+				denTarget += o * o;
 				
 				common++;
-				i++; 
+				i++;
 				j++;
 			}	
 		}
@@ -36,7 +36,11 @@ public class Cosine extends UserToUserMetric {
 		// If there is not items in common, similarity does not exists
 		if (common == 0) return Double.NEGATIVE_INFINITY;
 
+		// Denominator can not be zero
+		if (denActive == 0 || denTarget == 0) return Double.NEGATIVE_INFINITY;
+
 		// Return similarity
-		return num / (Math.sqrt(denActive) * Math.sqrt(denTarget));
+		double correlation = num / Math.sqrt(denActive * denTarget);
+		return (correlation + 1.0) / 2.0;
 	}
 }

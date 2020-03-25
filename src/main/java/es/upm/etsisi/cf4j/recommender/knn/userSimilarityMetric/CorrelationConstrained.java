@@ -1,15 +1,12 @@
-package es.upm.etsisi.cf4j.recommender.knn.userToUserMetrics;
+package es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetric;
 
-
-import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.User;
 
 /**
  * Implements traditional Pearson Correlation Constrained as CF similarity metric.
- * 
  * @author Fernando Ortega
  */
-public class CorrelationConstrained extends UserToUserMetric {
+public class CorrelationConstrained extends UserSimilarityMetric {
 
 	/**
 	 * Median of the ratings of the datamodel
@@ -18,7 +15,7 @@ public class CorrelationConstrained extends UserToUserMetric {
 	
 	/**
 	 * Constructor of the similarity metric
-	 * @param median Median of the ratings of the dataset
+	 * @param median Median of the ratings of the DataModel instance
 	 */
 	public CorrelationConstrained (double median) {
 		this.median = median;

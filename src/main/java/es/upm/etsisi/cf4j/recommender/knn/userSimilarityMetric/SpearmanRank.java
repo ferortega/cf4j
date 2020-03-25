@@ -1,14 +1,12 @@
-package es.upm.etsisi.cf4j.recommender.knn.userToUserMetrics;
+package es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetric;
 
-import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.User;
 
 /**
  * Implements traditional Sepearman Rank as CF similarity metric.
- * 
  * @author Fernando Ortega
  */
-public class SpearmanRank extends UserToUserMetric {
+public class SpearmanRank extends UserSimilarityMetric {
 
 	@Override
 	public double similarity(User user, User otherUser) {

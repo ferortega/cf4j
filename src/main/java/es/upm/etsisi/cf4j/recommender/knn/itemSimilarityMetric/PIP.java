@@ -1,18 +1,16 @@
-package es.upm.etsisi.cf4j.recommender.knn.itemToItemMetrics;
+package es.upm.etsisi.cf4j.recommender.knn.itemSimilarityMetric;
 
 
-import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
 import es.upm.etsisi.cf4j.data.User;
 
 /**
- * This class implements the PIP CF similarity metric for the items. The similarity metric
- * is described here: Ahn, H. J. (2008). A new similarity measure for collaborative filtering
- * to alleviate the new user cold-starting problem, Information Sciences, 178, 37??51.
- * 
+ * This class implements the PIP CF similarity metric for the items. The similarity metric is described here:
+ * Ahn, H. J. (2008). A new similarity measure for collaborative filtering o alleviate the new user cold-starting
+ * problem, Information Sciences, 178, 37??51.
  * @author Fernando ortega
  */
-public class PIP extends ItemToItemMetric {
+public class PIP extends ItemSimilarityMetric {
 
 	/**
 	 * Median of the ratings of the dataset

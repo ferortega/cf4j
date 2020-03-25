@@ -1,44 +1,62 @@
 package es.upm.etsisi.cf4j.recommender.knn;
 
-
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.User;
 import es.upm.etsisi.cf4j.process.Parallelizer;
 import es.upm.etsisi.cf4j.process.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
-import es.upm.etsisi.cf4j.recommender.knn.userToUserMetrics.UserToUserMetric;
+import es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetric.UserSimilarityMetric;
 import es.upm.etsisi.cf4j.utils.Search;
 
-public class UserToUser extends Recommender {
+/**
+ * Implements user-to-user KNN based collaborative filtering
+ */
+public class UserKNN extends Recommender {
 
-    public enum AggregationApproach {MEAN, WEIGTHED_MEAN, DEVIATION_FROM_MEAN}
+    /**
+     * Available aggregation approaches to merge k-nearest neighbors ratings
+     */
+    public enum AggregationApproach {MEAN, WEIGHTED_MEAN, DEVIATION_FROM_MEAN}
 
+    /**
+     * Number of neighbors (k)
+     */
+    protected int numberOfNeighbors;
+
+    /**
+     * Similarity metric to compute the similarity between two users
+     */
+    private UserSimilarityMetric metric;
+
+    /**
+     * Aggregation approach used to aggregate k-nearest neighbors ratings
+     */
+    private AggregationApproach aggregationApproach;
+
+    /**
+     * Contains the neighbors indexes of each user
+     */
     protected int[][] neighbors;
 
-    protected double[][] similarities;
-
-    protected int K;
-
-    private UserToUserMetric metric;
-
-    private AggregationApproach aa;
-
-
-    public UserToUser(DataModel datamodel, int K, UserToUserMetric metric, AggregationApproach aa) {
+    /**
+     * Recommender constructor
+     * @param datamodel DataModel instance
+     * @param numberOfNeighbors Number of neighbors (k)
+     * @param metric Similarity metric to compute the similarity between two users
+     * @param aggregationApproach Aggregation approach used to aggregate k-nearest neighbors ratings
+     */
+    public UserKNN(DataModel datamodel, int numberOfNeighbors, UserSimilarityMetric metric, AggregationApproach aggregationApproach) {
         super(datamodel);
 
-        this.K = K;
+        this.numberOfNeighbors = numberOfNeighbors;
 
         int numUsers = this.datamodel.getNumberOfUsers();
-
-        this.neighbors = new int[numUsers][K];
-        this.similarities = new double[numUsers][numUsers];
-
-        this.aa = aa;
+        this.neighbors = new int[numUsers][numberOfNeighbors];
 
         this.metric = metric;
         this.metric.setDatamodel(datamodel);
-        this.metric.setSimilarities(this.similarities);
+
+        this.aggregationApproach = aggregationApproach;
     }
 
     @Override
@@ -49,11 +67,11 @@ public class UserToUser extends Recommender {
 
     @Override
     public double predict(int userIndex, int itemIndex) {
-        switch(this.aa) {
+        switch(this.aggregationApproach) {
             case MEAN:
                 return predictMean(userIndex, itemIndex);
-            case WEIGTHED_MEAN:
-                return predictWeigthedMean(userIndex, itemIndex);
+            case WEIGHTED_MEAN:
+                return predictWeightedMean(userIndex, itemIndex);
             case DEVIATION_FROM_MEAN:
                 return predictDeviationFromMean(userIndex, itemIndex);
             default:
@@ -61,6 +79,12 @@ public class UserToUser extends Recommender {
         }
     }
 
+    /**
+     * Implementation of MEAN aggregation approach
+     * @param userIndex user index
+     * @param itemIndex item index
+     * @return Ration prediction from the user to the item
+     */
     private double predictMean(int userIndex, int itemIndex) {
         double prediction = 0;
         int count = 0;
@@ -85,7 +109,15 @@ public class UserToUser extends Recommender {
         }
     }
 
-    private double predictWeigthedMean(int userIndex, int itemIndex) {
+    /**
+     * Implementation of WEIGHTED_MEAN aggregation approach
+     * @param userIndex user index
+     * @param itemIndex item index
+     * @return Ration prediction from the user to the item
+     */
+    private double predictWeightedMean(int userIndex, int itemIndex) {
+        double[] similarities = metric.getSimilarities(userIndex);
+
         double num = 0;
         double den = 0;
 
@@ -96,7 +128,7 @@ public class UserToUser extends Recommender {
 
             int pos = neighbor.findItem(itemIndex);
             if (pos != -1) {
-                double similarity = this.similarities[userIndex][neighborIndex];
+                double similarity = similarities[neighborIndex];
                 double rating = neighbor.getRatingAt(pos);
                 num += similarity * rating;
                 den += similarity;
@@ -106,8 +138,15 @@ public class UserToUser extends Recommender {
         return (den == 0) ? Double.NaN : num / den;
     }
 
+    /**
+     * Implementation of DEVIATION_FROM_MEAN aggregation approach
+     * @param userIndex user index
+     * @param itemIndex item index
+     * @return Ration prediction from the user to the item
+     */
     private double predictDeviationFromMean(int userIndex, int itemIndex) {
         User user = this.datamodel.getUser(userIndex);
+        double[] similarities = metric.getSimilarities(userIndex);
 
         double num = 0;
         double den = 0;
@@ -119,7 +158,7 @@ public class UserToUser extends Recommender {
 
             int pos = neighbor.findItem(itemIndex);
             if (pos != -1) {
-                double similarity = this.similarities[userIndex][neighborIndex];
+                double similarity = similarities[neighborIndex];
                 double rating = neighbor.getRatingAt(pos);
                 double avg = neighbor.getRatingAverage();
 
@@ -133,6 +172,9 @@ public class UserToUser extends Recommender {
                 : user.getRatingAverage() + num / den;
     }
 
+    /**
+     * Private class to parallelize neighbors computation
+     */
     private class UserNeighbors implements Partible<User> {
 
         @Override
@@ -141,7 +183,8 @@ public class UserToUser extends Recommender {
         @Override
         public void run(User user) {
             int userIndex = user.getUserIndex();
-            neighbors[userIndex] = Search.findTopN(similarities[userIndex], K);
+            double[] similarities = metric.getSimilarities(userIndex);
+            neighbors[userIndex] = Search.findTopN(similarities, numberOfNeighbors);
         }
 
         @Override

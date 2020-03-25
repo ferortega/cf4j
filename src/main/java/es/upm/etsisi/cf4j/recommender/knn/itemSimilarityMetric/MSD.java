@@ -1,21 +1,21 @@
-package es.upm.etsisi.cf4j.recommender.knn.itemToItemMetrics;
+package es.upm.etsisi.cf4j.recommender.knn.itemSimilarityMetric;
 
-
-import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
 
 /**
  * Implements traditional MSD as CF similarity metric for items. The returned value is 1 - MSD.
- * 
  * @author Fernando Ortega
  */
-public class MSD extends ItemToItemMetric {
+public class MSD extends ItemSimilarityMetric {
 
 	/**
 	 * Maximum difference between the ratings
 	 */
 	private double maxDiff;
 
+	/**
+	 * Constructor of the similarity metric
+	 */
 	public MSD() {
 		this.maxDiff = super.datamodel.getMaxRating() - super.datamodel.getMinRating();
 	}
