@@ -6,14 +6,9 @@ import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.utils.Methods;
 
 /**
- * <p>This class calculates the Recall of the recommender system. It is calculate as 
+ * <p>This class calculates the recall of the recommendations performed by a Recommender. It is calculated as
  * follows:</p>
- * 
  * <p>recall = &lt;relevant recommended items&gt; / &lt;number of relevant items&gt;</p>
- *
- * <p>This class puts the "Recall" key at the Kernel map containing a double with the 
- * recall value.</p>
- * 
  * @author Fernando Ortega
  */
 public class Recall extends QualityMeasure {
@@ -29,11 +24,12 @@ public class Recall extends QualityMeasure {
 	private double relevantThreshold;
 
 	/**
-	 * Constructor of Recall
+	 * Constructor
+	 * @param recommender Recommender instance for which the recall are going to be computed
 	 * @param numberOfRecommendations Number of recommendations
 	 * @param relevantThreshold Minimum rating to consider a rating as relevant
 	 */
-	public Recall (Recommender recommender, int numberOfRecommendations, double relevantThreshold) {
+	public Recall(Recommender recommender, int numberOfRecommendations, double relevantThreshold) {
 		super(recommender);
 		this.numberOfRecommendations = numberOfRecommendations;
 		this.relevantThreshold = relevantThreshold;

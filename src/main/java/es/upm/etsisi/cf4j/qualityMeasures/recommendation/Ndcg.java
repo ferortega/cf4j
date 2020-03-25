@@ -1,31 +1,26 @@
 package es.upm.etsisi.cf4j.qualityMeasures.recommendation;
 
-
 import es.upm.etsisi.cf4j.data.TestUser;
 import es.upm.etsisi.cf4j.qualityMeasures.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.utils.Methods;
 
 /**
- * <p>This class calculates the NDCG of the recommender system. It is calculated as 
- * follows:</p>
- * 
+ * <p>This class calculates the Normalized Discounted Cumulative Gain (nDCG) of the recommendations performed by a
+ * Recommender. It is calculated as follows:</p>
  * <p>NDCG = &lt;SumDcg&gt; / &lt;SumIdcg&gt;</p>
- *
- * <p>This class puts the "NDCG" key at the Kernel map containing a double with the 
- * NDCG value.</p>
- * 
  * @author Bo Zhu
  */
 public class Ndcg extends QualityMeasure {
 
 	/**
-	 * Number of recommended items, NDCG@N
+	 * Number of recommended items
 	 */
 	private int numberOfRecommendations;
 
 	/**
-	 * Constructor of Ndcg
+	 * Constructor
+	 * @param recommender Recommender instance for which the nDCG are going to be computed
 	 * @param numberOfRecommendations Number of recommendations
 	 */
 	public Ndcg(Recommender recommender, int numberOfRecommendations) {

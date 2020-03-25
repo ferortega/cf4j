@@ -6,13 +6,8 @@ import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.utils.Methods;
 
 /**
- * <p>This class calculates the F1 score of the recommender system. It is as follows:</p>
- * 
+ * <p>This class calculates the F1 score of the recommender system. F1 score is computed as follows:</p>
  * <p>F1 = 2 * precision * recall / (precision + recall)</p>
- *
- * <p>This class puts the "F1" key at the Kernel map containing a double with the precision 
- * value and the recall value.</p>
- * 
  * @author Fernando Ortega
  */
 public class F1 extends QualityMeasure {
@@ -28,7 +23,8 @@ public class F1 extends QualityMeasure {
 	private double relevantThreshold;
 
 	/**
-	 * Constructor of F1
+	 * Constructor
+	 * @param recommender Recommender instance for which the F1 are going to be computed
 	 * @param numberOfRecommendations Number of recommendations
 	 * @param relevantThreshold Minimum rating to consider a rating as relevant
 	 */

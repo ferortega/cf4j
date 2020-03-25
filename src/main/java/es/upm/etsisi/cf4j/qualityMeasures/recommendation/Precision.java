@@ -6,14 +6,9 @@ import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.utils.Methods;
 
 /**
- * <p>This class calculates the Precision of the recommender system. It is calculated as 
+ * <p>This class calculates the precision of the recommendations performed by a Recommender. It is calculated as
  * follows:</p>
- * 
  * <p>precision = &lt;relevant recommended items&gt; / &lt;number of recommended items&gt;</p>
- *
- * <p>This class puts the "Precision" key at the Kernel map containing a double with the 
- * precision value.</p>
- * 
  * @author Fernando Ortega
  */
 public class Precision extends QualityMeasure {
@@ -30,10 +25,11 @@ public class Precision extends QualityMeasure {
 
 	/**
 	 * Constructor of Precision
+	 * @param recommender Recommender instance for which the precision are going to be computed
 	 * @param numberOfRecommendations Number of recommendations
 	 * @param relevantThreshold Minimum rating to consider a rating as relevant
 	 */
-	public Precision (Recommender recommender, int numberOfRecommendations, double relevantThreshold) {
+	public Precision(Recommender recommender, int numberOfRecommendations, double relevantThreshold) {
 		super(recommender);
 		this.numberOfRecommendations = numberOfRecommendations;
 		this.relevantThreshold = relevantThreshold;
