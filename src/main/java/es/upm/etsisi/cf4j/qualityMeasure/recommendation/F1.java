@@ -3,7 +3,7 @@ package es.upm.etsisi.cf4j.qualityMeasure.recommendation;
 import es.upm.etsisi.cf4j.data.TestUser;
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
-import es.upm.etsisi.cf4j.utils.Methods;
+import es.upm.etsisi.cf4j.utils.Search;
 
 /**
  * <p>This class calculates the F1 score of the recommender system. F1 score is computed as follows:</p>
@@ -48,7 +48,7 @@ public class F1 extends QualityMeasure {
 		}
 
 		// Items that has been recommended and was relevant to the test user
-		int [] recommendations = Methods.findTopN(predictions, this.numberOfRecommendations);
+		int [] recommendations = Search.findTopN(predictions, this.numberOfRecommendations);
 
 		int recommendedAndRelevant = 0, recommended = 0;
 

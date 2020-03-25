@@ -8,9 +8,7 @@ import es.upm.etsisi.cf4j.process.Parallelizer;
 import es.upm.etsisi.cf4j.process.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.recommender.knn.itemToItemMetrics.ItemToItemMetric;
-import es.upm.etsisi.cf4j.utils.Methods;
-
-import java.lang.reflect.InvocationTargetException;
+import es.upm.etsisi.cf4j.utils.Search;
 
 public class ItemToItem extends Recommender {
 
@@ -115,7 +113,7 @@ public class ItemToItem extends Recommender {
         @Override
         public void run(Item item) {
             int itemIndex = item.getItemIndex();
-            neighbors[itemIndex] = Methods.findTopN(similarities[itemIndex], K);
+            neighbors[itemIndex] = Search.findTopN(similarities[itemIndex], K);
         }
 
         @Override

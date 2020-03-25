@@ -6,7 +6,7 @@ import es.upm.etsisi.cf4j.data.User;
 import es.upm.etsisi.cf4j.process.Parallelizer;
 import es.upm.etsisi.cf4j.process.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
-import es.upm.etsisi.cf4j.utils.Methods;
+import es.upm.etsisi.cf4j.utils.Maths;
 
 import java.util.Random;
 
@@ -193,7 +193,7 @@ public class BiasedMF extends Recommender {
 	public double predict(int userIndex, int itemIndex) {
 		double[] pu = this.p[userIndex];
 		double[] qi = this.q[itemIndex];
-		return datamodel.getRatingAverage() + this.bu[userIndex] + this.bi[itemIndex] + Methods.dotProduct(pu, qi);
+		return datamodel.getRatingAverage() + this.bu[userIndex] + this.bi[itemIndex] + Maths.dotProduct(pu, qi);
 	}
 
 	/**

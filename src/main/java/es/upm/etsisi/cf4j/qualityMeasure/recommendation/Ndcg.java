@@ -3,7 +3,7 @@ package es.upm.etsisi.cf4j.qualityMeasure.recommendation;
 import es.upm.etsisi.cf4j.data.TestUser;
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
-import es.upm.etsisi.cf4j.utils.Methods;
+import es.upm.etsisi.cf4j.utils.Search;
 
 /**
  * <p>This class calculates the Normalized Discounted Cumulative Gain (nDCG) of the recommendations performed by a
@@ -33,7 +33,7 @@ public class Ndcg extends QualityMeasure {
 
 		// Compute DCG
 
-		int [] recommendations = Methods.findTopN(predictions, this.numberOfRecommendations);
+		int [] recommendations = Search.findTopN(predictions, this.numberOfRecommendations);
 
 		double dcg = 0d;
 
@@ -52,7 +52,7 @@ public class Ndcg extends QualityMeasure {
 			testRatings[i] = testUser.getRatingAt(i);
 		}
 
-		int [] idealRecommendations = Methods.findTopN(testRatings, this.numberOfRecommendations);
+		int [] idealRecommendations = Search.findTopN(testRatings, this.numberOfRecommendations);
 
 		double idcg = 0d;
 

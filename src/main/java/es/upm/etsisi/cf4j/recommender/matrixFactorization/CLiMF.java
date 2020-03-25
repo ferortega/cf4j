@@ -5,7 +5,7 @@ import es.upm.etsisi.cf4j.data.User;
 import es.upm.etsisi.cf4j.process.Parallelizer;
 import es.upm.etsisi.cf4j.process.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
-import es.upm.etsisi.cf4j.utils.Methods;
+import es.upm.etsisi.cf4j.utils.Maths;
 
 import java.util.Random;
 import java.util.concurrent.locks.ReentrantLock;
@@ -141,7 +141,7 @@ public class CLiMF extends Recommender {
 
     @Override
     public double predict(int userIndex, int itemIndex) {
-        return Methods.dotProduct(this.U[userIndex], this.V[itemIndex]);
+        return Maths.dotProduct(this.U[userIndex], this.V[itemIndex]);
     }
 
     /**

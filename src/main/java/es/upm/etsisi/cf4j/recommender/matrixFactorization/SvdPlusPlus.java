@@ -4,10 +4,8 @@ package es.upm.etsisi.cf4j.recommender.matrixFactorization;
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.User;
 import es.upm.etsisi.cf4j.recommender.Recommender;
-import es.upm.etsisi.cf4j.utils.Methods;
+import es.upm.etsisi.cf4j.utils.Maths;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 /**
@@ -203,7 +201,7 @@ public class SvdPlusPlus extends Recommender {
 
         double[] qi = this.q[itemIndex];
 
-        double dot = Methods.dotProduct(pu, qi);
+        double dot = Maths.dotProduct(pu, qi);
 
         return super.datamodel.getRatingAverage() + this.bi[itemIndex] + this.bu[userIndex] + dot;
     }

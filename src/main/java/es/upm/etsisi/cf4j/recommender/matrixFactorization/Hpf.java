@@ -6,7 +6,7 @@ import es.upm.etsisi.cf4j.data.User;
 import es.upm.etsisi.cf4j.process.Parallelizer;
 import es.upm.etsisi.cf4j.process.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
-import es.upm.etsisi.cf4j.utils.Methods;
+import es.upm.etsisi.cf4j.utils.Maths;
 import org.apache.commons.math3.special.Gamma;
 
 import java.util.Random;
@@ -156,7 +156,7 @@ public class Hpf extends Recommender {
 
     @Override
     public double predict(int userIndex, int itemIndex) {
-        double dot = Methods.dotProduct(this.gamma[userIndex], this.lambda[itemIndex]);
+        double dot = Maths.dotProduct(this.gamma[userIndex], this.lambda[itemIndex]);
         double prob = 1 - Math.exp(-1 * dot);
         return prob;
     }

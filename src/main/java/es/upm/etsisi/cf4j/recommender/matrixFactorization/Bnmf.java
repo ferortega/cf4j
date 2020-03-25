@@ -8,7 +8,7 @@ import es.upm.etsisi.cf4j.data.Item;
 import es.upm.etsisi.cf4j.process.Parallelizer;
 import es.upm.etsisi.cf4j.process.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
-import es.upm.etsisi.cf4j.utils.Methods;
+import es.upm.etsisi.cf4j.utils.Maths;
 
 import org.apache.commons.math3.special.Gamma;
 
@@ -221,7 +221,7 @@ public class Bnmf extends Recommender {
 
 	@Override
 	public double predict(int userIndex, int itemIndex) {
-		double prob = Methods.dotProduct(this.a[userIndex], this.b[itemIndex]);
+		double prob = Maths.dotProduct(this.a[userIndex], this.b[itemIndex]);
 		prob = Math.max(prob, 1E-10);
 		double prediction = Math.ceil(prob * (super.datamodel.getMaxRating() - super.datamodel.getMinRating() + 1));
 		return prediction;

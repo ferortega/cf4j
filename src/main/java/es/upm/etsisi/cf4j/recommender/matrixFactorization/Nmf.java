@@ -6,7 +6,7 @@ import es.upm.etsisi.cf4j.data.User;
 import es.upm.etsisi.cf4j.process.Parallelizer;
 import es.upm.etsisi.cf4j.process.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
-import es.upm.etsisi.cf4j.utils.Methods;
+import es.upm.etsisi.cf4j.utils.Maths;
 
 import java.util.Random;
 
@@ -108,7 +108,7 @@ public class Nmf extends Recommender {
 
 	@Override
 	public double predict(int userIndex, int itemIndex) {
-		return Methods.dotProduct(this.w[userIndex], this.h[itemIndex]);
+		return Maths.dotProduct(this.w[userIndex], this.h[itemIndex]);
 	}
 
 	/**

@@ -7,9 +7,7 @@ import es.upm.etsisi.cf4j.process.Parallelizer;
 import es.upm.etsisi.cf4j.process.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.recommender.knn.userToUserMetrics.UserToUserMetric;
-import es.upm.etsisi.cf4j.utils.Methods;
-
-import java.lang.reflect.InvocationTargetException;
+import es.upm.etsisi.cf4j.utils.Search;
 
 public class UserToUser extends Recommender {
 
@@ -143,7 +141,7 @@ public class UserToUser extends Recommender {
         @Override
         public void run(User user) {
             int userIndex = user.getUserIndex();
-            neighbors[userIndex] = Methods.findTopN(similarities[userIndex], K);
+            neighbors[userIndex] = Search.findTopN(similarities[userIndex], K);
         }
 
         @Override
