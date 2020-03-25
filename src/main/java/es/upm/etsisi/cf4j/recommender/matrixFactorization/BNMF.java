@@ -1,5 +1,6 @@
 package es.upm.etsisi.cf4j.recommender.matrixFactorization;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -256,21 +257,9 @@ public class BNMF extends Recommender {
 
 		@Override
 		public void beforeRun() {
-
-			// Init gamma
-			for (int i = 0; i < this.gamma.length; i++) {
-				for (int j = 0; j < this.gamma[i].length; j++) {
-					this.gamma[i][j] = BNMF.this.alpha;
-				}
-			}
-
-			// Init E+ & E-
-			for (int i = 0; i < this.epsilonPlus.length; i++) {
-				for (int j = 0; j < this.epsilonPlus[i].length; j++) {
-					this.epsilonPlus[i][j] = BNMF.this.beta;
-					this.epsilonMinus[i][j] = BNMF.this.beta;
-				}
-			}
+			Arrays.fill(this.gamma, BNMF.this.alpha);
+			Arrays.fill(this.epsilonPlus, BNMF.this.beta);
+			Arrays.fill(this.epsilonMinus, BNMF.this.beta);
 		}
 
 		@Override
