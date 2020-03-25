@@ -1,7 +1,7 @@
-package es.upm.etsisi.cf4j.qualityMeasures.prediction;
+package es.upm.etsisi.cf4j.qualityMeasure.prediction;
 
 import es.upm.etsisi.cf4j.data.TestUser;
-import es.upm.etsisi.cf4j.qualityMeasures.QualityMeasure;
+import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 
 /**

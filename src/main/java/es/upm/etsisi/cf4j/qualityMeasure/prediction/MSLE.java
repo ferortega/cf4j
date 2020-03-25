@@ -1,20 +1,20 @@
-package es.upm.etsisi.cf4j.qualityMeasures.prediction;
+package es.upm.etsisi.cf4j.qualityMeasure.prediction;
 
 import es.upm.etsisi.cf4j.data.TestUser;
-import es.upm.etsisi.cf4j.qualityMeasures.QualityMeasure;
+import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 
 /**
- * This class calculates the Root Mean Squared Error (RMSE) between the predictions and the test ratings.
+ * This class calculates the Mean Squared Logarithmic Error (MSLE) between the predictions and the test ratings.
  * @author Fernando Ortega
  */
-public class RMSE extends QualityMeasure {
+public class MSLE extends QualityMeasure {
 
 	/**
 	 * Constructor
-	 * @param recommender Recommender instance for which the RMSE are going to be computed
+	 * @param recommender Recommender instance for which the MSLE are going to be computed
 	 */
-	public RMSE(Recommender recommender) {
+	public MSLE(Recommender recommender) {
 		super(recommender);
 	}
 
@@ -26,7 +26,7 @@ public class RMSE extends QualityMeasure {
 		
 		for (int i = 0; i < testUser.getNumberOfTestRatings(); i++) {
 			if (!Double.isNaN(predictions[i])) {
-				double diff = predictions[i] -  testUser.getTestRatingAt(i);
+				double diff = Math.log(1 + testUser.getTestRatingAt(i)) - Math.log(1 + predictions[i]);
 				sum += diff * diff;
 				count++;
 			}

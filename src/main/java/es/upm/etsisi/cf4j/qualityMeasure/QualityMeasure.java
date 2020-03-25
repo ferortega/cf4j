@@ -1,4 +1,4 @@
-package es.upm.etsisi.cf4j.qualityMeasures;
+package es.upm.etsisi.cf4j.qualityMeasure;
 
 import es.upm.etsisi.cf4j.data.TestUser;
 import es.upm.etsisi.cf4j.process.Parallelizer;

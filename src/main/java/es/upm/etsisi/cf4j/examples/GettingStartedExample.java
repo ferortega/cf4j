@@ -3,8 +3,8 @@ package es.upm.etsisi.cf4j.examples;
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.DataSet;
 import es.upm.etsisi.cf4j.data.RandomSplitDataSet;
-import es.upm.etsisi.cf4j.qualityMeasures.QualityMeasure;
-import es.upm.etsisi.cf4j.qualityMeasures.prediction.MSE;
+import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
+import es.upm.etsisi.cf4j.qualityMeasure.prediction.MSE;
 import es.upm.etsisi.cf4j.recommender.matrixFactorization.Nmf;
 import es.upm.etsisi.cf4j.recommender.matrixFactorization.Pmf;
 

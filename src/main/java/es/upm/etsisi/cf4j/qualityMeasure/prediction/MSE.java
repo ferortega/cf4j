@@ -1,20 +1,20 @@
-package es.upm.etsisi.cf4j.qualityMeasures.prediction;
+package es.upm.etsisi.cf4j.qualityMeasure.prediction;
 
 import es.upm.etsisi.cf4j.data.TestUser;
-import es.upm.etsisi.cf4j.qualityMeasures.QualityMeasure;
+import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 
 /**
- * This class calculates the Mean Absolute Difference (MAE) between the predictions and the test ratings.
+ * This class calculates the Mean Squared Error (MSE) between the predictions and the test ratings.
  * @author Fernando Ortega
  */
-public class MAE extends QualityMeasure {
+public class MSE extends QualityMeasure {
 
 	/**
 	 * Constructor
-	 * @param recommender Recommender instance for which the MAE are going to be computed
+	 * @param recommender Recommender instance for which the MSE are going to be computed
 	 */
-	public MAE(Recommender recommender) {
+	public MSE(Recommender recommender) {
 		super(recommender);
 	}
 
@@ -26,7 +26,8 @@ public class MAE extends QualityMeasure {
 		
 		for (int i = 0; i < testUser.getNumberOfTestRatings(); i++) {
 			if (!Double.isNaN(predictions[i])) {
-				sum += Math.abs(predictions[i] - testUser.getTestRatingAt(i));
+				double diff = predictions[i] -  testUser.getTestRatingAt(i);
+				sum += diff * diff;
 				count++;
 			}
 		}
