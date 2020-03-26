@@ -2,10 +2,10 @@ package es.upm.etsisi.cf4j.recommender.matrixFactorization;
 
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.User;
-import es.upm.etsisi.cf4j.utils.Parallelizer;
-import es.upm.etsisi.cf4j.utils.Partible;
+import es.upm.etsisi.cf4j.util.Parallelizer;
+import es.upm.etsisi.cf4j.util.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
-import es.upm.etsisi.cf4j.utils.Maths;
+import es.upm.etsisi.cf4j.util.Maths;
 
 import java.util.Random;
 import java.util.concurrent.locks.ReentrantLock;

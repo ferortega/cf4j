@@ -3,11 +3,11 @@ package es.upm.etsisi.cf4j.recommender.knn;
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
 import es.upm.etsisi.cf4j.data.User;
-import es.upm.etsisi.cf4j.utils.Parallelizer;
-import es.upm.etsisi.cf4j.utils.Partible;
+import es.upm.etsisi.cf4j.util.Parallelizer;
+import es.upm.etsisi.cf4j.util.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.recommender.knn.itemSimilarityMetric.ItemSimilarityMetric;
-import es.upm.etsisi.cf4j.utils.Search;
+import es.upm.etsisi.cf4j.util.Search;
 
 /**
  * Implements item-to-item KNN based collaborative filtering

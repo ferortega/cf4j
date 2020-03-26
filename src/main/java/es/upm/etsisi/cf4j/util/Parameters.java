@@ -1,4 +1,4 @@
-package es.upm.etsisi.cf4j.utils;
+package es.upm.etsisi.cf4j.util;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

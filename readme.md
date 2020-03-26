@@ -102,6 +102,12 @@ Let's encode our first experiment with CF4J. In this experiment, we will compare
 
 ## Project Structure
 
+The following image shows the class diagram of the whole project. You can see a high resolution version of this diagram [here](http://.). The project has been divided in 4 main packages:
+
+- `es.upm.etsisi.cf4j.data` contains all the classes necessary to load and manipulate the data used by collaborative filtering algorithms.
+- `es.upm.etsisi.recommender` contains several implementations of collaborative filtering algorithms (see [Algorithm List](##algorithm-list) section).
+- `es.upm.etsisi.cf4j.qualityMeasure`
+- `es.upm.etsisi.cf4j.util`
 
 ## Main classes
 

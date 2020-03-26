@@ -3,7 +3,7 @@ package es.upm.etsisi.cf4j.qualityMeasure.recommendation;
 import es.upm.etsisi.cf4j.data.TestUser;
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
-import es.upm.etsisi.cf4j.utils.Search;
+import es.upm.etsisi.cf4j.util.Search;
 
 /**
  * <p>This class calculates the recall of the recommendations performed by a Recommender. It is calculated as

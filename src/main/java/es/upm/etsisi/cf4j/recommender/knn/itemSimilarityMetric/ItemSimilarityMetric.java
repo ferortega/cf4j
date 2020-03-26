@@ -2,7 +2,7 @@ package es.upm.etsisi.cf4j.recommender.knn.itemSimilarityMetric;
 
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
-import es.upm.etsisi.cf4j.utils.Partible;
+import es.upm.etsisi.cf4j.util.Partible;
 
 /**
  * <p>This class process the similarity measure between two items. To define your own similarity metric implementation,
