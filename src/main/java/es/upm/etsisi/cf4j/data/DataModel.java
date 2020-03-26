@@ -224,7 +224,7 @@ public class DataModel implements Serializable {
      * Getter associated with the array of test items
      * @return test items array
      */
-    public  TestItem[] getTestItems() {
+    public TestItem[] getTestItems() {
         return this.testItems;
     }
 
