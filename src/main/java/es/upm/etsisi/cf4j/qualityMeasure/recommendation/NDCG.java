@@ -11,7 +11,7 @@ import es.upm.etsisi.cf4j.util.Search;
  * <p>NDCG = &lt;SumDcg&gt; / &lt;SumIdcg&gt;</p>
  * @author Bo Zhu
  */
-public class Ndcg extends QualityMeasure {
+public class NDCG extends QualityMeasure {
 
 	/**
 	 * Number of recommended items
@@ -23,7 +23,7 @@ public class Ndcg extends QualityMeasure {
 	 * @param recommender Recommender instance for which the nDCG are going to be computed
 	 * @param numberOfRecommendations Number of recommendations
 	 */
-	public Ndcg(Recommender recommender, int numberOfRecommendations) {
+	public NDCG(Recommender recommender, int numberOfRecommendations) {
 		super(recommender);
 		this.numberOfRecommendations = numberOfRecommendations;
 	}
