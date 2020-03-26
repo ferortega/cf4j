@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class TwoFilesDataSet implements DataSet
+public class TrainTestFilesDataSet implements DataSet
 {
     protected static final String DEFAULT_SPARATOR = ";";
 
@@ -24,7 +24,7 @@ public class TwoFilesDataSet implements DataSet
      * @param fileName File with the ratings
      * @param testFileName File with the ratings
      */
-    public TwoFilesDataSet(String fileName, String testFileName) {
+    public TrainTestFilesDataSet(String fileName, String testFileName) {
         this(fileName, testFileName, DEFAULT_SPARATOR);
     }
 
@@ -35,7 +35,7 @@ public class TwoFilesDataSet implements DataSet
      * @param testFileName File with the ratings
      * @param separator Separator char between file fields
      */
-    public TwoFilesDataSet(String fileName,  String testFileName, String separator) {
+    public TrainTestFilesDataSet(String fileName, String testFileName, String separator) {
         System.out.println("\nLoading dataset...");
 
         try {
