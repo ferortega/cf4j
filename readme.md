@@ -7,10 +7,9 @@ A Java's Collaborative Filtering library to carry out experiments in research of
 1. [Installation](#installation)
 2. [Getting Started](#getting-started)
 3. [Project Structure](#proyect-structure)
-4. [Main Classes](#main-classes)
-5. [Customize CF4J](#customize-cf4j)
-6. [Algorithm List](#algorithm-list)
-7. [Datasets](#datasets)
+4. [Customize CF4J](#customize-cf4j)
+5. [Algorithm List](#algorithm-list)
+6. [Datasets](#datasets)
 
 ## Installation
 
@@ -102,15 +101,47 @@ Let's encode our first experiment with CF4J. In this experiment, we will compare
 
 ## Project Structure
 
-The following image shows the class diagram of the whole project. You can see a high resolution version of this diagram [here](http://.). The project has been divided in 4 main packages:
+The following image shows the class diagram of the whole project. You can see a high resolution version of this diagram [here](http://rs.etsisi.upm.es/cf4j-2.0/images/class-diagram.png). The project has been divided in 4 main packages: `data`, `recommender`, `qualityMeasure` and `util`.
 
-- `es.upm.etsisi.cf4j.data` contains all the classes necessary to load and manipulate the data used by collaborative filtering algorithms.
-- `es.upm.etsisi.recommender` contains several implementations of collaborative filtering algorithms (see [Algorithm List](##algorithm-list) section).
-- `es.upm.etsisi.cf4j.qualityMeasure`
-- `es.upm.etsisi.cf4j.util`
+![CF4J class diagram](http://rs.etsisi.upm.es/cf4j-2.0/images/class-diagram.png)
 
-## Main classes
+### `es.upm.etsisi.cf4j.data` package
 
+This package contains all the classes necessary to extract, transform, load and manipulate the data used by collaborative filtering algorithms. The most important classes of this package are:
+
+- `DataSet`. This interface is used to iterate over training and test ratings. Two implementations of this interface have been included: `RandomSplitDataSet` that randomly splits the ratings contained in a file into training and test ratings; and `TrainTestFilesDataSet` that loads training and test ratings from two different files. 
+
+- `DataModel`. This class is class manages all the information related with the collaborative filtering based recommender system. A `DataModel` must be instantiated from a `DataSet`. Once the `DataModel` is created, it is composed by: 
+  + An array to store (training) `User` instances.
+  + An array to store `TestUser` instances.
+  + An array to store (training) `Item` instances.
+  + An array to store `TestItem` instances.
+  
+- `User`. This class represents a training user. Each `User` is defined by his/her index in the `User` array of the `DataModel` and an unique identifier. The `User` class contains the list of items rated by the user. These ratings can be retrieved using `getItemAt(pos)`, that returns the item index of the item rated at the `pos` position, and `getRatingAt(pos)`, that returns the rating value of the item rated at the `pos` position. Items' indexes returned by `getItemAt(pos)` are sorted from lower to higher.
+
+- `Item`. This class represents a training item. Each `Item` is defined by its index in the `Item` array of the `DataModel` and an unique identifier. The `Item` class contains the list of users that have rated the item. These ratings can be retrieved using `getUserAt(pos)`, that returns the user index of the user that have rated the item at the `pos` position, and `getRatingAt(pos)`, that returns the rating value at the `pos` position. Users' indexes returned by `getUserAt(pos)` are sorted from lower to higher.
+
+- `TestUser`. This class represents a test user. Every `TestUser` is also a `User` due to the heritage relation between `User` and `TestUser` classes. Each `TestUser` is defined by his/her index in the `TestUser` array of the `DataModel`. The `TestUser` class contains the list of test items rated in test by the test user. These test ratings can be retrieved using `getTestItemAt(pos)`, that returns the test item index of the item rated at the `pos` position, and `getTestRatingAt(pos)`, that returns the test rating value of the test item rated at the `pos` position. Test items' indexes returned by `getTestItemAt(pos)` are sorted from lower to higher.
+
+- `TestItem`. This class represents a test item. Every `TestItem` is also a `Item` due to the heritage relation between `Item` and `TestItem` classes. Each `TestItem` is defined by his/her index in the `TestItem` array of the `DataModel`. The `TestItem` class contains the list of test users that have rated in test the item. These test ratings can be retrieved using `getTestUserAt(pos)`, that returns the the test user index of the test user that have test rated the test item at the `pos` position, and `getTestRatingAt(pos)`, that returns the test rating value at the `pos` position. Test users' indexes returned by `getTestUserAt(pos)` are sorted from lower to higher.
+
+### `es.upm.etsisi.cf4j.recommender` package
+
+This package several implementations of collaborative filtering algorithms (see [Algorithm List](##algorithm-list) section). Each collaborative filtering algorithm included in CF4J must extends the `Recommender` abstract class. This class forces to implement two abstract methods:
+
+- `fit()`: used to estimate collaborative filtering recommender parameters give the parameters usually defined in the class constructor. To speed up the fitting process, most of the computations has been parallelized using [`Parallelizer`](link-to-javadoc) util.
+
+- `predict(userIndex, itemIndex)`: used to estimate the rating prediction of the user with index `userIndex` to the item with index `itemIndex`.
+
+Each `Recommender` must be created from a `DataModel` instance and will be fitted to it.
+
+### `es.upm.etsisi.cf4j.qualityMeasure` package
+
+This package contains the implementation of different quality measures for collaborative filtering based recommender systems.
+
+### `es.upm.etsisi.cf4j.util` package
+
+This package contains different utilities to be used with the library. Read the [javadoc]() documentation for additional information.
 
 ## Customize CF4J
 
