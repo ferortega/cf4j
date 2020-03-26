@@ -2,8 +2,8 @@ package es.upm.etsisi.cf4j.recommender.knn;
 
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.User;
-import es.upm.etsisi.cf4j.process.Parallelizer;
-import es.upm.etsisi.cf4j.process.Partible;
+import es.upm.etsisi.cf4j.utils.Parallelizer;
+import es.upm.etsisi.cf4j.utils.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetric.UserSimilarityMetric;
 import es.upm.etsisi.cf4j.utils.Search;

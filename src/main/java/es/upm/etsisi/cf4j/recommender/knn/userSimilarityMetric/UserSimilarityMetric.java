@@ -2,7 +2,7 @@ package es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetric;
 
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.User;
-import es.upm.etsisi.cf4j.process.Partible;
+import es.upm.etsisi.cf4j.utils.Partible;
 
 /**
  * This class process the similarity measure between two users. To define your own similarity metric implementation,

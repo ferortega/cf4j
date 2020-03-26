@@ -6,8 +6,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
-import es.upm.etsisi.cf4j.process.Parallelizer;
-import es.upm.etsisi.cf4j.process.Partible;
+import es.upm.etsisi.cf4j.utils.Parallelizer;
+import es.upm.etsisi.cf4j.utils.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.utils.Maths;
 
