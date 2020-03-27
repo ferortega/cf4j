@@ -44,11 +44,21 @@ public abstract class QualityMeasure {
 
 	/**
 	 * Computes the quality measure of the recommender
+	 * @param numThreads Number of threads to compute de quality measure in parallel for each test user. Use all
+	 *                   available threads by default.
+	 * @return Quality measure score
+	 */
+	public double getScore(int numThreads) {
+		Parallelizer.exec(recommender.getDataModel().getTestUsers(), new EvaluateUsers(), numThreads);
+		return score;
+	}
+
+	/**
+	 * Computes the quality measure of the recommender
 	 * @return Quality measure score
 	 */
 	public double getScore() {
-		Parallelizer.exec(recommender.getDataModel().getTestUsers(), new EvaluateUsers());
-		return score;
+		return this.getScore(-1);
 	}
 
 	/**
