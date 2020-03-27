@@ -257,9 +257,20 @@ public class BNMF extends Recommender {
 
 		@Override
 		public void beforeRun() {
-			Arrays.fill(this.gamma, alpha);
-			Arrays.fill(this.epsilonPlus, beta);
-			Arrays.fill(this.epsilonMinus, beta);
+			// Init gamma
+			for (double[] row : this.gamma) {
+				Arrays.fill(row, alpha);
+			}
+
+			// Init epsilon+
+			for (double[] row : this.epsilonPlus) {
+				Arrays.fill(row, beta);
+			}
+
+			// Init epsilon-
+			for (double[] row : this.epsilonMinus) {
+				Arrays.fill(row, beta);
+			}
 		}
 
 		@Override
