@@ -75,7 +75,7 @@ public abstract class QualityMeasure {
 		public void run(TestUser testUser) {
 			int testUserIndex = testUser.getTestUserIndex();
 			double[] predictions = recommender.predict(testUser);
-			usersScores[testUserIndex] = QualityMeasure.this.getScore(testUser, predictions);
+			usersScores[testUserIndex] = getScore(testUser, predictions);
 		}
 
 		@Override
