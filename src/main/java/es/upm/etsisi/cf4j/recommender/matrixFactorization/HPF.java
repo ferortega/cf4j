@@ -30,9 +30,9 @@ public class HPF extends Recommender {
     // Model hyperparameters
     private double a;
     private double aPrime;
+    private double bPrime;
     private double c;
     private double cPrime;
-    private double bPrime;
     private double dPrime;
 
     // Model parameters
@@ -49,7 +49,7 @@ public class HPF extends Recommender {
 
     /**
      * Models constructor
-     * @param datamodel DataModel instace
+     * @param datamodel DataModel instance
      * @param numFactors Number of latent factors
      * @param numIters Number of iterations
      */
@@ -59,7 +59,7 @@ public class HPF extends Recommender {
 
     /**
      * Models constructor
-     * @param datamodel DataModel instace
+     * @param datamodel DataModel instance
      * @param numFactors Number of latent factors
      * @param numIters Number of iterations
      * @param seed Seed for random numbers generation
@@ -70,15 +70,15 @@ public class HPF extends Recommender {
 
     /**
      * Models constructor
-     * @param datamodel DataModel instace
+     * @param datamodel DataModel instance
      * @param numFactors Number of latent factors
      * @param numIters Number of iterations
-     * @param a Model hyper-parameter. Read the paper for more informacion related to this hyper-parameter.
-     * @param aPrime Model hyper-parameter. Read the paper for more informacion related to this hyper-parameter.
-     * @param bPrime Model hyper-parameter. Read the paper for more informacion related to this hyper-parameter.
-     * @param c Model hyper-parameter. Read the paper for more informacion related to this hyper-parameter.
-     * @param cPrime Model hyper-parameter. Read the paper for more informacion related to this hyper-parameter.
-     * @param dPrime Model hyper-parameter. Read the paper for more informacion related to this hyper-parameter.
+     * @param a Model hyper-parameter. Read the paper for more information related to this hyper-parameter.
+     * @param aPrime Model hyper-parameter. Read the paper for more information related to this hyper-parameter.
+     * @param bPrime Model hyper-parameter. Read the paper for more information related to this hyper-parameter.
+     * @param c Model hyper-parameter. Read the paper for more information related to this hyper-parameter.
+     * @param cPrime Model hyper-parameter. Read the paper for more information related to this hyper-parameter.
+     * @param dPrime Model hyper-parameter. Read the paper for more information related to this hyper-parameter.
      */
     public HPF(DataModel datamodel, int numFactors, int numIters, double a, double aPrime, double bPrime, double c, double cPrime, double dPrime) {
         this(datamodel, numFactors, numIters, a, aPrime, bPrime, c, cPrime, dPrime, System.currentTimeMillis());
@@ -86,15 +86,15 @@ public class HPF extends Recommender {
 
     /**
      * Models constructor
-     * @param datamodel DataModel instace
+     * @param datamodel DataModel instance
      * @param numFactors Number of latent factors
      * @param numIters Number of iterations
-     * @param a Model hyper-parameter. Read the paper for more informacion related to this hyper-parameter.
-     * @param aPrime Model hyper-parameter. Read the paper for more informacion related to this hyper-parameter.
-     * @param bPrime Model hyper-parameter. Read the paper for more informacion related to this hyper-parameter.
-     * @param c Model hyper-parameter. Read the paper for more informacion related to this hyper-parameter.
-     * @param cPrime Model hyper-parameter. Read the paper for more informacion related to this hyper-parameter.
-     * @param dPrime Model hyper-parameter. Read the paper for more informacion related to this hyper-parameter.
+     * @param a Model hyper-parameter. Read the paper for more information related to this hyper-parameter.
+     * @param aPrime Model hyper-parameter. Read the paper for more information related to this hyper-parameter.
+     * @param bPrime Model hyper-parameter. Read the paper for more information related to this hyper-parameter.
+     * @param c Model hyper-parameter. Read the paper for more information related to this hyper-parameter.
+     * @param cPrime Model hyper-parameter. Read the paper for more information related to this hyper-parameter.
+     * @param dPrime Model hyper-parameter. Read the paper for more information related to this hyper-parameter.
      * @param seed Seed for random numbers generation
      */
     public HPF(DataModel datamodel, int numFactors, int numIters, double a, double aPrime, double bPrime, double c, double cPrime, double dPrime, long seed) {
@@ -196,7 +196,7 @@ public class HPF extends Recommender {
                 }
             }
 
-            kappaRte[userIndex] = cPrime / dPrime;
+            kappaRte[userIndex] = aPrime / bPrime;
             for (int k = 0; k < numFactors; k++) {
                 kappaRte[userIndex] += gammaShp[userIndex][k] / gammaRte[userIndex][k];
             }
