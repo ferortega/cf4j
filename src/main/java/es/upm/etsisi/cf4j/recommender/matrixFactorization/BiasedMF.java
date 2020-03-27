@@ -125,6 +125,7 @@ public class BiasedMF extends Recommender {
 
 		// Users initialization
 		this.p = new double[datamodel.getNumberOfUsers()][numFactors];
+		this.bu = new double[datamodel.getNumberOfUsers()];
 		for (int u = 0; u < datamodel.getNumberOfUsers(); u++) {
 			this.bu[u] = rand.nextDouble() * 2 - 1;
 			for (int k = 0; k < numFactors; k++) {
@@ -134,6 +135,7 @@ public class BiasedMF extends Recommender {
 
 		// Items initialization
 		this.q = new double[datamodel.getNumberOfItems()][numFactors];
+		this.bi = new double[datamodel.getNumberOfItems()];
 		for (int i = 0; i < datamodel.getNumberOfItems(); i++) {
 			this.bi[i] = rand.nextDouble() * 2 - 1;
 			for (int k = 0; k < numFactors; k++) {
