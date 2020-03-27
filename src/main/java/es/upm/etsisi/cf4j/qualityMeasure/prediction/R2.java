@@ -34,7 +34,11 @@ public class R2 extends QualityMeasure {
 				count++;
 			}
 		}
-		
-		return (count == 0) ? Double.NaN : 1 - num / den;
+
+		if (count < 2 || den == 0) {
+			return Double.NaN;
+		} else {
+			return 1 - num / den;
+		}
 	}
 }
