@@ -58,6 +58,27 @@ public class CLiMF extends Recommender {
      * @param datamodel DataModel instance
      * @param numFactors Number of latent factors
      * @param numIters Number of iterations
+     */
+    public CLiMF(DataModel datamodel, int numFactors, int numIters) {
+        this(datamodel, numFactors, numIters,System.currentTimeMillis());
+    }
+
+    /**
+     * Model constructor
+     * @param datamodel DataModel instance
+     * @param numFactors Number of latent factors
+     * @param numIters Number of iterations
+     * @param seed Seed for random numbers generation
+     */
+    public CLiMF(DataModel datamodel, int numFactors, int numIters, long seed) {
+        this(datamodel, numFactors, 1E-5, 1E-4, numIters, datamodel.getMinRating(), seed);
+    }
+
+    /**
+     * Model constructor
+     * @param datamodel DataModel instance
+     * @param numFactors Number of latent factors
+     * @param numIters Number of iterations
      * @param threshold Threshold to binarize rating matrix. Any rating greater or equal than this
      *     threshold will be used during the training process.
      * @param seed Seed for random numbers generation
