@@ -77,6 +77,7 @@ public class Parallelizer {
 		 * (non-Javadoc)
 		 * @see java.lang.Runnable#exec()
 		 */
+		@SuppressWarnings("unchecked")
 		public void run() {
 			for (int i = this.threadIndex; i < this.objects.length; i += this.numThreads ) {
 				partible.run(this.objects[i]);

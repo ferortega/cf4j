@@ -6,7 +6,7 @@ A Java's Collaborative Filtering library to carry out experiments in research of
 
 1. [Installation](#installation)
 2. [Getting Started](#getting-started)
-3. [Project Structure](#proyect-structure)
+3. [Project Structure](#project-structure)
 4. [Customize CF4J](#customize-cf4j)
 5. [Algorithm List](#algorithm-list)
 6. [Datasets](#datasets)
@@ -127,7 +127,7 @@ This package contains all the classes that are needed to extract, transform, loa
 
 ### `es.upm.etsisi.cf4j.recommender` package
 
-This package contains several implementations of collaborative filtering algorithms. You can check the full list in the [Algorithm List](##algorithm-list) section. Each collaborative filtering algorithm included in CF4J must extends the `Recommender` abstract class. This class forces to implement the following abstract methods:
+This package contains several implementations of collaborative filtering algorithms. You can check the full list in the [Algorithm List](#algorithm-list) section. Each collaborative filtering algorithm included in CF4J must extends the `Recommender` abstract class. This class forces to implement the following abstract methods:
 
 - `fit()`: used to estimate collaborative filtering recommender parameters give the hyper-parameters usually defined in the class constructor. To speed up the fitting process, most of the computations has been parallelized using [`Parallelizer`](link-to-javadoc) util.
 

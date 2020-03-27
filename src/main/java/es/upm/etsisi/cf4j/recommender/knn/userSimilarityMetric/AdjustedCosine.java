@@ -8,7 +8,7 @@ import es.upm.etsisi.cf4j.data.User;
  * Implements traditional Adjusted Cosine as CF similarity metric.
  * @author Fernando Ortega
  */
-public class AjustedCosine extends UserSimilarityMetric {
+public class AdjustedCosine extends UserSimilarityMetric {
 
 	@Override
 	public double similarity(User user, User otherUser) {

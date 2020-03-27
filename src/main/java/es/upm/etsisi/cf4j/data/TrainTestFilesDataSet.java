@@ -9,7 +9,7 @@ import java.util.Iterator;
 
 public class TrainTestFilesDataSet implements DataSet
 {
-    protected static final String DEFAULT_SPARATOR = ";";
+    protected static final String DEFAULT_SEPARATOR = ";";
 
     /**
      * Data storing variables
@@ -19,18 +19,18 @@ public class TrainTestFilesDataSet implements DataSet
 
     /**
      * <p>Generates a DataSet form a text file, filling the dataModel attribute.</p>
-     * <p> The lines of the file must have the format: userCode;itemCode;rating</p>
+     * <p> The lines of the file must have the format: userId;itemId;rating</p>
      * <p>The dataset is loaded without test items and test users</p>
      * @param fileName File with the ratings
      * @param testFileName File with the ratings
      */
     public TrainTestFilesDataSet(String fileName, String testFileName) {
-        this(fileName, testFileName, DEFAULT_SPARATOR);
+        this(fileName, testFileName, DEFAULT_SEPARATOR);
     }
 
     /**
      * <p>Generates a DataSet form a text file, filling the dataModel attribute. </p>
-     * <p>The lines of the file must have the format: userCode SEPARATOR itemCode SEPARATORrating</p>
+     * <p>The lines of the file must have the format: userId SEPARATOR itemId SEPARATOR rating</p>
      * @param fileName File with the ratings
      * @param testFileName File with the ratings
      * @param separator Separator char between file fields
@@ -44,7 +44,7 @@ public class TrainTestFilesDataSet implements DataSet
             BufferedReader datasetFile = new BufferedReader(new FileReader(new File(fileName)));
             BufferedReader testDatasetFile = new BufferedReader(new FileReader(new File(fileName)));
 
-            String line = "";
+            String line;
             int numLines = 0;
             while ((line = datasetFile.readLine()) != null) {
 
@@ -64,7 +64,6 @@ public class TrainTestFilesDataSet implements DataSet
             }
 
             System.out.println("\nLoading test dataset...");
-            line = "";
             numLines = 0;
             while ((line = datasetFile.readLine()) != null) {
 

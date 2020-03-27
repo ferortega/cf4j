@@ -22,7 +22,7 @@ public class URP extends Recommender {
     private final static double EPSILON = 1E-2;
 
     /**
-     * Number of iterstions
+     * Number of iterations
      */
     private int numIters;
 
@@ -61,7 +61,7 @@ public class URP extends Recommender {
      * @param datamodel DataModel instance
      * @param numFactors Number of latent factors
      * @param ratings Plausible ratings (must be sorted in ascending order)
-     * @param numIters Number of iterstions
+     * @param numIters Number of iterations
      */
     public URP(DataModel datamodel, int numFactors, double [] ratings, int numIters) {
         this(datamodel, numFactors, ratings, numIters, new Double(Math.random() * 1E100).longValue());
@@ -72,7 +72,7 @@ public class URP extends Recommender {
      * @param datamodel DataModel instance
      * @param numFactors Number of latent factors
      * @param ratings Plausible ratings (must be sorted in ascending order)
-     * @param numIters Number of iterstions
+     * @param numIters Number of iterations
      * @param seed Seed for random numbers generation
      */
     public URP(DataModel datamodel, int numFactors, double [] ratings, int numIters, long seed) {

@@ -3,7 +3,7 @@ package es.upm.etsisi.cf4j.recommender.knn.itemSimilarityMetric;
 import es.upm.etsisi.cf4j.data.Item;
 
 /**
- * Implements traditional Sepearman Rank as CF similarity metric for the items.
+ * Implements traditional Spearman Rank as CF similarity metric for the items.
  * @author Fernando Ortega
  */
 public class SpearmanRank extends ItemSimilarityMetric {

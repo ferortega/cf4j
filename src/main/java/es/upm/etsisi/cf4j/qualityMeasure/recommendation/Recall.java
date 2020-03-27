@@ -62,8 +62,7 @@ public class Recall extends QualityMeasure {
 				recommendedAndRelevant++;
 			}			
 		}
-		
-		double recall = (double) recommendedAndRelevant / (double) relevant;
-		return recall;
+
+		return (double) recommendedAndRelevant / (double) relevant;
 	}
 }

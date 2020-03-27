@@ -68,16 +68,16 @@ public class Singularities extends ItemSimilarityMetric {
 			User user = this.datamodel.getUser(userIndex);
 
 			int numberOfRelevantRatings = 0;
-			int numberOfNotReleavantRatings = 0;
+			int numberOfNotRelevantRatings = 0;
 
 			for (int v = 0; v < user.getNumberOfRatings();v++){
 				double rating = user.getRatingAt(v);
 				if (relevantRatings.contains(rating)) numberOfRelevantRatings++;
-				if (notRelevantRatings.contains(rating)) numberOfNotReleavantRatings++;
+				if (notRelevantRatings.contains(rating)) numberOfNotRelevantRatings++;
 			}
 
 			this.singularityOfRelevantRatings[userIndex] = 1d - numberOfRelevantRatings / (double) numItems;
-			this.singularityOfNotRelevantRatings[userIndex] = 1d - numberOfNotReleavantRatings / (double) numItems;
+			this.singularityOfNotRelevantRatings[userIndex] = 1d - numberOfNotRelevantRatings / (double) numItems;
 		}
 	}
 
@@ -122,7 +122,7 @@ public class Singularities extends ItemSimilarityMetric {
 					double diff = (activeItemRating - targetItemRating) / this.maxDiff;
 					metric_b += (1d - diff * diff) * sing_n * sing_n;
 
-				//  One user has rated relevant and the other one has rated no relevat
+				//  One user has rated relevant and the other one has rated no relevant
 				} else {
 					items_c++;
 

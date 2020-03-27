@@ -11,7 +11,7 @@ public class SortedRatingList extends ArrayList<Rating> {
      * @param rating Rating done.
      * @return true if the element didn't exist previously. false otherwise.
      */
-    public boolean add (int index, double rating){
+    public boolean add(int index, double rating){
         int low = 0, high = this.size() -1;
         while (low <= high) {
             int mid = (low + high) >>> 1;
@@ -37,7 +37,7 @@ public class SortedRatingList extends ArrayList<Rating> {
      * @param index IndexToFind position correspondences.
      * @return Array element which corresponds with the given element position.
      */
-    public int find (int index){
+    public int find(int index){
         int low = 0, high = this.size() -1;
         while (low <= high) {
             int mid = (low + high) >>> 1;

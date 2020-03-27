@@ -232,7 +232,7 @@ public class BNMF extends Recommender {
 	 */
 	private class UpdateModel implements Partible<Item> {
 
-		private final int NUM_LOCKS = 100;
+		private final static int NUM_LOCKS = 100;
 
 		private ReentrantLock[] locks;
 
@@ -257,9 +257,9 @@ public class BNMF extends Recommender {
 
 		@Override
 		public void beforeRun() {
-			Arrays.fill(this.gamma, BNMF.this.alpha);
-			Arrays.fill(this.epsilonPlus, BNMF.this.beta);
-			Arrays.fill(this.epsilonMinus, BNMF.this.beta);
+			Arrays.fill(this.gamma, alpha);
+			Arrays.fill(this.epsilonPlus, beta);
+			Arrays.fill(this.epsilonMinus, beta);
 		}
 
 		@Override

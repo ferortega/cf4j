@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class DataBank implements Serializable {
 
-    private HashMap<String, Object> map = new HashMap<String, Object>();
+    private HashMap<String, Object> map = new HashMap<>();
 
     /**
      * Deletes all content of this DataBank.

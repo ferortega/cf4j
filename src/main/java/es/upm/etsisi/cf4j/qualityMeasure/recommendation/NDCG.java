@@ -8,7 +8,7 @@ import es.upm.etsisi.cf4j.util.Search;
 /**
  * <p>This class calculates the Normalized Discounted Cumulative Gain (nDCG) of the recommendations performed by a
  * Recommender. It is calculated as follows:</p>
- * <p>NDCG = &lt;SumDcg&gt; / &lt;SumIdcg&gt;</p>
+ * <p>NDCG = &lt;DCG&gt; / &lt;IDCG&gt;</p>
  * @author Bo Zhu
  */
 public class NDCG extends QualityMeasure {
@@ -65,9 +65,6 @@ public class NDCG extends QualityMeasure {
 		}
 
 		// Compute NDCG
-
-		double ndcg = dcg / idcg;
-
-		return ndcg;
+		return dcg / idcg;
 	}
 }

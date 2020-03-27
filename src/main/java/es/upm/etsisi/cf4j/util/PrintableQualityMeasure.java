@@ -375,7 +375,7 @@ public class PrintableQualityMeasure {
 	
 	/**
 	 * Converts an array of doubles to an array of strings
-	 * @param ints Array of doubles
+	 * @param doubles Array of doubles
 	 * @return Array of strings
 	 */
 	private static String [] doublesToStrings (double [] doubles) {

@@ -150,10 +150,10 @@ public class DataModel implements Serializable {
         }
 
         //3.- Storing raw data to respective arrays.
-        this.users = usersList.toArray(new User[usersList.size()]);
-        this.testUsers = testUsersList.toArray(new TestUser[testUsersList.size()]);
-        this.items = itemsList.toArray(new Item[itemsList.size()]);
-        this.testItems = testItemsLists.toArray(new TestItem[testItemsLists.size()]);
+        this.users = usersList.toArray(new User[0]);
+        this.testUsers = testUsersList.toArray(new TestUser[0]);
+        this.items = itemsList.toArray(new Item[0]);
+        this.testItems = testItemsLists.toArray(new TestItem[0]);
     }
 
     /**

@@ -54,8 +54,7 @@ public class Precision extends QualityMeasure {
 			
 			recommended++;
 		}
-		
-		double precision = (double) recommendedAndRelevant / (double) recommended;
-		return precision;
+
+		return (double) recommendedAndRelevant / (double) recommended;
 	}
 }

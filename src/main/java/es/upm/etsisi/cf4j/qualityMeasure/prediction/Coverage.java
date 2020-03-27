@@ -23,16 +23,13 @@ public class Coverage extends QualityMeasure {
 	@Override
 	public double getScore(TestUser testUser, double[] predictions) {
 		int count = 0;
-		
-		for (int i = 0; i < predictions.length; i++) {
-			double prediction = predictions[i];
+
+		for (double prediction : predictions) {
 			if (!Double.isNaN(prediction)) {
 				count++;
 			}
 		}
 
-		double coverage = (double) count / (double) testUser.getNumberOfTestRatings();
-		
-		return coverage;
+		return (double) count / (double) testUser.getNumberOfTestRatings();
 	}
 }

@@ -18,7 +18,7 @@ public abstract class Recommender {
     protected DataModel datamodel;
 
     /**
-     * Recommender consutructor
+     * Recommender constructor
      * @param datamodel instance of a DataModel
      */
     protected Recommender(DataModel datamodel) {
@@ -34,7 +34,7 @@ public abstract class Recommender {
     }
 
     /**
-     * Estimates model parameters given the hyperparameters
+     * Estimates model parameters given the hyper-parameters
      */
     public abstract void fit();
 

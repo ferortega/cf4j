@@ -121,7 +121,7 @@ public class Singularities extends UserSimilarityMetric {
 					double diff = (activeUserRating - targetUserRating) / this.maxDiff;
 					metric_b += (1d - diff * diff) * sing_n * sing_n;
 
-				//  One user has rated relevant and the other one has rated no relevat
+				//  One user has rated relevant and the other one has rated no relevant
 				} else {
 					items_c++;
 

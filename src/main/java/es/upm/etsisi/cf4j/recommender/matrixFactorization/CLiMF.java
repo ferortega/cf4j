@@ -167,7 +167,7 @@ public class CLiMF extends Recommender {
      */
     private class UpdateModel implements Partible<User> {
 
-        private final int NUM_LOCKS = 100;
+        private final static int NUM_LOCKS = 100;
 
         private ReentrantLock[] locks;
 

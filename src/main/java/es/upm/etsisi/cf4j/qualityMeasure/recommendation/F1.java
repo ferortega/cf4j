@@ -68,7 +68,6 @@ public class F1 extends QualityMeasure {
 		double recall = (double) recommendedAndRelevant / (double) relevant;
 
 		// F1 score
-		double f1 = 2 * precision * recall / (precision + recall);
-		return f1;
+		return 2 * precision * recall / (precision + recall);
 	}
 }

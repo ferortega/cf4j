@@ -11,7 +11,7 @@ import java.util.TreeMap;
 
 public class RandomSplitDataSet implements DataSet
 {
-    protected static final String DEFAULT_SPARATOR = ";";
+    protected static final String DEFAULT_SEPARATOR = ";";
 
     /**
      * Data storing variables
@@ -21,7 +21,7 @@ public class RandomSplitDataSet implements DataSet
 
     /**
      * <p>Generates a DataSet form a text file, filling the dataModel attribute.</p>
-     * <p> The lines of the file must have the format: userCode;itemCode;rating</p>
+     * <p> The lines of the file must have the format: userId;itemId;rating</p>
      * <p>The dataset is loaded without test items and test users</p>
      * @param filename File with the ratings
      */
@@ -31,30 +31,30 @@ public class RandomSplitDataSet implements DataSet
 
     /**
      * <p>Generates a DataSet form a text file, filling the dataModel attribute. </p>
-     * <p>The lines of the file must have the format: userCode SEPARATOR item SEPARATOR Coderating</p>
+     * <p>The lines of the file must have the format: userId SEPARATOR itemId SEPARATOR rating</p>
      * @param filename File with the ratings
      * @param testUsersPercent Percentage of users that will be of test
      * @param testItemsPercent Percentage of items that will be of test
      */
     public RandomSplitDataSet (String filename, double testUsersPercent, double testItemsPercent) {
-        this(filename, testUsersPercent, testItemsPercent, DEFAULT_SPARATOR);
+        this(filename, testUsersPercent, testItemsPercent, DEFAULT_SEPARATOR);
     }
 
     /**
      * <p>Generates a DataSet form a text file, filling the dataModel attribute. </p>
-     * <p>The lines of the file must have the format: userCode SEPARATOR item SEPARATOR Coderating</p>
+     * <p>The lines of the file must have the format: userId SEPARATOR itemId SEPARATOR rating</p>
      * @param filename File with the ratings
      * @param testUsersPercent Percentage of users that will be of test
      * @param testItemsPercent Percentage of items that will be of test
      * @param seed Seed applied to the random number generator
      */
     public RandomSplitDataSet (String filename, double testUsersPercent, double testItemsPercent, long seed) {
-        this(filename, testUsersPercent, testItemsPercent, DEFAULT_SPARATOR, seed);
+        this(filename, testUsersPercent, testItemsPercent, DEFAULT_SEPARATOR, seed);
     }
 
     /**
      * <p>Generates a DataSet form a text file, filling the dataModel attribute. </p>
-     * <p>The lines of the file must have the format: userCode SEPARATOR item SEPARATOR Coderating</p>
+     * <p>The lines of the file must have the format: userId SEPARATOR itemId SEPARATOR rating</p>
      * @param filename File with the ratings
      * @param testUsersPercent Percentage of users that will be of test
      * @param testItemsPercent Percentage of items that will be of test
@@ -66,7 +66,7 @@ public class RandomSplitDataSet implements DataSet
 
     /**
      * <p>Generates a DataSet form a text file, filling the dataModel attribute.</p>
-     * <p> The lines of the file must have the format: userCode SEPARATOR itemCode SEPARATOR rating</p>
+     * <p> The lines of the file must have the format: userId SEPARATOR itemId SEPARATOR rating</p>
      * <p>The dataset is loaded without test items and test users</p>
      * @param filename File with the ratings
      * @param separator Separator char between file fields
@@ -76,8 +76,8 @@ public class RandomSplitDataSet implements DataSet
     }
 
     /**
-     * <p>Generates a DataSet form a text file, filling the dataModel attribute. </p>
-     * <p>The lines of the file must have the format: userCode;itemCode;rating</p>
+     * <p>Generates a DataSet form a text file, filling the dataModel attribute.</p>
+     * <p>The lines of the file must have the format: userId;itemId;rating</p>
      * @param filename File with the ratings
      * @param testUsersPercent Percentage of users that will be of test
      * @param testItemsPercent Percentage of items that will be of test
@@ -88,8 +88,8 @@ public class RandomSplitDataSet implements DataSet
 
         Random rand = new Random (seed);
 
-        ratings = new ArrayList<DataSetEntry>();
-        testRatings = new ArrayList<DataSetEntry>();
+        ratings = new ArrayList<>();
+        testRatings = new ArrayList<>();
 
         System.out.println("\nLoading dataset...");
 
@@ -101,7 +101,7 @@ public class RandomSplitDataSet implements DataSet
             TreeMap<String, Boolean> testUsersFiltered = new TreeMap<> ();
             TreeMap<String, Boolean> testItemsFiltered = new TreeMap<> ();
 
-            String line = ""; int numLines = 0;
+            String line; int numLines = 0;
             while ((line = datasetFile.readLine()) != null) {
 
                 //Loading feedback
@@ -111,21 +111,25 @@ public class RandomSplitDataSet implements DataSet
 
                 // Parse line
                 String [] s = line.split(separator);
-                String userCode = s[0];
-                String itemCode = s[1];
+                String userId = s[0];
+                String itemId = s[1];
                 double rating = Double.parseDouble(s[2]);
 
                 //Filtering entries.
-                if (!testUsersFiltered.containsKey(userCode))
-                    testUsersFiltered.put(userCode, rand.nextFloat() <= testUsersPercent);
-                if (!testItemsFiltered.containsKey(itemCode))
-                    testItemsFiltered.put(itemCode, rand.nextFloat() <= testItemsPercent);
+                if (!testUsersFiltered.containsKey(userId)) {
+                    testUsersFiltered.put(userId, rand.nextFloat() <= testUsersPercent);
+                }
+
+                if (!testItemsFiltered.containsKey(itemId)) {
+                    testItemsFiltered.put(itemId, rand.nextFloat() <= testItemsPercent);
+                }
 
                 // Store rating
-                if (testUsersFiltered.get(userCode) == true && testItemsFiltered.get(itemCode) == true)
-                    testRatings.add(new DataSetEntry(userCode, itemCode, rating));
-                else
-                    ratings.add(new DataSetEntry(userCode, itemCode, rating));
+                if (testUsersFiltered.get(userId) && testItemsFiltered.get(itemId)) {
+                    testRatings.add(new DataSetEntry(userId, itemId, rating));
+                } else {
+                    ratings.add(new DataSetEntry(userId, itemId, rating));
+                }
             }
 
             datasetFile.close();
