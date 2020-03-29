@@ -50,7 +50,7 @@ public class TestUser extends User {
 	 * @return Test item userIndex in the datamodel.
 	 */
 	public int getTestItemAt(int pos) {
-		return this.testItemsRatings.get(pos).getLeft();
+		return this.testItemsRatings.get(pos).getIndex();
 	}
 	
 	/**
@@ -59,7 +59,7 @@ public class TestUser extends User {
 	 * @return Test rating in the datamodel.
 	 */
 	public double getTestRatingAt(int pos) {
-		return this.testItemsRatings.get(pos).getRight();
+		return this.testItemsRatings.get(pos).getRating();
 	}
 
 	/**

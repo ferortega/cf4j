@@ -79,7 +79,7 @@ public class Item implements Serializable {
 	 * @return User userIndex in the datamodel.
 	 */
 	public int getUserAt(int pos) {
-		return this.usersRatings.get(pos).getLeft();
+		return this.usersRatings.get(pos).getIndex();
 	}
 
 	/**
@@ -88,7 +88,7 @@ public class Item implements Serializable {
 	 * @return Rating at indicated position.
 	 */
 	public double getRatingAt(int pos) {
-		return this.usersRatings.get(pos).getRight();
+		return this.usersRatings.get(pos).getRating();
 	}
 	
 	/**

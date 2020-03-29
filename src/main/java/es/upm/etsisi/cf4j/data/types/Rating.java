@@ -1,30 +1,38 @@
 package es.upm.etsisi.cf4j.data.types;
 
-import org.apache.commons.lang3.tuple.Pair;
+import java.io.Serializable;
 
-public class Rating extends Pair<Integer, Double> {
+public class Rating implements Serializable, Comparable<Rating> {
 
-    private int elementIndex;
+    private static final long serialVersionUID = 20200314L;
+
+    private int index;
     private double rating;
 
-    public Rating (int elementIndex, double rating)
+    public Rating (int index, double rating)
     {
-        this.elementIndex = elementIndex;
+        this.index = index;
         this.rating = rating;
     }
 
-    @Override
-    public Integer getLeft(){
-            return this.elementIndex;
+    public Integer getIndex(){
+            return this.index;
             }
 
-    @Override
-    public Double getRight(){
+    public Double getRating(){
             return this.rating;
             }
 
-    @Override
-    public Double setValue(Double value){
+    public Double setRating(Double value){
             return this.rating = value;
             }
+
+    public int compareTo(Rating other) {
+        return (this.index < other.index) ? -1 : ((this.index == other.index) ? 0 : 1);
+    }
+
+    @Override
+    public String toString() {
+        return "(" + this.getIndex() + ',' + this.getRating() + ')';
+    }
 }
