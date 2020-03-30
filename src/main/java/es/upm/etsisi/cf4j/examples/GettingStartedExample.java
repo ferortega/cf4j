@@ -11,14 +11,14 @@ import es.upm.etsisi.cf4j.recommender.matrixFactorization.PMF;
 public class GettingStartedExample {
     public static void main (String [] args) {
 
-        String filename = "src/main/resources/datasets/ml1m.dat";
+        String filename = "src/main/resources/datasets/ml100k.data";
         double testUsers = 0.2;
         double testItems = 0.2;
-        String separator = "::";
+        String separator = "\t";
         long seed = 43;
-        DataSet ml1m = new RandomSplitDataSet(filename, testUsers, testItems, separator, seed);
+        DataSet ml100k = new RandomSplitDataSet(filename, testUsers, testItems, separator, seed);
 
-        DataModel datamodel = new DataModel(ml1m);
+        DataModel datamodel = new DataModel(ml100k);
 
         PMF pmf = new PMF(datamodel, 10, 100, 0.1, 0.01, 43);
         pmf.fit();

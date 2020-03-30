@@ -43,23 +43,23 @@ You can also package your own `jar` file . To do that, clone the repository usin
 
 ## Getting Started
 
-Let's encode our first experiment with CF4J. In this experiment, we will compare the Mean Squared Error (MSE) of two well known matrix factorization models: Probabilistic Matrix Factorization (PMF) and Non-negative Matrix Factorization (Nmf). We will use [MovieLens 1M dataset](https://grouplens.org/datasets/movielens/) as ratings' database.
+Let's encode our first experiment with CF4J. In this experiment, we will compare the Mean Squared Error (MSE) of two well known matrix factorization models: Probabilistic Matrix Factorization (PMF) and Non-negative Matrix Factorization (Nmf). We will use [MovieLens 100k dataset](https://grouplens.org/datasets/movielens/100k/) as ratings' database.
 
 1. First of all, we are going to load the database from the ratings file using an instance of `DataSet` interface. We choose `RandomSplitDataSet` that automatically splits the ratings set into training ratings and test ratings. We select 20% of users and 20% of items as test users and items respectively. To ensure the reproducibility of the example, we are going to fix the random seed to 43.
 
     ```Java
-    String filename = "ml1m.dat";
+    String filename = "ml100k.data";
     double testUsers = 0.2;
     double testItems = 0.2;
-    String separator = "::";
+    String separator = "\t";
     long seed = 42;
-    DataSet ml1m = new RandomSplitDataSet(filename, testUsers, testItems, separator, seed);
+    DataSet ml100k = new RandomSplitDataSet(filename, testUsers, testItems, separator, seed);
 	```
 
 2. Now, we are going to create a `DataModel` from the previous `DataSet`. A `DataModel` is a high level in memory representation of the data structure required by collaborative filtering algorithms. 
 
     ```Java
-   DataModel datamodel = new DataModel(ml1m);
+   DataModel datamodel = new DataModel(ml100k);
    ```
    
 3. Once all the data are loaded, we are going to build and train our first recommendation model. To create a recommendation model it is necessary to instantiate a `Recommender` from a `DataModel`. `Recommender` is an abstract class that contains all the methods and attributes required to perform a recommendation. CF4J contains several implementations of `Recommender` (see [algorithms list](#algorithm-list)). 
@@ -93,8 +93,8 @@ Let's encode our first experiment with CF4J. In this experiment, we will compare
 5. The program will print the following output.
 
    ```
-   MSE (PMF): 0.8166798255450183
-   MSE (NMF): 0.9438406097978671
+   MSE (PMF): 1.045296527045507
+   MSE (NMF): 1.4204697638323218
    ```
    
    You can find the full code of this example in [GettingStartedExample](src/main/java/es/upm/etsisi/cf4j/examples/GettingStartedExample.java).
