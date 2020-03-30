@@ -148,7 +148,7 @@ public class HPF extends Recommender {
 
     @Override
     public void fit() {
-        System.out.println("\nFitting HPF...");
+        System.out.println("\nFitting " + this.toString());
 
         for (int iter = 1; iter <= numIters; iter++) {
             Parallelizer.exec(super.datamodel.getUsers(), new UpdateUsersFactors());
@@ -163,6 +163,28 @@ public class HPF extends Recommender {
     public double predict(int userIndex, int itemIndex) {
         double dot = Maths.dotProduct(this.gamma[userIndex], this.lambda[itemIndex]);
         return 1 - Math.exp(-1 * dot);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder("HPF(")
+                .append("numFactors=").append(this.numFactors)
+                .append("; ")
+                .append("numIters=").append(this.numIters)
+                .append("; ")
+                .append("a=").append(this.a)
+                .append("; ")
+                .append("aPrime=").append(this.aPrime)
+                .append("; ")
+                .append("bPrime=").append(this.bPrime)
+                .append("; ")
+                .append("c=").append(this.c)
+                .append("; ")
+                .append("cPrime=").append(this.cPrime)
+                .append("; ")
+                .append("dPrime=").append(this.dPrime)
+                .append(")");
+        return str.toString();
     }
 
     /**

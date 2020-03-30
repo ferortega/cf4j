@@ -8,6 +8,7 @@ import es.upm.etsisi.cf4j.util.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.util.Maths;
 
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -97,8 +98,7 @@ public class NMF extends Recommender {
 
 	@Override
 	public void fit() {
-
-		System.out.println("\nFitting NMF...");
+		System.out.println("\nFitting " + this.toString());
 
 		for (int iter = 1; iter <= this.numIters; iter++) {
 			Parallelizer.exec(this.datamodel.getUsers(), new UpdateUsersFactors());
@@ -112,6 +112,16 @@ public class NMF extends Recommender {
 	@Override
 	public double predict(int userIndex, int itemIndex) {
 		return Maths.dotProduct(this.w[userIndex], this.h[itemIndex]);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder str = new StringBuilder("NMF(")
+				.append("numFactors=").append(this.numFactors)
+				.append("; ")
+				.append("numIters=").append(this.numIters)
+				.append(")");
+		return str.toString();
 	}
 
 	/**

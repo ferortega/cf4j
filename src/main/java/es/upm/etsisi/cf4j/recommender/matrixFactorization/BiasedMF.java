@@ -179,7 +179,7 @@ public class BiasedMF extends Recommender {
 	@Override
 	public void fit() {
 
-		System.out.println("\nFitting BiasedMF...");
+		System.out.println("\nFitting " + this.toString());
 
 		for (int iter = 1; iter <= this.numIters; iter++) {
 
@@ -196,6 +196,20 @@ public class BiasedMF extends Recommender {
 		double[] pu = this.p[userIndex];
 		double[] qi = this.q[itemIndex];
 		return datamodel.getRatingAverage() + this.bu[userIndex] + this.bi[itemIndex] + Maths.dotProduct(pu, qi);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder str = new StringBuilder("BiasedMF(")
+				.append("numFactors=").append(this.numFactors)
+				.append("; ")
+				.append("numIters=").append(this.numIters)
+				.append("; ")
+				.append("gamma=").append(this.gamma)
+				.append("; ")
+				.append("lambda=").append(this.lambda)
+				.append(")");
+		return str.toString();
 	}
 
 	/**

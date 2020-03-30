@@ -187,12 +187,10 @@ public class BNMF extends Recommender {
 
 	@Override
 	public void fit() {
-		System.out.println("\nFitting BNMF...");
+		System.out.println("\nFitting " + this.toString());
 
 		for (int iter = 1; iter <= this.numIters; iter++) {
-
 			Parallelizer.exec(datamodel.getItems(), new UpdateModel());
-
 			if ((iter % 10) == 0) System.out.print(".");
 			if ((iter % 100) == 0) System.out.println(iter + " iterations");
 		}
@@ -217,7 +215,6 @@ public class BNMF extends Recommender {
 				this.b[itemIndex][k] = this.epsilonPlus[itemIndex][k] / (this.epsilonPlus[itemIndex][k] + this.epsilonMinus[itemIndex][k]);
 			}
 		}
-
 	}
 
 	@Override
@@ -225,6 +222,22 @@ public class BNMF extends Recommender {
 		double prob = Maths.dotProduct(this.a[userIndex], this.b[itemIndex]);
 		prob = Math.max(prob, 1E-10);
 		return Math.ceil(prob * (super.datamodel.getMaxRating() - super.datamodel.getMinRating() + 1));
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder str = new StringBuilder("BNMF(")
+				.append("numFactors=").append(this.numFactors)
+				.append("; ")
+				.append("numIters=").append(this.numIters)
+				.append("; ")
+				.append("alpha=").append(this.alpha)
+				.append("; ")
+				.append("beta=").append(this.beta)
+				.append("; ")
+				.append("r=").append(this.r)
+				.append(")");
+		return str.toString();
 	}
 
 	/**

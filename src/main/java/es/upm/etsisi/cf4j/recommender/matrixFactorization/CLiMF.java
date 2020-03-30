@@ -156,7 +156,7 @@ public class CLiMF extends Recommender {
 
     @Override
     public void fit() {
-        System.out.println("\nFitting CLiMF...");
+        System.out.println("\nFitting " + this.toString());
 
         for (int iter = 1; iter <= this.numIters; iter++) {
             Parallelizer.exec(super.datamodel.getUsers(), new UpdateModel());
@@ -168,6 +168,22 @@ public class CLiMF extends Recommender {
     @Override
     public double predict(int userIndex, int itemIndex) {
         return Maths.dotProduct(this.U[userIndex], this.V[itemIndex]);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder("CLiMF(")
+                .append("numFactors=").append(this.numFactors)
+                .append("; ")
+                .append("numIters=").append(this.numIters)
+                .append("; ")
+                .append("gamma=").append(this.gamma)
+                .append("; ")
+                .append("lambda=").append(this.lambda)
+                .append("; ")
+                .append("threshold=").append(this.threshold)
+                .append(")");
+        return str.toString();
     }
 
     /**

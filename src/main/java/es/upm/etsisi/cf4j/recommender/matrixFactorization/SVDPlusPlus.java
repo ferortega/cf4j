@@ -6,6 +6,7 @@ import es.upm.etsisi.cf4j.data.User;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.util.Maths;
 
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -141,7 +142,7 @@ public class SVDPlusPlus extends Recommender {
 
     @Override
     public void fit() {
-        System.out.println("\nFitting SVDPlusPlus...");
+        System.out.println("\nFitting " + this.toString());
 
         for (int iter = 1; iter <= this.numIters; iter++) {
 
@@ -206,5 +207,19 @@ public class SVDPlusPlus extends Recommender {
         double dot = Maths.dotProduct(pu, qi);
 
         return super.datamodel.getRatingAverage() + this.bi[itemIndex] + this.bu[userIndex] + dot;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder("SVDPlusPlus(")
+                .append("numFactors=").append(this.numFactors)
+                .append("; ")
+                .append("numIters=").append(this.numIters)
+                .append("; ")
+                .append("gamma=").append(this.gamma)
+                .append("; ")
+                .append("lambda=").append(this.lambda)
+                .append(")");
+        return str.toString();
     }
 }

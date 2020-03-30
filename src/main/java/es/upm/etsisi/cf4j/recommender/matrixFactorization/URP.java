@@ -165,7 +165,7 @@ public class URP extends Recommender {
 
     @Override
     public void fit() {
-        System.out.println("\nFitting URP...");
+        System.out.println("\nFitting " + this.toString());
 
         for (int iter = 1; iter <= this.numIters; iter++) {
             Parallelizer.exec(this.datamodel.getUsers(), new UpdatePhiGamma());
@@ -233,6 +233,20 @@ public class URP extends Recommender {
         } while(acc < 0.5);
 
         return this.ratings[v];
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder("URP(")
+                .append("numFactors=").append(this.numFactors)
+                .append("; ")
+                .append("numIters=").append(this.numIters)
+                .append("; ")
+                .append("ratings=").append(Arrays.toString(this.ratings))
+                .append("; ")
+                .append("H=").append(this.H)
+                .append(")");
+        return str.toString();
     }
 
     /**

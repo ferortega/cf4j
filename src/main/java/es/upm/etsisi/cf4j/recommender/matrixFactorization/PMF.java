@@ -164,7 +164,7 @@ public class PMF extends Recommender {
 
 	@Override
 	public void fit() {
-		System.out.println("\nFitting PMF...");
+		System.out.println("\nFitting " + this.toString());
 
 		for (int iter = 1; iter <= this.numIters; iter++) {
 			Parallelizer.exec(this.datamodel.getUsers(), new UpdateUsersFactors());
@@ -178,6 +178,20 @@ public class PMF extends Recommender {
 	@Override
 	public double predict(int userIndex, int itemIndex) {
 		return Maths.dotProduct(this.p[userIndex], this.q[itemIndex]);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder str = new StringBuilder("PMF(")
+				.append("numFactors=").append(this.numFactors)
+				.append("; ")
+				.append("numIters=").append(this.numIters)
+				.append("; ")
+				.append("gamma=").append(this.gamma)
+				.append("; ")
+				.append("lambda=").append(this.lambda)
+				.append(")");
+		return str.toString();
 	}
 
 	/**
