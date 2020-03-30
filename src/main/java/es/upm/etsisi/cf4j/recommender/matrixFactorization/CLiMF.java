@@ -7,8 +7,9 @@ import es.upm.etsisi.cf4j.util.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.util.Maths;
 
+import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Implements Shi, Y., Karatzoglou, A., Baltrunas, L., Larson, M., Oliver, N., &amp; Hanjalic, A. (2012, September).
@@ -155,8 +156,12 @@ public class CLiMF extends Recommender {
 
     @Override
     public void fit() {
+        System.out.println("\nFitting CLiMF...");
+
         for (int iter = 1; iter <= this.numIters; iter++) {
             Parallelizer.exec(super.datamodel.getUsers(), new UpdateModel());
+            if ((iter % 10) == 0) System.out.print(".");
+            if ((iter % 100) == 0) System.out.println(iter + " iterations");
         }
     }
 
@@ -187,24 +192,12 @@ public class CLiMF extends Recommender {
      * Auxiliary inner class to parallelize model update
      */
     private class UpdateModel implements Partible<User> {
-
-        private final static int NUM_LOCKS = 100;
-
-        private ReentrantLock[] locks;
-
         private double[][] usersGradients;
-        private double[][] itemsGradients;
+        private Map<Integer, double[][]> itemsGradients;
 
         public UpdateModel () {
-
-            // Locks avoid problem while items' V are updated in different threads
-            this.locks = new ReentrantLock [NUM_LOCKS];
-            for (int i = 0; i < NUM_LOCKS; i++) {
-                this.locks[i] = new ReentrantLock();
-            }
-
             this.usersGradients = new double[datamodel.getNumberOfUsers()][numFactors];
-            this.itemsGradients = new double[datamodel.getNumberOfItems()][numFactors];
+            this.itemsGradients = new ConcurrentHashMap<>();
         }
 
         @Override
@@ -243,30 +236,24 @@ public class CLiMF extends Recommender {
                 }
             }
 
-            for (int f = 0; f < numFactors; f++) {
-                this.usersGradients[userIndex][f] = userGradients[f] - lambda * U[userIndex][f];
-            }
-
-            for (int pos = 0; pos < user.getNumberOfRatings(); pos++) {
-                int itemIndex = user.getItemAt(pos);
-                int lockIndex = itemIndex % this.locks.length;
-                this.locks[lockIndex].lock();
-                for (int f = 0; f < numFactors; f++) {
-                    this.itemsGradients[itemIndex][f] += ratedItemsGradients[pos][f] - lambda * V[itemIndex][f];
-                }
-                this.locks[lockIndex].unlock();
-            }
+            this.usersGradients[userIndex] = userGradients;
+            this.itemsGradients.put(userIndex, ratedItemsGradients);
         }
 
         @Override
         public void afterRun() {
-            for (int f = 0; f < numFactors; f++) {
-                for (int userIndex = 0; userIndex < datamodel.getNumberOfUsers(); userIndex++) {
-                    U[userIndex][f] += gamma * this.usersGradients[userIndex][f];
-                }
+            for (int userIndex = 0; userIndex < datamodel.getNumberOfUsers(); userIndex++) {
+                User user = datamodel.getUser(userIndex);
 
-                for (int itemIndex = 0; itemIndex < datamodel.getNumberOfItems(); itemIndex++) {
-                    V[itemIndex][f] += gamma * this.itemsGradients[itemIndex][f];
+                double[][] ratedItemsGradients = this.itemsGradients.get(userIndex);
+
+                for (int f = 0; f < numFactors; f++) {
+                    U[userIndex][f] += gamma * (this.usersGradients[userIndex][f] - lambda * U[userIndex][f]);
+
+                    for (int pos = 0; pos < user.getNumberOfRatings(); pos++) {
+                        int itemIndex = user.getItemAt(pos);
+                        V[itemIndex][f] += gamma * (ratedItemsGradients[pos][f] - lambda * V[itemIndex][f]);
+                    }
                 }
             }
         }
