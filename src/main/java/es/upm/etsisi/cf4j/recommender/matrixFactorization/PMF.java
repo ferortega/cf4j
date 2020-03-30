@@ -164,12 +164,9 @@ public class PMF extends Recommender {
 
 	@Override
 	public void fit() {
-
-		System.out.println("\nProcessing PMF...");
+		System.out.println("\nFitting PMF...");
 
 		for (int iter = 1; iter <= this.numIters; iter++) {
-
-			// ALS: fix q_i and update p_u -> fix p_u and update q_i
 			Parallelizer.exec(this.datamodel.getUsers(), new UpdateUsersFactors());
 			Parallelizer.exec(this.datamodel.getItems(), new UpdateItemsFactors());
 

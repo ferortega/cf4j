@@ -148,9 +148,14 @@ public class HPF extends Recommender {
 
     @Override
     public void fit() {
+        System.out.println("\nFitting HPF...");
+
         for (int iter = 1; iter <= numIters; iter++) {
             Parallelizer.exec(super.datamodel.getUsers(), new UpdateUsersFactors());
             Parallelizer.exec(super.datamodel.getItems(), new UpdateItemsFactors());
+
+            if ((iter % 10) == 0) System.out.print(".");
+            if ((iter % 100) == 0) System.out.println(iter + " iterations");
         }
     }
 

@@ -141,10 +141,9 @@ public class SVDPlusPlus extends Recommender {
 
     @Override
     public void fit() {
+        System.out.println("\nFitting SVDPlusPlus...");
 
         for (int iter = 1; iter <= this.numIters; iter++) {
-
-            System.out.println("Iteration " + iter + " of " + this.numIters);
 
             for (int userIndex = 0; userIndex < datamodel.getNumberOfUsers(); userIndex++) {
                 User user = datamodel.getUser(userIndex);
@@ -183,6 +182,9 @@ public class SVDPlusPlus extends Recommender {
                     this.y[itemIndex] = updatedY;
                 }
             }
+
+            if ((iter % 10) == 0) System.out.print(".");
+            if ((iter % 100) == 0) System.out.println(iter + " iterations");
         }
     }
 

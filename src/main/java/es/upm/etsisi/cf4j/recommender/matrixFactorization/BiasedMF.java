@@ -179,7 +179,7 @@ public class BiasedMF extends Recommender {
 	@Override
 	public void fit() {
 
-		System.out.println("\nProcessing BiasedMF...");
+		System.out.println("\nFitting BiasedMF...");
 
 		for (int iter = 1; iter <= this.numIters; iter++) {
 

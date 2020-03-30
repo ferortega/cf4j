@@ -98,11 +98,14 @@ public class NMF extends Recommender {
 	@Override
 	public void fit() {
 
-		System.out.println("\nProcessing NMF...");
+		System.out.println("\nFitting NMF...");
 
 		for (int iter = 1; iter <= this.numIters; iter++) {
 			Parallelizer.exec(this.datamodel.getUsers(), new UpdateUsersFactors());
 			Parallelizer.exec(this.datamodel.getItems(), new UpdateItemsFactors());
+
+			if ((iter % 10) == 0) System.out.print(".");
+			if ((iter % 100) == 0) System.out.println(iter + " iterations");
 		}
 	}
 
