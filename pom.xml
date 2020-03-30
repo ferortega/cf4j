@@ -1,35 +1,29 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>9</version>
-	</parent>
-	<groupId>com.github.ferortega</groupId>
+
+	<groupId>es.upm.etsisi.cf4j</groupId>
 	<artifactId>cf4j-recsys</artifactId>
-	<version>1.2.0-dev</version>
-	<packaging>jar</packaging>
-	<name>cf4j-recsys</name>
-	<description>A Java's Collaborative Filtering library to carry out experiments in research of Collaborative Filtering based Recommender Systems. The library has been designed from researchers to researchers.</description>
-	<url>https://github.com/ferortega/cf4j</url>
+	<version>2.0-dev</version>
+
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
 			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
 		</license>
 	</licenses>
-	<scm>
-		<url>git@github.com:ferortega/cf4j.git</url>
-		<connection>scm:git@github.com:ferortega/cf4j.git</connection>
-		<developerConnection>scm:git@github.com:ferortega/cf4j.git</developerConnection>
-	</scm>
+
 	<developers>
 		<developer>
-			<id>ferortega</id>
-			<email>fortegarequena@gmail.com</email>
+			<id>Fernando Ortega</id>
+			<email>fernando.ortega@upm.es</email>
+		</developer>
+		<developer>
+			<id>Jesús Mayor</id>
+			<email>jesus.mayor@upm.es</email>
 		</developer>
 	</developers>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -37,125 +31,19 @@
 			<version>3.6.1</version>
 		</dependency>
     </dependencies>
-	<properties>
-		<src.dir>src/cf4j</src.dir>
-  </properties>
+
 	<build>
-		<sourceDirectory>${src.dir}</sourceDirectory>
 		<plugins>
-
-			<!-- Compiler Plugin to set JDK Compiler Configuration -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.7.0</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-
-			<!-- JavaDoc Plugin to generate a JAR containing documentation from the project. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.0.0</version>
+				<version>3.2.0</version>
 				<configuration>
-			        <sourceFileIncludes>
-			            <sourceFileInclude>**/*.java</sourceFileInclude>
-			        </sourceFileIncludes>
-			    </configuration>
-				<executions>
-					<execution>
-						<id>attach-javadoc</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<!-- Shade plugin to generate a JAR containg dependencies -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.1.0</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<createDependencyReducedPom>false</createDependencyReducedPom>
-					<createSourcesJar>true</createSourcesJar>
-					<shadeSourcesContent>false</shadeSourcesContent>
+					<author>false</author>
+					<doctitle>API documentation for Collaborative Filtering for Java (CF4J) ${project.version}</doctitle>
+					<windowtitle>API documentation for Collaborative Filtering for Java (CF4J) ${project.version}</windowtitle>
 				</configuration>
 			</plugin>
-
 		</plugins>
-  </build>
-	<profiles>
-		<profile>
-			<id>release</id>
-			<build>
-				<plugins>
-					<!-- Source -->
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-source-plugin</artifactId>
-						<version>3.0.1</version>
-						<executions>
-							<execution>
-								<phase>package</phase>
-								<goals>
-									<goal>jar-no-fork</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<!-- Javadoc -->
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>3.0.0-M1</version>
-						<executions>
-							<execution>
-								<phase>package</phase>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<!-- GPG -->
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.6</version>
-						<executions>
-							<execution>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-			<distributionManagement>
-				<snapshotRepository>
-					<id>oss</id>
-					<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-				</snapshotRepository>
-				<repository>
-					<id>oss</id>
-					<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-				</repository>
-			</distributionManagement>
-		</profile>
-	</profiles>
+	</build>
 </project>
