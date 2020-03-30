@@ -129,7 +129,7 @@ This package contains all the classes that are needed to extract, transform, loa
 
 This package contains several implementations of collaborative filtering algorithms. You can check the full list in the [Algorithm List](#algorithm-list) section. Each collaborative filtering algorithm included in CF4J must extends the `Recommender` abstract class. This class forces to implement the following abstract methods:
 
-- `fit()`: used to estimate collaborative filtering recommender parameters given the hyper-parameters usually defined in the class constructor. To speed up the fitting process, most of the computations has been parallelized using [`Parallelizer`](link-to-javadoc) util.
+- `fit()`: used to estimate collaborative filtering recommender parameters given the hyper-parameters usually defined in the class constructor. To speed up the fitting process, most of the computations has been parallelized using [`Parallelizer`](http://rs.etsisi.upm.es/cf4j-2.0/apidocs/es/upm/etsisi/cf4j/util/Parallelizer.html) util.
 
 - `predict(userIndex, itemIndex)`: used to estimate the rating prediction of the user with index `userIndex` to the item with index `itemIndex`.
 
@@ -146,7 +146,7 @@ Each quality measure included in CF4J extends `QualityMeasures` abstract class. 
 
 ### `es.upm.etsisi.cf4j.util` package
 
-This package contains different utilities to be used with the library. Read the [javadoc]() documentation for additional information.
+This package contains different utilities to be used with the library. Read the [javadoc](http://rs.etsisi.upm.es/cf4j-2.0/apidocs/) documentation for additional information.
 
 ## Customize CF4J
 
@@ -161,7 +161,7 @@ Therefore, if you want to customize CF4J, you should modify any of these main cl
 
 `DataSet` is an interface that contains two methods to iterate over training ratings (`getRatingsIterator()`) and test ratings (`getTestRatingsIterator()`). The iteration is carried out over `DataSetEntry` instances, that contains the user, item and value of a rating. Any class that implements this interface may be used to create a `DataModel`.
 
-`DataModel` is a class that should not be modified. It has been encoded to manage the essential information required by most of collaborative filtering algorithms (i.e. users, items and ratings). However, there are several algorithms that includes additional information to the recommendation process such as demographic information about the users or items description. Both `DataModel`, `User` and `Item` includes a `DataBank` instance (see [javadoc](link-to-javadoc)) to store and retrieve any additional information required by a custom `Recommender`.
+`DataModel` is a class that should not be modified. It has been encoded to manage the essential information required by most of collaborative filtering algorithms (i.e. users, items and ratings). However, there are several algorithms that includes additional information to the recommendation process such as demographic information about the users or items description. Both `DataModel`, `User` and `Item` includes a `DataBank` instance (see [javadoc](http://rs.etsisi.upm.es/cf4j-2.0/apidocs/es/upm/etsisi/cf4j/data/DataBank.html)) to store and retrieve any additional information required by a custom `Recommender`.
 
 `Recommender` class can be extended to create your own collaborative filtering algorithm. As mentioned above, to create a new `Recommender` you must define the `fit()` and `predict(userIndex, itemIndex)` methods. In addition, to create a new similarity metric for a kNN based collaborative filtering, you should extend `UserSimilarityMetric` or `ItemSimilarityMetric` for user-to-user or item-to-item approaches of kNN, respectively.
 
