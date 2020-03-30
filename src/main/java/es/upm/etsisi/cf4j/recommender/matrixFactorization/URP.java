@@ -10,7 +10,9 @@ import es.upm.etsisi.cf4j.recommender.Recommender;
 import org.apache.commons.math3.special.Gamma;
 
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Implements Marlin, B. M. (2004). Modeling user rating profiles for collaborative filtering. In Advances in neural
@@ -30,6 +32,11 @@ public class URP extends Recommender {
      * Number of latent factors
      */
     private int numFactors;
+
+    /**
+     * Heuristic factor to control number of iterations during E-Step
+     */
+    private double H;
 
     /**
      * Plausible ratings (must be sorted in ascending order)
@@ -54,7 +61,7 @@ public class URP extends Recommender {
     /**
      * Phi parameter
      */
-    private double[][][] phi;
+    private Map<Integer, double[][]> phi;
 
     /**
      * Model constructor
@@ -64,7 +71,7 @@ public class URP extends Recommender {
      * @param numIters Number of iterations
      */
     public URP(DataModel datamodel, int numFactors, double [] ratings, int numIters) {
-        this(datamodel, numFactors, ratings, numIters, new Double(Math.random() * 1E100).longValue());
+        this(datamodel, numFactors, ratings, numIters, System.currentTimeMillis());
     }
 
     /**
@@ -76,11 +83,39 @@ public class URP extends Recommender {
      * @param seed Seed for random numbers generation
      */
     public URP(DataModel datamodel, int numFactors, double [] ratings, int numIters, long seed) {
+        this(datamodel, numFactors, ratings, numIters, 0.1, seed);
+    }
+
+    /**
+     * Model constructor
+     * @param datamodel DataModel instance
+     * @param numFactors Number of latent factors
+     * @param ratings Plausible ratings (must be sorted in ascending order)
+     * @param numIters Number of iterations
+     * @param H Heuristic factor to control number of iterations during E-Step. The number of iterations is defined by
+     *          H * number_of_user_ratings
+     */
+    public URP(DataModel datamodel, int numFactors, double [] ratings, int numIters, double H) {
+        this(datamodel, numFactors, ratings, numIters, H, System.currentTimeMillis());
+    }
+
+    /**
+     * Model constructor
+     * @param datamodel DataModel instance
+     * @param numFactors Number of latent factors
+     * @param ratings Plausible ratings (must be sorted in ascending order)
+     * @param numIters Number of iterations
+     * @param H Heuristic factor to control number of iterations during E-Step. The number of iterations is defined by
+     *          H * number_of_user_ratings
+     * @param seed Seed for random numbers generation
+     */
+    public URP(DataModel datamodel, int numFactors, double [] ratings, int numIters, double H, long seed) {
         super(datamodel);
 
         this.numFactors = numFactors;
         this.numIters = numIters;
         this.ratings = ratings;
+        this.H = H;
 
         int numRatings = ratings.length;
         int numUsers = datamodel.getNumberOfUsers();
@@ -109,7 +144,7 @@ public class URP extends Recommender {
             this.alpha[i] = rand.nextDouble();
         }
 
-        this.phi = new double[numUsers][numItems][numFactors];
+        this.phi = new ConcurrentHashMap<>();
     }
 
     /**
@@ -130,11 +165,9 @@ public class URP extends Recommender {
 
     @Override
     public void fit() {
+        System.out.println("\nFitting URP...");
 
         for (int iter = 1; iter <= this.numIters; iter++) {
-
-            System.out.println("iteration " + iter + " of " + this.numIters);
-
             Parallelizer.exec(this.datamodel.getUsers(), new UpdatePhiGamma());
             Parallelizer.exec(this.datamodel.getItems(), new UpdateBeta());
 
@@ -169,6 +202,9 @@ public class URP extends Recommender {
                     this.alpha[z] = newAlpha;
                 }
             } while (diff > EPSILON);
+
+            if ((iter % 10) == 0) System.out.print(".");
+            if ((iter % 100) == 0) System.out.println(iter + " iterations");
         }
     }
 
@@ -229,7 +265,9 @@ public class URP extends Recommender {
         public void run(User user) {
             int userIndex = user.getUserIndex();
 
-            for (int h = 0; h < user.getNumberOfRatings(); h++) {
+            double[][] userPhi = new double[user.getNumberOfRatings()][numFactors];
+
+            for (int h = 0; h < Math.max(1, H * user.getNumberOfRatings()); h++) {
 
                 // update phi
 
@@ -238,34 +276,14 @@ public class URP extends Recommender {
                     gs += gamma[userIndex][z];
                 }
 
-                int i = 0;
+                for (int pos = 0; pos < user.getNumberOfRatings(); pos++) {
+                    int itemIndex = user.getItemAt(pos);
 
-                for (int itemIndex = 0; itemIndex < datamodel.getNumberOfItems(); itemIndex++) {
-                    Item item = datamodel.getItem(itemIndex);
-
-                    boolean rated = i < user.getNumberOfRatings() && user.getItemAt(i) == itemIndex;
-
-                    int v = -1;
-
-                    if (rated) {
-                        v = Arrays.binarySearch(ratings, user.getRatingAt(i));
-                        i++;
-                    }
-
-                    double sum = 0;
+                    double rating = user.getRatingAt(pos);
+                    int v = Arrays.binarySearch(ratings, rating);
 
                     for (int z = 0; z < URP.this.numFactors; z++) {
-                        phi[userIndex][itemIndex][z] = Math.exp(Gamma.digamma(gamma[userIndex][z]) - Gamma.digamma(gs));
-
-                        if (rated) {
-                            phi[userIndex][itemIndex][z] *= beta[itemIndex][v][z];
-                        }
-
-                        sum += phi[userIndex][itemIndex][z];
-                    }
-
-                    for (int z = 0; z < URP.this.numFactors; z++) {
-                        phi[userIndex][itemIndex][z] /= sum;
+                        userPhi[pos][z] = Math.exp(Gamma.digamma(gamma[userIndex][z]) - Gamma.digamma(gs)) * beta[itemIndex][v][z];
                     }
                 }
 
@@ -273,12 +291,13 @@ public class URP extends Recommender {
 
                 for (int z = 0; z < numFactors; z++) {
                     gamma[userIndex][z] = URP.this.alpha[z];
-                    for (int itemIndex = 0; itemIndex < datamodel.getNumberOfItems(); itemIndex++) {
-                        gamma[userIndex][z] += phi[userIndex][itemIndex][z];
+                    for (int pos = 0; pos < user.getNumberOfRatings(); pos++) {
+                        gamma[userIndex][z] += userPhi[pos][z];
                     }
                 }
             }
 
+            phi.put(userIndex, userPhi);
         }
 
         @Override
@@ -299,26 +318,18 @@ public class URP extends Recommender {
 
             beta[itemIndex] = new double[ratings.length][numFactors]; // reset beta
 
-            int userIndex = 0;
-            int u = 0;
-
-            while (u < item.getNumberOfRatings() && userIndex < datamodel.getNumberOfUsers()) {
+            for (int pos = 0; pos < item.getNumberOfRatings(); pos++) {
+                int userIndex = item.getUserAt(pos);
                 User user = datamodel.getUser(userIndex);
 
-                if (item.getUserAt(u) == userIndex) {
-                    double rating = item.getRatingAt(u);
-                    int v = Arrays.binarySearch(ratings, rating);
+                int p = user.findItem(itemIndex);
+                double[][] userPhi = phi.get(userIndex);
 
-                    for (int z = 0; z < numFactors; z++) {
-                        beta[itemIndex][v][z] += phi[userIndex][itemIndex][z];
-                    }
+                double rating = item.getRatingAt(pos);
+                int v = Arrays.binarySearch(ratings, rating);
 
-                    userIndex++;
-                    u++;
-
-                // userCode < item.getUserAt(u)
-                } else {
-                    userIndex++;
+                for (int z = 0; z < numFactors; z++) {
+                    beta[itemIndex][v][z] += userPhi[p][z];
                 }
             }
         }
