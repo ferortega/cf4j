@@ -9,7 +9,8 @@ A Java's Collaborative Filtering library to carry out experiments in research of
 3. [Project Structure](#project-structure)
 4. [Customize CF4J](#customize-cf4j)
 5. [Algorithm List](#algorithm-list)
-6. [Datasets](#datasets)
+6. [Examples](#examples)
+7. [Datasets](#datasets)
 
 ## Installation
 
@@ -223,6 +224,332 @@ In this section we include the full list of algorithms implemented in the librar
     - Recall (`Recall`)
     - F1 (`F1`)
     - Normalized Discounted Cumulative Gain (`NDCG`)
+    - Novelty (`Novelty`)
+    - Discovery (`Discovery`)
+
+## Examples
+
+In this section we include additional examples to show the operation of CF4J. 
+
+In [MatrixFactorizationComparison](src/main/java/es/upm/etsisi/cf4j/examples/MatrixFactorizationComparison.java) we compare the RMSE and F1 for different matrix factorization models varying the number of latent factors:
+
+```java
+// Grid search over number of factors hyper-parameter
+private static final int[] numFactors = Range.ofIntegers(5,5,5);
+
+// Same number of iterations for all matrix factorization models
+private static final int numIter = 50;
+
+// Random seed to guaranty reproducibility of the experiment
+private static final long randomSeed = 43;
+
+public static void main (String [] args) {
+
+    // Load MovieLens 100K dataset
+    DataSet ml100k = new RandomSplitDataSet("src/main/resources/datasets/ml100k.data", 0.2, 0.2, "\t", randomSeed);
+    DataModel datamodel = new DataModel(ml100k);
+
+    // To store results
+    PrintableQualityMeasure rmseScores = new PrintableQualityMeasure("RMSE", numFactors);
+    PrintableQualityMeasure f1Scores = new PrintableQualityMeasure("F1", numFactors);
+
+    // Evaluate PMF model
+    for (int factors : numFactors) {
+        Recommender pmf = new PMF(datamodel, factors, numIter, randomSeed);
+        pmf.fit();
+
+        QualityMeasure rmse = new RMSE(pmf);
+        rmseScores.putScore(factors, "PMF", rmse.getScore());
+
+        QualityMeasure f1 = new F1(pmf,10, 4);
+        f1Scores.putScore(factors, "PMF", f1.getScore());
+    }
+
+    // Evaluate BNMF model
+    for (int factors : numFactors) {
+        Recommender bnmf = new BNMF(datamodel, factors, numIter, 0.2, 10, randomSeed);
+        bnmf.fit();
+
+        QualityMeasure rmse = new RMSE(bnmf);
+        rmseScores.putScore(factors, "BNMF", rmse.getScore());
+
+        QualityMeasure f1 = new F1(bnmf,10, 4);
+        f1Scores.putScore(factors, "BNMF", f1.getScore());
+    }
+
+    // Evaluate BiasedMF model
+    for (int factors : numFactors) {
+        Recommender biasedmf = new BiasedMF(datamodel, factors, numIter, randomSeed);
+        biasedmf.fit();
+
+        QualityMeasure rmse = new RMSE(biasedmf);
+        rmseScores.putScore(factors, "BiasedMF", rmse.getScore());
+
+        QualityMeasure f1 = new F1(biasedmf,10, 4);
+        f1Scores.putScore(factors, "BiasedMF", f1.getScore());
+    }
+
+    // Evaluate NMF model
+    for (int factors : numFactors) {
+        Recommender nmf = new NMF(datamodel, factors, numIter, randomSeed);
+        nmf.fit();
+
+        QualityMeasure rmse = new RMSE(nmf);
+        rmseScores.putScore(factors, "NMF", rmse.getScore());
+
+        QualityMeasure f1 = new F1(nmf,10, 4);
+        f1Scores.putScore(factors, "NMF", f1.getScore());
+    }
+
+    // Evaluate CLiMF model
+    for (int factors : numFactors) {
+        Recommender climf = new CLiMF(datamodel, factors, numIter, randomSeed);
+        climf.fit();
+
+        QualityMeasure rmse = new RMSE(climf);
+        rmseScores.putScore(factors, "CLiMF", rmse.getScore());
+
+        QualityMeasure f1 = new F1(climf,10, 4);
+        f1Scores.putScore(factors, "CLiMF", f1.getScore());
+    }
+
+    // Evaluate SVDPlusPlus model
+    for (int factors : numFactors) {
+        Recommender svdPlusPlus = new SVDPlusPlus(datamodel, factors, numIter, randomSeed);
+        svdPlusPlus.fit();
+
+        QualityMeasure rmse = new RMSE(svdPlusPlus);
+        rmseScores.putScore(factors, "SVDPlusPlus", rmse.getScore());
+
+        QualityMeasure f1 = new F1(svdPlusPlus,10, 4);
+        f1Scores.putScore(factors, "SVDPlusPlus", f1.getScore());
+    }
+
+    // Evaluate HPF model
+    for (int factors : numFactors) {
+        Recommender hpf = new HPF(datamodel, factors, numIter, randomSeed);
+        hpf.fit();
+
+        QualityMeasure rmse = new RMSE(hpf);
+        rmseScores.putScore(factors, "HPF", rmse.getScore());
+
+        QualityMeasure f1 = new F1(hpf,10, 4);
+        f1Scores.putScore(factors, "HPF", f1.getScore());
+    }
+
+    // Evaluate URP model
+    for (int factors : numFactors) {
+        double[] ratings = {1.0, 2.0, 3.0, 4.0, 5.0};
+        Recommender urp = new URP(datamodel, factors, ratings, numIter, randomSeed);
+        urp.fit();
+
+        QualityMeasure rmse = new RMSE(urp);
+        rmseScores.putScore(factors, "URP", rmse.getScore());
+
+        QualityMeasure f1 = new F1(urp,10, 4);
+        f1Scores.putScore(factors, "URP", f1.getScore());
+    }
+
+    // Print results
+    rmseScores.print();
+    f1Scores.print();
+}
+```
+
+The program will output the following results:
+
+```
+
+```
+
+In [ItemKnnComparison](src/main/java/es/upm/etsisi/cf4j/examples/ItemKnnComparison.java) we compare the MSLE and nDCG quality measures scores for different similarity metrics applied to item-to-item knn based collaborative filtering. Each similarity metric is tested with different number of neighbors:
+
+```java
+// Grid search over number of neighbors hyper-parameter
+private static final int[] numNeighbors = Range.ofIntegers(100,50,5);
+
+// Fixed aggregation approach
+private static final ItemKNN.AggregationApproach aggregationApproach = ItemKNN.AggregationApproach.MEAN;
+
+// Random seed to guaranty reproducibility of the experiment
+private static final long randomSeed = 43;
+
+public static void main (String [] args) {
+
+    // Load MovieLens 100K dataset
+    DataSet ml1m = new RandomSplitDataSet("src/main/resources/datasets/ml100k.data", 0.2, 0.2, "\t", randomSeed);
+    DataModel datamodel = new DataModel(ml1m);
+
+    // Dataset parameters
+    double[] relevantRatings = {3, 4, 5};
+    double[] notRelevantRatings = {1, 2};
+
+    // To store results
+    PrintableQualityMeasure msleScores = new PrintableQualityMeasure("MSLE", numNeighbors);
+    PrintableQualityMeasure ndcgScores = new PrintableQualityMeasure("NDCG", numNeighbors);
+
+    // Create similarity metrics
+    List<ItemSimilarityMetric> metrics = new ArrayList<>();
+    metrics.add(new AdjustedCosine());
+    metrics.add(new Correlation());
+    metrics.add(new Cosine());
+    metrics.add(new Jaccard());
+    metrics.add(new JMSD());
+    metrics.add(new MSD());
+    metrics.add(new PIP());
+    metrics.add(new Singularities(relevantRatings, notRelevantRatings));
+    metrics.add(new SpearmanRank());
+
+    // Evaluate ItemKNN recommender
+    for (ItemSimilarityMetric metric : metrics) {
+        String metricName = metric.getClass().getSimpleName();
+
+        for (int k : numNeighbors) {
+            Recommender knn = new ItemKNN(datamodel, k, metric, aggregationApproach);
+            knn.fit();
+
+            QualityMeasure msle = new MSLE(knn);
+            msleScores.putScore(k, metricName, msle.getScore());
+
+            QualityMeasure ndcg = new NDCG(knn,10);
+            ndcgScores.putScore(k, metricName, ndcg.getScore());
+        }
+    }
+
+    // Print results
+    msleScores.print();
+    ndcgScores.print();
+}
+```
+
+The program will output the following results:
+
+```
+MSLE
+        Correlation   Singularities            JMSD             PIP  AdjustedCosine         Jaccard    SpearmanRank          Cosine             MSD
+100        0,318433        0,251566        0,241642        0,257104        0,270548        0,244898        0,256119        0,361521        0,259081
+150        0,326281        0,251691        0,244389        0,255251        0,265932        0,245888        0,255657        0,364797        0,257521
+200        0,314223        0,252069        0,245720        0,255092        0,271698        0,247856        0,256358        0,342082        0,248004
+250        0,288312        0,253365        0,245416        0,255254        0,252651        0,248229        0,257171        0,319616        0,246424
+300        0,278303        0,253110        0,246938        0,254554        0,246946        0,249424        0,257068        0,296390        0,246937
+
+NDCG
+        Correlation   Singularities            JMSD             PIP  AdjustedCosine         Jaccard    SpearmanRank          Cosine             MSD
+100        0,512928        1,171205        1,143986        1,139746        0,704328        1,141128        1,166582        0,354474        0,782335
+150        0,644135        1,164531        1,145066        1,132707        0,868873        1,135258        1,130220        0,378641        0,901750
+200        0,764740        1,151330        1,148762        1,130443        0,998609        1,145257        1,144629        0,458238        0,997616
+250        0,880271        1,139038        1,141368        1,136442        1,058628        1,129431        1,134793        0,602078        1,055863
+300        0,951793        1,136819        1,142463        1,142724        1,108925        1,136880        1,130153        0,778681        1,089436
+```
+
+Finally, in [UserKnnComparison](src/main/java/es/upm/etsisi/cf4j/examples/UserKnnComparison.java) we compare the MAE, Coverage, Precision and Recall quality measures scores for different similarity metrics applied to user-to-user knn based collaborative filtering. Each similarity metric is tested with different number of neighbors:
+
+```java
+// Grid search over number of neighbors hyper-parameter
+private static final int[] numNeighbors = Range.ofIntegers(100,50,5);
+
+// Fixed aggregation approach
+private static final UserKNN.AggregationApproach aggregationApproach = UserKNN.AggregationApproach.DEVIATION_FROM_MEAN;
+
+// Random seed to guaranty reproducibility of the experiment
+private static final long randomSeed = 43;
+
+public static void main (String [] args) {
+
+    // Load MovieLens 100K dataset
+    DataSet ml1m = new RandomSplitDataSet("src/main/resources/datasets/ml100k.data", 0.2, 0.2, "\t", randomSeed);
+    DataModel datamodel = new DataModel(ml1m);
+
+    // Dataset parameters
+    double[] relevantRatings = {3, 4, 5};
+    double[] notRelevantRatings = {1, 2};
+
+    // To store results
+    PrintableQualityMeasure maeScores = new PrintableQualityMeasure("MAE", numNeighbors);
+    PrintableQualityMeasure coverageScores = new PrintableQualityMeasure("Coverage", numNeighbors);
+    PrintableQualityMeasure precisionScores = new PrintableQualityMeasure("Precision", numNeighbors);
+    PrintableQualityMeasure recallScores = new PrintableQualityMeasure("Recall", numNeighbors);
+
+    // Create similarity metrics
+    List<UserSimilarityMetric> metrics = new ArrayList<>();
+    metrics.add(new AdjustedCosine());
+    metrics.add(new CJMSD());
+    metrics.add(new Correlation());
+    metrics.add(new Cosine());
+    metrics.add(new Jaccard());
+    metrics.add(new JMSD());
+    metrics.add(new MSD());
+    metrics.add(new PIP());
+    metrics.add(new Singularities(relevantRatings, notRelevantRatings));
+    metrics.add(new SpearmanRank());
+
+    // Evaluate UserKNN recommender
+    for (UserSimilarityMetric metric : metrics) {
+        String metricName = metric.getClass().getSimpleName();
+
+        for (int k : numNeighbors) {
+            Recommender knn = new UserKNN(datamodel, k, metric, aggregationApproach);
+            knn.fit();
+
+            QualityMeasure mae = new MAE(knn);
+            maeScores.putScore(k, metricName, mae.getScore());
+
+            QualityMeasure coverage = new Coverage(knn);
+            coverageScores.putScore(k, metricName, coverage.getScore());
+
+            QualityMeasure precision = new Precision(knn,10, 4);
+            precisionScores.putScore(k, metricName, precision.getScore());
+
+            QualityMeasure recall = new Recall(knn,10, 4);
+            recallScores.putScore(k, metricName, recall.getScore());
+        }
+    }
+
+    // Print results
+    maeScores.print();
+    coverageScores.print();
+    precisionScores.print();
+    recallScores.print();
+}
+```
+
+The program will output the following results:
+
+```
+MAE
+        Correlation   Singularities           CJMSD            JMSD             PIP  AdjustedCosine         Jaccard    SpearmanRank          Cosine             MSD
+100        0,898954        0,809687        0,807358        0,791859        0,788755        0,869157        0,799340        0,801607        0,930473        0,851600
+150        0,860057        0,808615        0,805246        0,798793        0,789560        0,834456        0,795797        0,802933        0,887269        0,814720
+200        0,818200        0,805083        0,804379        0,802710        0,792320        0,824575        0,807378        0,804484        0,857773        0,813759
+250        0,799799        0,803750        0,805203        0,805071        0,793557        0,813849        0,807961        0,802212        0,822812        0,807216
+300        0,797065        0,803339        0,804846        0,807055        0,793313        0,804269        0,811045        0,802861        0,820105        0,805873
+
+Coverage
+        Correlation   Singularities           CJMSD            JMSD             PIP  AdjustedCosine         Jaccard    SpearmanRank          Cosine             MSD
+100        0,840302        0,995471        0,998924        0,977997        0,998069        0,845187        0,975364        0,995106        0,760310        0,887770
+150        0,939709        0,996753        0,999319        0,988961        0,998647        0,955332        0,981784        0,997884        0,856974        0,942291
+200        0,977278        0,997823        0,999442        0,992595        0,998686        0,979125        0,992902        0,998941        0,919125        0,970749
+250        0,987640        0,998155        0,999442        0,994516        0,999319        0,987933        0,994265        0,999021        0,960297        0,983528
+300        0,992497        0,999260        0,999482        0,994847        0,999359        0,994979        0,994807        0,999359        0,979326        0,990228
+
+Precision
+        Correlation   Singularities           CJMSD            JMSD             PIP  AdjustedCosine         Jaccard    SpearmanRank          Cosine             MSD
+100        0,606886        0,609182        0,610274        0,605838        0,608064        0,608888        0,601347        0,607787        0,610604        0,604641
+150        0,615044        0,605025        0,609721        0,603760        0,604196        0,606750        0,599727        0,605301        0,609568        0,610492
+200        0,612850        0,603920        0,606959        0,605663        0,605301        0,613086        0,605663        0,607511        0,606470        0,607500
+250        0,614527        0,606130        0,607511        0,601473        0,603091        0,614053        0,603131        0,608616        0,611715        0,616647
+300        0,613961        0,604749        0,607511        0,603131        0,604196        0,612396        0,602026        0,602539        0,613255        0,610232
+
+Recall
+        Correlation   Singularities           CJMSD            JMSD             PIP  AdjustedCosine         Jaccard    SpearmanRank          Cosine             MSD
+100        0,694929        0,769980        0,772757        0,748551        0,773014        0,687654        0,745197        0,772204        0,664665        0,729907
+150        0,738375        0,768980        0,773544        0,759807        0,774568        0,746743        0,750369        0,775188        0,697824        0,749910
+200        0,756536        0,767954        0,774722        0,758982        0,773027        0,753570        0,761582        0,770051        0,721896        0,766568
+250        0,763937        0,772247        0,775265        0,761334        0,772949        0,761056        0,762359        0,774427        0,747312        0,765097
+300        0,771250        0,773957        0,775951        0,762531        0,771665        0,768762        0,765254        0,773652        0,762526        0,771868
+```
+
+As you can observer, we have used the [PrintableQualityMeasure](http://rs.etsisi.upm.es/cf4j-2.0/apidocs/es/upm/etsisi/cf4j/util/PrintableQualityMeasure.html) utility to simplify the manage of the results reported for each tested recommender. This class contains a `.toString()` method that can be used to export its output to a `csv` format to be used by external programs to make a detailed analysis of these results.
 
 ## Datasets
 
