@@ -360,7 +360,21 @@ public static void main (String [] args) {
 The program will output the following results:
 
 ```
+RMSE
+            URP     BiasedMF  SVDPlusPlus          NMF          PMF         BNMF        CLiMF          HPF
+5      1,147216     0,945209     1,045447     1,023785     0,968681     1,059451     2,668724     2,862586
+10     1,145944     0,943000     1,130097     1,060075     0,969985     1,073015     1,671452     2,862586
+15     1,146991     0,942857     1,221443     1,075078     0,982645     1,075971     1,297566     2,862586
+20     1,137211     0,939024     1,321603     1,092861     0,963954     1,084917     1,812653     2,862586
+25     1,143487     0,948637     1,397062     1,098636     0,977123     1,101971     2,891408     2,862586
 
+F1
+            URP     BiasedMF  SVDPlusPlus          NMF          PMF         BNMF        CLiMF          HPF
+5      0,665028     0,679093     0,665240     0,675659     0,677784     0,661660     0,625939     0,639927
+10     0,666203     0,686026     0,653261     0,663828     0,682080     0,661192     0,605024     0,639927
+15     0,664832     0,675804     0,654551     0,665490     0,684804     0,662722     0,626594     0,639927
+20     0,669554     0,681793     0,657067     0,667218     0,683441     0,663840     0,618655     0,639927
+25     0,666377     0,683050     0,650450     0,668642     0,681276     0,655716     0,620043     0,639927
 ```
 
 In [ItemKnnComparison](src/main/java/es/upm/etsisi/cf4j/examples/ItemKnnComparison.java) we compare the MSLE and nDCG quality measures scores for different similarity metrics applied to item-to-item knn based collaborative filtering. Each similarity metric is tested with different number of neighbors:
