@@ -29,8 +29,8 @@ public class MatrixFactorizationComparison {
 	public static void main (String [] args) {
 
 		// Load MovieLens 100K dataset
-    	DataSet ml1m = new RandomSplitDataSet("src/main/resources/datasets/ml100k.data", 0.2, 0.2, "\t", randomSeed);
-		DataModel datamodel = new DataModel(ml1m);
+    	DataSet ml100k = new RandomSplitDataSet("src/main/resources/datasets/ml100k.data", 0.2, 0.2, "\t", randomSeed);
+		DataModel datamodel = new DataModel(ml100k);
 
 		// To store results
 		PrintableQualityMeasure rmseScores = new PrintableQualityMeasure("RMSE", numFactors);
