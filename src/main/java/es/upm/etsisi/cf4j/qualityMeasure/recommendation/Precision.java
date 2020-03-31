@@ -44,10 +44,10 @@ public class Precision extends QualityMeasure {
 		
 		int recommendedAndRelevant = 0, recommended = 0;
 
-		for (int i : recommendations) {
-			if (i == -1) break;
+		for (int pos : recommendations) {
+			if (pos == -1) break;
 
-			double rating = testUser.getRatingAt(i);
+			double rating = testUser.getRatingAt(pos);
 			if (rating >= this.relevantThreshold) {
 				recommendedAndRelevant++;
 			}

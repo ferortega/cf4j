@@ -32,9 +32,9 @@ public class Perfect extends QualityMeasure {
 		int hits = 0;
 		int total = 0;
 		
-		for (int i = 0; i < testUser.getNumberOfTestRatings(); i++) {
-			if (!Double.isNaN(predictions[i])) {
-				double diff = Math.abs(predictions[i] - testUser.getTestRatingAt(i));
+		for (int pos = 0; pos < testUser.getNumberOfTestRatings(); pos++) {
+			if (!Double.isNaN(predictions[pos])) {
+				double diff = Math.abs(predictions[pos] - testUser.getTestRatingAt(pos));
 				if (diff <= threshold) {
 					hits++;
 				}

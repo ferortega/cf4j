@@ -24,9 +24,9 @@ public class MAE extends QualityMeasure {
 		double sum = 0d;
 		int count = 0;
 		
-		for (int i = 0; i < testUser.getNumberOfTestRatings(); i++) {
-			if (!Double.isNaN(predictions[i])) {
-				sum += Math.abs(predictions[i] - testUser.getTestRatingAt(i));
+		for (int pos = 0; pos < testUser.getNumberOfTestRatings(); pos++) {
+			if (!Double.isNaN(predictions[pos])) {
+				sum += Math.abs(predictions[pos] - testUser.getTestRatingAt(pos));
 				count++;
 			}
 		}

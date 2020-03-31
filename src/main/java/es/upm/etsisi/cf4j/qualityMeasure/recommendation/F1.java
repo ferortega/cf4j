@@ -40,8 +40,8 @@ public class F1 extends QualityMeasure {
 
 		// Items rated as relevant (in test) by the test user
 		int relevant = 0;
-		for (int i = 0; i < testUser.getNumberOfTestRatings(); i++){
-			double rating = testUser.getTestRatingAt(i);
+		for (int pos = 0; pos < testUser.getNumberOfTestRatings(); pos++){
+			double rating = testUser.getTestRatingAt(pos);
 			if (rating >= this.relevantThreshold) {
 				relevant++;
 			}
@@ -52,10 +52,10 @@ public class F1 extends QualityMeasure {
 
 		int recommendedAndRelevant = 0, recommended = 0;
 
-		for (int i : recommendations) {
-			if (i == -1) break;
+		for (int pos : recommendations) {
+			if (pos == -1) break;
 
-			double rating = testUser.getTestRatingAt(i);
+			double rating = testUser.getTestRatingAt(pos);
 			if (rating >= this.relevantThreshold) {
 				recommendedAndRelevant++;
 			}

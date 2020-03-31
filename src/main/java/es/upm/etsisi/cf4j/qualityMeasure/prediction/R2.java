@@ -27,10 +27,10 @@ public class R2 extends QualityMeasure {
 
 		int count = 0;
 		
-		for (int i = 0; i < testUser.getNumberOfTestRatings(); i++) {
-			if (!Double.isNaN(predictions[i])) {
-				num += Math.pow(testUser.getTestRatingAt(i) - predictions[i], 2);
-				den += Math.pow(testUser.getTestRatingAt(i) - testUser.getTestRatingAverage(), 2);
+		for (int pos = 0; pos < testUser.getNumberOfTestRatings(); pos++) {
+			if (!Double.isNaN(predictions[pos])) {
+				num += Math.pow(testUser.getTestRatingAt(pos) - predictions[pos], 2);
+				den += Math.pow(testUser.getTestRatingAt(pos) - testUser.getTestRatingAverage(), 2);
 				count++;
 			}
 		}

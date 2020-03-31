@@ -24,9 +24,9 @@ public class RMSE extends QualityMeasure {
 		double sum = 0d;
 		int count = 0;
 		
-		for (int i = 0; i < testUser.getNumberOfTestRatings(); i++) {
-			if (!Double.isNaN(predictions[i])) {
-				double diff = predictions[i] -  testUser.getTestRatingAt(i);
+		for (int pos = 0; pos < testUser.getNumberOfTestRatings(); pos++) {
+			if (!Double.isNaN(predictions[pos])) {
+				double diff = predictions[pos] -  testUser.getTestRatingAt(pos);
 				sum += diff * diff;
 				count++;
 			}

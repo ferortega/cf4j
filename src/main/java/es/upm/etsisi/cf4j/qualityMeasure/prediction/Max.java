@@ -24,9 +24,9 @@ public class Max extends QualityMeasure {
 
 		double max = Double.NEGATIVE_INFINITY;
 
-		for (int i = 0; i < testUser.getNumberOfTestRatings(); i++) {
-			if (!Double.isNaN(predictions[i])) {
-				double error = Math.abs(predictions[i] - testUser.getTestRatingAt(i));
+		for (int pos = 0; pos < testUser.getNumberOfTestRatings(); pos++) {
+			if (!Double.isNaN(predictions[pos])) {
+				double error = Math.abs(predictions[pos] - testUser.getTestRatingAt(pos));
 				if (error > max) {
 					max = error;
 				}

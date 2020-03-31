@@ -54,10 +54,10 @@ public class Recall extends QualityMeasure {
 		
 		int recommendedAndRelevant = 0;
 
-		for (int i : recommendations) {
-			if (i == -1) break;
+		for (int pos : recommendations) {
+			if (pos == -1) break;
 
-			double rating = testUser.getTestRatingAt(i);
+			double rating = testUser.getTestRatingAt(pos);
 			if (rating >= this.relevantThreshold) {
 				recommendedAndRelevant++;
 			}			
