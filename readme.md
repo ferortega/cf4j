@@ -549,7 +549,7 @@ Recall
 300        0,771250        0,773957        0,775951        0,762531        0,771665        0,768762        0,765254        0,773652        0,762526        0,771868
 ```
 
-As you can observer, we have used the [PrintableQualityMeasure](http://rs.etsisi.upm.es/cf4j-2.0/apidocs/es/upm/etsisi/cf4j/util/PrintableQualityMeasure.html) utility to simplify the manage of the results reported for each tested recommender. This class contains a `.toString()` method that can be used to export its output to a `csv` format to be used by external programs to make a detailed analysis of these results.
+As you can observe, we have used the [PrintableQualityMeasure](http://rs.etsisi.upm.es/cf4j-2.0/apidocs/es/upm/etsisi/cf4j/util/PrintableQualityMeasure.html) utility to simplify the manage of the results reported for each tested recommender. This class contains a `.toString()` method that can be used to export its output to a `csv` format to be used by external programs in order to make a detailed analysis of these results.
 
 ## Datasets
 
