@@ -29,6 +29,7 @@ public abstract class ItemSimilarityMetric implements Partible<Item> {
 	 */
 	public void setDatamodel(DataModel datamodel) {
 		this.datamodel = datamodel;
+		this.similarities = new double[datamodel.getNumberOfItems()][datamodel.getNumberOfItems()];
 	}
 
 	/**
