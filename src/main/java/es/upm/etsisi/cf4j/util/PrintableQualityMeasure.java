@@ -346,10 +346,10 @@ public class PrintableQualityMeasure {
 		System.out.println("\n" + this.name);
 
 		// Print series names
-		System.out.print(blankString(variablesWitdth + separationWidth));
+		System.out.print(blankString(variablesWitdth));
 
 		for (String serie: series) {
-			System.out.print(serie + blankString(seriesWidth - serie.length() + separationWidth));
+			System.out.print(blankString(seriesWidth - serie.length() + separationWidth) + serie);
 		}
 
 		System.out.println();
