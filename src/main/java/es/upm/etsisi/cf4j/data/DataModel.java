@@ -163,7 +163,7 @@ public class DataModel implements Serializable {
      * @param filePath Path where the file will be stored, filename and extension should be included in the path.
      * @throws IOException When the file is not accessible by the system with write permissions.
      */
-    public void Save(String filePath) throws IOException {
+    public void save(String filePath) throws IOException {
             FileOutputStream fileOut = new FileOutputStream(filePath);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(this);
@@ -173,13 +173,13 @@ public class DataModel implements Serializable {
     }
 
     /**
-     * This method is in charge of loading a previously serialized file (see Save() method).
+     * This method is in charge of loading a previously serialized file (see save() method).
      * @param filePath Full path to be loaded.
      * @return If te file was successfully loaded, this method returns a Datamodel.
      * @throws IOException When the file is not accessible by the system with reading permissions.
      * @throws ClassNotFoundException When the file exist and is accessible, but it doesn't contains a valid instance.
      */
-    public static DataModel Load(String filePath) throws IOException, ClassNotFoundException {
+    public static DataModel load(String filePath) throws IOException, ClassNotFoundException {
             FileInputStream fileIn = new FileInputStream(filePath);
             ObjectInputStream in = new ObjectInputStream(fileIn);
             DataModel dataModel = (DataModel) in.readObject();
