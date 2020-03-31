@@ -1,7 +1,8 @@
 package es.upm.etsisi.cf4j.data;
 
 import es.upm.etsisi.cf4j.data.types.DataSetEntry;
-import java.io.Serializable;
+
+import java.io.*;
 import java.util.*;
 
 /**
@@ -155,6 +156,36 @@ public class DataModel implements Serializable {
         this.testUsers = testUsersList.toArray(new TestUser[0]);
         this.items = itemsList.toArray(new Item[0]);
         this.testItems = testItemsLists.toArray(new TestItem[0]);
+    }
+
+    /**
+     * This method save the content of this datamodel in a serialized file.
+     * @param filePath Path where the file will be stored, filename and extension should be included in the path.
+     * @throws IOException When the file is not accessible by the system with write permissions.
+     */
+    public void Save(String filePath) throws IOException {
+            FileOutputStream fileOut = new FileOutputStream(filePath);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(this);
+            out.close();
+            fileOut.close();
+            System.out.println("Serialized DataModel is saved in " + filePath + ".");
+    }
+
+    /**
+     * This method is in charge of loading a previously serialized file (see Save() method).
+     * @param filePath Full path to be loaded.
+     * @return If te file was successfully loaded, this method returns a Datamodel.
+     * @throws IOException When the file is not accessible by the system with reading permissions.
+     * @throws ClassNotFoundException When the file exist and is accessible, but it doesn't contains a valid instance.
+     */
+    public static DataModel Load(String filePath) throws IOException, ClassNotFoundException {
+            FileInputStream fileIn = new FileInputStream(filePath);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            DataModel dataModel = (DataModel) in.readObject();
+            in.close();
+            fileIn.close();
+            return dataModel;
     }
 
     /**
