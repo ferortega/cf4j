@@ -14,7 +14,7 @@ public abstract class QualityMeasure {
 	/**
 	 * Recommender instance for which the quality measure are going to be computed
 	 */
-	private Recommender recommender;
+	protected Recommender recommender;
 
 	/**
 	 * Stores de global score of the quality measures
