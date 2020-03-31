@@ -43,7 +43,7 @@ public class Novelty extends QualityMeasure {
 			int testItemIndex = testUser.getTestItemAt(pos);
 			TestItem testItem = recommender.getDataModel().getTestItem(testItemIndex);
 
-			double pi = (double) testItem.getNumberOfRatings() / (double) recommender.getDataModel().getNumberOfUsers();
+			double pi = (double) testItem.getNumberOfRatings() / (double) recommender.getDataModel().getNumberOfRatings();
 			sum += -Maths.log(pi, 2);
 			
 			count++;
