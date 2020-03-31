@@ -26,17 +26,15 @@ public class PIP extends ItemSimilarityMetric {
 	 * Minimum rating value
 	 */
 	private double min;
-	
-	/**
-	 * Constructor of the similarity metric
-	 */
-	public PIP () {
+
+	@Override
+	public void beforeRun() {
+		super.beforeRun();
 		this.max = this.datamodel.getMaxRating();
 		this.min = this.datamodel.getMinRating();
-
 		this.median = (this.max + this.min) / 2d;
 	}
-	
+
 	@Override
 	public double similarity(Item item, Item otherItem) {
 

@@ -43,19 +43,23 @@ public class Singularities extends UserSimilarityMetric {
 	 * @param notRelevantRatings Not relevant ratings array
 	 */
 	public Singularities(double [] relevantRatings, double [] notRelevantRatings) {
-		this.relevantRatings = new HashSet <> ();
-		for (double r : relevantRatings) this.relevantRatings.add(r);
+		this.relevantRatings = new HashSet<>();
+		for (double r : relevantRatings) {
+			this.relevantRatings.add(r);
+		}
 
-		this.notRelevantRatings = new HashSet <> ();
-		for (double r : notRelevantRatings)  this.notRelevantRatings.add(r);
-
-		this.maxDiff = super.datamodel.getMaxRating() - super.datamodel.getMinRating();
+		this.notRelevantRatings = new HashSet<>();
+		for (double r : notRelevantRatings) {
+			this.notRelevantRatings.add(r);
+		}
 	}
 
 	@Override
 	public void beforeRun () {
 		super.beforeRun();
-		
+
+		this.maxDiff = super.datamodel.getMaxRating() - super.datamodel.getMinRating();
+
 		int numUsers = super.datamodel.getNumberOfUsers();
 		int numItems = super.datamodel.getNumberOfItems();
 

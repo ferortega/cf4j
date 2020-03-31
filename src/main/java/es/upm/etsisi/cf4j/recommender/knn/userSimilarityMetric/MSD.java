@@ -13,10 +13,9 @@ public class MSD extends UserSimilarityMetric {
 	 */
 	private double maxDiff;
 
-	/**
-	 * Constructor of MSD similarity metric
-	 */
-	public MSD() {
+	@Override
+	public void beforeRun() {
+		super.beforeRun();
 		this.maxDiff = super.datamodel.getMaxRating() - super.datamodel.getMinRating();
 	}
 	

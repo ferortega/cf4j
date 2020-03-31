@@ -13,10 +13,9 @@ public class MSD extends ItemSimilarityMetric {
 	 */
 	private double maxDiff;
 
-	/**
-	 * Constructor of the similarity metric
-	 */
-	public MSD() {
+	@Override
+	public void beforeRun() {
+		super.beforeRun();
 		this.maxDiff = super.datamodel.getMaxRating() - super.datamodel.getMinRating();
 	}
 

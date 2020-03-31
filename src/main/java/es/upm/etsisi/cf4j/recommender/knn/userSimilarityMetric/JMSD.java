@@ -16,10 +16,9 @@ public class JMSD extends UserSimilarityMetric {
 	 */
 	private double maxDiff;
 
-	/**
-	 * Constructor of JMSD similarity metric
-	 */
-	public JMSD() {
+	@Override
+	public void beforeRun() {
+		super.beforeRun();
 		this.maxDiff = super.datamodel.getMaxRating() - super.datamodel.getMinRating();
 	}
 	

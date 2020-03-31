@@ -15,10 +15,9 @@ public class JMSD extends ItemSimilarityMetric {
 	 */
 	private double maxDiff;
 
-	/**
-	 * Similarity metric constructor
-	 */
-	public JMSD() {
+	@Override
+	public void beforeRun() {
+		super.beforeRun();
 		this.maxDiff = super.datamodel.getMaxRating() - super.datamodel.getMinRating();
 	}
 

@@ -24,14 +24,12 @@ public class PIP extends UserSimilarityMetric {
 	 * Minimum rating value
 	 */
 	private double min;
-	
-	/**
-	 * Constructor of the similarity metric
-	 */
-	public PIP() {
+
+	@Override
+	public void beforeRun() {
+		super.beforeRun();
 		this.max = super.datamodel.getMaxRating();
 		this.min = super.datamodel.getMinRating();
-
 		this.median = (this.max + this.min) / 2d;
 	}
 	

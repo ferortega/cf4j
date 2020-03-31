@@ -49,13 +49,13 @@ public class Singularities extends ItemSimilarityMetric {
 
 		this.notRelevantRatings = new HashSet <> ();
 		for (double r : notRelevantRatings)  this.notRelevantRatings.add(r);
-
-		this.maxDiff = super.datamodel.getMaxRating() - super.datamodel.getMinRating();
 	}
 
 	@Override
 	public void beforeRun () {
 		super.beforeRun();
+
+		this.maxDiff = super.datamodel.getMaxRating() - super.datamodel.getMinRating();
 
 		int numUsers = super.datamodel.getNumberOfUsers();
 		int numItems = super.datamodel.getNumberOfItems();
