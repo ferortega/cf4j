@@ -1,32 +1,30 @@
 package es.upm.etsisi.cf4j.util;
 
+import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 /**
- * Class responsible for abstracting the storage and representation of the results. Used to save those
- * results in which test an integer parameter (number of neighbors, number of recommendations, etc..)
- * over different data series (similarity metrics, for example). This class also store results of
- * repeated random sub-sampling validation averaging the error values of N experiments.
- *
- * @author Fernando Ortega
+ * Class responsible for abstracting the storage and representation of the results reported by experiments that analyze
+ * the incidence of an hyper-parameter over a Recommender. The hyper-parameter can be an integer, double or String
+ * value. The Recommender must be identify by an unique name (serie). This class also store results of repeated random
+ * sub-sampling validation averaging the error values of N experiments.
  */
 public class PrintableQualityMeasure {
 
 	/**
-	 * Values taken by the parameter "variable"
+	 * Values for the analyzed variable
 	 */
-	private String [] variables;
+	private String[] variables;
 
 	/**
-	 * Series of data included
+	 * Quality measures scores
 	 */
-	private String [] series;
+	private Map<String, double[][]> scores;
 
 	/**
-	 * Errors values
-	 */
-	private double [][][] errors;
-
-	/**
-	 * Error Name
+	 * Score name
 	 */
 	private String name;
 	
@@ -36,328 +34,373 @@ public class PrintableQualityMeasure {
 	private int N;
 
 	/**
-	 * Class constructor. Initializes parameters.
-	 * @param name Error Name
+	 * Class constructor. Fix the number of repetitions to 1.
+	 * @param name Score name
 	 * @param variables Values taken by the parameter variable
-	 * @param series Series of data included
 	 */
-	public PrintableQualityMeasure (String name, int [] variables, String [] series) {
-		this(name, intsToStrings(variables), series);
+	public PrintableQualityMeasure(String name, int[] variables) {
+		this(name, intsToStrings(variables));
 	}
 	
 	/**
-	 * Class constructor. Initializes parameters.
-	 * @param name Error Name
+	 * Class constructor. Fix the number of repetitions to 1.
+	 * @param name Score name
 	 * @param variables Values taken by the parameter variable
-	 * @param series Series of data included
 	 */
-	public PrintableQualityMeasure (String name, double [] variables, String [] series) {
-		this(name, doublesToStrings(variables), series);
+	public PrintableQualityMeasure(String name, double[] variables) {
+		this(name, doublesToStrings(variables));
 	}
 	
 	/**
-	 * Class constructor. Initializes parameters.
-	 * @param name Error Name
+	 * Class constructor. Fix the number of repetitions to 1.
+	 * @param name Score name
 	 * @param variables Values taken by the parameter variable
-	 * @param series Series of data included
 	 */
-	public PrintableQualityMeasure (String name, String [] variables, String [] series) {
-		this(name, variables, series, 1);
+	public PrintableQualityMeasure(String name, String[] variables) {
+		this(name, variables, 1);
 	}
 	
 	/**
-	 * Class constructor. Initializes parameters.
-	 * @param name Error Name
+	 * Class constructor.
+	 * @param name Score name
 	 * @param variables Values taken by the parameter variable
-	 * @param series Series of data included
 	 * @param N Number of repetitions of the experiment
 	 */
-	public PrintableQualityMeasure (String name, int [] variables, String [] series, int N) {
-		this(name, intsToStrings(variables), series, N);
+	public PrintableQualityMeasure(String name, int[] variables, int N) {
+		this(name, intsToStrings(variables), N);
 	}
 	
 	/**
-	 * Class constructor. Initializes parameters.
-	 * @param name Error Name
+	 * Class constructor.
+	 * @param name Score name
 	 * @param variables Values taken by the parameter variable
-	 * @param series Series of data included
 	 * @param N Number of repetitions of the experiment
 	 */
-	public PrintableQualityMeasure (String name, double [] variables, String [] series, int N) {
-		this(name, doublesToStrings(variables), series, N);
+	public PrintableQualityMeasure(String name, double[] variables, int N) {
+		this(name, doublesToStrings(variables), N);
 	}
 	
 	/**
-	 * Class constructor. Initializes parameters.
-	 * @param name Error Name
+	 * Class constructor.
+	 * @param name Score name
 	 * @param variables Values taken by the parameter variable
-	 * @param series Series of data included
 	 * @param N Number of repetitions of the experiment
 	 */
-	public PrintableQualityMeasure (String name, String [] variables, String [] series, int N) {
+	public PrintableQualityMeasure(String name, String[] variables, int N) {
 		this.name = name;
 		this.variables = variables;
-		this.series = series;
 		this.N = N;
-		this.errors = new double [N][this.variables.length][this.series.length];
+		this.scores = new HashMap<>();
 	}
 	
 	/**
-	 * This method indicates the error for specific parameters
-	 * @param variable Parameter variable value
-	 * @param serie Data series in which the error occurred
-	 * @param error Error value
+	 * Put the score error for specific parameters
+	 * @param variable Variable value
+	 * @param serie Serie name
+	 * @param score Quality measure score
 	 */
-	public void putError (int variable, String serie, double error) {
-		this.putError(Integer.toString(variable), serie, error);	
-	}
-	
-	/**
-	 * This method indicates the error for specific parameters
-	 * @param variable Parameter variable value
-	 * @param serie Data series in which the error occurred
-	 * @param error Error value
-	 */
-	public void putError (double variable, String serie, double error) {
-		this.putError(Double.toString(variable), serie, error);	
-	}
-	
-	/**
-	 * This method indicates the error for specific parameters
-	 * @param variable Parameter variable value
-	 * @param serie Data series in which the error occurred
-	 * @param error Error value
-	 */
-	public void putError (String variable, String serie, double error) {
-		this.putError(1, variable, serie, error);	
-	}
-	
-	/**
-	 * This method indicates the error for specific parameters
-	 * @param n Repetition number (from 1 to N)
-	 * @param variable Parameter variable value
-	 * @param serie Data series in which the error occurred
-	 * @param error Error value
-	 */
-	public void putError (int n, int variable, String serie, double error) {
-		this.putError(n, Integer.toString(variable), serie, error);
-	}
-	
-	/**
-	 * This method indicates the error for specific parameters
-	 * @param n Repetition number (from 1 to N)
-	 * @param variable Parameter variable value
-	 * @param serie Data series in which the error occurred
-	 * @param error Error value
-	 */
-	public void putError (int n, double variable, String serie, double error) {
-		this.putError(n, Double.toString(variable), serie, error);
+	public void putScore(int variable, String serie, double score) {
+		this.putScore(Integer.toString(variable), serie, score);
 	}
 
 	/**
-	 * This method indicates the error for specific parameters
-	 * @param n Repetition number (from 1 to N)
-	 * @param variable Parameter variable value
-	 * @param serie Data series in which the error occurred
-	 * @param error Error value
+	 * Put the score error for specific parameters
+	 * @param variable Variable value
+	 * @param serie Serie name
+	 * @param score Quality measure score
 	 */
-	public void putError (int n, String variable, String serie, double error) {
-		int ri = n - 1;
-		int vi = 0; while (!variable.equals(this.variables[vi])) vi++;
-		int si = 0; while (!serie.equals(this.series[si])) si++;
-		this.errors[ri][vi][si] = error;
-	}
-	
-	/**
-	 * This method retrieves the error value that was made with specific parameters
-	 * @param n Repetition number (from 1 to N)
-	 * @param variable Parameter variable value
-	 * @param serie Data series in which the error occurred
-	 * @return Valor Error value
-	 */
-	public double getError (int n, int variable, String serie) {
-		return this.getError(n, Integer.toString(variable), serie);
-	}
-	
-	/**
-	 * This method retrieves the error value that was made with specific parameters
-	 * @param n Repetition number (from 1 to N)
-	 * @param variable Parameter variable value
-	 * @param serie Data series in which the error occurred
-	 * @return Valor Error value
-	 */
-	public double getError (int n, double variable, String serie) {
-		return this.getError(n, Double.toString(variable), serie);
+	public void putScore(double variable, String serie, double score) {
+		this.putScore(Double.toString(variable), serie, score);
 	}
 
 	/**
-	 * This method retrieves the error value that was made with specific parameters
+	 * Put the score error for specific parameters
+	 * @param variable Variable value
+	 * @param serie Serie name
+	 * @param score Quality measure score
+	 */
+	public void putScore(String variable, String serie, double score) {
+		this.putScore(1, variable, serie, score);
+	}
+
+	/**
+	 * Put the score error for specific parameters
 	 * @param n Repetition number (from 1 to N)
-	 * @param variable Parameter variable value
-	 * @param serie Data series in which the error occurred
-	 * @return Valor Error value
+	 * @param variable Variable value
+	 * @param serie Serie name
+	 * @param score Quality measure score
 	 */
-	public double getError (int n, String variable, String serie) {
-		int ri = n - 1;
-		int vi = 0; while (!variable.equals(this.variables[vi])) vi++;
-		int si = 0; while (!serie.equals(this.series[si])) si++;
-		return this.errors[ri][vi][si];
+	public void putScore(int n, int variable, String serie, double score) {
+		this.putScore(n, Integer.toString(variable), serie, score);
+	}
+
+	/**
+	 * Put the score error for specific parameters
+	 * @param n Repetition number (from 1 to N)
+	 * @param variable Variable value
+	 * @param serie Serie name
+	 * @param score Quality measure score
+	 */
+	public void putScore(int n, double variable, String serie, double score) {
+		this.putScore(n, Double.toString(variable), serie, score);
+	}
+
+	/**
+	 * Put the score error for specific parameters
+	 * @param n Repetition number (from 1 to N)
+	 * @param variable Variable value
+	 * @param serie Serie name
+	 * @param score Quality measure score
+	 */
+	public void putScore(int n, String variable, String serie, double score) {
+		double[][] serieScores = this.scores.get(serie);
+		if (serieScores == null) {
+			serieScores = new double[this.N][this.variables.length];
+		}
+
+		int v = this.getVariableIndex(variable);
+		serieScores[n-1][v] = score;
+
+		this.scores.put(serie, serieScores);
 	}
 	
 	/**
-	 * This method retrieves the averaged error value that was made with specific 
-	 * parameters across all repetitions.
-	 * @param repetitions Number of repetitions to be analyzed (from 1 to N)
-	 * @param variable Parameter variable value
-	 * @param serie Data series in which the error occurred
-	 * @return Valor Error value
+	 * Retrieves the score value that was made with specific parameters
+	 * @param n Repetition number (from 1 to N)
+	 * @param variable Variable value
+	 * @param serie Serie name
+	 * @return Quality measure score
 	 */
-	public double getAveragedError (int repetitions, int variable, String serie) {
-		return this.getAveragedError(repetitions, Integer.toString(variable), serie);
+	public double getScore(int n, int variable, String serie) {
+		return this.getScore(n, Integer.toString(variable), serie);
+	}
+
+	/**
+	 * Retrieves the score value that was made with specific parameters
+	 * @param n Repetition number (from 1 to N)
+	 * @param variable Variable value
+	 * @param serie Serie name
+	 * @return Quality measure score
+	 */
+	public double getScore(int n, double variable, String serie) {
+		return this.getScore(n, Double.toString(variable), serie);
+	}
+
+	/**
+	 * Retrieves the score value that was made with specific parameters
+	 * @param n Repetition number (from 1 to N)
+	 * @param variable Variable value
+	 * @param serie Serie name
+	 * @return Quality measure score
+	 */
+	public double getScore(int n, String variable, String serie) {
+		double[][] serieScores = this.scores.get(serie);
+		int v = this.getVariableIndex(variable);
+		return serieScores[n-1][v];
 	}
 	
 	/**
-	 * This method retrieves the averaged error value that was made with specific 
-	 * parameters across all repetitions.
-	 * @param repetitions Number of repetitions to be analyzed (from 1 to N)
-	 * @param variable Parameter variable value
-	 * @param serie Data series in which the error occurred
-	 * @return Valor Error value
+	 * Retrieves the averaged error value that was made with specific parameters across all repetitions.
+	 * @param repetitions Number of repetitions to be averaged (from 1 to N)
+	 * @param variable Variable value
+	 * @param serie Serie name
+	 * @return Quality measure score
 	 */
-	public double getAveragedError (int repetitions, double variable, String serie) {
-		return this.getAveragedError(repetitions, Double.toString(variable), serie);
+	public double getAveragedScore(int repetitions, int variable, String serie) {
+		return this.getAveragedScore(repetitions, Integer.toString(variable), serie);
 	}
 	
 	/**
-	 * This method retrieves the averaged error value that was made with specific 
-	 * parameters across all repetitions.
-	 * @param repetitions Number of repetitions to be analyzed (from 1 to N)
-	 * @param variable Parameter variable value
-	 * @param serie Data series in which the error occurred
-	 * @return Valor Error value
+	 * Retrieves the averaged error value that was made with specific parameters across all repetitions.
+	 * @param repetitions Number of repetitions to be averaged (from 1 to N)
+	 * @param variable Variable value
+	 * @param serie Serie name
+	 * @return Quality measure score
 	 */
-	public double getAveragedError (int repetitions, String variable, String serie) {
-		int vi = 0; while (!variable.equals(this.variables[vi])) vi++;
-		int si = 0; while (!serie.equals(this.series[si])) si++;
+	public double getAveragedScore(int repetitions, double variable, String serie) {
+		return this.getAveragedScore(repetitions, Double.toString(variable), serie);
+	}
+	
+	/**
+	 * Retrieves the averaged error value that was made with specific parameters across all repetitions.
+	 * @param repetitions Number of repetitions to be averaged (from 1 to N)
+	 * @param variable Variable value
+	 * @param serie Serie name
+	 * @return Quality measure score
+	 */
+	public double getAveragedScore(int repetitions, String variable, String serie) {
+		double[][] serieScores = this.scores.get(serie);
+		int v = this.getVariableIndex(variable);
 		
-		double error = 0;
-		for (int ri = 0; ri < repetitions; ri++) {
-			error += this.errors[ri][vi][si];
+		double score = 0;
+		for (int r = 0; r < repetitions; r++) {
+			score += serieScores[r][v];
 		}
-		error /= repetitions;
-			
-		return error;
+
+		return score / repetitions;
 	}
 	
 	/**
-	 * This method retrieves the averaged error value that was made with specific 
-	 * parameters across all repetitions
+	 * Retrieves the averaged error value that was made with specific parameters across all repetitions.
+	 * @param variable Variable value
+	 * @param serie Serie name
+	 * @return Quality measure score
+	 */
+	public double getAveragedScore(int variable, String serie) {
+		return this.getAveragedScore(Integer.toString(variable), serie);
+	}
+	
+	/**
+	 * Retrieves the averaged error value that was made with specific parameters across all repetitions.
 	 * @param variable Parameter variable value
 	 * @param serie Data series in which the error occurred
 	 * @return Valor Error value
 	 */
-	public double getAveragedError (int variable, String serie) {
-		return this.getAveragedError(Integer.toString(variable), serie);
+	public double getAveragedScore(double variable, String serie) {
+		return this.getAveragedScore(Double.toString(variable), serie);
 	}
 	
 	/**
-	 * This method retrieves the averaged error value that was made with specific 
-	 * parameters across all repetitions
+	 * Retrieves the averaged error value that was made with specific parameters across all repetitions.
 	 * @param variable Parameter variable value
 	 * @param serie Data series in which the error occurred
 	 * @return Valor Error value
 	 */
-	public double getAveragedError (double variable, String serie) {
-		return this.getAveragedError(Double.toString(variable), serie);
-	}
-	
-	/**
-	 * This method retrieves the averaged error value that was made with specific 
-	 * parameters across all repetitions
-	 * @param variable Parameter variable value
-	 * @param serie Data series in which the error occurred
-	 * @return Valor Error value
-	 */
-	public double getAveragedError (String variable, String serie) {
-		return this.getAveragedError(this.N, variable, serie);
+	public double getAveragedScore(String variable, String serie) {
+		return this.getAveragedScore(this.N, variable, serie);
 	}
 
 	/**
-	 * This method returns a formatted String with error
-	 * @param repetitions Number of repetitions to be analyzed (from 1 to N)
+	 * Formats the averaged scores into a String
+	 * @param repetitions Number of repetitions to be averaged (from 1 to N)
 	 * @param separator Field separator
-	 * @return String with the results
+	 * @return String with the score
 	 */
-	public String toString (int repetitions, String separator) {
-		String s = "\n" + this.name;
-		for (String serie : this.series) s += separator + serie;
-		s += "\n";
-		for (String variable : this.variables) {
-			s += variable;
-			for (String serie : this.series) {
-				s += separator + this.getAveragedError(repetitions, variable, serie);
-			}
-			s+= "\n";
+	public String toString(int repetitions, String separator) {
+		StringBuilder str = new StringBuilder("\n").append(this.name);
+
+		Set<String> series = this.scores.keySet();
+		for (String serie : series) {
+			str.append(separator).append(serie);
 		}
-		return s.replace(".", ",");
+
+		str.append("\n");
+
+		for (String variable : variables) {
+			str.append(variable);
+			for (String serie : series) {
+				double score = this.getAveragedScore(repetitions, variable, serie);
+				str.append(separator).append(score);
+			}
+			str.append("\n");
+		}
+
+		return str.toString();
 	}
-	
+
 	/**
-	 * This method returns a formatted String with error
+	 * Formats the averaged scores into a String
 	 * @param separator Field separator
-	 * @return String with the results
+	 * @return String with the score
 	 */
-	public String toString (String separator) {
+	public String toString(String separator) {
 		return this.toString(this.N, separator);
 	}
 
 	/**
-	 * Returns a formatted error String. Uses space as separator.
-	 * @param repetitions Number of repetitions to be analyzed (from 1 to N)
-	 * @return String with the results
+	 * Formats the averaged scores into a String. Uses semicolon as separator.
+	 * @param repetitions Number of repetitions to be averaged (from 1 to N)
+	 * @return String with the score
 	 */
-	public String toString (int repetitions) {
-		return this.toString(repetitions, " ");
+	public String toString(int repetitions) {
+		return this.toString(repetitions, ";");
 	}
 	
-	/**
-	 * Returns a formatted error String. Uses space as separator.
-	 * @return String with the results
-	 */
-	public String toString () {
+	@Override
+	public String toString() {
 		return this.toString(this.N);
 	}
 
 	/**
-	 * This method print the error
-	 * @param repetitions Number of repetitions to be analyzed (from 1 to N)
-	 * @param separator Field separator
+	 * Prints the score
+	 * @param repetitions Number of repetitions to be averaged (from 1 to N)
+	 * @param format Decimal number format
 	 */
-	public void print (int repetitions, String separator) {
-		System.out.println(this.toString(repetitions, separator));
-	}
-	
-	/**
-	 * This method print the error
-	 * @param repetitions Number of repetitions to be analyzed (from 1 to N)
-	 */
-	public void print (int repetitions) {
-		System.out.println(this.toString(repetitions));
-	}
-	
-	/**
-	 * This method print the error
-	 * @param separator Field separator
-	 */
-	public void print (String separator) {
-		System.out.println(this.toString(separator));
+	public void print(int repetitions, String format) {
+		DecimalFormat df = new DecimalFormat(format);
+		Set<String> series = this.scores.keySet();
+
+		int seriesWidth = format.length();
+		for (String serie : series) {
+			seriesWidth = Math.max(seriesWidth, serie.length());
+		}
+
+		int variablesWitdth = 0;
+		for (String variable : variables) {
+			variablesWitdth = Math.max(variablesWitdth, variable.length());
+		}
+
+		int separationWidth = 2;
+
+		// Print score name
+		System.out.println("\n" + this.name);
+
+		// Print series names
+		System.out.print(blankString(variablesWitdth + separationWidth));
+
+		for (String serie: series) {
+			System.out.print(serie + blankString(seriesWidth - serie.length() + separationWidth));
+		}
+
+		System.out.println();
+
+		// Print scores
+		for (String variable : variables) {
+			System.out.print(variable + blankString(variablesWitdth - variable.length()));
+			for (String serie: series) {
+				double score = this.getAveragedScore(repetitions, variable, serie);
+				String strScore = df.format(score);
+				System.out.print(blankString(seriesWidth - strScore.length() + separationWidth) + strScore);
+			}
+			System.out.println();
+		}
 	}
 
 	/**
-	 * This method print the error
+	 * Generates a blank String
+	 * @param size Size of the string
+	 * @return Blank String
 	 */
-	public void print () {
-		System.out.println(this.toString());
+	private String blankString(int size) {
+		StringBuilder str = new StringBuilder();
+		while (size > 0) {
+			str.append(" ");
+			size--;
+		}
+		return str.toString();
+	}
+	
+	/**
+	 * Prints the score. Scores are formated with 0.000000
+	 * @param repetitions Number of repetitions to be averaged (from 1 to N)
+	 */
+	public void print(int repetitions) {
+		this.print(repetitions, "0.000000");
+	}
+	
+	/**
+	 * Prints the score
+	 * @param format Decimal number format
+	 */
+	public void print(String format) {
+		this.print(this.N, format);
+	}
+
+	/**
+	 * Prints the score
+	 */
+	public void print() {
+		this.print(this.N);
 	}
 	
 	/**
@@ -365,7 +408,7 @@ public class PrintableQualityMeasure {
 	 * @param ints Array of ints
 	 * @return Array of strings
 	 */
-	private static String [] intsToStrings (int [] ints) {
+	private static String[] intsToStrings(int[] ints) {
 		String [] strings = new String [ints.length];
 		for (int i = 0; i < ints.length; i++) {
 			strings[i] = Integer.toString(ints[i]);
@@ -378,11 +421,24 @@ public class PrintableQualityMeasure {
 	 * @param doubles Array of doubles
 	 * @return Array of strings
 	 */
-	private static String [] doublesToStrings (double [] doubles) {
+	private static String[] doublesToStrings(double[] doubles) {
 		String [] strings = new String [doubles.length];
 		for (int i = 0; i < doubles.length; i++) {
 			strings[i] = Double.toString(doubles[i]);
 		}
 		return strings;
+	}
+
+	/**
+	 * Find the index of a variable value
+	 * @param value Variable value (must exists)
+	 * @return Index of the variable value
+	 */
+	private int getVariableIndex(String value) {
+		int index = 0;
+		while (!value.equals(this.variables[index])) {
+			index++;
+		}
+		return index;
 	}
 }
