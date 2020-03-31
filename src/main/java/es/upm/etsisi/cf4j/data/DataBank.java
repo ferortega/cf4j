@@ -3,8 +3,17 @@ package es.upm.etsisi.cf4j.data;
 import java.io.Serializable;
 import java.util.HashMap;
 
+/**
+ * Databank is focused on storing heterogeneous data as a support to the calculations made
+ * in the recommendation process.
+ *
+ * Only the following types are allowed to be stored: Boolean, Boolean[], Integer, Integer[],
+ * Double, and Double[].
+ */
 public class DataBank implements Serializable {
 
+
+    //Stored map of elements. With this map, you can store objects with his associated name or key.
     private HashMap<String, Object> map = new HashMap<>();
 
     /**
@@ -13,7 +22,7 @@ public class DataBank implements Serializable {
     public void deleteAll (){ map.clear(); }
 
     /**
-     * Delete a value associated to a single key.
+     * Delete a value associated to a single element key.
      * @param key Key where the data is stored.
      * @return True, if the key was found.
      */
@@ -43,7 +52,7 @@ public class DataBank implements Serializable {
      * Set or store a boolean array inside this databank.
      * @param key key where the element will be stored.
      * @param value boolean array to be stored.
-     * @return If an existing key is passed then the previous value gets returned. Null if it was not found.
+     * @return If an existing key is passed then the value gets returned. Null if it was not found.
      */
     public Boolean[] setBooleanArray(String key, Boolean[] value){
         Object obj = map.put(key,value);
@@ -54,7 +63,7 @@ public class DataBank implements Serializable {
      * Set or store a int inside this databank.
      * @param key key where the element will be stored.
      * @param value int value to be stored.
-     * @return If an existing key is passed then the previous value gets returned. Null if it was not found.
+     * @return If an existing key is passed then the value gets returned. Null if it was not found.
      */
     public Integer setInteger(String key, Integer value){
         Object obj = map.put(key,value);
@@ -65,7 +74,7 @@ public class DataBank implements Serializable {
      * Set or store a int array inside this databank.
      * @param key key where the element will be stored.
      * @param value int array to be stored.
-     * @return If an existing key is passed then the previous value gets returned. Null if it was not found.
+     * @return If an existing key is passed then the value gets returned. Null if it was not found.
      */
     public Integer [] setIntegerArray(String key, Integer [] value){
         Object obj = map.put(key,value);
@@ -76,7 +85,7 @@ public class DataBank implements Serializable {
      * Set or store a double inside this databank.
      * @param key key where the element will be stored.
      * @param value double value to be stored.
-     * @return If an existing key is passed then the previous value gets returned. Null if it was not found.
+     * @return If an existing key is passed then the value gets returned. Null if it was not found.
      */
     public Double setDouble(String key, Double value){
         Object obj = map.put(key,value);
@@ -87,7 +96,7 @@ public class DataBank implements Serializable {
      * Set or store a double array inside this databank.
      * @param key key where the element will be stored.
      * @param value double array to be stored.
-     * @return If an existing key is passed then the previous value gets returned. Null if it was not found.
+     * @return If an existing key is passed then the value gets returned. Null if it was not found.
      */
     public Double[] setDoubleArray(String key, Double[] value){
         Object obj = map.put(key,value);
@@ -97,7 +106,7 @@ public class DataBank implements Serializable {
     /**
      * Get an stored boolean inside this databank.
      * @param key key where the element should be stored.
-     * @return If an existing key is passed then the previous value is returned. Null if it was not found.
+     * @return If an existing key is passed then the value is returned. Null if it was not found.
      */
     public Boolean getBoolean(String key){
         Object obj = map.get(key);
@@ -107,7 +116,7 @@ public class DataBank implements Serializable {
     /**
      * Get an stored boolean array inside this databank.
      * @param key key where the element should be stored.
-     * @return If an existing key is passed then the previous value is returned. Null if it was not found.
+     * @return If an existing key is passed then the value is returned. Null if it was not found.
      */
     public Boolean [] getBooleanArray(String key){
         Object obj = map.get(key);
@@ -117,7 +126,7 @@ public class DataBank implements Serializable {
     /**
      * Get an stored int inside this databank.
      * @param key key where the element should be stored.
-     * @return If an existing key is passed then the previous value is returned. Null if it was not found.
+     * @return If an existing key is passed then the value is returned. Null if it was not found.
      */
     public Integer getInteger(String key){
         Object obj = map.get(key);
@@ -127,7 +136,7 @@ public class DataBank implements Serializable {
     /**
      * Get an stored int array inside this databank.
      * @param key key where the element should be stored.
-     * @return If an existing key is passed then the previous value is returned. Null if it was not found.
+     * @return If an existing key is passed then the value is returned. Null if it was not found.
      */
     public Integer [] getIntegerArray(String key){
         Object obj = map.get(key);
@@ -137,7 +146,7 @@ public class DataBank implements Serializable {
     /**
      * Get an stored double inside this databank.
      * @param key key where the element should be stored.
-     * @return If an existing key is passed then the previous value is returned. Null if it was not found.
+     * @return If an existing key is passed then the value is returned. Null if it was not found.
      */
     public Double getDouble(String key){
         Object obj = map.get(key);
@@ -147,7 +156,7 @@ public class DataBank implements Serializable {
     /**
      * Get an stored double array inside this databank.
      * @param key key where the element should be stored.
-     * @return If an existing key is passed then the previous value is returned. Null if it was not found.
+     * @return If an existing key is passed then the value is returned. Null if it was not found.
      */
     public Double [] getDoubleArray(String key){
         Object obj = map.get(key);
