@@ -226,6 +226,7 @@ In this section we include the full list of algorithms implemented in the librar
     - Normalized Discounted Cumulative Gain (`NDCG`)
     - Novelty (`Novelty`)
     - Discovery (`Discovery`)
+    - Diversity (`Diversity`)
 
 ## Examples
 
