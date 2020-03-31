@@ -10,7 +10,7 @@ import es.upm.etsisi.cf4j.util.Search;
 /**
  * This class the averaged novelty of the recomendations. Novelty value is computed as explained in "Castells, P.,
  * Vargas, S., &amp; Wang, J. (2011). Novelty and diversity metrics for recommender systems: choice, discovery and
- * relevance."
+ * relevance.". Higher values denotes more novel recommendations.
  */
 public class Novelty extends QualityMeasure {
 
