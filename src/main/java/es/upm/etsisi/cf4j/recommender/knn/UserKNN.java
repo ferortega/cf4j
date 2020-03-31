@@ -61,6 +61,7 @@ public class UserKNN extends Recommender {
 
     @Override
     public void fit() {
+        System.out.println("\nFitting " + this.toString());
         Parallelizer.exec(this.datamodel.getUsers(), this.metric);
         Parallelizer.exec(this.datamodel.getUsers(), new UserNeighbors());
     }
@@ -170,6 +171,18 @@ public class UserKNN extends Recommender {
         return (den == 0)
                 ? Double.NaN
                 : user.getRatingAverage() + num / den;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder("UserKNN(")
+                .append("numberOfNeighbors=").append(this.numberOfNeighbors)
+                .append("; ")
+                .append("metric=").append(this.metric.getClass().getSimpleName())
+                .append("; ")
+                .append("aggregationApproach=").append(this.aggregationApproach)
+                .append(")");
+        return str.toString();
     }
 
     /**

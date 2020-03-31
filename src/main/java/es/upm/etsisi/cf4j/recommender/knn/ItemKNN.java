@@ -51,7 +51,7 @@ public class ItemKNN extends Recommender {
 
         this.numberOfNeighbors = numberOfNeighbors;
 
-        int numItems = this.datamodel.getNumberOfUsers();
+        int numItems = this.datamodel.getNumberOfItems();
         this.neighbors = new int[numItems][numberOfNeighbors];
 
         this.metric = metric;
@@ -62,6 +62,7 @@ public class ItemKNN extends Recommender {
 
     @Override
     public void fit() {
+        System.out.println("\nFitting " + this.toString());
         Parallelizer.exec(this.datamodel.getItems(), this.metric);
         Parallelizer.exec(this.datamodel.getItems(), new ItemNeighbors());
     }
@@ -135,6 +136,18 @@ public class ItemKNN extends Recommender {
         }
 
         return (den == 0) ? Double.NaN : num / den;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder("ItemKNN(")
+                .append("numberOfNeighbors=").append(this.numberOfNeighbors)
+                .append("; ")
+                .append("metric=").append(this.metric.getClass().getSimpleName())
+                .append("; ")
+                .append("aggregationApproach=").append(this.aggregationApproach)
+                .append(")");
+        return str.toString();
     }
 
     /**
