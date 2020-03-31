@@ -29,7 +29,7 @@ public class MatrixFactorizationComparison {
 	public static void main (String [] args) {
 
 		// Load MovieLens 100K dataset
-    	DataSet ml1m = new RandomSplitDataSet("src/main/resources/datasets/ml100k.data", 0.2, 0.2, "\t", 43);
+    	DataSet ml1m = new RandomSplitDataSet("src/main/resources/datasets/ml100k.data", 0.2, 0.2, "\t", randomSeed);
 		DataModel datamodel = new DataModel(ml1m);
 
 		// To store results
