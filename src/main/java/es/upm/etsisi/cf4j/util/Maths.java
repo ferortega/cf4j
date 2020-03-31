@@ -63,4 +63,14 @@ public class Maths {
 		for (int i = 0; i < a.length; i++) r += a[i] * b[i];
 		return r;
 	}
+
+	/**
+	 * Returns the log in an specific base
+	 * @param x Value
+	 * @param b Base
+	 * @return log of x in base b
+	 */
+	public static double log(double x, double b) {
+		return Math.log(x) / Math.log(b);
+	}
 }
