@@ -40,7 +40,6 @@ public class UserKnnComparison {
 		DataModel datamodel = new DataModel(ml1m);
 
 		// Dataset parameters
-		double median = 3;
 		double[] relevantRatings = {3, 4, 5};
 		double[] notRelevantRatings = {1, 2};
 
@@ -55,7 +54,6 @@ public class UserKnnComparison {
 		metrics.add(new AdjustedCosine());
 		metrics.add(new CJMSD());
 		metrics.add(new Correlation());
-		metrics.add(new CorrelationConstrained(median));
 		metrics.add(new Cosine());
 		metrics.add(new Jaccard());
 		metrics.add(new JMSD());
