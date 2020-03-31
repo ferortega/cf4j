@@ -72,66 +72,66 @@ public class MatrixFactorizationComparison {
 			f1Scores.putScore(factors, "BiasedMF", f1.getScore());
 		}
 
-//		// Evaluate NMF model
-//		for (int factors : numFactors) {
-//			Recommender nmf = new NMF(datamodel, factors, numIter, randomSeed);
-//			nmf.fit();
-//
-//			QualityMeasure rmse = new RMSE(nmf);
-//			rmseScores.putScore(factors, "NMF", rmse.getScore());
-//
-//			QualityMeasure f1 = new F1(nmf,10, 4);
-//			f1Scores.putScore(factors, "NMF", f1.getScore());
-//		}
-//
-//		// Evaluate CLiMF model
-//		for (int factors : numFactors) {
-//			Recommender climf = new CLiMF(datamodel, factors, numIter, randomSeed);
-//			climf.fit();
-//
-//			QualityMeasure rmse = new RMSE(climf);
-//			rmseScores.putScore(factors, "CLiMF", rmse.getScore());
-//
-//			QualityMeasure f1 = new F1(climf,10, 4);
-//			f1Scores.putScore(factors, "CLiMF", f1.getScore());
-//		}
-//
-//		// Evaluate SVDPlusPlus model
-//		for (int factors : numFactors) {
-//			Recommender svdPlusPlus = new SVDPlusPlus(datamodel, factors, numIter, randomSeed);
-//			svdPlusPlus.fit();
-//
-//			QualityMeasure rmse = new RMSE(svdPlusPlus);
-//			rmseScores.putScore(factors, "SVDPlusPlus", rmse.getScore());
-//
-//			QualityMeasure f1 = new F1(svdPlusPlus,10, 4);
-//			f1Scores.putScore(factors, "SVDPlusPlus", f1.getScore());
-//		}
-//
-//		// Evaluate HPF model
-//		for (int factors : numFactors) {
-//			Recommender hpf = new HPF(datamodel, factors, numIter, randomSeed);
-//			hpf.fit();
-//
-//			QualityMeasure rmse = new RMSE(hpf);
-//			rmseScores.putScore(factors, "HPF", rmse.getScore());
-//
-//			QualityMeasure f1 = new F1(hpf,10, 4);
-//			f1Scores.putScore(factors, "HPF", f1.getScore());
-//		}
-//
-//		// Evaluate URP model
-//		for (int factors : numFactors) {
-//			double[] ratings = {1.0, 2.0, 3.0, 4.0, 5.0};
-//			Recommender urp = new URP(datamodel, factors, ratings, numIter, randomSeed);
-//			urp.fit();
-//
-//			QualityMeasure rmse = new RMSE(urp);
-//			rmseScores.putScore(factors, "URP", rmse.getScore());
-//
-//			QualityMeasure f1 = new F1(urp,10, 4);
-//			f1Scores.putScore(factors, "URP", f1.getScore());
-//		}
+		// Evaluate NMF model
+		for (int factors : numFactors) {
+			Recommender nmf = new NMF(datamodel, factors, numIter, randomSeed);
+			nmf.fit();
+
+			QualityMeasure rmse = new RMSE(nmf);
+			rmseScores.putScore(factors, "NMF", rmse.getScore());
+
+			QualityMeasure f1 = new F1(nmf,10, 4);
+			f1Scores.putScore(factors, "NMF", f1.getScore());
+		}
+
+		// Evaluate CLiMF model
+		for (int factors : numFactors) {
+			Recommender climf = new CLiMF(datamodel, factors, numIter, randomSeed);
+			climf.fit();
+
+			QualityMeasure rmse = new RMSE(climf);
+			rmseScores.putScore(factors, "CLiMF", rmse.getScore());
+
+			QualityMeasure f1 = new F1(climf,10, 4);
+			f1Scores.putScore(factors, "CLiMF", f1.getScore());
+		}
+
+		// Evaluate SVDPlusPlus model
+		for (int factors : numFactors) {
+			Recommender svdPlusPlus = new SVDPlusPlus(datamodel, factors, numIter, randomSeed);
+			svdPlusPlus.fit();
+
+			QualityMeasure rmse = new RMSE(svdPlusPlus);
+			rmseScores.putScore(factors, "SVDPlusPlus", rmse.getScore());
+
+			QualityMeasure f1 = new F1(svdPlusPlus,10, 4);
+			f1Scores.putScore(factors, "SVDPlusPlus", f1.getScore());
+		}
+
+		// Evaluate HPF model
+		for (int factors : numFactors) {
+			Recommender hpf = new HPF(datamodel, factors, numIter, randomSeed);
+			hpf.fit();
+
+			QualityMeasure rmse = new RMSE(hpf);
+			rmseScores.putScore(factors, "HPF", rmse.getScore());
+
+			QualityMeasure f1 = new F1(hpf,10, 4);
+			f1Scores.putScore(factors, "HPF", f1.getScore());
+		}
+
+		// Evaluate URP model
+		for (int factors : numFactors) {
+			double[] ratings = {1.0, 2.0, 3.0, 4.0, 5.0};
+			Recommender urp = new URP(datamodel, factors, ratings, numIter, randomSeed);
+			urp.fit();
+
+			QualityMeasure rmse = new RMSE(urp);
+			rmseScores.putScore(factors, "URP", rmse.getScore());
+
+			QualityMeasure f1 = new F1(urp,10, 4);
+			f1Scores.putScore(factors, "URP", f1.getScore());
+		}
 
 		// Print results
 		rmseScores.print();
