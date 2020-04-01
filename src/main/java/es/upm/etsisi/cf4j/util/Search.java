@@ -1,9 +1,10 @@
 package es.upm.etsisi.cf4j.util;
 
 /**
- * This class contains useful math methods.
+ * This class contains useful search methods.
  */
 public class Search {
+    
     /**
      * Gets efficiently the userIndex of an element in an array of integers
      * @param array Array of integers sorted from lowest to highest
