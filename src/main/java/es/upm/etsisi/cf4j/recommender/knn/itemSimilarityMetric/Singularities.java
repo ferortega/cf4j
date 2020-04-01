@@ -9,7 +9,6 @@ import java.util.HashSet;
  * This class implements the singularities CF similarity metric. The similarity metric  is described here:
  * Bobadilla, J., Ortega, F., 	&amp; Hernando, A. (2012). A collaborative filtering similarity measure based on
  * singularities, Information Processing and Management, 48 (2), 204-217
- * @author Fernando Ortega
  */
 public class Singularities extends ItemSimilarityMetric {
 

@@ -4,7 +4,6 @@ import es.upm.etsisi.cf4j.data.User;
 
 /**
  * Implements traditional MSD as CF similarity metric. The returned value is 1 - MSD.
- * @author Fernando Ortega
  */
 public class MSD extends UserSimilarityMetric {
 

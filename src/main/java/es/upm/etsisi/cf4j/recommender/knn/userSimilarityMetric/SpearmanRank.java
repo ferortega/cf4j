@@ -4,7 +4,6 @@ import es.upm.etsisi.cf4j.data.User;
 
 /**
  * Implements traditional Spearman Rank as CF similarity metric.
- * @author Fernando Ortega
  */
 public class SpearmanRank extends UserSimilarityMetric {
 

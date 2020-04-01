@@ -14,8 +14,6 @@ import java.util.Properties;
  * 	<li>The integer and doubles must be defined as "parameter_name=value".</li>
  * 	<li>The arrays must be defined as "array_name=value_1,value_2,...,value_N".</li>
  * </ul>
- * 
- * @author Fernando Ortega
  */
 public class Parameters {
 

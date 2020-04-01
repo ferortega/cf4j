@@ -9,7 +9,6 @@ package es.upm.etsisi.cf4j.util;
  *     method of the Parallelizer class. These executions are performed in a parallel way</li>
  *     <li>afterRun(): is executed once after the execution of all the indices</li>
  * </ol>
- * @author Fernando Ortega
  */
 public interface Partible<T> {
 

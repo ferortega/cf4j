@@ -9,7 +9,6 @@ import es.upm.etsisi.cf4j.util.Search;
  * <p>This class calculates the recall of the recommendations performed by a Recommender. It is calculated as
  * follows:</p>
  * <p>recall = &lt;relevant recommended items&gt; / &lt;number of relevant items&gt;</p>
- * @author Fernando Ortega
  */
 public class Recall extends QualityMeasure {
 

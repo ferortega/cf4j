@@ -17,7 +17,6 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Implements Marlin, B. M. (2004). Modeling user rating profiles for collaborative filtering. In Advances in neural
  * information processing systems (pp. 627-634).
- * @author Fernando Ortega
  */
 public class URP extends Recommender {
 

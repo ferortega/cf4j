@@ -6,8 +6,7 @@ import es.upm.etsisi.cf4j.recommender.Recommender;
 
 /**
  * This class calculates the averaged maximum prediction absolute error in a the prediction of a test rating for each
- * test user..
- * @author Fernando Ortega
+ * test user.
  */
 public class Max extends QualityMeasure {
 

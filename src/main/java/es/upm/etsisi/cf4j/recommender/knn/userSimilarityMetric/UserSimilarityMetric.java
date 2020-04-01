@@ -9,7 +9,6 @@ import es.upm.etsisi.cf4j.util.Partible;
  * you must extend this class and overrides the method similarity(User user, User otherUser).
  * <p>When the execution of the similarity metric is completed, the similarity of each user with respect to another
  * one can be retrieved using the getSimilarities(int userIndex) method.
- * @author Fernando Ortega
  */
 public abstract class UserSimilarityMetric implements Partible<User> {
 

@@ -6,7 +6,6 @@ import es.upm.etsisi.cf4j.recommender.Recommender;
 
 /**
  * This class calculates the Mean Squared Logarithmic Error (MSLE) between the predictions and the test ratings.
- * @author Fernando Ortega
  */
 public class MSLE extends QualityMeasure {
 

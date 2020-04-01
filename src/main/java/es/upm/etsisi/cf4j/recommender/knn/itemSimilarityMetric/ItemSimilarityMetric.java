@@ -9,7 +9,6 @@ import es.upm.etsisi.cf4j.util.Partible;
  * you must extend this class and overrides the method similarity(Item item, Item otherItem).
  * <p>When the execution of the similarity metric is completed, the similarity of each item with respect to another
  * one can be retrieved using the getSimilarities(int itemIndex) method.</p>
- * @author Fernando Ortega
  */
 public abstract class ItemSimilarityMetric implements Partible<Item> {
 

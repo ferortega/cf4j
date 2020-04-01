@@ -9,7 +9,6 @@ import es.upm.etsisi.cf4j.util.Search;
  * <p>This class calculates the precision of the recommendations performed by a Recommender. It is calculated as
  * follows:</p>
  * <p>precision = &lt;relevant recommended items&gt; / &lt;number of recommended items&gt;</p>
- * @author Fernando Ortega
  */
 public class Precision extends QualityMeasure {
 

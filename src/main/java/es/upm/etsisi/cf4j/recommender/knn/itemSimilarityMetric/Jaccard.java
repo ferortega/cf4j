@@ -4,7 +4,6 @@ import es.upm.etsisi.cf4j.data.Item;
 
 /**
  * This class Implements Jaccard Index as CF similarity metric for the items.
- * @author Fernando Ortega
  */
 public class Jaccard extends ItemSimilarityMetric {
 

@@ -13,7 +13,6 @@ import java.util.Random;
 /**
  * Implements Mnih, A., &amp; Salakhutdinov, R. R. (2008). Probabilistic matrix factorization. In Advances in neural
  * information processing systems (pp. 1257-1264).
- * @author Fernando Ortega
  */
 public class PMF extends Recommender {
 

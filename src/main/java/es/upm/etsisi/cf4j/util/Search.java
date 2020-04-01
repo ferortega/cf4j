@@ -2,7 +2,6 @@ package es.upm.etsisi.cf4j.util;
 
 /**
  * This class contains useful math methods.
- * @author Fernando Ortega
  */
 public class Search {
     /**

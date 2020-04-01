@@ -6,7 +6,6 @@ import es.upm.etsisi.cf4j.data.Item;
  * This class implements JMSD as the similarity metric for the items. The similarity metric is described in:
  * Bobadilla, J., Serradilla, F., &amp; Bernal, J. (2010). A new collaborative filtering metric that improves
  * the behavior of Recommender Systems, Knowledge-Based Systems, 23 (6), 520-528.
- * @author Fernando Ortega
  */
 public class JMSD extends ItemSimilarityMetric {
 

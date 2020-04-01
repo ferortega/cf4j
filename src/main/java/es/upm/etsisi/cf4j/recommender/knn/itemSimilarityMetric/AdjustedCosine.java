@@ -5,7 +5,6 @@ import es.upm.etsisi.cf4j.data.User;
 
 /**
  * Implements traditional Adjusted Cosine as CF similarity metric for the items.
- * @author Fernando Ortega
  */
 public class AdjustedCosine extends ItemSimilarityMetric {
 

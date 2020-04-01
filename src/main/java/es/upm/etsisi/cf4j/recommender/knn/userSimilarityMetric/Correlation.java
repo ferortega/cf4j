@@ -4,7 +4,6 @@ import es.upm.etsisi.cf4j.data.User;
 
 /**
  * Implements traditional Pearson Correlation as CF similarity metric.
- * @author Fernando Ortega
  */
 public class Correlation extends UserSimilarityMetric {
 

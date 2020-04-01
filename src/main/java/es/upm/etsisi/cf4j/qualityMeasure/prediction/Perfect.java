@@ -7,7 +7,6 @@ import es.upm.etsisi.cf4j.recommender.Recommender;
 /**
  * This class calculates the percentage of perfect predictions. A prediction is considered perfect if and only if
  * the absolute difference between the test rating and the prediction is less or equal than a threshold.
- * @author Fernando Ortega
  */
 public class Perfect extends QualityMeasure {
 

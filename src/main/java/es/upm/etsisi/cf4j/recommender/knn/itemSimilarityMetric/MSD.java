@@ -4,7 +4,6 @@ import es.upm.etsisi.cf4j.data.Item;
 
 /**
  * Implements traditional MSD as CF similarity metric for items. The returned value is 1 - MSD.
- * @author Fernando Ortega
  */
 public class MSD extends ItemSimilarityMetric {
 

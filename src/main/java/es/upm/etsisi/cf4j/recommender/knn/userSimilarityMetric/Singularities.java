@@ -8,7 +8,6 @@ import java.util.HashSet;
 /**
  * Implements the following CF similarity metric: Bobadilla, J., Ortega, F., &amp; Hernando, A. (2012). A collaborative
  * filtering similarity measure based on singularities, Information Processing and Management, 48 (2), 204-217.
- * @author Fernando Ortega
  */
 public class Singularities extends UserSimilarityMetric {
 

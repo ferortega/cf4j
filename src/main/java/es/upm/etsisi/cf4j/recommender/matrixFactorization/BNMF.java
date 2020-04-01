@@ -16,7 +16,6 @@ import org.apache.commons.math3.special.Gamma;
 /**
  * Implements Hernando, A., Bobadilla, J., &amp; Ortega, F. (2016). A non negative matrix factorization for
  * collaborative filtering recommender systems on a Bayesian probabilistic model. Knowledge-Based Systems, 97, 188-202.
- * @author Fernando Ortega
  */
 public class BNMF extends Recommender {
 

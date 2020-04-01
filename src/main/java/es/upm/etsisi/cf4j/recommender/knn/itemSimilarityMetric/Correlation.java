@@ -4,7 +4,6 @@ import es.upm.etsisi.cf4j.data.Item;
 
 /**
  * This class Implements Pearson Correlation as CF similarity metric for the items.
- * @author Fernando Ortega
  */
 public class Correlation extends ItemSimilarityMetric {
 

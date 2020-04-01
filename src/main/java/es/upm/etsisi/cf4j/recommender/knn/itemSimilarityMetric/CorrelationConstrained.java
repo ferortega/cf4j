@@ -4,7 +4,6 @@ import es.upm.etsisi.cf4j.data.Item;
 
 /**
  * This class implements the Constrained Correlation as CF similarity metric for items.
- * @author Fernando Ortega
  */
 public class CorrelationConstrained extends ItemSimilarityMetric {
 

@@ -4,7 +4,6 @@ import es.upm.etsisi.cf4j.data.Item;
 
 /**
  * Implements Cosine as CF similarity metric for the items.
- * @author Fernando Ortega
  */
 public class Cosine extends ItemSimilarityMetric {
 

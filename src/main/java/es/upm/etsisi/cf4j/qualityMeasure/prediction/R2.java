@@ -7,7 +7,6 @@ import es.upm.etsisi.cf4j.recommender.Recommender;
 /**
  * This class calculates the the coefficient of determination, usually denoted as R2, of the predictions performed by
  * a recommender.
- * @author Fernando Ortega
  */
 public class R2 extends QualityMeasure {
 

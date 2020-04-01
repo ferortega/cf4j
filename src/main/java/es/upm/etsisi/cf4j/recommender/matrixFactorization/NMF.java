@@ -14,7 +14,6 @@ import java.util.Random;
 /**
  * Implements Lee, D. D., &amp;  Seung, H. S. (2001). Algorithms for non-negative matrix factorization. In Advances
  * in neural information processing systems (pp. 556-562).
- * @author Fernando Ortega
  */
 public class NMF extends Recommender {
 

@@ -9,7 +9,6 @@ import es.upm.etsisi.cf4j.data.types.SortedRatingList;
  *  <li>Array of test users who have rated the item</li>
  *  <li>Array of test ratings that the item have received</li>
  * </ul>
- * @author Fernando Ortega, Jesús Mayor
  */
 public class TestItem extends Item {
 

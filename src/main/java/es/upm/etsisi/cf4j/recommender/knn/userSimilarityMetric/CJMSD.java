@@ -6,7 +6,6 @@ import es.upm.etsisi.cf4j.data.User;
  * Implements the following CF similarity metric: Bobadilla, J., Ortega, F., Hernando, A., 
  * &amp; Arroyo, A. (2012). A Balanced Memory-Based Collaborative Filtering Similarity 
  * Measure, International Journal of Intelligent Systems, 27, 939-946.
- * @author Fernando Ortega
  */
 public class CJMSD extends UserSimilarityMetric {
 

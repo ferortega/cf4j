@@ -1,12 +1,10 @@
 package es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetric;
 
-
 import es.upm.etsisi.cf4j.data.Item;
 import es.upm.etsisi.cf4j.data.User;
 
 /**
  * Implements traditional Adjusted Cosine as CF similarity metric.
- * @author Fernando Ortega
  */
 public class AdjustedCosine extends UserSimilarityMetric {
 

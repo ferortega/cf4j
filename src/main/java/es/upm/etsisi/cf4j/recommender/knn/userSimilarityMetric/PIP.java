@@ -6,7 +6,6 @@ import es.upm.etsisi.cf4j.data.User;
 /**
  * Implements the following CF similarity metric: Ahn, H. J. (2008). A new similarity  measure for collaborative
  * filtering to alleviate the new user cold-starting problem, Information Sciences, 178, 37-51.
- * @author Fernando Ortega
  */
 public class PIP extends UserSimilarityMetric {
 
