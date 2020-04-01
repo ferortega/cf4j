@@ -46,7 +46,7 @@ public class RandomSplitDataSet implements DataSet {
      * @param filename File with the ratings.
      * @param testUsersPercent Percentage of users that will be of test.
      * @param testItemsPercent Percentage of items that will be of test.
-     * @throws IOException When the file is not accessible by the system with write permissions.
+     * @throws IOException When the file is not accessible by the system with read permissions.
      */
     public RandomSplitDataSet (String filename, double testUsersPercent, double testItemsPercent) throws IOException {
         this(filename, testUsersPercent, testItemsPercent, DEFAULT_SEPARATOR);
@@ -60,7 +60,7 @@ public class RandomSplitDataSet implements DataSet {
      * @param testUsersPercent Percentage of users that will be of test.
      * @param testItemsPercent Percentage of items that will be of test.
      * @param seed Seed applied to the random number generator.
-     * @throws IOException When the file is not accessible by the system with write permissions.
+     * @throws IOException When the file is not accessible by the system with read permissions.
      */
     public RandomSplitDataSet (String filename, double testUsersPercent, double testItemsPercent, long seed) throws IOException {
         this(filename, testUsersPercent, testItemsPercent, DEFAULT_SEPARATOR, seed);
@@ -73,7 +73,7 @@ public class RandomSplitDataSet implements DataSet {
      * @param testUsersPercent Percentage of users that will be of test.
      * @param testItemsPercent Percentage of items that will be of test.
      * @param separator Separator char between file fields.
-     * @throws IOException When the file is not accessible by the system with write permissions.
+     * @throws IOException When the file is not accessible by the system with read permissions.
      */
     public RandomSplitDataSet (String filename, double testUsersPercent, double testItemsPercent, String separator) throws IOException {
         this(filename, testUsersPercent, testItemsPercent, separator, System.currentTimeMillis());
@@ -83,7 +83,7 @@ public class RandomSplitDataSet implements DataSet {
      * Generates a DataSet form a text file. The DataSet is loaded without test items and test users.
      * @param filename File with the ratings.
      * @param separator Separator char between file fields.
-     * @throws IOException When the file is not accessible by the system with write permissions.
+     * @throws IOException When the file is not accessible by the system with read permissions.
      */
     public RandomSplitDataSet (String filename, String separator) throws IOException {
         this(filename, 0.0 , 0.0, separator, System.currentTimeMillis());
@@ -98,7 +98,7 @@ public class RandomSplitDataSet implements DataSet {
      * @param testItemsPercent Percentage of items that will be of test.
      * @param seed Seed applied to the random number generator.
      * @param separator Separator char between file fields.
-     * @throws IOException When the file is not accessible by the system with write permissions.
+     * @throws IOException When the file is not accessible by the system with read permissions.
      */
     public RandomSplitDataSet (String filename, double testUsersPercent, double testItemsPercent, String separator, long seed) throws IOException {
 
