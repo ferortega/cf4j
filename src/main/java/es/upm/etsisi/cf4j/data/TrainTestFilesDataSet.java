@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * This class implements the DataSet interface, this implies that it is in charge of reading a file in a certain way to
- * generate a series of iterators over the data read from the file.
- * Specifically, TrainTestFilesDataSet will read two files with the no-test and test raw data. This class will
- * store that information generating an itrator over the stored memory.
+ * <p></p>This class implements the DataSet interface by loading training and test ratings from separated text files.
+ * Each line of the ratings files must have the following format:</p>
+ * <pre>&lt;userId&gt;&lt;separator&gt;&lt;itemId&gt;&lt;separator&gt;&lt;rating&gt;</pre>
+ *<p>Where &lt;separator&gt; is an special character that delimits ratings fields (semicolon by default).</p>
  */
-public class TrainTestFilesDataSet implements DataSet
-{
+public class TrainTestFilesDataSet implements DataSet {
+
     protected static final String DEFAULT_SEPARATOR = ";";
 
     /**
@@ -27,24 +27,21 @@ public class TrainTestFilesDataSet implements DataSet
     protected ArrayList<DataSetEntry> testRatings;
 
     /**
-     * Generates a DataSet form a text file, filling the dataModel attribute.
-     * The lines of the file must have the format: userId;itemId;rating.
-     * The dataset is loaded without test items and test users.
-     * @param fileName File with the ratings
-     * @param testFileName File with the ratings
-     * @throws IOException When the file is not accessible by the system with write permissions.
+     * Generates a DataSet form training and test ratings files. Semicolon is used as separator.
+     * @param fileName File with the (training) ratings.
+     * @param testFileName File with the test ratings.
+     * @throws IOException When the file is not accessible by the system with read permissions.
      */
     public TrainTestFilesDataSet(String fileName, String testFileName) throws IOException {
         this(fileName, testFileName, DEFAULT_SEPARATOR);
     }
 
     /**
-     * Generates a DataSet form a text file, filling the dataModel attribute.
-     * The lines of the file must have the format: userId SEPARATOR itemId SEPARATOR rating.
-     * @param fileName File with the ratings.
-     * @param testFileName File with the ratings.
-     * @param separator Separator char between file fields.
-     * @throws IOException When the file is not accessible by the system with write permissions.
+     * Generates a DataSet form training and test ratings files.
+     * @param fileName File with the (training) ratings.
+     * @param testFileName File with the test ratings.
+     * @param separator Separator char between ratings fields.
+     * @throws IOException When the file is not accessible by the system with read permissions.
      */
     public TrainTestFilesDataSet(String fileName, String testFileName, String separator) throws IOException {
         System.out.println("\nLoading dataset...");
@@ -95,36 +92,23 @@ public class TrainTestFilesDataSet implements DataSet
         testDatasetFile.close();
     }
 
-    /**
-     * Implementation of the interface DataSet.
-     * @return An interator with the entries. (no test entries)
-     */
+    @Override
     public Iterator<DataSetEntry> getRatingsIterator(){
         return ratings.iterator();
     }
 
-    /**
-     * Implementation of the interface DataSet.
-     * @return An interator with the entries. (test entries)
-     */
+    @Override
     public Iterator<DataSetEntry> getTestRatingsIterator(){
         return testRatings.iterator();
     }
 
-    /**
-     * Implementation of the interface DataSet.
-     * @return Number of elements of the Rating array.
-     */
+    @Override
     public int getNumberOfRatings(){
         return ratings.size();
     }
 
-    /**
-     * Implementation of the interface DataSet.
-     * @return Number of elements of the Test Rating array.
-     */
+    @Override
     public int getNumberOfTestRatings(){
         return testRatings.size();
     }
-
 }
