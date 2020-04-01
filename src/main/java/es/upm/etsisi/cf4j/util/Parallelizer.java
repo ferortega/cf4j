@@ -6,7 +6,7 @@ package es.upm.etsisi.cf4j.util;
 public class Parallelizer {
 
 	/**
-	 * Execs partible for each object contained in the objects array. Each execution is run in parallel way. All
+	 * Execs Partible for each object contained in the objects array. Each execution is run in parallel way. All
 	 * available threads of the CPU will be used.
 	 * @param objects Array of objects to be executed in parallel
 	 * @param partible Partible to be executed for each object of the array
@@ -16,7 +16,7 @@ public class Parallelizer {
 	}
 
 	/**
-	 * Execs partible for each object contained in the objects array. Each execution is run in parallel way.
+	 * Execs Partible for each object contained in the objects array. Each execution is run in parallel way.
 	 * @param objects Array of objects to be executed in parallel
 	 * @param partible Partible to be executed for each object of the array
 	 * @param numThreads Number of threads to be launched in parallel
@@ -65,7 +65,7 @@ public class Parallelizer {
 			this.objects = objects;
 			this.numThreads = numThreads;
 
-			this.thread = new Thread (this, String.valueOf(threadIndex));
+			this.thread = new Thread(this, String.valueOf(threadIndex));
 			this.thread.start();
 		}
 
@@ -73,11 +73,7 @@ public class Parallelizer {
 			return this.thread;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.lang.Runnable#exec()
-		 */
-		@SuppressWarnings("unchecked")
+		@Override
 		public void run() {
 			for (int i = this.threadIndex; i < this.objects.length; i += this.numThreads ) {
 				partible.run(this.objects[i]);
