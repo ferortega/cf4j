@@ -8,34 +8,41 @@ import es.upm.etsisi.cf4j.qualityMeasure.prediction.MSE;
 import es.upm.etsisi.cf4j.recommender.matrixFactorization.NMF;
 import es.upm.etsisi.cf4j.recommender.matrixFactorization.PMF;
 
+import java.io.IOException;
+
 /**
  * Example used in the Getting Started section of the readme.md
  */
 public class GettingStartedExample {
     public static void main (String [] args) {
+        try {
 
-        String filename = "src/main/resources/datasets/ml100k.data";
-        double testUsers = 0.2;
-        double testItems = 0.2;
-        String separator = "\t";
-        long seed = 43;
-        DataSet ml100k = new RandomSplitDataSet(filename, testUsers, testItems, separator, seed);
+            String filename = "src/main/resources/datasets/ml100k.data";
+            double testUsers = 0.2;
+            double testItems = 0.2;
+            String separator = "\t";
+            long seed = 43;
 
-        DataModel datamodel = new DataModel(ml100k);
+            DataSet ml100k = new RandomSplitDataSet(filename, testUsers, testItems, separator, seed);
 
-        PMF pmf = new PMF(datamodel, 10, 100, 0.1, 0.01, 43);
-        pmf.fit();
+            DataModel datamodel = new DataModel(ml100k);
 
-        NMF nmf = new NMF(datamodel, 10, 100, 43);
-        nmf.fit();
+            PMF pmf = new PMF(datamodel, 10, 100, 0.1, 0.01, 43);
+            pmf.fit();
 
-        QualityMeasure mse;
+            NMF nmf = new NMF(datamodel, 10, 100, 43);
+            nmf.fit();
 
-        mse = new MSE(pmf);
-        System.out.println("\nMSE (PMF): " + mse.getScore());
+            QualityMeasure mse;
 
-        mse = new MSE(nmf);
-        System.out.println("MSE (NMF): " + mse.getScore());
+            mse = new MSE(pmf);
+            System.out.println("\nMSE (PMF): " + mse.getScore());
 
+            mse = new MSE(nmf);
+            System.out.println("MSE (NMF): " + mse.getScore());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

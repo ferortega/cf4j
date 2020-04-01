@@ -14,6 +14,7 @@ import es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetric.*;
 import es.upm.etsisi.cf4j.util.PrintableQualityMeasure;
 import es.upm.etsisi.cf4j.util.Range;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,58 +37,65 @@ public class UserKnnComparison {
 	public static void main (String [] args) {
 
 		// Load MovieLens 100K dataset
-    	DataSet ml1m = new RandomSplitDataSet("src/main/resources/datasets/ml100k.data", 0.2, 0.2, "\t", randomSeed);
-		DataModel datamodel = new DataModel(ml1m);
+		try {
 
-		// Dataset parameters
-		double[] relevantRatings = {3, 4, 5};
-		double[] notRelevantRatings = {1, 2};
+			DataSet ml1m = new RandomSplitDataSet("src/main/resources/datasets/ml100k.data", 0.2, 0.2, "\t", randomSeed);
 
-		// To store results
-		PrintableQualityMeasure maeScores = new PrintableQualityMeasure("MAE", numNeighbors);
-		PrintableQualityMeasure coverageScores = new PrintableQualityMeasure("Coverage", numNeighbors);
-		PrintableQualityMeasure precisionScores = new PrintableQualityMeasure("Precision", numNeighbors);
-		PrintableQualityMeasure recallScores = new PrintableQualityMeasure("Recall", numNeighbors);
+			DataModel datamodel = new DataModel(ml1m);
 
-		// Create similarity metrics
-		List<UserSimilarityMetric> metrics = new ArrayList<>();
-		metrics.add(new AdjustedCosine());
-		metrics.add(new CJMSD());
-		metrics.add(new Correlation());
-		metrics.add(new Cosine());
-		metrics.add(new Jaccard());
-		metrics.add(new JMSD());
-		metrics.add(new MSD());
-		metrics.add(new PIP());
-		metrics.add(new Singularities(relevantRatings, notRelevantRatings));
-		metrics.add(new SpearmanRank());
+			// Dataset parameters
+			double[] relevantRatings = {3, 4, 5};
+			double[] notRelevantRatings = {1, 2};
 
-		// Evaluate UserKNN recommender
-		for (UserSimilarityMetric metric : metrics) {
-			String metricName = metric.getClass().getSimpleName();
+			// To store results
+			PrintableQualityMeasure maeScores = new PrintableQualityMeasure("MAE", numNeighbors);
+			PrintableQualityMeasure coverageScores = new PrintableQualityMeasure("Coverage", numNeighbors);
+			PrintableQualityMeasure precisionScores = new PrintableQualityMeasure("Precision", numNeighbors);
+			PrintableQualityMeasure recallScores = new PrintableQualityMeasure("Recall", numNeighbors);
 
-			for (int k : numNeighbors) {
-				Recommender knn = new UserKNN(datamodel, k, metric, aggregationApproach);
-				knn.fit();
+			// Create similarity metrics
+			List<UserSimilarityMetric> metrics = new ArrayList<>();
+			metrics.add(new AdjustedCosine());
+			metrics.add(new CJMSD());
+			metrics.add(new Correlation());
+			metrics.add(new Cosine());
+			metrics.add(new Jaccard());
+			metrics.add(new JMSD());
+			metrics.add(new MSD());
+			metrics.add(new PIP());
+			metrics.add(new Singularities(relevantRatings, notRelevantRatings));
+			metrics.add(new SpearmanRank());
 
-				QualityMeasure mae = new MAE(knn);
-				maeScores.putScore(k, metricName, mae.getScore());
+			// Evaluate UserKNN recommender
+			for (UserSimilarityMetric metric : metrics) {
+				String metricName = metric.getClass().getSimpleName();
 
-				QualityMeasure coverage = new Coverage(knn);
-				coverageScores.putScore(k, metricName, coverage.getScore());
+				for (int k : numNeighbors) {
+					Recommender knn = new UserKNN(datamodel, k, metric, aggregationApproach);
+					knn.fit();
 
-				QualityMeasure precision = new Precision(knn,10, 4);
-				precisionScores.putScore(k, metricName, precision.getScore());
+					QualityMeasure mae = new MAE(knn);
+					maeScores.putScore(k, metricName, mae.getScore());
 
-				QualityMeasure recall = new Recall(knn,10, 4);
-				recallScores.putScore(k, metricName, recall.getScore());
+					QualityMeasure coverage = new Coverage(knn);
+					coverageScores.putScore(k, metricName, coverage.getScore());
+
+					QualityMeasure precision = new Precision(knn,10, 4);
+					precisionScores.putScore(k, metricName, precision.getScore());
+
+					QualityMeasure recall = new Recall(knn,10, 4);
+					recallScores.putScore(k, metricName, recall.getScore());
+				}
 			}
-		}
 
-		// Print results
-		maeScores.print();
-		coverageScores.print();
-		precisionScores.print();
-		recallScores.print();
+			// Print results
+			maeScores.print();
+			coverageScores.print();
+			precisionScores.print();
+			recallScores.print();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
