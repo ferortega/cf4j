@@ -72,4 +72,13 @@ public class Maths {
 	public static double log(double x, double b) {
 		return Math.log(x) / Math.log(b);
 	}
+
+	/**
+	 * Returns the logistic function g(x)
+	 * @param x The given parameter x of the function g(x)
+	 * @return Value of the logistic function g(x)
+	 */
+	public static double logistic(double x) {
+		return 1.0 / (1.0 + Math.exp(-x));
+	}
 }
