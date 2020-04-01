@@ -16,6 +16,16 @@ public class User implements Serializable {
 	private static final long serialVersionUID = 20200314L;
 
 	/**
+	 * User identification code.
+	 */
+	protected String id;
+
+	/**
+	 * User index in datamodel.
+	 */
+	protected int userIndex;
+
+	/**
 	 * Minimum (training) rating in the DataModel.
 	 */
 	protected double min = Double.MAX_VALUE;
@@ -28,17 +38,8 @@ public class User implements Serializable {
 	/**
 	 * Average (training) rating.
 	 */
+
 	protected double average = 0.0;
-
-	/**
-	 * User code.
-	 */
-	protected String id;
-
-	/**
-	 * User code.
-	 */
-	protected int userIndex;
 
 	/**
 	 * DataBank to store heterogeneous information.

@@ -22,7 +22,7 @@ public class Item implements Serializable {
 	protected String id;
 
 	/**
-	 * Item userIndex in datamodel.
+	 * Item index in datamodel.
 	 */
 	protected int itemIndex;
 
