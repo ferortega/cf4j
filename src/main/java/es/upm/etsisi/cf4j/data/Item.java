@@ -22,39 +22,39 @@ public class Item implements Serializable {
 	protected String id;
 
 	/**
-	 * Item userIndex in datamodel
+	 * Item userIndex in datamodel.
 	 */
 	protected int itemIndex;
 
 	/**
-	 * Minimum (training) rating in the DataModel
+	 * Minimum (training) rating in the DataModel.
 	 */
 	protected double min = Double.MAX_VALUE;
 
 	/**
-	 * Maximum (training) rating in the DataModel
+	 * Maximum (training) rating in the DataModel.
 	 */
 	protected double max = Double.MIN_VALUE;
 
 	/**
-	 * Average (training) rating
+	 * Average (training) rating.
 	 */
 	protected double average = 0.0;
 
 	/**
-	 * Map of the item
+	 * DataBank to store heterogeneous information
 	 */
 	protected DataBank dataBank;
 
 	/**
-	 * Array of users that have rated this item
+	 * Array of users that have rated this item.
 	 */
 	protected SortedRatingList usersRatings;
 
 	/**
 	 * Creates a new instance of an item. This constructor should not be used by developers.
-	 * @param id Item code
-	 * @param index Item Index
+	 * @param id Item code.
+	 * @param index Item index related with the datamodel array.
 	 */
 	public Item (String id, int index) {
 		this.id = id;
@@ -65,7 +65,7 @@ public class Item implements Serializable {
 
 	/**
 	 * Gets the DataBank instance that stores heterogeneous information related to the Item.
-	 * @return DataBank instance
+	 * @return DataBank instance.
 	 */
 	public DataBank getDataBank(){
 		return dataBank;
@@ -73,7 +73,7 @@ public class Item implements Serializable {
 
 	/**
 	 * Return the item identification code.
-	 * @return Item identification
+	 * @return Item identification.
 	 */
 	public String getId() {
 		return this.id;
@@ -89,7 +89,7 @@ public class Item implements Serializable {
 	
 	/**
 	 * Returns the index of the User whose rating is stored in the given position inside this Item.
-	 * @param pos Index inside the local array.
+	 * @param pos Position inside the local array.
 	 * @return User index in the datamodel stored at indicated position.
 	 */
 	public int getUserAt(int pos) {
@@ -97,8 +97,8 @@ public class Item implements Serializable {
 	}
 
 	/**
-	 * Returns the index of the Rating stored in the given position inside this Item.
-	 * @param pos Index inside the local array.
+	 * Returns the Rating stored in the given position inside this Item.
+	 * @param pos Position inside the local array.
 	 * @return Rating at indicated position.
 	 */
 	public double getRatingAt(int pos) {
@@ -126,7 +126,7 @@ public class Item implements Serializable {
 	 * Add a new rating to the item, associated to a determined user who made this rating.
 	 * You cannot overwrite an existing relation, otherwise repeated relations will throw an IllegalArgumentException.
 	 * @param userIndex User index which identify the specific user in the datamodel.
-	 * @param rating Rated value by user, referencing this item.
+	 * @param rating Rating value made by user, referencing this item.
 	 */
 	public void addRating(int userIndex, double rating){
 		if (!this.usersRatings.add(userIndex, rating))
