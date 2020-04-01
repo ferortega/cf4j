@@ -31,55 +31,51 @@ public class ItemKnnComparison {
 	// Random seed to guaranty reproducibility of the experiment
 	private static final long randomSeed = 43;
 
-	public static void main (String [] args) {
+	public static void main (String [] args) throws IOException {
 
 		// Load MovieLens 100K dataset
-		try {
-			DataSet ml1m = new RandomSplitDataSet("src/main/resources/datasets/ml100k.data", 0.2, 0.2, "\t", randomSeed);
+		DataSet ml1m = new RandomSplitDataSet("src/main/resources/datasets/ml100k.data", 0.2, 0.2, "\t", randomSeed);
 
-			DataModel datamodel = new DataModel(ml1m);
+		DataModel datamodel = new DataModel(ml1m);
 
-			// Dataset parameters
-			double[] relevantRatings = {3, 4, 5};
-			double[] notRelevantRatings = {1, 2};
+		// Dataset parameters
+		double[] relevantRatings = {3, 4, 5};
+		double[] notRelevantRatings = {1, 2};
 
-			// To store results
-			PrintableQualityMeasure msleScores = new PrintableQualityMeasure("MSLE", numNeighbors);
-			PrintableQualityMeasure ndcgScores = new PrintableQualityMeasure("NDCG", numNeighbors);
+		// To store results
+		PrintableQualityMeasure msleScores = new PrintableQualityMeasure("MSLE", numNeighbors);
+		PrintableQualityMeasure ndcgScores = new PrintableQualityMeasure("NDCG", numNeighbors);
 
-			// Create similarity metrics
-			List<ItemSimilarityMetric> metrics = new ArrayList<>();
-			metrics.add(new AdjustedCosine());
-			metrics.add(new Correlation());
-			metrics.add(new Cosine());
-			metrics.add(new Jaccard());
-			metrics.add(new JMSD());
-			metrics.add(new MSD());
-			metrics.add(new PIP());
-			metrics.add(new Singularities(relevantRatings, notRelevantRatings));
-			metrics.add(new SpearmanRank());
+		// Create similarity metrics
+		List<ItemSimilarityMetric> metrics = new ArrayList<>();
+		metrics.add(new AdjustedCosine());
+		metrics.add(new Correlation());
+		metrics.add(new Cosine());
+		metrics.add(new Jaccard());
+		metrics.add(new JMSD());
+		metrics.add(new MSD());
+		metrics.add(new PIP());
+		metrics.add(new Singularities(relevantRatings, notRelevantRatings));
+		metrics.add(new SpearmanRank());
 
-			// Evaluate ItemKNN recommender
-			for (ItemSimilarityMetric metric : metrics) {
-				String metricName = metric.getClass().getSimpleName();
+		// Evaluate ItemKNN recommender
+		for (ItemSimilarityMetric metric : metrics) {
+			String metricName = metric.getClass().getSimpleName();
 
-				for (int k : numNeighbors) {
-					Recommender knn = new ItemKNN(datamodel, k, metric, aggregationApproach);
-					knn.fit();
+			for (int k : numNeighbors) {
+				Recommender knn = new ItemKNN(datamodel, k, metric, aggregationApproach);
+				knn.fit();
 
-					QualityMeasure msle = new MSLE(knn);
-					msleScores.putScore(k, metricName, msle.getScore());
+				QualityMeasure msle = new MSLE(knn);
+				msleScores.putScore(k, metricName, msle.getScore());
 
-					QualityMeasure ndcg = new NDCG(knn,10);
-					ndcgScores.putScore(k, metricName, ndcg.getScore());
-				}
+				QualityMeasure ndcg = new NDCG(knn,10);
+				ndcgScores.putScore(k, metricName, ndcg.getScore());
 			}
-
-			// Print results
-			msleScores.print();
-			ndcgScores.print();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
+
+		// Print results
+		msleScores.print();
+		ndcgScores.print();
 	}
 }

@@ -34,68 +34,62 @@ public class UserKnnComparison {
 	// Random seed to guaranty reproducibility of the experiment
 	private static final long randomSeed = 43;
 
-	public static void main (String [] args) {
+	public static void main (String [] args) throws IOException {
 
 		// Load MovieLens 100K dataset
-		try {
+		DataSet ml1m = new RandomSplitDataSet("src/main/resources/datasets/ml100k.data", 0.2, 0.2, "\t", randomSeed);
 
-			DataSet ml1m = new RandomSplitDataSet("src/main/resources/datasets/ml100k.data", 0.2, 0.2, "\t", randomSeed);
+		DataModel datamodel = new DataModel(ml1m);
 
-			DataModel datamodel = new DataModel(ml1m);
+		// Dataset parameters
+		double[] relevantRatings = {3, 4, 5};
+		double[] notRelevantRatings = {1, 2};
 
-			// Dataset parameters
-			double[] relevantRatings = {3, 4, 5};
-			double[] notRelevantRatings = {1, 2};
+		// To store results
+		PrintableQualityMeasure maeScores = new PrintableQualityMeasure("MAE", numNeighbors);
+		PrintableQualityMeasure coverageScores = new PrintableQualityMeasure("Coverage", numNeighbors);
+		PrintableQualityMeasure precisionScores = new PrintableQualityMeasure("Precision", numNeighbors);
+		PrintableQualityMeasure recallScores = new PrintableQualityMeasure("Recall", numNeighbors);
 
-			// To store results
-			PrintableQualityMeasure maeScores = new PrintableQualityMeasure("MAE", numNeighbors);
-			PrintableQualityMeasure coverageScores = new PrintableQualityMeasure("Coverage", numNeighbors);
-			PrintableQualityMeasure precisionScores = new PrintableQualityMeasure("Precision", numNeighbors);
-			PrintableQualityMeasure recallScores = new PrintableQualityMeasure("Recall", numNeighbors);
+		// Create similarity metrics
+		List<UserSimilarityMetric> metrics = new ArrayList<>();
+		metrics.add(new AdjustedCosine());
+		metrics.add(new CJMSD());
+		metrics.add(new Correlation());
+		metrics.add(new Cosine());
+		metrics.add(new Jaccard());
+		metrics.add(new JMSD());
+		metrics.add(new MSD());
+		metrics.add(new PIP());
+		metrics.add(new Singularities(relevantRatings, notRelevantRatings));
+		metrics.add(new SpearmanRank());
 
-			// Create similarity metrics
-			List<UserSimilarityMetric> metrics = new ArrayList<>();
-			metrics.add(new AdjustedCosine());
-			metrics.add(new CJMSD());
-			metrics.add(new Correlation());
-			metrics.add(new Cosine());
-			metrics.add(new Jaccard());
-			metrics.add(new JMSD());
-			metrics.add(new MSD());
-			metrics.add(new PIP());
-			metrics.add(new Singularities(relevantRatings, notRelevantRatings));
-			metrics.add(new SpearmanRank());
+		// Evaluate UserKNN recommender
+		for (UserSimilarityMetric metric : metrics) {
+			String metricName = metric.getClass().getSimpleName();
 
-			// Evaluate UserKNN recommender
-			for (UserSimilarityMetric metric : metrics) {
-				String metricName = metric.getClass().getSimpleName();
+			for (int k : numNeighbors) {
+				Recommender knn = new UserKNN(datamodel, k, metric, aggregationApproach);
+				knn.fit();
 
-				for (int k : numNeighbors) {
-					Recommender knn = new UserKNN(datamodel, k, metric, aggregationApproach);
-					knn.fit();
+				QualityMeasure mae = new MAE(knn);
+				maeScores.putScore(k, metricName, mae.getScore());
 
-					QualityMeasure mae = new MAE(knn);
-					maeScores.putScore(k, metricName, mae.getScore());
+				QualityMeasure coverage = new Coverage(knn);
+				coverageScores.putScore(k, metricName, coverage.getScore());
 
-					QualityMeasure coverage = new Coverage(knn);
-					coverageScores.putScore(k, metricName, coverage.getScore());
+				QualityMeasure precision = new Precision(knn,10, 4);
+				precisionScores.putScore(k, metricName, precision.getScore());
 
-					QualityMeasure precision = new Precision(knn,10, 4);
-					precisionScores.putScore(k, metricName, precision.getScore());
-
-					QualityMeasure recall = new Recall(knn,10, 4);
-					recallScores.putScore(k, metricName, recall.getScore());
-				}
+				QualityMeasure recall = new Recall(knn,10, 4);
+				recallScores.putScore(k, metricName, recall.getScore());
 			}
-
-			// Print results
-			maeScores.print();
-			coverageScores.print();
-			precisionScores.print();
-			recallScores.print();
-
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
+
+		// Print results
+		maeScores.print();
+		coverageScores.print();
+		precisionScores.print();
+		recallScores.print();
 	}
 }

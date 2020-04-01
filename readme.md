@@ -244,7 +244,7 @@ private static final int numIter = 50;
 // Random seed to guaranty reproducibility of the experiment
 private static final long randomSeed = 43;
 
-public static void main (String [] args) {
+public static void main (String [] args) throws IOException {
 
     // Load MovieLens 100K dataset
     DataSet ml100k = new RandomSplitDataSet("src/main/resources/datasets/ml100k.data", 0.2, 0.2, "\t", randomSeed);
@@ -389,7 +389,7 @@ private static final ItemKNN.AggregationApproach aggregationApproach = ItemKNN.A
 // Random seed to guaranty reproducibility of the experiment
 private static final long randomSeed = 43;
 
-public static void main (String [] args) {
+public static void main (String [] args) throws IOException {
 
     // Load MovieLens 100K dataset
     DataSet ml1m = new RandomSplitDataSet("src/main/resources/datasets/ml100k.data", 0.2, 0.2, "\t", randomSeed);
@@ -469,7 +469,7 @@ private static final UserKNN.AggregationApproach aggregationApproach = UserKNN.A
 // Random seed to guaranty reproducibility of the experiment
 private static final long randomSeed = 43;
 
-public static void main (String [] args) {
+public static void main (String [] args) throws IOException {
 
     // Load MovieLens 100K dataset
     DataSet ml1m = new RandomSplitDataSet("src/main/resources/datasets/ml100k.data", 0.2, 0.2, "\t", randomSeed);
