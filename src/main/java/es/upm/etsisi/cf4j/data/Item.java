@@ -4,24 +4,20 @@ import java.io.Serializable;
 import es.upm.etsisi.cf4j.data.types.SortedRatingList;
 
 /**
- * <p>Defines an item. An item is composed by:</p>
+ * Defines a composition of an Item. An item is composed by:
  * <ul>
- *  <li>Item code</li>
- *  <li>Array of users who have rated the item</li>
- *  <li>Array of ratings that the item have received</li>
+ *  <li>Item identification.</li>
+ *  <li>Item index (in the datamodel where is stored).</li>
+ *  <li>Array of ratings made by the users.</li>
  * </ul>
+ * It is not recommended that developers generate new instances of this class since this is a memory-structural class.
  */
 public class Item implements Serializable {
 
 	private static final long serialVersionUID = 20200314L;
 
-	//Stored metrics
-	protected double min = Double.MAX_VALUE;
-	protected double max = Double.MIN_VALUE;
-	protected double average = 0.0;
-
 	/**
-	 * Item code
+	 * Item identification code.
 	 */
 	protected String id;
 
@@ -29,19 +25,34 @@ public class Item implements Serializable {
 	 * Item userIndex in datamodel
 	 */
 	protected int itemIndex;
-	
+
+	/**
+	 * Minimum (training) rating in the DataModel
+	 */
+	protected double min = Double.MAX_VALUE;
+
+	/**
+	 * Maximum (training) rating in the DataModel
+	 */
+	protected double max = Double.MIN_VALUE;
+
+	/**
+	 * Average (training) rating
+	 */
+	protected double average = 0.0;
+
 	/**
 	 * Map of the item
 	 */
 	protected DataBank dataBank;
 
 	/**
-	 * Users that have rated this item
+	 * Array of users that have rated this item
 	 */
 	protected SortedRatingList usersRatings;
 
 	/**
-	 * Creates a new instance of an item. This constructor should not be users by developers.
+	 * Creates a new instance of an item. This constructor should not be used by developers.
 	 * @param id Item code
 	 * @param index Item Index
 	 */
@@ -52,12 +63,16 @@ public class Item implements Serializable {
 		this.usersRatings = new SortedRatingList();
 	}
 
+	/**
+	 * Gets the DataBank instance that stores heterogeneous information related to the Item.
+	 * @return DataBank instance
+	 */
 	public DataBank getDataBank(){
 		return dataBank;
 	}
 
 	/**
-	 * Return the item identification.
+	 * Return the item identification code.
 	 * @return Item identification
 	 */
 	public String getId() {
@@ -65,24 +80,24 @@ public class Item implements Serializable {
 	}
 
 	/**
-	 * Return the item userIndex inside the datamodel.
-	 * @return Item userIndex inside the datamodel
+	 * Return the item index inside the datamodel.
+	 * @return Item index inside the datamodel.
 	 */
 	public int getItemIndex() {
 		return this.itemIndex;
 	}
 	
 	/**
-	 * Returns the user userIndex at a local userIndex pos.
+	 * Returns the index of the User whose rating is stored in the given position inside this Item.
 	 * @param pos Index inside the local array.
-	 * @return User userIndex in the datamodel.
+	 * @return User index in the datamodel stored at indicated position.
 	 */
 	public int getUserAt(int pos) {
 		return this.usersRatings.get(pos).getIndex();
 	}
 
 	/**
-	 * Returns the rating at userIndex position.
+	 * Returns the index of the Rating stored in the given position inside this Item.
 	 * @param pos Index inside the local array.
 	 * @return Rating at indicated position.
 	 */
@@ -91,9 +106,9 @@ public class Item implements Serializable {
 	}
 	
 	/**
-	 * Get the userIndex of an user code at the user's item array.
-	 * @param userIndex User userIndex.
-	 * @return User position in the items's user array if the user has rated the item or -1 if don't
+	 * Find the rating position at the item's users array given an user index.
+	 * @param userIndex User index associated to the datamodel.
+	 * @return User position in the items's user array if the user has rated the item or -1 if don't.
 	 */
 	public int findUser(int userIndex) {
 		return this.usersRatings.find(userIndex);
@@ -101,16 +116,16 @@ public class Item implements Serializable {
 	
 	/**
 	 * Get the number of ratings that the item have received.
-	 * @return Number of ratings received
+	 * @return Number of ratings received.
 	 */
 	public int getNumberOfRatings () {
 		return this.usersRatings.size();
 	}
 
 	/**
-	 * Add a new rating to the item, associated to an user.
-	 * You cannot overwrite an existing relation, otherwise repeated relations will throw an exception.
-	 * @param userIndex User userIndex which identify the specific user in the datamodel.
+	 * Add a new rating to the item, associated to a determined user who made this rating.
+	 * You cannot overwrite an existing relation, otherwise repeated relations will throw an IllegalArgumentException.
+	 * @param userIndex User index which identify the specific user in the datamodel.
 	 * @param rating Rated value by user, referencing this item.
 	 */
 	public void addRating(int userIndex, double rating){
@@ -123,20 +138,26 @@ public class Item implements Serializable {
 	}
 
 	/**
-	 * Get the minimum rating done
-	 * @return minimum rating
+	 * Get the minimum rating done.
+	 * @return Minimum rating.
 	 */
-	public double getMinRating(){ return min; }
+	public double getMinRating(){
+		return min;
+	}
 
 	/**
-	 * Get the maximum rating done
-	 * @return maximum rating
+	 * Get the maximum rating done.
+	 * @return Maximum rating.
 	 */
-	public double getMaxRating(){ return max; }
+	public double getMaxRating(){
+		return max;
+	}
 
 	/**
-	 * Get the average of ratings done
-	 * @return average
+	 * Get the average of ratings done.
+	 * @return Average of ratings.
 	 */
-	public double getRatingAverage(){ return average; }
+	public double getRatingAverage(){
+		return average;
+	}
 }
