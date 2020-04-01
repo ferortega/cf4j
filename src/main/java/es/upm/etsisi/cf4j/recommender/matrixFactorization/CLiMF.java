@@ -187,21 +187,12 @@ public class CLiMF extends Recommender {
     }
 
     /**
-     * Returns logistic function value
-     * @param x Value for which logistic function must be computed
-     * @return Logistic function of x
-     */
-    private static double logistic(double x) {
-        return 1.0 / (1.0 + Math.exp(-x));
-    }
-
-    /**
      * Returns the gradient value of the logistic function
      * @param x Value for which gradient value of logistic function must be computed
      * @return Gradient value of logistic function of x
      */
     private static double logisticGradientValue(double x) {
-        return logistic(x) * logistic(-x);
+        return Maths.logistic(x) * Maths.logistic(-x);
     }
 
     /**
@@ -233,8 +224,8 @@ public class CLiMF extends Recommender {
                     double jPred = predict(userIndex, j);
 
                     for (int f = 0; f < numFactors; f++) {
-                        userGradients[f] += logistic(-jPred) * V[j][f];
-                        ratedItemsGradients[jPos][f] = logistic(-jPred) * U[userIndex][f];
+                        userGradients[f] += Maths.logistic(-jPred) * V[j][f];
+                        ratedItemsGradients[jPos][f] = Maths.logistic(-jPred) * U[userIndex][f];
 
                         for (int kPos = 0; kPos < user.getNumberOfRatings(); kPos++) {
                             double kRating = user.getRatingAt(kPos);
@@ -244,8 +235,8 @@ public class CLiMF extends Recommender {
 
                                 double diff = kPred - jPred;
 
-                                userGradients[f] += logisticGradientValue(diff) * (V[j][f] - V[k][f]) / (1.0 - logistic(diff));
-                                ratedItemsGradients[jPos][f] += logisticGradientValue(-diff) * ((1.0 / (1.0 - logistic(diff))) - (1.0 / (1.0 - logistic(-diff)))) * U[userIndex][f];
+                                userGradients[f] += logisticGradientValue(diff) * (V[j][f] - V[k][f]) / (1.0 - Maths.logistic(diff));
+                                ratedItemsGradients[jPos][f] += logisticGradientValue(-diff) * ((1.0 / (1.0 - Maths.logistic(diff))) - (1.0 / (1.0 - Maths.logistic(-diff)))) * U[userIndex][f];
                             }
                         }
                     }
