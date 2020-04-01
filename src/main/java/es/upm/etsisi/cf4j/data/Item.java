@@ -53,7 +53,7 @@ public class Item implements Serializable {
 
 	/**
 	 * Creates a new instance of an item. This constructor should not be used by developers.
-	 * @param id Item code.
+	 * @param id Item identification code.
 	 * @param index Item index related with the datamodel array.
 	 */
 	public Item (String id, int index) {
@@ -97,7 +97,7 @@ public class Item implements Serializable {
 	}
 
 	/**
-	 * Returns the Rating stored in the given position inside this Item.
+	 * Returns the rating stored in the given position inside this Item.
 	 * @param pos Position inside the local array.
 	 * @return Rating at indicated position.
 	 */

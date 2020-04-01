@@ -14,20 +14,37 @@ public class TestItem extends Item {
 
 	private static final long serialVersionUID = 20200314L;
 
-	//Stored metrics
-	protected double minTest = Double.MAX_VALUE;
-	protected double maxTest = Double.MIN_VALUE;
-	protected double averageTest = 0.0;
-
-	protected SortedRatingList testUsersRatings;
-
+	/**
+	 * TestItem index in datamodel.
+	 */
 	protected int testItemIndex;
 
 	/**
+	 * Minimum test rating in the DataModel.
+	 */
+	protected double minTest = Double.MAX_VALUE;
+
+	/**
+	 * Maximum test rating in the DataModel.
+	 */
+
+	protected double maxTest = Double.MIN_VALUE;
+
+	/**
+	 * Average test rating.
+	 */
+	protected double averageTest = 0.0;
+
+	/**
+	 * Array of test users that have rated this item.
+	 */
+	protected SortedRatingList testUsersRatings;
+
+	/**
 	 * Creates a new instance of a test item. This constructor should not be used by developers.
-	 * @param id Item code
-	 * @param itemIndex Index related with the datamodel array.
-	 * @param testItemIndex Index related with the datamodel test array.
+	 * @param id Item identification code.
+	 * @param itemIndex Item index related with the datamodel array.
+	 * @param testItemIndex TestItem index related with the datamodel test array.
 	 */
 	public TestItem(String id, int itemIndex, int testItemIndex) {
 		super(id, itemIndex);
@@ -36,26 +53,26 @@ public class TestItem extends Item {
 	}
 
 	/**
-	 * Returns the testItemIndex.
-	 * @return testItemIndex inside the datamodel
+	 * Return the test item index inside the datamodel.
+	 * @return testItemIndex inside the datamodel.
 	 */
 	public int getTestItemIndex() {
 		return this.testItemIndex;
 	}
 	
 	/**
-	 * Returns the test user code at userIndex position.
-	 * @param pos Index inside the local array.
-	 * @return Test user userIndex in the datamodel.
+	 * Returns the index of the TestUser whose rating is stored in the given position inside this TestItem.
+	 * @param pos Position inside the local array.
+	 * @return TestUser index in the datamodel.
 	 */
 	public int getTestUserAt(int pos) {
 		return this.testUsersRatings.get(pos).getIndex();
 	}
 
 	/**
-	 * Returns the test rating at userIndex position.
- 	 * @param pos Index inside the local array.
-	 * @return Test rating at position inside the local array.
+	 * Returns the test rating stored in the given position inside this TestItem.
+ 	 * @param pos Position inside the local array.
+	 * @return Test rating at indicated position.
 	 */
 	public double getTestRatingAt(int pos) {
 		return this.testUsersRatings.get(pos).getRating();
@@ -63,21 +80,21 @@ public class TestItem extends Item {
 
 	/**
 	 * Get the number of test ratings that the item have received.
-	 * @return Number of test ratings received
+	 * @return Number of test ratings received.
 	 */
 	public int getNumberOfTestRatings () {
 		return this.testUsersRatings.size();
 	}
 
 	/**
-	 * Add a new test rating to the testItem, associated to a user.
-	 * You cannot overwrite an existing relation, otherwise repeated relations will throw an exception.
-	 * @param testUserIndex user global userIndex which identify the specific user in the datamodel.
-	 * @param rating rated value of the user, refering this item.
+	 * Add a new rating to the test item, associated to a determined user who made this rating.
+	 * You cannot overwrite an existing relation, otherwise repeated relations will throw an IllegalArgumentException.
+	 * @param testUserIndex TestUser index which identify the specific user in the datamodel.
+	 * @param rating rated value of the test user, referencing this item.
 	 */
 	public void addTestRating(int testUserIndex, double rating){
 		if (!this.testUsersRatings.add(testUserIndex, rating))
-			throw new IllegalArgumentException("Provided rating already exist in item: " + id);
+			throw new IllegalArgumentException("Provided rating already exist in test item: " + id);
 
 		minTest = Math.min(rating, minTest);
 		maxTest = Math.max(rating, maxTest);
@@ -85,20 +102,20 @@ public class TestItem extends Item {
 	}
 
 	/**
-	 * Get the minimum rating done
-	 * @return minimum rating
+	 * Get the minimum rating done.
+	 * @return Minimum rating.
 	 */
 	public double getMinTestRating(){ return minTest; }
 
 	/**
-	 * Get the maximum rating done
-	 * @return maximum rating
+	 * Get the maximum rating done.
+	 * @return Maximum rating.
 	 */
 	public double getMaxTestRating(){ return maxTest; }
 
 	/**
-	 * Get the average of ratings done
-	 * @return average
+	 * Get the average of ratings done.
+	 * @return Average of ratings.
 	 */
 	public double getTestRatingAverage(){ return averageTest; }
 }

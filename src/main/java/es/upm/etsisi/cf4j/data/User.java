@@ -53,7 +53,7 @@ public class User implements Serializable {
 
 	/**
 	 * Creates a new instance of an user. This constructor should not be used by developers.
-	 * @param id User code.
+	 * @param id User identification code.
 	 * @param index index related with the datamodel array.
 	 */
 	public User (String id, int index) {
