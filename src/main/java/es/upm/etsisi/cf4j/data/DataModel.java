@@ -91,11 +91,11 @@ public class DataModel implements Serializable {
 
         this.dataBank = new DataBank();
 
-        //1.- Initializing the auxiliary arrays to the estimated initial size (taking into account the DataSet entries)
-        List<User> usersList = new ArrayList<>(dataset.getNumberOfRatings()/40);
-        List<TestUser> testUsersList = new ArrayList<>(dataset.getNumberOfTestRatings()/40);
-        List<Item> itemsList = new ArrayList<>(dataset.getNumberOfRatings()/40);
-        List<TestItem> testItemsLists = new ArrayList<>(dataset.getNumberOfTestRatings()/40);
+        // Initializing the auxiliary arrays to the estimated initial size (taking into account the DataSet entries)
+        List<User> usersList = new ArrayList<>();
+        List<TestUser> testUsersList = new ArrayList<>();
+        List<Item> itemsList = new ArrayList<>();
+        List<TestItem> testItemsLists = new ArrayList<>();
 
         Map<String, Integer> id2userIndex = new HashMap<>();
         Map<String, Integer> id2testUserIndex = new HashMap<>();
