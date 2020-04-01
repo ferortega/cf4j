@@ -1,5 +1,8 @@
 package es.upm.etsisi.cf4j.util;
 
+/**
+ * This class contains methods to generate array of values based on a range
+ */
 public class Range {
 
 	/**
