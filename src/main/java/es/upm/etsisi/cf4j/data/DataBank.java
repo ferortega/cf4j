@@ -4,162 +4,181 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 /**
- * Databank is focused on storing heterogeneous data as a support to the calculations made
+ * DataBank is focused on storing heterogeneous data as a support to the calculations made
  * in the recommendation process.
  *
- * Only the following types are allowed to be stored: Boolean, Boolean[], Integer, Integer[],
- * Double, and Double[].
+ * Only the following types are allowed to be stored: boolean, boolean[], int, int[], double, double[], String and
+ * String[].
  */
 public class DataBank implements Serializable {
 
-
-    //Stored map of elements. With this map, you can store objects with his associated name or key.
+    /**
+    * Stored map of elements. With this map, you can store objects with his associated name or key.
+    */
     private HashMap<String, Object> map = new HashMap<>();
 
     /**
      * Deletes all content of this DataBank.
      */
-    public void deleteAll (){ map.clear(); }
+    public void deleteAll() { map.clear(); }
 
     /**
-     * Delete a value associated to a single element key.
-     * @param key Key where the data is stored.
-     * @return True, if the key was found.
+     * Deletes a value associated to a single element key.
+     * @param key Key where the data is stored
+     * @return true if the key was found
      */
-    public boolean deleteKey(String key){ return map.remove(key) != null; }
+    public boolean delete(String key) { return map.remove(key) != null; }
 
     /**
-     * Find if an element exist inside the databank
-     * @param key key to be searched.
-     * @return True, if the element exist inside the databank.
+     * Finds if an element exist inside the DataBank
+     * @param key Key to be searched
+     * @return true if the key exist inside the DataBank
      */
-    public boolean hasKey(String key){
+    public boolean contains(String key){
         return map.get(key) != null;
     }
 
     /**
-     * Set or store a boolean inside this databank.
-     * @param key key where the element will be stored.
+     * Sets or stores a boolean inside the DataBank.
+     * @param key Key where the element will be stored.
      * @param value boolean value to be stored.
-     * @return If an existing key is passed then the previous value gets returned. Null if it was not found.
      */
-    public Boolean setBoolean(String key, Boolean value){
-        Object obj = map.put(key,value);
-        return obj instanceof Boolean ? (Boolean)obj : null;
+    public void setBoolean(String key, boolean value) {
+        this.map.put(key, value);
     }
 
     /**
-     * Set or store a boolean array inside this databank.
-     * @param key key where the element will be stored.
+     * Sets or stores a boolean array inside the DataBank.
+     * @param key Key where the element will be stored.
      * @param value boolean array to be stored.
-     * @return If an existing key is passed then the value gets returned. Null if it was not found.
      */
-    public Boolean[] setBooleanArray(String key, Boolean[] value){
-        Object obj = map.put(key,value);
-        return obj instanceof Boolean[] ? (Boolean[])obj : null;
+    public void setBooleanArray(String key, boolean[] value) {
+        this.map.put(key,value);
     }
 
     /**
-     * Set or store a int inside this databank.
-     * @param key key where the element will be stored.
+     * Sets or stores an int inside the DataBank.
+     * @param key Key where the element will be stored.
      * @param value int value to be stored.
-     * @return If an existing key is passed then the value gets returned. Null if it was not found.
      */
-    public Integer setInteger(String key, Integer value){
-        Object obj = map.put(key,value);
-        return obj instanceof Integer ? (Integer)obj : null;
+    public void setInt(String key, int value){
+        this.map.put(key, value);
     }
 
     /**
-     * Set or store a int array inside this databank.
-     * @param key key where the element will be stored.
+     * Sets or stores an int array inside the DataBank.
+     * @param key Key where the element will be stored.
      * @param value int array to be stored.
-     * @return If an existing key is passed then the value gets returned. Null if it was not found.
      */
-    public Integer [] setIntegerArray(String key, Integer [] value){
-        Object obj = map.put(key,value);
-        return obj instanceof Integer[] ? (Integer [])obj : null;
+    public void setIntArray(String key, int[] value) {
+        this.map.put(key, value);
     }
 
     /**
-     * Set or store a double inside this databank.
-     * @param key key where the element will be stored.
+     * Sets or stores a double inside the DataBank.
+     * @param key Key where the element will be stored.
      * @param value double value to be stored.
-     * @return If an existing key is passed then the value gets returned. Null if it was not found.
      */
-    public Double setDouble(String key, Double value){
-        Object obj = map.put(key,value);
-        return obj instanceof Double ? (Double)obj : null;
+    public void setDouble(String key, double value) {
+        this.map.put(key, value);
     }
 
     /**
-     * Set or store a double array inside this databank.
-     * @param key key where the element will be stored.
+     * Sets or stores a double array inside the DataBank.
+     * @param key Key where the element will be stored.
      * @param value double array to be stored.
-     * @return If an existing key is passed then the value gets returned. Null if it was not found.
      */
-    public Double[] setDoubleArray(String key, Double[] value){
-        Object obj = map.put(key,value);
-        return obj instanceof Double[] ? (Double[])obj : null;
+    public void setDoubleArray(String key, double[] value) {
+        this.map.put(key, value);
     }
 
     /**
-     * Get an stored boolean inside this databank.
-     * @param key key where the element should be stored.
-     * @return If an existing key is passed then the value is returned. Null if it was not found.
+     * Sets or stores an String inside the DataBank.
+     * @param key Key where the element will be stored.
+     * @param value String value to be stored.
      */
-    public Boolean getBoolean(String key){
-        Object obj = map.get(key);
-        return obj instanceof Boolean ? (Boolean)obj : null;
+    public void setString(String key, String value) {
+        this.map.put(key, value);
     }
 
     /**
-     * Get an stored boolean array inside this databank.
-     * @param key key where the element should be stored.
-     * @return If an existing key is passed then the value is returned. Null if it was not found.
+     * Sets or stores a double array inside the DataBank.
+     * @param key Key where the element will be stored.
+     * @param value String array to be stored.
      */
-    public Boolean [] getBooleanArray(String key){
-        Object obj = map.get(key);
-        return obj instanceof Boolean[] ? (Boolean [])obj : null;
+    public void setStringArray(String key, String[] value) {
+        this.map.put(key, value);
     }
 
     /**
-     * Get an stored int inside this databank.
-     * @param key key where the element should be stored.
-     * @return If an existing key is passed then the value is returned. Null if it was not found.
+     * Gets an stored boolean inside the DataBank.
+     * @param key Key where the element should be stored
+     * @return Stored boolean value or null if key does not exists
      */
-    public Integer getInteger(String key){
-        Object obj = map.get(key);
-        return obj instanceof Integer ? (Integer)obj : null;
+    public boolean getBoolean(String key) {
+        return (boolean) map.get(key);
     }
 
     /**
-     * Get an stored int array inside this databank.
-     * @param key key where the element should be stored.
-     * @return If an existing key is passed then the value is returned. Null if it was not found.
+     * Gets an stored boolean array inside the DataBank.
+     * @param key Key where the element should be stored
+     * @return Stored boolean array value or null if key does not exists
      */
-    public Integer [] getIntegerArray(String key){
-        Object obj = map.get(key);
-        return obj instanceof Integer[] ? (Integer [])obj : null;
+    public boolean[] getBooleanArray(String key){
+        return (boolean[]) map.get(key);
     }
 
     /**
-     * Get an stored double inside this databank.
-     * @param key key where the element should be stored.
-     * @return If an existing key is passed then the value is returned. Null if it was not found.
+     * Gets an stored int inside the DataBank.
+     * @param key Key where the element should be stored
+     * @return Stored int value or null if key does not exists
      */
-    public Double getDouble(String key){
-        Object obj = map.get(key);
-        return obj instanceof Double ? (Double)obj : null;
+    public int getInt(String key) {
+        return (int) map.get(key);
     }
 
     /**
-     * Get an stored double array inside this databank.
-     * @param key key where the element should be stored.
-     * @return If an existing key is passed then the value is returned. Null if it was not found.
+     * Gets an stored int array inside the DataBank.
+     * @param key Key where the element should be stored
+     * @return Stored int array value or null if key does not exists
      */
-    public Double [] getDoubleArray(String key){
-        Object obj = map.get(key);
-        return obj instanceof Double[] ? (Double [])obj : null;
+    public int[] getIntArray(String key) {
+        return (int[]) map.get(key);
+    }
+
+    /**
+     * Gets an stored double inside the DataBank.
+     * @param key Key where the element should be stored
+     * @return Stored double value or null if key does not exists
+     */
+    public double getDouble(String key){
+        return (double) map.get(key);
+    }
+
+    /**
+     * Gets an stored double array inside the DataBank.
+     * @param key Key where the element should be stored
+     * @return Stored double array value or null if key does not exists
+     */
+    public double[] getDoubleArray(String key){
+        return (double[]) map.get(key);
+    }
+
+    /**
+     * Gets an stored String inside the DataBank.
+     * @param key Key where the element should be stored
+     * @return Stored String value or null if key does not exists
+     */
+    public String getString(String key){
+        return (String) map.get(key);
+    }
+
+    /**
+     * Gets an stored String array inside the DataBank.
+     * @param key Key where the element should be stored
+     * @return Stored String array value or null if key does not exists
+     */
+    public String[] getStringArray(String key){
+        return (String[]) map.get(key);
     }
 }
