@@ -3,12 +3,12 @@ package es.upm.etsisi.cf4j.data;
 import es.upm.etsisi.cf4j.data.types.SortedRatingList;
 
 /**
- * <p>A TestUser extends an User given it the following properties:</p>
+ * A TestUser extends an User given it the following properties:
  * <ul>
- *  <li>User userIndex in the test users array</li>
- *  <li>Array of test items that the user have rated</li>
- *  <li>Array of test ratings hat the user have made</li>
+ *  <li>User userIndex (in the datamodel where is stored).</li>
+ *  <li>Array of test items rated by the user.</li>
  * </ul>
+ * It is not recommended that developers generate new instances of this class since this is a memory-structural class.
  */
 public class TestUser extends User {
 

@@ -7,9 +7,10 @@ import es.upm.etsisi.cf4j.data.types.SortedRatingList;
  * Defines a composition of an User. An user is composed by:
  * <ul>
  *  <li>User identification.</li>
- *  <li>User index (in the datamodel where is stored).</li>
+ *  <li>User index (in the datamodel, where is stored).</li>
  *  <li>Array of items rated by the user.</li>
  * </ul>
+ * It is not recommended that developers generate new instances of this class since this is a memory-structural class.
  */
 public class User implements Serializable {
 

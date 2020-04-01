@@ -7,7 +7,7 @@ import es.upm.etsisi.cf4j.data.types.SortedRatingList;
  * Defines a composition of an Item. An item is composed by:
  * <ul>
  *  <li>Item identification.</li>
- *  <li>Item index (in the datamodel where is stored).</li>
+ *  <li>Item index (in the datamodel, where is stored).</li>
  *  <li>Array of ratings made by the users.</li>
  * </ul>
  * It is not recommended that developers generate new instances of this class since this is a memory-structural class.
