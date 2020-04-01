@@ -8,6 +8,9 @@ import es.upm.etsisi.cf4j.qualityMeasure.prediction.MSE;
 import es.upm.etsisi.cf4j.recommender.matrixFactorization.NMF;
 import es.upm.etsisi.cf4j.recommender.matrixFactorization.PMF;
 
+/**
+ * Example used in the Getting Started section of the readme.md
+ */
 public class GettingStartedExample {
     public static void main (String [] args) {
 
