@@ -43,10 +43,12 @@ public class Novelty extends QualityMeasure {
 			int testItemIndex = testUser.getTestItemAt(pos);
 			TestItem testItem = recommender.getDataModel().getTestItem(testItemIndex);
 
-			double pi = (double) testItem.getNumberOfRatings() / (double) recommender.getDataModel().getNumberOfRatings();
-			sum += -Maths.log(pi, 2);
-			
-			count++;
+			// Ignore items without (training) ratings
+			if (testItem.getNumberOfRatings() > 0) {
+				double pi = (double) testItem.getNumberOfRatings() / (double) recommender.getDataModel().getNumberOfRatings();
+				sum += -Maths.log(pi, 2);
+				count++;
+			}
 		}
 
 		return (count == 0) ? Double.NaN : (sum / count);
