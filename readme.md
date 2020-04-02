@@ -102,9 +102,9 @@ Let's encode our first experiment with CF4J. In this experiment, we will compare
 
 ## Project Structure
 
-The following image shows the class diagram of the whole project. You can see a high resolution version of this diagram [here](http://rs.etsisi.upm.es/cf4j-2.0/images/class-diagram.png). The project has been divided into 4 main packages: `data`, `recommender`, `qualityMeasure` and `util`.
+The following image shows the summarized class diagram of the whole project. You can see the full version of this diagram [here](http://rs.etsisi.upm.es/cf4j-2.0/images/class-diagram.jpg). The project has been divided into 4 main packages: `data`, `recommender`, `qualityMeasure` and `util`.
 
-![CF4J class diagram](http://rs.etsisi.upm.es/cf4j-2.0/images/class-diagram.png)
+![CF4J class diagram](http://rs.etsisi.upm.es/cf4j-2.0/images/class-diagram-summarized.jpg)
 
 ### `es.upm.etsisi.cf4j.data` package
 
