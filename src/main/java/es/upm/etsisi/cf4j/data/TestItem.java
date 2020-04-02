@@ -3,48 +3,47 @@ package es.upm.etsisi.cf4j.data;
 import es.upm.etsisi.cf4j.data.types.SortedRatingList;
 
 /**
- * A TestItem extends an Item given it the following properties:
+ * <p>A TestItem extends an Item given it the following properties:</p>
  * <ul>
- *  <li>Item index (in the datamodel, where is stored).</li>
- *  <li>Array of test item ratings made by the users.</li>
+ *  <li>Index in the DataModel array which stores test items.</li>
+ *  <li>Array of test ratings made by the test users.</li>
  * </ul>
- * It is not recommended that developers generate new instances of this class since this is a memory-structural class.
+ * <p>It is not recommended that developers generate new instances of this class since this is a memory-structural class.</p>
  */
 public class TestItem extends Item {
 
 	private static final long serialVersionUID = 20200314L;
 
 	/**
-	 * TestItem index in datamodel.
+	 * Index in the DataModel array which stores test items
 	 */
 	protected int testItemIndex;
 
 	/**
-	 * Minimum test rating in the DataModel.
+	 * Minimum test rating value
 	 */
 	protected double minTest = Double.MAX_VALUE;
 
 	/**
-	 * Maximum test rating in the DataModel.
+	 * Maximum test rating value
 	 */
-
 	protected double maxTest = Double.MIN_VALUE;
 
 	/**
-	 * Average test rating.
+	 * Average test rating
 	 */
 	protected double averageTest = 0.0;
 
 	/**
-	 * Array of test users that have rated this item.
+	 * Array of test users that have rated this test item
 	 */
 	protected SortedRatingList testUsersRatings;
 
 	/**
 	 * Creates a new instance of a test item. This constructor should not be used by developers.
-	 * @param id Item identification code.
-	 * @param itemIndex Item index related with the datamodel array.
-	 * @param testItemIndex TestItem index related with the datamodel test array.
+	 * @param id Item unique identifier
+	 * @param itemIndex Index in the DataModel array which stores items
+	 * @param testItemIndex Index in the DataModel array which stores test items
 	 */
 	public TestItem(String id, int itemIndex, int testItemIndex) {
 		super(id, itemIndex);
@@ -53,46 +52,47 @@ public class TestItem extends Item {
 	}
 
 	/**
-	 * Return the test item index inside the datamodel.
-	 * @return testItemIndex inside the datamodel.
+	 * Returns the test item index inside the DataModel
+	 * @return testItemIndex inside the DataModel
 	 */
 	public int getTestItemIndex() {
 		return this.testItemIndex;
 	}
-	
+
 	/**
-	 * Returns the index of the TestUser whose rating is stored in the given position inside this TestItem.
-	 * @param pos Position inside the local array.
-	 * @return TestUser index in the datamodel.
+	 * Returns the index of the TestUser that have test rated the TestItem at the given position
+	 * @param pos Position
+	 * @return Index of the test user in the TestUsers' array of the DataModel
 	 */
 	public int getTestUserAt(int pos) {
 		return this.testUsersRatings.get(pos).getIndex();
 	}
 
 	/**
-	 * Returns the test rating stored in the given position inside this TestItem.
- 	 * @param pos Position inside the local array.
-	 * @return Test rating at indicated position.
+	 * Returns the test rating of the test user to the test item at the pos position
+	 * @param pos Position
+	 * @return Test rating at indicated position
 	 */
 	public double getTestRatingAt(int pos) {
 		return this.testUsersRatings.get(pos).getRating();
 	}
 
 	/**
-	 * Get the number of test ratings that the item have received.
-	 * @return Number of test ratings received.
+	 * Gets the number of test users that have rated the item.
+	 * @return Number of test ratings
 	 */
 	public int getNumberOfTestRatings () {
 		return this.testUsersRatings.size();
 	}
 
-	/**
-	 * Add a new rating to the test item, associated to a determined user who made this rating.
-	 * You cannot overwrite an existing relation, otherwise repeated relations will throw an IllegalArgumentException.
-	 * @param testUserIndex TestUser index which identify the specific user in the datamodel.
-	 * @param rating rated value of the test user, referencing this item.
-	 */
-	public void addTestRating(int testUserIndex, double rating){
+  /**
+   * Adds a new test rating of a test user to the test item. You cannot overwrite an existing rating, otherwise this
+   * method will throws an IllegalArgumentException. It is not recommended to use this method, use
+   * DataModel.addTestRating(...) instead.
+   * @param testUserIndex Test user index which identifies the specific test user in the DataModel
+   * @param rating Rating value
+   */
+  public void addTestRating(int testUserIndex, double rating) {
 		if (!this.testUsersRatings.add(testUserIndex, rating))
 			throw new IllegalArgumentException("Provided rating already exist in test item: " + id);
 
@@ -102,20 +102,20 @@ public class TestItem extends Item {
 	}
 
 	/**
-	 * Get the minimum rating done.
-	 * @return Minimum rating.
+	 * Gets the minimum test rating received by the item
+	 * @return Minimum test rating
 	 */
-	public double getMinTestRating(){ return minTest; }
+	public double getMinTestRating() { return minTest; }
 
 	/**
-	 * Get the maximum rating done.
-	 * @return Maximum rating.
+	 * Gets the maximum test rating received by the item
+	 * @return Maximum test rating
 	 */
-	public double getMaxTestRating(){ return maxTest; }
+	public double getMaxTestRating() { return maxTest; }
 
 	/**
-	 * Get the average of ratings done.
-	 * @return Average of ratings.
+	 * Gets the average value of test ratings
+	 * @return Test rating average
 	 */
-	public double getTestRatingAverage(){ return averageTest; }
+	public double getTestRatingAverage() { return averageTest; }
 }
