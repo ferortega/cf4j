@@ -1,32 +1,32 @@
 package es.upm.etsisi.cf4j.data.types;
 
 /**
- * Structural class which stores Triplets: User identification (string), Item identification (string), and Rating made.
- * This class is created to ensure the communication between the different DataSets and the DataModel classes.
- * DataSetEntry is unmutable, so the access to their attributes are public, since we don't need the encapsulation concept.
+ * Structural class which stores Triplets: user identifier (String), item identifier (string), and rating value.
+ * This class is created to simplify the instantiation of a DataModel thorough a DataSet. DataSetEntry is immutable, so
+ * the access to their attributes are public, since we don't need the encapsulation concept.
  */
 public class DataSetEntry{
 
     /**
-     * Identification of the user who rated this item.
+     * Identifier of the user who rated this item
      */
     public final String userId;
 
     /**
-     * Identification of the item rated by the user.
+     * Identifier of the item rated by the user
      */
     public final String itemId;
 
     /**
-     * Rating made by the user.
+     * Rating value
      */
     public final double rating ;
 
     /**
-     * Creates a new DataSet entry form an user identification, an item identification and a rating.
-     * @param userId User identification code.
-     * @param itemId Item identification code.
-     * @param rating Rating made by the user to this item.
+     * Creates a new DataSet entry form an user identifier, an item identifier and a rating value.
+     * @param userId User identifier
+     * @param itemId Item identifier.
+     * @param rating Rating value
      */
     public DataSetEntry(String userId, String itemId, double rating) {
         this.userId = userId;
