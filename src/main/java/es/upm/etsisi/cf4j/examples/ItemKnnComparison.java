@@ -38,8 +38,6 @@ public class ItemKnnComparison {
 		// Step 2: Storing the data in the DataModel to be efficiently accessed by the recommenders.
 		DataModel datamodel = new DataModel(ml1m);
 
-		// Step 3 and 4: Generating an ItemKNN recommender which uses different item similarity metrics:
-		// ----
 		// Dataset parameters.
 		double[] relevantRatings = {3, 4, 5};
 		double[] notRelevantRatings = {1, 2};
@@ -65,9 +63,11 @@ public class ItemKnnComparison {
 			String metricName = metric.getClass().getSimpleName();
 
 			for (int k : numNeighbors) {
+				// Step 3: Generating an specific recommender (ItemKNN) with a number of neighbors applying different metrics.
 				Recommender knn = new ItemKNN(datamodel, k, metric, aggregationApproach);
 				knn.fit();
 
+				// Step 4: Setting up a MSLE and nDCG quality measures with ItemKNN recommender.
 				QualityMeasure msle = new MSLE(knn);
 				msleScores.putScore(k, metricName, msle.getScore());
 
@@ -75,7 +75,6 @@ public class ItemKnnComparison {
 				ndcgScores.putScore(k, metricName, ndcg.getScore());
 			}
 		}
-		// ---
 
 		// Step 5: Printing the results.
 		msleScores.print();
