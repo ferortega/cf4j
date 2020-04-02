@@ -222,18 +222,15 @@ public class BiasedMF extends Recommender {
 		@Override
 		public void run(User user) {
 			int userIndex = user.getUserIndex();
+			for (int pos = 0; pos < user.getNumberOfRatings(); pos++) {
+				int itemIndex = user.getItemAt(pos);
+				double error = user.getRatingAt(pos) - predict(userIndex, itemIndex);
 
-			for (int j = 0; j < user.getNumberOfRatings(); j++) {
-
-				int itemIndex = user.getItemAt(j);
-
-				double error = user.getRatingAt(j) - predict(userIndex, itemIndex);
+				bu[userIndex] += gamma * (error - lambda * bu[userIndex]);
 
 				for (int k = 0; k < numFactors; k++)	{
 					p[userIndex][k] += gamma * (error * q[itemIndex][k] - lambda * p[userIndex][k]);
 				}
-
-				bu[userIndex] += gamma * (error - lambda * bu[userIndex]);
 			}
 		}
 
@@ -252,18 +249,15 @@ public class BiasedMF extends Recommender {
 		@Override
 		public void run(Item item) {
 			int itemIndex = item.getItemIndex();
+			for (int pos = 0; pos < item.getNumberOfRatings(); pos++) {
+				int userIndex = item.getUserAt(pos);
+				double error = item.getRatingAt(pos) - predict(userIndex, itemIndex);
 
-			for (int v = 0; v < item.getNumberOfRatings(); v++) {
-
-				int userIndex = item.getUserAt(v);
-
-				double error = item.getRatingAt(v) - predict(userIndex, itemIndex);
+				bi[itemIndex] += gamma * (error - lambda * bi[itemIndex]);
 
 				for (int k = 0; k < numFactors; k++) {
 					q[itemIndex][k] += gamma * (error * p[userIndex][k] - lambda * q[itemIndex][k]);
 				}
-
-				bi[itemIndex] += gamma * (error - lambda * bi[itemIndex]);
 			}
 		}
 
