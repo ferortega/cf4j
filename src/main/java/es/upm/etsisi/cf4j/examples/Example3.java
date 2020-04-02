@@ -46,7 +46,7 @@ public class Example3 {
 			QualityMeasure diversity = new Diversity(pmf, 10);
 			System.out.println("\nDiversity: " + diversity.getScore());
 
-			//Step 3.b: Getting an specific recommender (Non-negative Matrix Factorization).
+			//Step 3.b: Generating an specific recommender (Non-negative Matrix Factorization).
 			Recommender nmf = new NMF(datamodel, 10, 50, 43);
 			nmf.fit();
 
