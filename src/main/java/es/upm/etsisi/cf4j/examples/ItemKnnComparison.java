@@ -32,21 +32,21 @@ public class ItemKnnComparison {
 
 	public static void main (String [] args) throws IOException {
 
-		// Step 1: Preparing the dataset to be splitted in two parts: training and test (Load MovieLens 100K dataset).
+		// Step 1: Preparing the dataset to be splitted in two parts: training and test (Load MovieLens 100K dataset)
 		DataSet ml1m = new RandomSplitDataSet("src/main/resources/datasets/ml100k.data", 0.2, 0.2, "\t", randomSeed);
 
-		// Step 2: Storing the data in the DataModel to be efficiently accessed by the recommenders.
+		// Step 2: Storing the data in the DataModel to be efficiently accessed by the recommenders
 		DataModel datamodel = new DataModel(ml1m);
 
-		// Dataset parameters.
+		// DataSet parameters
 		double[] relevantRatings = {3, 4, 5};
 		double[] notRelevantRatings = {1, 2};
 
-		// To store results.
+		// To store results
 		PrintableQualityMeasure msleScores = new PrintableQualityMeasure("MSLE", numNeighbors);
 		PrintableQualityMeasure ndcgScores = new PrintableQualityMeasure("NDCG", numNeighbors);
 
-		// Create similarity metrics.
+		// Create similarity metrics
 		ArrayList<ItemSimilarityMetric> metrics = new ArrayList<>();
 		metrics.add(new AdjustedCosine());
 		metrics.add(new Correlation());
@@ -76,7 +76,7 @@ public class ItemKnnComparison {
 			}
 		}
 
-		// Step 5: Printing the results.
+		// Step 5: Printing the results
 		msleScores.print();
 		ndcgScores.print();
 	}

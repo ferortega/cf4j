@@ -36,14 +36,14 @@ public class UserKnnComparison {
 
 	public static void main (String [] args) throws IOException {
 
-		// Step 1: Preparing the dataset to be splitted in two parts: training and test (Load MovieLens 100K dataset).
+		// Step 1: Preparing the dataset to be splitted in two parts: training and test (Load MovieLens 100K dataset)
 		DataSet ml1m = new RandomSplitDataSet("src/main/resources/datasets/ml100k.data", 0.2, 0.2, "\t", randomSeed);
 
-		// Step 2: Storing the data in the DataModel to be efficiently accessed by the recommenders.
+		// Step 2: Storing the data in the DataModel to be efficiently accessed by the recommenders
 		DataModel datamodel = new DataModel(ml1m);
 
 		// Step 3 and 4: Generating an ItemKNN recommender which uses different item similarity metrics:
-		// ----
+
 		// Dataset parameters
 		double[] relevantRatings = {3, 4, 5};
 		double[] notRelevantRatings = {1, 2};
@@ -91,7 +91,7 @@ public class UserKnnComparison {
 			}
 		}
 
-		// Step 5: Printing the results.
+		// Step 5: Printing the results
 		maeScores.print();
 		coverageScores.print();
 		precisionScores.print();
