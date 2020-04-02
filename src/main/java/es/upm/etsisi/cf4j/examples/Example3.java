@@ -15,7 +15,7 @@ import es.upm.etsisi.cf4j.recommender.matrixFactorization.PMF;
 import java.io.IOException;
 
 /**
- * Compare MAE and Precision of PMF and BMF.
+ * Compare MAE and Precision of PMF and NMF.
  * @author Fernando Ortega
  */
 public class Example3 {
@@ -23,13 +23,17 @@ public class Example3 {
 	public static void main (String [] args) {
 		
 		try {
+			//Step 1: Preparing the dataset to be splitted in two parts: training and test.
 			DataSet ml1m = new RandomSplitDataSet("src/main/resources/datasets/ml100k.data", 0.2, 0.2, "\t", 43);
 
+			//Step 2: Storing the data in the DataModel to be efficiently accessed by the recommenders.
 			DataModel datamodel = new DataModel(ml1m);
 
+			//Step 3.a: Generating an specific recommender (Probabilistic matrix factorization).
 			Recommender pmf = new PMF(datamodel, 10, 50, 43);
 			pmf.fit();
 
+			//Step 4.a: Setting up different quality measures using this recommender (PMF).
 			QualityMeasure mae = new MAE(pmf);
 			System.out.println("\nMAE: " + mae.getScore());
 
@@ -42,9 +46,11 @@ public class Example3 {
 			QualityMeasure diversity = new Diversity(pmf, 10);
 			System.out.println("\nDiversity: " + diversity.getScore());
 
+			//Step 3.b: Getting an specific recommender (Non-negative Matrix Factorization).
 			Recommender nmf = new NMF(datamodel, 10, 50, 43);
 			nmf.fit();
 
+			//Step 4.a: Setting up different quality measures using this recommender(MAE).
 			novelty = new Novelty(nmf, 10);
 			System.out.println("\nNovelty: " + novelty.getScore());
 
