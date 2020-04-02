@@ -14,7 +14,6 @@ import es.upm.etsisi.cf4j.util.Range;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * In this example we compare the MSLE and nDCG quality measures scores for different similarity metrics applied to
@@ -33,21 +32,24 @@ public class ItemKnnComparison {
 
 	public static void main (String [] args) throws IOException {
 
-		// Load MovieLens 100K dataset
+		// Step 1: Preparing the dataset to be splitted in two parts: training and test (Load MovieLens 100K dataset).
 		DataSet ml1m = new RandomSplitDataSet("src/main/resources/datasets/ml100k.data", 0.2, 0.2, "\t", randomSeed);
 
+		// Step 2: Storing the data in the DataModel to be efficiently accessed by the recommenders.
 		DataModel datamodel = new DataModel(ml1m);
 
-		// Dataset parameters
+		// Step 3 and 4: Generating an ItemKNN recommender which uses different item similarity metrics:
+		// ----
+		// Dataset parameters.
 		double[] relevantRatings = {3, 4, 5};
 		double[] notRelevantRatings = {1, 2};
 
-		// To store results
+		// To store results.
 		PrintableQualityMeasure msleScores = new PrintableQualityMeasure("MSLE", numNeighbors);
 		PrintableQualityMeasure ndcgScores = new PrintableQualityMeasure("NDCG", numNeighbors);
 
-		// Create similarity metrics
-		List<ItemSimilarityMetric> metrics = new ArrayList<>();
+		// Create similarity metrics.
+		ArrayList<ItemSimilarityMetric> metrics = new ArrayList<>();
 		metrics.add(new AdjustedCosine());
 		metrics.add(new Correlation());
 		metrics.add(new Cosine());
@@ -73,8 +75,9 @@ public class ItemKnnComparison {
 				ndcgScores.putScore(k, metricName, ndcg.getScore());
 			}
 		}
+		// ---
 
-		// Print results
+		// Step 5: Printing the results.
 		msleScores.print();
 		ndcgScores.print();
 	}

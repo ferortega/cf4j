@@ -22,26 +22,26 @@ public class GettingStartedExample {
         String separator = "\t";
         long seed = 43;
 
-        //Step 1: Preparing the dataset to be splitted in two parts: training and test.
+        // Step 1: Preparing the dataset to be splitted in two parts: training and test (Load MovieLens 100K dataset).
         DataSet ml100k = new RandomSplitDataSet(filename, testUsers, testItems, separator, seed);
 
-        //Step 2: Storing the data in the DataModel to be efficiently accessed by the recommenders.
+        // Step 2: Storing the data in the DataModel to be efficiently accessed by the recommenders.
         DataModel datamodel = new DataModel(ml100k);
 
-        //Step 3.a: Generating an specific recommender (Probabilistic matrix factorization).
+        // Step 3.a: Generating an specific recommender (Probabilistic matrix factorization).
         PMF pmf = new PMF(datamodel, 10, 100, 0.1, 0.01, 43);
         pmf.fit();
 
-        //Step 3.b: Generating an specific recommender (Non-negative Matrix Factorization).
+        // Step 3.b: Generating an specific recommender (Non-negative Matrix Factorization).
         NMF nmf = new NMF(datamodel, 10, 100, 43);
         nmf.fit();
 
         QualityMeasure mse;
-        //Step 4.a: Setting up a MAE quality measure with PMF recommender.
+        // Step 4.a: Setting up a MAE quality measure with PMF recommender.
         mse = new MSE(pmf);
         System.out.println("\nMSE (PMF): " + mse.getScore());
 
-        //Step 4.b: Setting up a MAE quality measure with NMF recommender.
+        // Step 4.b: Setting up a MAE quality measure with NMF recommender.
         mse = new MSE(nmf);
         System.out.println("MSE (NMF): " + mse.getScore());
     }
