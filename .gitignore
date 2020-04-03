@@ -7,6 +7,7 @@
 dependency-reduced-pom.xml
 settings.xml
 release.properties
+pom.xml.releaseBackup
 
 out/
 target/
