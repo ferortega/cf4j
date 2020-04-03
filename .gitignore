@@ -5,6 +5,8 @@
 .class
 
 dependency-reduced-pom.xml
+settings.xml
+release.properties
 
 out/
 target/

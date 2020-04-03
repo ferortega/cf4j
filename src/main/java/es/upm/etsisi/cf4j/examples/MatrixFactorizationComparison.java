@@ -30,17 +30,17 @@ public class MatrixFactorizationComparison {
 
 	public static void main (String [] args) throws IOException {
 
-		// Step 1: Preparing the dataset to be splitted in two parts: training and test (Load MovieLens 100K dataset).
+		// Step 1: Preparing the dataset to be splitted in two parts: training and test (Load MovieLens 100K dataset)
 		DataSet ml100k = new RandomSplitDataSet("src/main/resources/datasets/ml100k.data", 0.2, 0.2, "\t", randomSeed);
 
-		// Step 2: Storing the data in the DataModel to be efficiently accessed by the recommenders.
+		// Step 2: Storing the data in the DataModel to be efficiently accessed by the recommenders
 		DataModel datamodel = new DataModel(ml100k);
 
 		// To store results
 		PrintableQualityMeasure rmseScores = new PrintableQualityMeasure("RMSE", numFactors);
 		PrintableQualityMeasure f1Scores = new PrintableQualityMeasure("F1", numFactors);
 
-		// Step 3.a: Generating an specific recommender (Probabilistic matrix factorization) with different factors.
+		// Step 3.a: Generating an specific recommender (Probabilistic matrix factorization) with different factors
 		for (int factors : numFactors) {
 			Recommender pmf = new PMF(datamodel, factors, numIter, randomSeed);
 			pmf.fit();
@@ -53,7 +53,7 @@ public class MatrixFactorizationComparison {
 			f1Scores.putScore(factors, "PMF", f1.getScore());
 		}
 
-		// Step 3.b: Generating an specific recommender (bayesian non-negative matrix factorization) with different factors.
+		// Step 3.b: Generating an specific recommender (Bayesian Non-negative Matrix Factorization) with different factors
 		for (int factors : numFactors) {
 			Recommender bnmf = new BNMF(datamodel, factors, numIter, 0.2, 10, randomSeed);
 			bnmf.fit();
@@ -66,7 +66,7 @@ public class MatrixFactorizationComparison {
 			f1Scores.putScore(factors, "BNMF", f1.getScore());
 		}
 
-		// Step 3.c: Generating an specific recommender (biased matrix factorization) with different factors.
+		// Step 3.c: Generating an specific recommender (Biased Matrix Factorization) with different factors
 		for (int factors : numFactors) {
 			Recommender biasedmf = new BiasedMF(datamodel, factors, numIter, randomSeed);
 			biasedmf.fit();
@@ -79,7 +79,7 @@ public class MatrixFactorizationComparison {
 			f1Scores.putScore(factors, "BiasedMF", f1.getScore());
 		}
 
-		// Step 3.d: Generating an specific recommender (non-negative matrix factorization) with different factors.
+		// Step 3.d: Generating an specific recommender (Non-negative Matrix Factorization) with different factors
 		for (int factors : numFactors) {
 			Recommender nmf = new NMF(datamodel, factors, numIter, randomSeed);
 			nmf.fit();
@@ -92,7 +92,7 @@ public class MatrixFactorizationComparison {
 			f1Scores.putScore(factors, "NMF", f1.getScore());
 		}
 
-		// Step 3.f: Generating an specific recommender (Collaborative Less-is-More Filtering) with different factors.
+		// Step 3.f: Generating an specific recommender (Collaborative Less-is-More Filtering) with different factors
 		for (int factors : numFactors) {
 			Recommender climf = new CLiMF(datamodel, factors, numIter, randomSeed);
 			climf.fit();
@@ -105,7 +105,7 @@ public class MatrixFactorizationComparison {
 			f1Scores.putScore(factors, "CLiMF", f1.getScore());
 		}
 
-		// Step 3.g: Generating an specific recommender (SVD++) with different factors.
+		// Step 3.g: Generating an specific recommender (SVD++) with different factors
 		for (int factors : numFactors) {
 			Recommender svdPlusPlus = new SVDPlusPlus(datamodel, factors, numIter, randomSeed);
 			svdPlusPlus.fit();
@@ -118,7 +118,7 @@ public class MatrixFactorizationComparison {
 			f1Scores.putScore(factors, "SVDPlusPlus", f1.getScore());
 		}
 
-		// Step 3.h: Generating an specific recommender (SVD++) with different factors.
+		// Step 3.h: Generating an specific recommender (Hierarchical Poisson Factorization) with different factors
 		for (int factors : numFactors) {
 			Recommender hpf = new HPF(datamodel, factors, numIter, randomSeed);
 			hpf.fit();
@@ -131,7 +131,7 @@ public class MatrixFactorizationComparison {
 			f1Scores.putScore(factors, "HPF", f1.getScore());
 		}
 
-		// Step 3.i: Generating an specific recommender (User Rating Profiles) with different factors.
+		// Step 3.i: Generating an specific recommender (User Rating Profiles) with different factors
 		for (int factors : numFactors) {
 			double[] ratings = {1.0, 2.0, 3.0, 4.0, 5.0};
 			Recommender urp = new URP(datamodel, factors, ratings, numIter, randomSeed);
@@ -145,7 +145,7 @@ public class MatrixFactorizationComparison {
 			f1Scores.putScore(factors, "URP", f1.getScore());
 		}
 
-		// Step 5: Printing the results.
+		// Step 5: Printing the results
 		rmseScores.print();
 		f1Scores.print();
 	}

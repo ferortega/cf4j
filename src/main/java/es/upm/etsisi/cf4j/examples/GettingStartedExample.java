@@ -16,6 +16,8 @@ import java.io.IOException;
  */
 public class GettingStartedExample {
     public static void main (String [] args) throws IOException {
+
+        // Step 0: Define parameters
         String filename = "src/main/resources/datasets/ml100k.data";
         double testUsers = 0.2;
         double testItems = 0.2;
@@ -36,7 +38,9 @@ public class GettingStartedExample {
         NMF nmf = new NMF(datamodel, 10, 100, 43);
         nmf.fit();
 
+        // Step 4: Evaluate the recommenders
         QualityMeasure mse;
+
         // Step 4.a: Setting up a MAE quality measure with PMF recommender.
         mse = new MSE(pmf);
         System.out.println("\nMSE (PMF): " + mse.getScore());

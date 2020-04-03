@@ -5,18 +5,19 @@ import java.util.ArrayList;
 
 /**
  * SortedRatingList is a specific type of sorted ArrayList that uses the Rating class internally. In this way, this
- * class is ordered by the indexes included in the structure defined by the Rating (index + rating) class. This class
- * is only used by the other structural classes like User, TestUser, Item and TestItem.
+ * class is ordered by the indexes included in the structure defined by the Rating class, i.e. &lt;index, rating$gt;.
+ * This class is only used by the other structural classes like User, TestUser, Item and TestItem. Developers do not
+ * need to manipulate this class.
  */
 public class SortedRatingList extends ArrayList<Rating> implements Serializable {
 
     /**
-     * This method adds an ordered rating to the SortedRatingList.
-     * @param index Index of the sorted item or user.
-     * @param rating Rating done.
+     * Adds an ordered rating to the SortedRatingList.
+     * @param index Index
+     * @param rating Rating value
      * @return True if the element didn't exist previously. False otherwise.
      */
-    public boolean add(int index, double rating){
+    public boolean add(int index, double rating) {
         int low = 0, high = this.size() -1;
         while (low <= high) {
             int mid = (low + high) >>> 1;
@@ -26,23 +27,23 @@ public class SortedRatingList extends ArrayList<Rating> implements Serializable 
             } else if (midElement.getIndex() < index) {
                 low = mid + 1;
             } else {
-                //If element exist, override.
+                // If element exist, override.
                 this.get(mid).setRating(rating);
                 return false;
             }
         }
 
-        //Element not found, usual insertion
+        // Element not found, usual insertion
         this.add(low, new Rating (index,rating));
         return true; //Not needed
     }
 
     /**
-     * This method find the position of determined index of the user or item.
-     * @param index Index to be found.
-     * @return Array position which corresponds with the given index.
+     * Finds the position of an index
+     * @param index Index to be found
+     * @return Position which corresponds with the given index
      */
-    public int find(int index){
+    public int find(int index) {
         int low = 0, high = this.size() -1;
         while (low <= high) {
             int mid = (low + high) >>> 1;
@@ -55,7 +56,6 @@ public class SortedRatingList extends ArrayList<Rating> implements Serializable 
                 return mid;
             }
         }
-        return -1; //If it doesn't exist.
+        return -1; // If it doesn't exist.
     }
-
 }
