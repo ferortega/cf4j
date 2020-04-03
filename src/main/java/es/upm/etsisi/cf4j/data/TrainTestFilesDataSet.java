@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * <p></p>This class implements the DataSet interface by loading training and test ratings from separated text files.
+ * <p>This class implements the DataSet interface by loading training and test ratings from separated text files.
  * Each line of the ratings files must have the following format:</p>
  * <pre>&lt;userId&gt;&lt;separator&gt;&lt;itemId&gt;&lt;separator&gt;&lt;rating&gt;</pre>
  *<p>Where &lt;separator&gt; is an special character that delimits ratings fields (semicolon by default).</p>

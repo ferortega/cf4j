@@ -35,6 +35,7 @@ public class RandomSplitDataSet implements DataSet {
     /**
      * Generates a DataSet form a text file. The DataSet is loaded without test items and test users.
      * @param filename File with the ratings.
+     * @throws IOException When the file is not accessible by the system with read permissions.
      */
     public RandomSplitDataSet (String filename) throws IOException {
         this(filename, 0.0 , 0.0);
