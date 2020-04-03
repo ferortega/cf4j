@@ -11,7 +11,7 @@ import java.util.Random;
 import java.util.TreeMap;
 
 /**
- * <p></p>This class implements the DataSet interface by random splitting the collaborative filtering ratings allocated
+ * <p>This class implements the DataSet interface by random splitting the collaborative filtering ratings allocated
  * in a text file. Each line of the ratings file must have the following format:</p>
  * <pre>&lt;userId&gt;&lt;separator&gt;&lt;itemId&gt;&lt;separator&gt;&lt;rating&gt;</pre>
  *<p>Where &lt;separator&gt; is an special character that delimits ratings fields (semicolon by default).</p>
