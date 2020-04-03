@@ -44,9 +44,9 @@ You can also package your own `jar` file . To do that, clone the repository usin
 
 ## Getting Started
 
-Let's encode our first experiment with CF4J. In this experiment, we will compare the Mean Squared Error (MSE) of two well known matrix factorization models: Probabilistic Matrix Factorization (PMF) and Non-negative Matrix Factorization (Nmf). We will use [MovieLens 100k dataset](https://grouplens.org/datasets/movielens/100k/) as ratings' database.
+Let's encode our first experiment with CF4J. In this experiment, we will compare the Mean Squared Error (MSE) of two well known matrix factorization models: Probabilistic Matrix Factorization (PMF) and Non-negative Matrix Factorization (NMF). We will use [MovieLens 100k dataset](https://grouplens.org/datasets/movielens/100k/) as ratings' database.
 
-1. First of all, we are going to load the database from the ratings file using an instance of `DataSet` interface. We choose `RandomSplitDataSet` that automatically splits the ratings set into training ratings and test ratings. We select 20% of users and 20% of items as test users and items respectively. To ensure the reproducibility of the example, we are going to fix the random seed to 43.
+1. First of all, we are going to load the database from the ratings file using an instance of `DataSet` interface. We choose `RandomSplitDataSet` that automatically splits the ratings set into training ratings and test ratings. We select 20% of users and 20% of items as test users and items respectively. To ensure the reproducibility of the example, we are going to fix the random seed to 42.
 
     ```Java
     String filename = "ml100k.data";
@@ -75,7 +75,7 @@ Let's encode our first experiment with CF4J. In this experiment, we will compare
    We can now repeat this process for the `NMF` recommender. 
    
    ```Java
-   NMF nmf = new NMF(datamodel, 10, 100, 43);
+   NMF nmf = new NMF(datamodel, 10, 100, 42);
    nmf.fit();
    ```
    
@@ -143,11 +143,13 @@ This package contains the implementation of different quality measures for colla
 - Quality measures for predictions, allocated into `es.upm.etsisi.cf4j.qualityMeasures.prediction` package.
 - Quality measures for recommendations, allocated into `es.upm.etsisi.cf4j.qualityMeasures.recommendation` package.
 
-Each quality measure included in CF4J extends `QualityMeasures` abstract class. This class simplifies the computation of a quality measure from the test ratings. It contains the `getScore()` method that computes the score of the quality measure for each test user and returns the averaged score. The computation of the quality measure score for each test user is performed in parallel.
+Each quality measure included in CF4J extends `QualityMeasure` abstract class. This class simplifies the computation of a quality measure from the test ratings. It contains the `getScore()` method that computes the score of the quality measure for each test user and returns the averaged score. The computation of the quality measure score for each test user is performed in parallel.
 
 ### `es.upm.etsisi.cf4j.util` package
 
-This package contains different utilities to be used with the library. Read the [javadoc](http://rs.etsisi.upm.es/cf4j-2.0/apidocs/) documentation for additional information.
+This package contains different utilities to be used with the library. 
+
+Read the [javadoc](http://rs.etsisi.upm.es/cf4j-2.0/apidocs/) documentation for additional information.
 
 ## Customize CF4J
 
