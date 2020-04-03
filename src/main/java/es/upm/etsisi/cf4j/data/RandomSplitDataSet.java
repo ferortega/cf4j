@@ -11,11 +11,11 @@ import java.util.Random;
 import java.util.TreeMap;
 
 /**
- * <p></p>This class implements the DataSet interface by random splitting the collaborative filtering ratings allocated
+ * <p>This class implements the DataSet interface by random splitting the collaborative filtering ratings allocated
  * in a text file. Each line of the ratings file must have the following format:</p>
  * <pre>&lt;userId&gt;&lt;separator&gt;&lt;itemId&gt;&lt;separator&gt;&lt;rating&gt;</pre>
- *<p>Where &lt;separator&gt; is an special character that delimits ratings fields (semicolon by default).</p>
- *<p>Training and test ratings are selected randomly by the probability of an user and an item to belong to the test
+ * <p>Where &lt;separator&gt; is an special character that delimits ratings fields (semicolon by default).</p>
+ * <p>Training and test ratings are selected randomly by the probability of an user and an item to belong to the test
  * set.</p>
  */
 public class RandomSplitDataSet implements DataSet {
@@ -35,6 +35,7 @@ public class RandomSplitDataSet implements DataSet {
     /**
      * Generates a DataSet form a text file. The DataSet is loaded without test items and test users.
      * @param filename File with the ratings.
+     * @throws IOException When the file is not accessible by the system with read permissions.
      */
     public RandomSplitDataSet (String filename) throws IOException {
         this(filename, 0.0 , 0.0);
