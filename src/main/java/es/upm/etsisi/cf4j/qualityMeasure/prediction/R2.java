@@ -7,11 +7,12 @@ import es.upm.etsisi.cf4j.recommender.Recommender;
 /**
  * This class calculates the the coefficient of determination, usually denoted as R2, of the predictions performed by
  * a recommender.
+ * <p>MSE = (&#8721;(&lt;test item rating&gt; - &lt;test item rating prediction&gt;)<sup>2</sup> + (&lt;test item rating&gt; - &lt;getTestRatingAverage&gt;)<sup>2</sup>) / &lt;number of predictions&gt;</p>
  */
 public class R2 extends QualityMeasure {
 
 	/**
-	 * Constructor
+	 * Constructor of the class which basically calls the father's one
 	 * @param recommender Recommender instance for which the R2 are going to be computed
 	 */
 	public R2(Recommender recommender) {

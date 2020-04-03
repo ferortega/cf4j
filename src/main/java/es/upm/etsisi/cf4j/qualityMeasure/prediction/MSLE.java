@@ -6,11 +6,12 @@ import es.upm.etsisi.cf4j.recommender.Recommender;
 
 /**
  * This class calculates the Mean Squared Logarithmic Error (MSLE) between the predictions and the test ratings.
+ * <p>MSLE = (Ln(1 + &lt;test item rating prediction&gt;) - Ln(1 + &lt;test item rating&gt;))<sup>2</sup></p>
  */
 public class MSLE extends QualityMeasure {
 
 	/**
-	 * Constructor
+	 * Constructor of the class which basically calls the father's one
 	 * @param recommender Recommender instance for which the MSLE are going to be computed
 	 */
 	public MSLE(Recommender recommender) {
