@@ -5,12 +5,13 @@ import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 
 /**
- * This class calculates the Mean Absolute Difference (MAE) between the predictions and the test ratings.
+ * This class calculates the Mean Absolute Error (MAE) between the predictions and the test ratings.
+ * <p>mae = &#8721; abs( &lt;test item rating prediction&gt; - &lt;test item rating&gt;) / &lt;number of predictions&gt;</p>
  */
 public class MAE extends QualityMeasure {
 
 	/**
-	 * Constructor
+	 * Constructor of the class which basically calls the father's one
 	 * @param recommender Recommender instance for which the MAE are going to be computed
 	 */
 	public MAE(Recommender recommender) {

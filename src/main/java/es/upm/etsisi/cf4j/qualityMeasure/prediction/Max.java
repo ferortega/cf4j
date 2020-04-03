@@ -7,12 +7,13 @@ import es.upm.etsisi.cf4j.recommender.Recommender;
 /**
  * This class calculates the averaged maximum prediction absolute error in a the prediction of a test rating for each
  * test user.
+ * <p>max = Max(abs( &lt;test item rating prediction&gt; - &lt;test item rating&gt;))</p>
  */
 public class Max extends QualityMeasure {
 
 	/**
-	 * Constructor
-	 * @param recommender Recommender instance for which the max. error are going to be computed
+	 * Constructor of the class which basically calls the father's one.
+	 * @param recommender Recommender instance for which the max. error are going to be computed.
 	 */
 	public Max(Recommender recommender) {
 		super(recommender);

@@ -16,7 +16,7 @@ public class Perfect extends QualityMeasure {
 	private double threshold;
 
 	/**
-	 * Constructor
+	 * Constructor of the class which basically calls the father's one
 	 * @param recommender Recommender instance for which the perfect score are going to be computed
 	 * @param threshold Threshold value to measure if a prediction is perfect or not
 	 */

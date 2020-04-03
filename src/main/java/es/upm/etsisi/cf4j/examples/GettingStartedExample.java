@@ -11,7 +11,8 @@ import es.upm.etsisi.cf4j.recommender.matrixFactorization.PMF;
 import java.io.IOException;
 
 /**
- * Example used in the Getting Started section of the readme.md
+ * In this example we visualize MSE quality measure with two different recommenders: PMF and NMF.
+ * Example used in the Getting Started section of the readme.md in github repository
  * @author Fernando Ortega
  */
 public class GettingStartedExample {
@@ -43,10 +44,14 @@ public class GettingStartedExample {
 
         // Step 4.a: Setting up a MAE quality measure with PMF recommender.
         mse = new MSE(pmf);
+
+        // Step 5.a: Printing the results
         System.out.println("\nMSE (PMF): " + mse.getScore());
 
         // Step 4.b: Setting up a MAE quality measure with NMF recommender.
         mse = new MSE(nmf);
+
+        // Step 5.b: Printing the results
         System.out.println("MSE (NMF): " + mse.getScore());
     }
 }

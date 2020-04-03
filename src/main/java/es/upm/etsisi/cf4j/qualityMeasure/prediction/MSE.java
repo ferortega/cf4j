@@ -6,11 +6,12 @@ import es.upm.etsisi.cf4j.recommender.Recommender;
 
 /**
  * This class calculates the Mean Squared Error (MSE) between the predictions and the test ratings.
+ * <p>MSE = &#8721;(&lt;test item rating prediction&gt; - &lt;test item rating&gt;)<sup>2</sup> / &lt;number of predictions&gt;</p>
  */
 public class MSE extends QualityMeasure {
 
 	/**
-	 * Constructor
+	 * Constructor of the class which basically calls the father's one
 	 * @param recommender Recommender instance for which the MSE are going to be computed
 	 */
 	public MSE(Recommender recommender) {
