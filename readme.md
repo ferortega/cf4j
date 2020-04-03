@@ -158,7 +158,7 @@ CF4J has been designed for the collaborative filtering's research community, so 
 3. Fit a `Recommender` to the `DataSet`.
 4. Evaluate the performance of a `Recommender` using a `QualityMeasure`.
 
-Therefore, if you want to customize CF4J, you should modify any of these main classes: `DataSet`, `DataModel`, `Recommender` and `QualityMeasure`.
+Therefore, if you want to customize CF4J, you must work with `DataSet`, `DataModel`, `Recommender` and `QualityMeasure` classes:
 
 `DataSet` is an interface that contains two methods to iterate over training ratings (`getRatingsIterator()`) and test ratings (`getTestRatingsIterator()`). The iteration is carried out over `DataSetEntry` instances, that contains the user, item and value of a rating. Any class that implements this interface may be used to create a `DataModel`.
 
