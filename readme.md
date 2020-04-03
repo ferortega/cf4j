@@ -53,7 +53,7 @@ Let's encode our first experiment with CF4J. In this experiment, we will compare
     double testUsers = 0.2;
     double testItems = 0.2;
     String separator = "\t";
-    long seed = 42;
+    long seed = 43;
     DataSet ml100k = new RandomSplitDataSet(filename, testUsers, testItems, separator, seed);
 	```
 
@@ -65,17 +65,17 @@ Let's encode our first experiment with CF4J. In this experiment, we will compare
    
 3. Once all the data are loaded, we are going to build and train our first recommendation model. To create a recommendation model it is necessary to instantiate a `Recommender` from a `DataModel`. `Recommender` is an abstract class that contains all the methods and attributes required to perform a recommendation. CF4J contains several implementations of `Recommender` (see [algorithms list](#algorithm-list)). 
 
-   First, we instantiate the `PMF` recommender. Then, we set the model's hyper-parameters using the `PMF` class constructor: `numFactors = 10`, `gamma = 0.01`, `lambda = 0.1` and `numIters = 100`. We also fix the random `seed = 42` to ensure the reproducibility of this experiment. Once the model is instantiated, we train the model parameters using `fit()` method.
+   First, we instantiate the `PMF` recommender. Then, we set the model's hyper-parameters using the `PMF` class constructor: `numFactors = 10`, `gamma = 0.01`, `lambda = 0.1` and `numIters = 100`. We also fix the random `seed = 43` to ensure the reproducibility of this experiment. Once the model is instantiated, we train the model parameters using `fit()` method.
    
    ```Java
-   PMF pmf = new PMF(datamodel, 10, 100, 0.1, 0.01, 42);
+   PMF pmf = new PMF(datamodel, 10, 100, 0.1, 0.01, seed);
    pmf.fit();
    ```
    
    We can now repeat this process for the `NMF` recommender. 
    
    ```Java
-   NMF nmf = new NMF(datamodel, 10, 100, 42);
+   NMF nmf = new NMF(datamodel, 10, 100, seed);
    nmf.fit();
    ```
    
@@ -91,7 +91,7 @@ Let's encode our first experiment with CF4J. In this experiment, we will compare
    System.out.println("MSE (NMF): " + mse.getScore());
    ```
   
-5. The program will print the following output.
+5. The program will prints the following output.
 
    ```
    MSE (PMF): 1.045296527045507

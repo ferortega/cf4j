@@ -32,11 +32,11 @@ public class GettingStartedExample {
         DataModel datamodel = new DataModel(ml100k);
 
         // Step 3.a: Generating an specific recommender (Probabilistic matrix factorization).
-        PMF pmf = new PMF(datamodel, 10, 100, 0.1, 0.01, 43);
+        PMF pmf = new PMF(datamodel, 10, 100, 0.1, 0.01, seed);
         pmf.fit();
 
         // Step 3.b: Generating an specific recommender (Non-negative Matrix Factorization).
-        NMF nmf = new NMF(datamodel, 10, 100, 43);
+        NMF nmf = new NMF(datamodel, 10, 100, seed);
         nmf.fit();
 
         // Step 4: Evaluate the recommenders
