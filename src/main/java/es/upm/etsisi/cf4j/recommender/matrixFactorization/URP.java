@@ -162,6 +162,14 @@ public class URP extends Recommender {
         return this.numIters;
     }
 
+    /**
+     * Get the plausible ratings
+     * @return Plausible ratings
+     */
+    public double[] getRatings() {
+        return ratings;
+    }
+
     @Override
     public void fit() {
         System.out.println("\nFitting " + this.toString());
@@ -209,29 +217,49 @@ public class URP extends Recommender {
 
     @Override
     public double predict(int userIndex, int itemIndex) {
-        double sum = 0;
-        for (int j = 0; j < this.numFactors; j++) {
-            sum += this.gamma[userIndex][j];
-        }
-
-        double[] probs = new double[this.ratings.length];
-        double sumProbs = 0;
-        for (int v = 0; v < this.ratings.length; v++) {
-            for (int z = 0; z < this.numFactors; z++) {
-                probs[v] += this.beta[itemIndex][v][z] * this.gamma[userIndex][z] / sum;
-            }
-            sumProbs += probs[v];
-        }
+        double[] pd = this.getPredictionProbabilityDistribution(userIndex, itemIndex);
 
         double acc = 0;
         int v = -1;
 
         do {
             v++;
-            acc += probs[v] / sumProbs;
+            acc += pd[v];
         } while(acc < 0.5);
 
         return this.ratings[v];
+    }
+
+    /**
+     * Returns the probability distribution of a prediction. Each position of the returned array corresponds with
+     * the probability that the user (defined by userIndex) rates the item (defined by itemIndex) with the rating
+     * value that is in the same position in the array returned by getRatings()
+     * @param userIndex User
+     * @param itemIndex Item
+     * @return Probability distribution of the prediction
+     */
+    public double[] getPredictionProbabilityDistribution(int userIndex, int itemIndex) {
+        double sumGamma = 0;
+
+        for (int j = 0; j < this.numFactors; j++) {
+            sumGamma += this.gamma[userIndex][j];
+        }
+
+        double[] probabilities = new double[this.ratings.length];
+        double sumProbabilities = 0;
+
+        for (int v = 0; v < this.ratings.length; v++) {
+            for (int z = 0; z < this.numFactors; z++) {
+                probabilities[v] += this.beta[itemIndex][v][z] * this.gamma[userIndex][z] / sumGamma;
+            }
+            sumProbabilities += probabilities[v];
+        }
+
+        for (int v = 0; v < this.ratings.length; v++) {
+            probabilities[v] /= sumProbabilities;
+        }
+
+        return probabilities;
     }
 
     @Override
