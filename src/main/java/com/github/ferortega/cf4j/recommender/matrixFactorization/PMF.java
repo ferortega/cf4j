@@ -161,6 +161,24 @@ public class PMF extends Recommender {
 		return this.gamma;
 	}
 
+	/**
+	 * Get the latent factors vectors of a user (pu)
+	 * @param userIndex User
+	 * @return Latent factors vector
+	 */
+	public double[] getUserFactors(int userIndex) {
+		return this.p[userIndex];
+	}
+
+	/**
+	 * Get the latent factors vectors of an item (qi)
+	 * @param itemIndex User
+	 * @return Latent factors vector
+	 */
+	public double[] getItemFactors(int itemIndex) {
+		return this.q[itemIndex];
+	}
+
 	@Override
 	public void fit() {
 		System.out.println("\nFitting " + this.toString());
