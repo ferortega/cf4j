@@ -7,12 +7,10 @@ import com.github.ferortega.cf4j.recommender.knn.ItemKNN;
 import com.github.ferortega.cf4j.recommender.knn.itemSimilarityMetric.*;
 import com.github.ferortega.cf4j.util.PrintableQualityMeasure;
 import com.github.ferortega.cf4j.util.Range;
-import com.github.fortega.cf4j.recommender.knn.itemSimilarityMetric.*;
 import com.github.ferortega.cf4j.data.DataModel;
 import com.github.ferortega.cf4j.data.DataSet;
 import com.github.ferortega.cf4j.data.RandomSplitDataSet;
 import com.github.ferortega.cf4j.qualityMeasure.prediction.MSLE;
-import es.upm.etsisi.cf4j.recommender.knn.itemSimilarityMetric.*;
 
 import java.io.IOException;
 import java.util.ArrayList;

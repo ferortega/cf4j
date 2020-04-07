@@ -5,13 +5,11 @@ import com.github.ferortega.cf4j.recommender.Recommender;
 import com.github.ferortega.cf4j.recommender.matrixFactorization.*;
 import com.github.ferortega.cf4j.util.PrintableQualityMeasure;
 import com.github.ferortega.cf4j.util.Range;
-import com.github.fortega.cf4j.recommender.matrixFactorization.*;
 import com.github.ferortega.cf4j.data.DataModel;
 import com.github.ferortega.cf4j.data.DataSet;
 import com.github.ferortega.cf4j.data.RandomSplitDataSet;
 import com.github.ferortega.cf4j.qualityMeasure.prediction.RMSE;
 import com.github.ferortega.cf4j.qualityMeasure.recommendation.F1;
-import es.upm.etsisi.cf4j.recommender.matrixFactorization.*;
 
 import java.io.IOException;
 
