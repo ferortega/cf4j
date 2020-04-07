@@ -14,27 +14,15 @@ A Java's Collaborative Filtering library to carry out experiments in research of
 
 ## Installation
 
-### For Maven
-
 Add the following lines to the dependencies section in the `pom.xml` of the Maven's project.
 
 ```xml
-
+<dependency>
+  <groupId>com.github.ferortega</groupId>
+  <artifactId>cf4j</artifactId>
+  <version>2.0.0</version>
+</dependency>
 ```
-
-### For Gradle
-
-```
-
-```
-
-### For SBT
-
-```
-
-```
-
-### For other types of project
 
 To use the library in other type of project, you must add the `jar` packaged version of CF4J to your project's classpath. For example, if you are using IntelliJ IDEA, copy the file to your project's directory, make right click on the `jar` file and select `Add as Library`.
 
