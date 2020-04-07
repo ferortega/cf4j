@@ -90,9 +90,9 @@ Let's encode our first experiment with CF4J. In this experiment, we will compare
 
 ## Project Structure
 
-The following image shows the summarized class diagram of the whole project. You can see the full version of this diagram [here](http://rs.etsisi.upm.es/cf4j-2.0/images/class-diagram.jpg). The project has been divided into 4 main packages: `data`, `recommender`, `qualityMeasure` and `util`.
+The following image shows the summarized class diagram of the whole project. You can see the full version of this diagram [here](http://rs.etsisi.upm.es/cf4j-2.0.0/images/class-diagram.jpg). The project has been divided into 4 main packages: `data`, `recommender`, `qualityMeasure` and `util`.
 
-![CF4J class diagram](http://rs.etsisi.upm.es/cf4j-2.0/images/class-diagram-summarized.jpg)
+![CF4J class diagram](http://rs.etsisi.upm.es/cf4j-2.0.0/images/class-diagram-summarized.jpg)
 
 ### `com.github.ferortega.cf4j.data` package
 
@@ -118,7 +118,7 @@ This package contains all the classes that are needed to extract, transform, loa
 
 This package contains several implementations of collaborative filtering algorithms. You can check the full list in the [Algorithm List](#algorithm-list) section. Each collaborative filtering algorithm included in CF4J must extends the `Recommender` abstract class. This class forces to implement the following abstract methods:
 
-- `fit()`: used to estimate collaborative filtering recommender parameters given the hyper-parameters usually defined in the class constructor. To speed up the fitting process, most of the computations has been parallelized using [`Parallelizer`](http://rs.etsisi.upm.es/cf4j-2.0/apidocs/com/github/ferortega/cf4j/util/Parallelizer.html) util.
+- `fit()`: used to estimate collaborative filtering recommender parameters given the hyper-parameters usually defined in the class constructor. To speed up the fitting process, most of the computations has been parallelized using [`Parallelizer`](http://rs.etsisi.upm.es/cf4j-2.0.0/apidocs/com/github/ferortega/cf4j/util/Parallelizer.html) util.
 
 - `predict(userIndex, itemIndex)`: used to estimate the rating prediction of the user with index `userIndex` to the item with index `itemIndex`.
 
@@ -137,7 +137,7 @@ Each quality measure included in CF4J extends `QualityMeasure` abstract class. T
 
 This package contains different utilities to be used with the library. 
 
-Read the [javadoc](http://rs.etsisi.upm.es/cf4j-2.0/apidocs/) documentation for additional information.
+Read the [javadoc](http://rs.etsisi.upm.es/cf4j-2.0.0/apidocs/) documentation for additional information.
 
 ## Customize CF4J
 
@@ -152,7 +152,7 @@ Therefore, if you want to customize CF4J, you must work with `DataSet`, `DataMod
 
 `DataSet` is an interface that contains two methods to iterate over training ratings (`getRatingsIterator()`) and test ratings (`getTestRatingsIterator()`). The iteration is carried out over `DataSetEntry` instances, that contains the user, item and value of a rating. Any class that implements this interface may be used to create a `DataModel`.
 
-`DataModel` is a class that should not be modified. It has been encoded to manage the essential information required by most of collaborative filtering algorithms (i.e. users, items and ratings). However, there are several algorithms that includes additional information to the recommendation process such as demographic information about the users or items description. Both `DataModel`, `User` and `Item` includes a `DataBank` instance (see [javadoc](http://rs.etsisi.upm.es/cf4j-2.0/apidocs/com/github/ferirtega/cf4j/data/DataBank.html)) to store and retrieve any additional information required by a custom `Recommender`.
+`DataModel` is a class that should not be modified. It has been encoded to manage the essential information required by most of collaborative filtering algorithms (i.e. users, items and ratings). However, there are several algorithms that includes additional information to the recommendation process such as demographic information about the users or items description. Both `DataModel`, `User` and `Item` includes a `DataBank` instance (see [javadoc](http://rs.etsisi.upm.es/cf4j-2.0.0/apidocs/com/github/ferirtega/cf4j/data/DataBank.html)) to store and retrieve any additional information required by a custom `Recommender`.
 
 `Recommender` class can be extended to create your own collaborative filtering algorithm. As mentioned above, to create a new `Recommender` you must define the `fit()` and `predict(userIndex, itemIndex)` methods. In addition, to create a new similarity metric for a kNN based collaborative filtering, you should extend `UserSimilarityMetric` or `ItemSimilarityMetric` for user-to-user or item-to-item approaches of kNN, respectively.
 
@@ -574,7 +574,7 @@ Recall
 300        0,771250        0,773957        0,775951        0,762531        0,771665        0,768762        0,765254        0,773652        0,762526        0,771868
 ```
 
-As you can observe, we have used the [PrintableQualityMeasure](http://rs.etsisi.upm.es/cf4j-2.0/apidocs/com/github/ferortega/cf4j/util/PrintableQualityMeasure.html) utility to simplify the manage of the results reported for each tested recommender. This class contains a `.toString()` method that can be used to export its output to a `csv` format to be used by external programs in order to make a detailed analysis of these results.
+As you can observe, we have used the [PrintableQualityMeasure](http://rs.etsisi.upm.es/cf4j-2.0.0/apidocs/com/github/ferortega/cf4j/util/PrintableQualityMeasure.html) utility to simplify the manage of the results reported for each tested recommender. This class contains a `.toString()` method that can be used to export its output to a `csv` format to be used by external programs in order to make a detailed analysis of these results.
 
 ## Datasets
 
