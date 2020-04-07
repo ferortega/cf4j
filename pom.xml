@@ -36,6 +36,12 @@
 		</developer>
 	</developers>
 
+	<scm>
+		<url>git@github.com:ferortega/cf4j.git</url>
+		<connection>scm:git@github.com:ferortega/cf4j.git</connection>
+		<developerConnection>scm:git@github.com:ferortega/cf4j.git</developerConnection>
+	</scm>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
