@@ -46,6 +46,9 @@ public class TrainTestFilesDataSet implements DataSet {
     public TrainTestFilesDataSet(String fileName, String testFileName, String separator) throws IOException {
         System.out.println("\nLoading dataset...");
 
+        ratings = new ArrayList<>();
+        testRatings = new ArrayList<>();
+
         // Dataset reader
         BufferedReader datasetFile = new BufferedReader(new FileReader(new File(fileName)));
         BufferedReader testDatasetFile = new BufferedReader(new FileReader(new File(testFileName)));
