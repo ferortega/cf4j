@@ -74,7 +74,7 @@ public class TrainTestFilesDataSet implements DataSet {
 
         System.out.println("\nLoading test dataset...");
         numLines = 0;
-        while ((line = datasetFile.readLine()) != null) {
+        while ((line = testDatasetFile.readLine()) != null) {
 
             //Loading feedback
             numLines++;
