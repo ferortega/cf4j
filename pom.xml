@@ -27,6 +27,10 @@
 			<id>Raúl Lara</id>
 			<email>raul.lara@upm.es</email>
 		</developer>
+		<developer>
+			<id>Daniel López</id>
+			<email>daniel.lopez@upm.es</email>
+		</developer>
 	</developers>
 
 	<dependencies>
