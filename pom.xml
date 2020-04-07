@@ -23,6 +23,10 @@
 			<id>Jesús Mayor</id>
 			<email>jesus.mayor@upm.es</email>
 		</developer>
+		<developer>
+			<id>Raúl Lara</id>
+			<email>raul.lara@upm.es</email>
+		</developer>
 	</developers>
 
 	<dependencies>
