@@ -28,29 +28,29 @@ public class TrainTestFilesDataSet implements DataSet {
 
     /**
      * Generates a DataSet form training and test ratings files. Semicolon is used as separator.
-     * @param fileName File with the (training) ratings.
+     * @param trainingFileName File with the (training) ratings.
      * @param testFileName File with the test ratings.
      * @throws IOException When the file is not accessible by the system with read permissions.
      */
-    public TrainTestFilesDataSet(String fileName, String testFileName) throws IOException {
-        this(fileName, testFileName, DEFAULT_SEPARATOR);
+    public TrainTestFilesDataSet(String trainingFileName, String testFileName) throws IOException {
+        this(trainingFileName, testFileName, DEFAULT_SEPARATOR);
     }
 
     /**
      * Generates a DataSet form training and test ratings files.
-     * @param fileName File with the (training) ratings.
+     * @param trainingFileName File with the (training) ratings.
      * @param testFileName File with the test ratings.
      * @param separator Separator char between ratings fields.
      * @throws IOException When the file is not accessible by the system with read permissions.
      */
-    public TrainTestFilesDataSet(String fileName, String testFileName, String separator) throws IOException {
+    public TrainTestFilesDataSet(String trainingFileName, String testFileName, String separator) throws IOException {
         System.out.println("\nLoading dataset...");
 
         ratings = new ArrayList<>();
         testRatings = new ArrayList<>();
 
         // Dataset reader
-        BufferedReader datasetFile = new BufferedReader(new FileReader(new File(fileName)));
+        BufferedReader datasetFile = new BufferedReader(new FileReader(new File(trainingFileName)));
         BufferedReader testDatasetFile = new BufferedReader(new FileReader(new File(testFileName)));
 
         String line;
