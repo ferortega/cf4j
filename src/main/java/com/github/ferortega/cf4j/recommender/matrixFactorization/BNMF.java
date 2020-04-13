@@ -184,6 +184,24 @@ public class BNMF extends Recommender {
 		return this.epsilonMinus[itemIndex];
 	}
 
+	/**
+	 * Get the latent factors vector of a user (au)
+	 * @param userIndex User
+	 * @return Latent factors vector
+	 */
+	public double[] getUserFactors(int userIndex) {
+		return this.a[userIndex];
+	}
+
+	/**
+	 * Get the latent factors vector of an item (bi)
+	 * @param itemIndex User
+	 * @return Latent factors vector
+	 */
+	public double[] getItemFactors(int itemIndex) {
+		return this.b[itemIndex];
+	}
+
 	@Override
 	public void fit() {
 		System.out.println("\nFitting " + this.toString());
