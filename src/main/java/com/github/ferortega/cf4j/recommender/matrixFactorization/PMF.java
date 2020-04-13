@@ -162,7 +162,7 @@ public class PMF extends Recommender {
 	}
 
 	/**
-	 * Get the latent factors vectors of a user (pu)
+	 * Get the latent factors vector of a user (pu)
 	 * @param userIndex User
 	 * @return Latent factors vector
 	 */
@@ -171,7 +171,7 @@ public class PMF extends Recommender {
 	}
 
 	/**
-	 * Get the latent factors vectors of an item (qi)
+	 * Get the latent factors vector of an item (qi)
 	 * @param itemIndex User
 	 * @return Latent factors vector
 	 */
