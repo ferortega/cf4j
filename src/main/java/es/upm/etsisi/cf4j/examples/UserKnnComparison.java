@@ -5,7 +5,6 @@ import es.upm.etsisi.cf4j.qualityMeasure.recommendation.Precision;
 import es.upm.etsisi.cf4j.qualityMeasure.recommendation.Recall;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.recommender.knn.UserKNN;
-import com.github.ferortega.cf4j.recommender.knn.userSimilarityMetric.*;
 import es.upm.etsisi.cf4j.util.PrintableQualityMeasure;
 import es.upm.etsisi.cf4j.util.Range;
 import es.upm.etsisi.cf4j.data.DataModel;

@@ -4,7 +4,6 @@ import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.qualityMeasure.recommendation.NDCG;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.recommender.knn.ItemKNN;
-import com.github.ferortega.cf4j.recommender.knn.itemSimilarityMetric.*;
 import es.upm.etsisi.cf4j.util.PrintableQualityMeasure;
 import es.upm.etsisi.cf4j.util.Range;
 import es.upm.etsisi.cf4j.data.DataModel;

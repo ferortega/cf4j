@@ -2,7 +2,6 @@ package es.upm.etsisi.cf4j.examples;
 
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
-import com.github.ferortega.cf4j.recommender.matrixFactorization.*;
 import es.upm.etsisi.cf4j.util.PrintableQualityMeasure;
 import es.upm.etsisi.cf4j.util.Range;
 import es.upm.etsisi.cf4j.data.DataModel;
