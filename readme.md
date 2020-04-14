@@ -20,7 +20,7 @@ Add the following lines to the dependencies section in the `pom.xml` of the Mave
 <dependency>
   <groupId>com.github.ferortega</groupId>
   <artifactId>cf4j</artifactId>
-  <version>2.0.1-SNAPSHOT</version>
+  <version>2.0.1</version>
 </dependency>
 ```
 
