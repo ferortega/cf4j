@@ -44,54 +44,52 @@ public class TrainTestFilesDataSet implements DataSet {
      * @throws IOException When the file is not accessible by the system with read permissions.
      */
     public TrainTestFilesDataSet(String trainingFileName, String testFileName, String separator) throws IOException {
-        System.out.println("\nLoading dataset...");
 
-        ratings = new ArrayList<>();
-        testRatings = new ArrayList<>();
+        // Load traning file
 
-        // Dataset reader
+        System.out.println("\nLoading " + trainingFileName + "...");
+
         BufferedReader datasetFile = new BufferedReader(new FileReader(new File(trainingFileName)));
-        BufferedReader testDatasetFile = new BufferedReader(new FileReader(new File(testFileName)));
+        this.ratings = new ArrayList<>();
 
         String line;
         int numLines = 0;
         while ((line = datasetFile.readLine()) != null) {
-
-            //Loading feedback
             numLines++;
             if (numLines % 1000000 == 0) System.out.print(".");
             if (numLines % 10000000 == 0) System.out.println(numLines + " ratings");
 
-            // Parse line
             String[] s = line.split(separator);
-            String userCode = s[0];
-            String itemCode = s[1];
+            String userId = s[0];
+            String itemId = s[1];
             double rating = Double.parseDouble(s[2]);
 
-            // Store rating
-            ratings.add(new DataSetEntry(userCode, itemCode, rating));
-        }
-
-        System.out.println("\nLoading test dataset...");
-        numLines = 0;
-        while ((line = testDatasetFile.readLine()) != null) {
-
-            //Loading feedback
-            numLines++;
-            if (numLines % 1000000 == 0) System.out.print(".");
-            if (numLines % 10000000 == 0) System.out.println(numLines + " ratings");
-
-            // Parse line
-            String[] s = line.split(separator);
-            String userCode = s[0];
-            String itemCode = s[1];
-            double rating = Double.parseDouble(s[2]);
-
-            // Store rating
-            testRatings.add(new DataSetEntry(userCode, itemCode, rating));
+            this.ratings.add(new DataSetEntry(userId, itemId, rating));
         }
 
         datasetFile.close();
+
+        // Load test file
+
+        System.out.println("\nLoading " + testFileName + "...");
+
+        BufferedReader testDatasetFile = new BufferedReader(new FileReader(new File(testFileName)));
+        this.testRatings = new ArrayList<>();
+
+        numLines = 0;
+        while ((line = testDatasetFile.readLine()) != null) {
+            numLines++;
+            if (numLines % 1000000 == 0) System.out.print(".");
+            if (numLines % 10000000 == 0) System.out.println(numLines + " ratings");
+
+            String[] s = line.split(separator);
+            String userId = s[0];
+            String itemId = s[1];
+            double rating = Double.parseDouble(s[2]);
+
+            this.testRatings.add(new DataSetEntry(userId, itemId, rating));
+        }
+
         testDatasetFile.close();
     }
 
