@@ -18,7 +18,7 @@ Add the following lines to the dependencies section in the `pom.xml` of the Mave
 
 ```xml
 <dependency>
-  <groupId>com.github.ferortega</groupId>
+  <groupId>es.upm.etsisi</groupId>
   <artifactId>cf4j</artifactId>
   <version>2.0.1</version>
 </dependency>
@@ -86,7 +86,7 @@ Let's encode our first experiment with CF4J. In this experiment, we will compare
    MSE (NMF): 1.4204697638323218
    ```
    
-   You can find the full code of this example in [GettingStartedExample](src/main/java/com/github/ferortega/cf4j/examples/GettingStartedExample.java).
+   You can find the full code of this example in [GettingStartedExample](src/main/java/es/upm/etsisi/cf4j/examples/GettingStartedExample.java).
 
 ## Project Structure
 
@@ -94,7 +94,7 @@ The following image shows the summarized class diagram of the whole project. You
 
 ![CF4J class diagram](http://rs.etsisi.upm.es/cf4j-2.0.1/images/class-diagram-summarized.jpg)
 
-### `com.github.ferortega.cf4j.data` package
+### `es.upm.etsisi.cf4j.data` package
 
 This package contains all the classes that are needed to extract, transform, load and manipulate the data used by collaborative filtering algorithms. The most important classes of this package are:
 
@@ -114,26 +114,26 @@ This package contains all the classes that are needed to extract, transform, loa
 
 - `TestItem`. This class represents a test item. Every `TestItem` is also a `Item` due to the heritage relation between `Item` and `TestItem` classes. Each `TestItem` is defined by his/her index in the `TestItem` array of the `DataModel`. The `TestItem` class contains the list of test users that have rated in test the item. These test ratings can be retrieved using `getTestUserAt(pos)`, that returns the index of the `testUser` instance that have rated the test item at the `pos` position, and `getTestRatingAt(pos)`, that returns the test rating value at the `pos` position. Test users' indexes returned by `getTestUserAt(pos)` are sorted from lower to higher.
 
-### `com.github.ferortega.cf4j.recommender` package
+### `es.upm.etsisi.cf4j.recommender` package
 
 This package contains several implementations of collaborative filtering algorithms. You can check the full list in the [Algorithm List](#algorithm-list) section. Each collaborative filtering algorithm included in CF4J must extends the `Recommender` abstract class. This class forces to implement the following abstract methods:
 
-- `fit()`: used to estimate collaborative filtering recommender parameters given the hyper-parameters usually defined in the class constructor. To speed up the fitting process, most of the computations has been parallelized using [`Parallelizer`](http://rs.etsisi.upm.es/cf4j-2.0.1/apidocs/com/github/ferortega/cf4j/util/Parallelizer.html) util.
+- `fit()`: used to estimate collaborative filtering recommender parameters given the hyper-parameters usually defined in the class constructor. To speed up the fitting process, most of the computations has been parallelized using [`Parallelizer`](http://rs.etsisi.upm.es/cf4j-2.0.1/apidocs/es/upm/etsisi/cf4j/util/Parallelizer.html) util.
 
 - `predict(userIndex, itemIndex)`: used to estimate the rating prediction of the user with index `userIndex` to the item with index `itemIndex`.
 
 Each `Recommender` must be created from a `DataModel` instance and will be fitted to it.
 
-### `com.github.ferortega.cf4j.qualityMeasure` package
+### `es.upm.etsisi.cf4j.qualityMeasure` package
 
 This package contains the implementation of different quality measures for collaborative filtering based recommender systems. These quality measures are used to evaluate the performance of a `Recommender` instance. Included quality measures has been classified into two categories:
 
-- Quality measures for predictions, allocated into `com.github.ferortega.cf4j.qualityMeasures.prediction` package.
-- Quality measures for recommendations, allocated into `com.github.ferortega.cf4j.qualityMeasures.recommendation` package.
+- Quality measures for predictions, allocated into `es.upm.etsisi.cf4j.qualityMeasures.prediction` package.
+- Quality measures for recommendations, allocated into `es.upm.etsisi.cf4j.qualityMeasures.recommendation` package.
 
 Each quality measure included in CF4J extends `QualityMeasure` abstract class. This class simplifies the computation of a quality measure from the test ratings. It contains the `getScore()` method that computes the score of the quality measure for each test user and returns the averaged score. The computation of the quality measure score for each test user is performed in parallel.
 
-### `com.github.ferortega.cf4j.util` package
+### `es.upm.etsisi.cf4j.util` package
 
 This package contains different utilities to be used with the library. 
 
@@ -152,7 +152,7 @@ Therefore, if you want to customize CF4J, you must work with `DataSet`, `DataMod
 
 `DataSet` is an interface that contains two methods to iterate over training ratings (`getRatingsIterator()`) and test ratings (`getTestRatingsIterator()`). The iteration is carried out over `DataSetEntry` instances, that contains the user, item and value of a rating. Any class that implements this interface may be used to create a `DataModel`.
 
-`DataModel` is a class that should not be modified. It has been encoded to manage the essential information required by most of collaborative filtering algorithms (i.e. users, items and ratings). However, there are several algorithms that includes additional information to the recommendation process such as demographic information about the users or items description. Both `DataModel`, `User` and `Item` includes a `DataBank` instance (see [javadoc](http://rs.etsisi.upm.es/cf4j-2.0.1/apidocs/com/github/ferortega/cf4j/data/DataBank.html)) to store and retrieve any additional information required by a custom `Recommender`.
+`DataModel` is a class that should not be modified. It has been encoded to manage the essential information required by most of collaborative filtering algorithms (i.e. users, items and ratings). However, there are several algorithms that includes additional information to the recommendation process such as demographic information about the users or items description. Both `DataModel`, `User` and `Item` includes a `DataBank` instance (see [javadoc](http://rs.etsisi.upm.es/cf4j-2.0.1/apidocs/es/upm/etsisi/cf4j/data/DataBank.html)) to store and retrieve any additional information required by a custom `Recommender`.
 
 `Recommender` class can be extended to create your own collaborative filtering algorithm. As mentioned above, to create a new `Recommender` you must define the `fit()` and `predict(userIndex, itemIndex)` methods. In addition, to create a new similarity metric for a kNN based collaborative filtering, you should extend `UserSimilarityMetric` or `ItemSimilarityMetric` for user-to-user or item-to-item approaches of kNN, respectively.
 
@@ -162,7 +162,7 @@ Therefore, if you want to customize CF4J, you must work with `DataSet`, `DataMod
 
 In this section we include the full list of algorithms implemented in the library.
 
-* Matrix factorization algorithms (`com.github.ferortega.cf4j.recommender.matrixFactorization` package):
+* Matrix factorization algorithms (`es.upm.etsisi.cf4j.recommender.matrixFactorization` package):
 
    | Class         | Publication |
    |---------------|-------------|
@@ -178,7 +178,7 @@ In this section we include the full list of algorithms implemented in the librar
 
 * kNN based CF (both user-to-user and item-to-item approaches):
 
-  + Traditional similarity metrics inspired by statistics (`com.github.ferortega.cf4j.recommender.knn.userSimilairtyMetrics` and `com.github.ferortega.cf4j.recommender.knn.itemSimilairtyMetrics` packages):
+  + Traditional similarity metrics inspired by statistics (`es.upm.etsisi.cf4j.recommender.knn.userSimilairtyMetrics` and `es.upm.etsisi.cf4j.recommender.knn.itemSimilairtyMetrics` packages):
     - Pearson Correlation (`Correlation`)
     - Pearson Correlation Constrained (`CorrelationConstrained`)
     - Cosine similarity (`Cosine`)
@@ -187,7 +187,7 @@ In this section we include the full list of algorithms implemented in the librar
     - Mean Squared Difference (`MSD`)
     - Spearman Rank (`SpearmanRank`)
 
-  + Similarity metrics created ad-hoc for collaborative filtering algorithm (`com.github.ferortega.cf4j.recommender.knn.userSimilairtyMetrics` and `com.github.ferortega.cf4j.recommender.knn.itemSimilairtyMetrics` packages):
+  + Similarity metrics created ad-hoc for collaborative filtering algorithm (`es.upm.etsisi.cf4j.recommender.knn.userSimilairtyMetrics` and `es.upm.etsisi.cf4j.recommender.knn.itemSimilairtyMetrics` packages):
   
      | Class           | Publication |
      |-----------------|-------------|
@@ -199,7 +199,7 @@ In this section we include the full list of algorithms implemented in the librar
  
 * Quality measures:
 
-  + For prediction (`com.github.ferortega.cf4j.qualityMeasure.prediction` package):
+  + For prediction (`es.upm.etsisi.cf4j.qualityMeasure.prediction` package):
     - Coverage (`Coverage`)
     - Mean Absolute Error (`MAE`)
     - Max User Error (`Max`)
@@ -209,7 +209,7 @@ In this section we include the full list of algorithms implemented in the librar
     - Coefficient of determination R2 (`R2`)
     - Root Mean Squared Error (`RMSE`)
     
-  + For recommendation (`com.github.ferortega.cf4j.qualityMeasure.recommendation` package):
+  + For recommendation (`es.upm.etsisi.cf4j.qualityMeasure.recommendation` package):
     - Precision (`Precision`)
     - Recall (`Recall`)
     - F1 (`F1`)
@@ -222,7 +222,7 @@ In this section we include the full list of algorithms implemented in the librar
 
 In this section we include additional examples to show the operation of CF4J. 
 
-In [MatrixFactorizationComparison](src/main/java/com/github/ferortega/cf4j/examples/MatrixFactorizationComparison.java) we compare the RMSE and F1 for different matrix factorization models varying the number of latent factors:
+In [MatrixFactorizationComparison](src/main/java/es/upm/etsisi/cf4j/examples/MatrixFactorizationComparison.java) we compare the RMSE and F1 for different matrix factorization models varying the number of latent factors:
 
 ```java
 // Grid search over number of factors hyper-parameter
@@ -377,7 +377,7 @@ F1
 25     0,666377     0,683050     0,650450     0,668642     0,681276     0,655716     0,620043     0,639927
 ```
 
-In [ItemKnnComparison](src/main/java/com/github/ferortega/cf4j/examples/ItemKnnComparison.java) we compare the MSLE and nDCG quality measures scores for different similarity metrics applied to item-to-item knn based collaborative filtering. Each similarity metric is tested with different number of neighbors:
+In [ItemKnnComparison](src/main/java/es/upm/etsisi/cf4j/examples/ItemKnnComparison.java) we compare the MSLE and nDCG quality measures scores for different similarity metrics applied to item-to-item knn based collaborative filtering. Each similarity metric is tested with different number of neighbors:
 
 ```java
 // Grid search over number of neighbors hyper-parameter
@@ -461,7 +461,7 @@ NDCG
 300        0,951793        1,136819        1,142463        1,142724        1,108925        1,136880        1,130153        0,778681        1,089436
 ```
 
-Finally, in [UserKnnComparison](src/main/java/com/github/ferortega/cf4j/examples/UserKnnComparison.java) we compare the MAE, Coverage, Precision and Recall quality measures scores for different similarity metrics applied to user-to-user knn based collaborative filtering. Each similarity metric is tested with different number of neighbors:
+Finally, in [UserKnnComparison](src/main/java/es/upm/etsisi/cf4j/examples/UserKnnComparison.java) we compare the MAE, Coverage, Precision and Recall quality measures scores for different similarity metrics applied to user-to-user knn based collaborative filtering. Each similarity metric is tested with different number of neighbors:
 
 ```java
 // Grid search over number of neighbors hyper-parameter
@@ -574,7 +574,7 @@ Recall
 300        0,771250        0,773957        0,775951        0,762531        0,771665        0,768762        0,765254        0,773652        0,762526        0,771868
 ```
 
-As you can observe, we have used the [PrintableQualityMeasure](http://rs.etsisi.upm.es/cf4j-2.0.1/apidocs/com/github/ferortega/cf4j/util/PrintableQualityMeasure.html) utility to simplify the manage of the results reported for each tested recommender. This class contains a `.toString()` method that can be used to export its output to a `csv` format to be used by external programs in order to make a detailed analysis of these results.
+As you can observe, we have used the [PrintableQualityMeasure](http://rs.etsisi.upm.es/cf4j-2.0.1/apidocs/es/upm/etsisi/cf4j/util/PrintableQualityMeasure.html) utility to simplify the manage of the results reported for each tested recommender. This class contains a `.toString()` method that can be used to export its output to a `csv` format to be used by external programs in order to make a detailed analysis of these results.
 
 ## Datasets
 
