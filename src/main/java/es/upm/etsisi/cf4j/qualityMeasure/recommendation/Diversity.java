@@ -8,6 +8,8 @@ import es.upm.etsisi.cf4j.util.Parallelizer;
 import es.upm.etsisi.cf4j.data.TestUser;
 import es.upm.etsisi.cf4j.util.Search;
 
+import java.util.Map;
+
 /**
  * This class the averaged diversity of the recomendations. Diversity value is computed as explained in "Hurley, N.,
  * &amp; Zhang, M. (2011). Novelty and diversity in top-n recommendation--analysis and evaluation. ACM Transactions on
@@ -24,6 +26,19 @@ public class Diversity extends QualityMeasure {
 	 * Similarity between items
 	 */
 	ItemSimilarityMetric itemSimilarityMetric;
+
+	/**
+	 * Constructor from a Map object with the quality measure parameters. Map object must contains the
+	 * following keys:
+	 * <ul>
+	 *   <li><b>numberOfRecommendations</b>: int value with the number of items to be recommended.</li>
+	 * </ul>
+	 * @param recommender Recommender instance for which the Diversity are going to be computed
+	 * @param params Quality measure's parameters
+	 */
+	public Diversity(Recommender recommender, Map<String, Object> params) {
+		this(recommender, (int) params.get("numberOfRecommendations"));
+	}
 
 	/**
 	 * Constructor of Diversity
