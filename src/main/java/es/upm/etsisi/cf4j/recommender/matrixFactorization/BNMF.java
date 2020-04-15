@@ -80,7 +80,7 @@ public class BNMF extends Recommender {
 	 * @param numIters Number of iterations
 	 * @param alpha This parameter is related to the possibility of obtaining overlapping groups of users sharing the
 	 *                 same tastes
-	 * @param beta Amount of evidence that the algorithm requires to deduce that a group of users likes an item
+	 * @param beta Amount of evidences that the algorithm requires to deduce that a group of users likes an item
 	 */
 	public BNMF(DataModel datamodel, int numFactors, int numIters, double alpha, double beta) {
 		this(datamodel, numFactors, numIters, alpha, beta, DEFAULT_R, System.currentTimeMillis());
@@ -93,7 +93,7 @@ public class BNMF extends Recommender {
 	 * @param numIters Number of iterations
 	 * @param alpha This parameter is related to the possibility of obtaining overlapping groups of users sharing the
 	 *                 same tastes
-	 * @param beta Amount of evidence that the algorithm requires to deduce that a group of users likes an item
+	 * @param beta Amount of evidences that the algorithm requires to deduce that a group of users likes an item
 	 * @param seed Seed for random numbers generation
 	 */
 	public BNMF(DataModel datamodel, int numFactors, int numIters, double alpha, double beta, long seed) {
@@ -107,7 +107,7 @@ public class BNMF extends Recommender {
 	 * @param numIters Number of iterations
 	 * @param alpha This parameter is related to the possibility of obtaining overlapping groups of users sharing the
 	 *                 same tastes
-	 * @param beta Amount of evidence that the algorithm requires to deduce that a group of users likes an item
+	 * @param beta Amount of evidences that the algorithm requires to deduce that a group of users likes an item
 	 * @param r Parameter of the binomial distribution (fixed to 4)
 	 * @param seed Seed for random numbers generation
 	 */
