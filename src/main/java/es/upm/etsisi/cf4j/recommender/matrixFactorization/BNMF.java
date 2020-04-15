@@ -1,6 +1,7 @@
 package es.upm.etsisi.cf4j.recommender.matrixFactorization;
 
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -72,6 +73,35 @@ public class BNMF extends Recommender {
 	 * Number of iterations
 	 */
 	private int numIters;
+
+  /**
+   * Model constructor from a Map containing the model's hyper-parameters values. Map object must
+   * contains the following keys:
+   * <ul>
+   *   <li><b>numFactors</b>: int value with the number of latent factors.</li>
+   *   <li><b>numIters:</b>: int value with the number of iterations.</li>
+   *   <li><b>alpha</b>: double value with the alpha hyper-parameter. This value is related to the possibility of
+   *      obtaining overlapping groups of users sharing the same tastes.</li>
+   *   <li><b>beta</b>: double value with the beta hyper-parameter. This value represents the amount of evidences that
+   *      the algorithm requires to deduce that a group of users likes an item.</li>
+   *   <li><b><em>seed</em></b> (optional): random seed for generating random numbers. If missing, random value is
+   *      used.</li>
+   * </ul>
+   *
+   * @param datamodel DataModel instance
+   * @param params Model's hyper-parameters values
+   */
+  public BNMF(DataModel datamodel, Map<String, Object> params) {
+		this(
+				datamodel,
+				(int) params.get("numFactors"),
+				(int) params.get("numIters"),
+				(double) params.get("alpha"),
+				(double) params.get("beta"),
+				params.containsKey("r") ? (double) params.get("r") : DEFAULT_R,
+				params.containsKey("seed") ? (long) params.get("seed") : System.currentTimeMillis()
+		);
+	}
 
 	/**
 	 * Model constructor

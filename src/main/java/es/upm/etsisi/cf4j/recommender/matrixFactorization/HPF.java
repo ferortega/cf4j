@@ -9,6 +9,7 @@ import es.upm.etsisi.cf4j.data.Item;
 import es.upm.etsisi.cf4j.data.User;
 import org.apache.commons.math3.special.Gamma;
 
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -16,6 +17,13 @@ import java.util.Random;
  * Poisson Factorization. In UAI (pp. 326-335).
  */
 public class HPF extends Recommender {
+
+    private final static double DEFAULT_A = 0.3;
+    private final static double DEFAULT_A_PRIME = 0.3;
+    private final static double DEFAULT_B_PRIME = 1.0;
+    private final static double DEFAULT_C = 0.3;
+    private final static double DEFAULT_C_PRIME = 0.3;
+    private final static double DEFAULT_D_PRIME = 1.0;
 
     /**
      * Number of latent factors
@@ -48,6 +56,38 @@ public class HPF extends Recommender {
     private double[] tauRte;
 
     /**
+     * Model constructor from a Map containing the model's hyper-parameters values. Map object must contains the
+     * following keys:
+     * <ul>
+     *   <li><b>numFactors</b>: int value with the number of latent factors.</li>
+     *   <li><b>numIters:</b>: int value with the number of iterations.</li>
+     *   <li><b><em>a</em></b> (optional): double value with the a hyper-parameter. If missing, it is set to 0.3.</li>
+     *   <li><b><em>aPrime</em></b> (optional): double value with the a' hyper-parameter. If missing, it is set to 0.3.</li>
+     *   <li><b><em>bPrime</em></b> (optional): double value with the b' hyper-parameter. If missing, it is set to 1.0.</li>
+     *   <li><b><em>c</em></b> (optional): double value with the c hyper-parameter. If missing, it is set to 0.3.</li>
+     *   <li><b><em>cPrime</em></b> (optional): double value with the c' hyper-parameter. If missing, it is set to 0.3.</li>
+     *   <li><b><em>dPrime</em></b> (optional): double value with the d' hyper-parameter. If missing, it is set to 1.0.</li>
+     *   <li><b><em>seed</em></b> (optional): random seed for random numbers generation. If missing, random value is used.</li>
+     * </ul>
+     * @param datamodel DataModel instance
+     * @param params Model's hyper-parameters values
+     */
+    public HPF(DataModel datamodel, Map<String, Object> params) {
+        this(
+                datamodel,
+                (int) params.get("numFactors"),
+                (int) params.get("numIters"),
+                params.containsKey("a") ? (double) params.get("a") : DEFAULT_A,
+                params.containsKey("aPrime") ? (double) params.get("aPrime") : DEFAULT_A_PRIME,
+                params.containsKey("bPrime") ? (double) params.get("bPrime") : DEFAULT_B_PRIME,
+                params.containsKey("c") ? (double) params.get("c") : DEFAULT_C,
+                params.containsKey("cPrime") ? (double) params.get("cPrime") : DEFAULT_C_PRIME,
+                params.containsKey("dPrime") ? (double) params.get("dPrime") : DEFAULT_D_PRIME,
+                params.containsKey("seed") ? (long) params.get("seed") : System.currentTimeMillis()
+        );
+    }
+
+    /**
      * Models constructor
      * @param datamodel DataModel instance
      * @param numFactors Number of latent factors
@@ -65,7 +105,7 @@ public class HPF extends Recommender {
      * @param seed Seed for random numbers generation
      */
     public HPF(DataModel datamodel, int numFactors, int numIters, long seed) {
-        this(datamodel, numFactors, numIters, 0.3, 0.3, 1.0, 0.3, 0.3, 1.0, seed);
+        this(datamodel, numFactors, numIters, DEFAULT_A, DEFAULT_A_PRIME, DEFAULT_B_PRIME, DEFAULT_C, DEFAULT_C_PRIME, DEFAULT_D_PRIME, seed);
     }
 
     /**
