@@ -69,7 +69,7 @@ public class URP extends Recommender {
      * @param ratings Plausible ratings (must be sorted in ascending order)
      * @param numIters Number of iterations
      */
-    public URP(DataModel datamodel, int numFactors, double [] ratings, int numIters) {
+    public URP(DataModel datamodel, int numFactors, double[] ratings, int numIters) {
         this(datamodel, numFactors, ratings, numIters, System.currentTimeMillis());
     }
 
@@ -81,8 +81,8 @@ public class URP extends Recommender {
      * @param numIters Number of iterations
      * @param seed Seed for random numbers generation
      */
-    public URP(DataModel datamodel, int numFactors, double [] ratings, int numIters, long seed) {
-        this(datamodel, numFactors, ratings, numIters, 0.1, seed);
+    public URP(DataModel datamodel, int numFactors, double[] ratings, int numIters, long seed) {
+        this(datamodel, numFactors, ratings, numIters, DEFAULT_H, seed);
     }
 
     /**
@@ -94,7 +94,7 @@ public class URP extends Recommender {
      * @param H Heuristic factor to control number of iterations during E-Step. The number of iterations is defined by
      *          H * number_of_user_ratings
      */
-    public URP(DataModel datamodel, int numFactors, double [] ratings, int numIters, double H) {
+    public URP(DataModel datamodel, int numFactors, double[] ratings, int numIters, double H) {
         this(datamodel, numFactors, ratings, numIters, H, System.currentTimeMillis());
     }
 
@@ -108,7 +108,7 @@ public class URP extends Recommender {
      *          H * number_of_user_ratings
      * @param seed Seed for random numbers generation
      */
-    public URP(DataModel datamodel, int numFactors, double [] ratings, int numIters, double H, long seed) {
+    public URP(DataModel datamodel, int numFactors, double[] ratings, int numIters, double H, long seed) {
         super(datamodel);
 
         this.numFactors = numFactors;
