@@ -39,7 +39,6 @@ class UsersAndItemsTest {
         wiredUser.addRating(333,3.5);
         wiredUser.addRating(wiredItem.getItemIndex(),3.0);
 
-        assertEquals(user.getNumberOfRatings(), 6);
         assertEquals(user.findItem(item.getItemIndex()), 0);
         assertEquals(user.getItemAt(0), item.getItemIndex());
         assertEquals(user.getRatingAt(0), 1.0);
@@ -56,7 +55,6 @@ class UsersAndItemsTest {
         assertEquals(user.getItemAt(5), 333);
         assertEquals(user.getRatingAt(5), 3.5);
 
-        assertEquals(wiredUser.getNumberOfRatings(), 6);
         assertEquals(wiredUser.findItem(item.getItemIndex()), 0);
         assertEquals(wiredUser.getItemAt(0), item.getItemIndex());
         assertEquals(wiredUser.getRatingAt(0), 1.0);
@@ -72,6 +70,20 @@ class UsersAndItemsTest {
         assertEquals(wiredUser.getRatingAt(4), 2.4);
         assertEquals(wiredUser.getItemAt(5), 333);
         assertEquals(wiredUser.getRatingAt(5), 3.5);
+
+        assertEquals(user.getId(),"101");
+        assertEquals(user.getUserIndex(),101);
+        assertEquals(user.getNumberOfRatings(), 6);
+        assertEquals(user.getMinRating(),1);
+        assertEquals(user.getMaxRating(),3.5);
+        assertTrue(Math.abs(user.getRatingAverage() - 2.2) <= Math.ulp(2.2) );
+
+        assertEquals(wiredUser.getId(),"303");
+        assertEquals(wiredUser.getUserIndex(),303);
+        assertEquals(wiredUser.getNumberOfRatings(), 6);
+        assertEquals(wiredUser.getMinRating(),1);
+        assertEquals(wiredUser.getMaxRating(),3.5);
+        assertTrue(Math.abs(wiredUser.getRatingAverage() - 2.2) <= Math.ulp(2.2) );
     }
 
     @Test
@@ -90,7 +102,6 @@ class UsersAndItemsTest {
         testUser.addRating(333,3.5);
         testUser.addRating(wiredItem.getItemIndex(),3.0);
 
-        assertEquals(testUser.getNumberOfTestRatings(), 6);
         assertEquals(testUser.findItem(item.getItemIndex()), 0);
         assertEquals(testUser.getTestItemAt(0), item.getItemIndex());
         assertEquals(testUser.getTestRatingAt(0), 1.0);
@@ -107,7 +118,6 @@ class UsersAndItemsTest {
         assertEquals(testUser.getTestItemAt(5), 333);
         assertEquals(testUser.getTestRatingAt(5), 3.5);
 
-        assertEquals(testUser.getNumberOfRatings(), 6);
         assertEquals(testUser.findItem(item.getItemIndex()), 0);
         assertEquals(testUser.getItemAt(0), item.getItemIndex());
         assertEquals(testUser.getRatingAt(0), 1.0);
@@ -123,6 +133,18 @@ class UsersAndItemsTest {
         assertEquals(testUser.getRatingAt(4), 2.4);
         assertEquals(testUser.getItemAt(5), 333);
         assertEquals(testUser.getRatingAt(5), 3.5);
+
+        assertEquals(testUser.getId(),"202");
+        assertEquals(testUser.getUserIndex(),202);
+        assertEquals(testUser.getNumberOfRatings(), 6);
+        assertEquals(testUser.getMinRating(),1);
+        assertEquals(testUser.getMaxRating(),3.5);
+        assertTrue(Math.abs(testUser.getRatingAverage() - 2.2) <= Math.ulp(2.2) );
+        assertEquals(testUser.getTestUserIndex(),202);
+        assertEquals(testUser.getNumberOfTestRatings(), 6);
+        assertEquals(testUser.getMinTestRating(),1);
+        assertEquals(testUser.getMaxTestRating(),3.5);
+        assertTrue(Math.abs(testUser.getTestRatingAverage() - 2.2) <= Math.ulp(2.2) );
     }
 
     @Test
@@ -141,7 +163,6 @@ class UsersAndItemsTest {
         wiredItem.addRating(333,3.5);
         wiredItem.addRating(wiredUser.getUserIndex(),3.0);
 
-        assertEquals(item.getNumberOfRatings(), 6);
         assertEquals(item.findUser(user.getUserIndex()), 0);
         assertEquals(item.getUserAt(0), user.getUserIndex());
         assertEquals(item.getRatingAt(0), 1.0);
@@ -158,7 +179,6 @@ class UsersAndItemsTest {
         assertEquals(item.getUserAt(5), 333);
         assertEquals(item.getRatingAt(5), 3.5);
 
-        assertEquals(wiredItem.getNumberOfRatings(), 6);
         assertEquals(wiredItem.findUser(user.getUserIndex()), 0);
         assertEquals(wiredItem.getUserAt(0), user.getUserIndex());
         assertEquals(wiredItem.getRatingAt(0), 1.0);
@@ -174,6 +194,20 @@ class UsersAndItemsTest {
         assertEquals(wiredItem.getRatingAt(4), 3.0);
         assertEquals(wiredItem.getUserAt(5), 333);
         assertEquals(wiredItem.getRatingAt(5), 3.5);
+
+        assertEquals(item.getId(),"010");
+        assertEquals(item.getItemIndex(),10);
+        assertEquals(item.getNumberOfRatings(), 6);
+        assertEquals(item.getMinRating(),1);
+        assertEquals(item.getMaxRating(),3.5);
+        assertTrue(Math.abs(item.getRatingAverage() - 2.2) <= Math.ulp(2.2) );
+
+        assertEquals(wiredItem.getId(),"030");
+        assertEquals(wiredItem.getItemIndex(),30);
+        assertEquals(wiredItem.getNumberOfRatings(), 6);
+        assertEquals(wiredItem.getMinRating(),1);
+        assertEquals(wiredItem.getMaxRating(),3.5);
+        assertTrue(Math.abs(wiredItem.getRatingAverage() - 2.2) <= Math.ulp(2.2) );
     }
 
     @Test
@@ -192,7 +226,6 @@ class UsersAndItemsTest {
         testItem.addTestRating(333,3.5);
         testItem.addTestRating(wiredUser.getUserIndex(),3.0);
 
-        assertEquals(testItem.getNumberOfRatings(), 6);
         assertEquals(testItem.findUser(user.getUserIndex()), 0);
         assertEquals(testItem.getUserAt(0), user.getUserIndex());
         assertEquals(testItem.getRatingAt(0), 1.0);
@@ -209,7 +242,6 @@ class UsersAndItemsTest {
         assertEquals(testItem.getUserAt(5), 333);
         assertEquals(testItem.getRatingAt(5), 3.5);
 
-        assertEquals(testItem.getNumberOfTestRatings(), 6);
         assertEquals(testItem.findUser(user.getUserIndex()), 0);
         assertEquals(testItem.getTestUserAt(0), user.getUserIndex());
         assertEquals(testItem.getTestRatingAt(0), 1.0);
@@ -225,5 +257,17 @@ class UsersAndItemsTest {
         assertEquals(testItem.getTestRatingAt(4), 3.0);
         assertEquals(testItem.getTestUserAt(5), 333);
         assertEquals(testItem.getTestRatingAt(5), 3.5);
+
+        assertEquals(testItem.getId(),"020");
+        assertEquals(testItem.getItemIndex(),20);
+        assertEquals(testItem.getNumberOfRatings(), 6);
+        assertEquals(testItem.getMinRating(),1);
+        assertEquals(testItem.getMaxRating(),3.5);
+        assertTrue(Math.abs(testItem.getRatingAverage() - 2.2) <= Math.ulp(2.2) );
+        assertEquals(testItem.getTestItemIndex(),20);
+        assertEquals(testItem.getNumberOfTestRatings(), 6);
+        assertEquals(testItem.getMinTestRating(),1);
+        assertEquals(testItem.getMaxTestRating(),3.5);
+        assertTrue(Math.abs(testItem.getTestRatingAverage() - 2.2) <= Math.ulp(2.2) );
     }
 }
