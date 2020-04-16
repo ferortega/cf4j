@@ -18,6 +18,9 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class CLiMF extends Recommender {
 
+    private final static double DEFAULT_GAMMA = 1E-5;
+    private final static double DEFAULT_LAMBDA = 1E-4;
+
     /**
      * Number of latent factors
      */
@@ -53,6 +56,35 @@ public class CLiMF extends Recommender {
      * Items's latent factors
      */
     protected double[][] V;
+
+    /**
+     * Model constructor from a Map containing the model's hyper-parameters values. Map object must contains the
+     * following keys:
+     * <ul>
+     *   <li><b>numFactors</b>: int value with the number of latent factors.</li>
+     *   <li><b>numIters:</b>: int value with the number of iterations.</li>
+     *   <li><b>threshold</b>: double value representing the rating value that binaries the matrix.</li>
+     *   <li><b><em>gamma</em></b> (optional): double value with the learning rate hyper-parameter. If missing, it is
+     *   	set to 1E-5.</li>
+     *   <li><b><em>lambda</em></b> (optional): double value with the regularization hyper-parameter. If missing, it is
+     *   	set to 1E-4.</li>
+     *   <li><b><em>seed</em></b> (optional): random seed for random numbers generation. If missing, random value is
+     *   	used.</li>
+     * </ul>
+     * @param datamodel DataModel instance
+     * @param params Model's hyper-parameters values
+     */
+    public CLiMF(DataModel datamodel, Map<String, Object> params) {
+        this(
+                datamodel,
+                (int) params.get("numFactors"),
+                params.containsKey("gamma") ? (double) params.get("gamma") : DEFAULT_GAMMA,
+                params.containsKey("lambda") ? (double) params.get("lambda") : DEFAULT_LAMBDA,
+                (int) params.get("numIters"),
+                (double) params.get("threshold"),
+                params.containsKey("seed") ? (long) params.get("seed") : System.currentTimeMillis()
+        );
+    }
 
     /**
      * Model constructor

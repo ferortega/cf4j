@@ -20,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class URP extends Recommender {
 
+    private final static double DEFAULT_H = 0.1;
     private final static double EPSILON = 1E-2;
 
     /**
@@ -62,6 +63,32 @@ public class URP extends Recommender {
      */
     private Map<Integer, double[][]> phi;
 
+  /**
+   * Model constructor from a Map containing the model's hyper-parameters values. Map object must
+   * contains the following keys:
+   * <ul>
+   *   <li><b>numFactors</b>: int value with the number of latent factors.
+   *   <li><b>ratings</b>: double array with the plausible ratings of the DataModel.
+   *   <li><b>numIters:</b>: int value with the number of iterations.
+   *   <li><b><em>H</em></b> (optional): double value that represents the heuristic factor to control the number of
+   *      iterations during E-Step. The number of iterations is defined by H * number_of_user_ratings.</li>
+   *   <li><b><em>seed</em></b> (optional): random seed for random numbers generation. If missing,
+   *       random value is used.
+   * </ul>
+   * @param datamodel DataModel instance
+   * @param params Model's hyper-parameters values
+   */
+  public URP(DataModel datamodel, Map<String, Object> params) {
+        this(
+                datamodel,
+                (int) params.get("numFactors"),
+                (double[]) params.get("ratings"),
+                (int) params.get("numIters"),
+                params.containsKey("H") ? (double) params.get("H") : DEFAULT_H,
+                params.containsKey("seed") ? (long) params.get("seed") : System.currentTimeMillis()
+        );
+    }
+
     /**
      * Model constructor
      * @param datamodel DataModel instance
@@ -69,7 +96,7 @@ public class URP extends Recommender {
      * @param ratings Plausible ratings (must be sorted in ascending order)
      * @param numIters Number of iterations
      */
-    public URP(DataModel datamodel, int numFactors, double [] ratings, int numIters) {
+    public URP(DataModel datamodel, int numFactors, double[] ratings, int numIters) {
         this(datamodel, numFactors, ratings, numIters, System.currentTimeMillis());
     }
 
@@ -81,8 +108,8 @@ public class URP extends Recommender {
      * @param numIters Number of iterations
      * @param seed Seed for random numbers generation
      */
-    public URP(DataModel datamodel, int numFactors, double [] ratings, int numIters, long seed) {
-        this(datamodel, numFactors, ratings, numIters, 0.1, seed);
+    public URP(DataModel datamodel, int numFactors, double[] ratings, int numIters, long seed) {
+        this(datamodel, numFactors, ratings, numIters, DEFAULT_H, seed);
     }
 
     /**
@@ -94,7 +121,7 @@ public class URP extends Recommender {
      * @param H Heuristic factor to control number of iterations during E-Step. The number of iterations is defined by
      *          H * number_of_user_ratings
      */
-    public URP(DataModel datamodel, int numFactors, double [] ratings, int numIters, double H) {
+    public URP(DataModel datamodel, int numFactors, double[] ratings, int numIters, double H) {
         this(datamodel, numFactors, ratings, numIters, H, System.currentTimeMillis());
     }
 
@@ -108,7 +135,7 @@ public class URP extends Recommender {
      *          H * number_of_user_ratings
      * @param seed Seed for random numbers generation
      */
-    public URP(DataModel datamodel, int numFactors, double [] ratings, int numIters, double H, long seed) {
+    public URP(DataModel datamodel, int numFactors, double[] ratings, int numIters, double H, long seed) {
         super(datamodel);
 
         this.numFactors = numFactors;

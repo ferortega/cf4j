@@ -4,6 +4,8 @@ import es.upm.etsisi.cf4j.data.TestUser;
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 
+import java.util.Map;
+
 /**
  * This class calculates the percentage of perfect predictions. A prediction is considered perfect if and only if
  * the absolute difference between the test rating and the prediction is less or equal than a threshold.
@@ -14,6 +16,20 @@ public class Perfect extends QualityMeasure {
 	 * Threshold value to measure if a prediction is perfect or not
 	 */
 	private double threshold;
+
+	/**
+	 * Constructor from a Map object with the quality measure parameters. Map object must contains the
+	 * following keys:
+	 * <ul>
+	 *   <li><b>threshold</b>: double value that defines the allowed threshold to measure if a prediction is perfect or
+	 *      not.</li>
+	 * </ul>
+	 * @param recommender Recommender instance for which the Perfect score are going to be computed
+	 * @param params Quality measure's parameters
+	 */
+	public Perfect(Recommender recommender, Map<String, Object> params) {
+		this(recommender, (double) params.get("threshold"));
+	}
 
 	/**
 	 * Constructor of the class which basically calls the father's one

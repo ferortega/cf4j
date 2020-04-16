@@ -7,6 +7,8 @@ import es.upm.etsisi.cf4j.data.TestItem;
 import es.upm.etsisi.cf4j.data.TestUser;
 import es.upm.etsisi.cf4j.util.Search;
 
+import java.util.Map;
+
 /**
  * This class the averaged novelty of the recomendations. Novelty value is computed as explained in "Castells, P.,
  * Vargas, S., &amp; Wang, J. (2011). Novelty and diversity metrics for recommender systems: choice, discovery and
@@ -18,6 +20,19 @@ public class Novelty extends QualityMeasure {
 	 * Number of recommended items
 	 */
 	private int numberOfRecommendations;
+
+	/**
+	 * Constructor from a Map object with the quality measure parameters. Map object must contains the
+	 * following keys:
+	 * <ul>
+	 *   <li><b>numberOfRecommendations</b>: int value with the number of items to be recommended.</li>
+	 * </ul>
+	 * @param recommender Recommender instance for which the Novelty are going to be computed
+	 * @param params Quality measure's parameters
+	 */
+	public Novelty(Recommender recommender, Map<String, Object> params) {
+		this(recommender, (int) params.get("numberOfRecommendations"));
+	}
 
 	/**
 	 * Constructor of Novelty

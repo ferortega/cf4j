@@ -8,6 +8,7 @@ import es.upm.etsisi.cf4j.data.User;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.util.Maths;
 
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -58,6 +59,33 @@ public class BiasedMF extends Recommender {
 	 * Number of iterations
 	 */
 	private int numIters;
+
+	/**
+	 * Model constructor from a Map containing the model's hyper-parameters values. Map object must contains the
+	 * following keys:
+	 * <ul>
+	 *   <li><b>numFactors</b>: int value with the number of latent factors.</li>
+	 *   <li><b>numIters:</b>: int value with the number of iterations.</li>
+	 *   <li><b><em>gamma</em></b> (optional): double value with the learning rate hyper-parameter. If missing, it is
+	 *   	set to 0.01.</li>
+	 *   <li><b><em>lambda</em></b> (optional): double value with the regularization hyper-parameter. If missing, it is
+	 *   	set to 0.05.</li>
+	 *   <li><b><em>seed</em></b> (optional): random seed for random numbers generation. If missing, random value is
+	 *   	used.</li>
+	 * </ul>
+	 * @param datamodel DataModel instance
+	 * @param params Model's hyper-parameters values
+	 */
+	public BiasedMF(DataModel datamodel, Map<String, Object> params) {
+		this(
+				datamodel,
+				(int) params.get("numFactors"),
+				(int) params.get("numIters"),
+				params.containsKey("lambda") ? (double) params.get("lambda") : DEFAULT_LAMBDA,
+				params.containsKey("gamma") ? (double) params.get("gamma") : DEFAULT_GAMMA,
+				params.containsKey("seed") ? (long) params.get("seed") : System.currentTimeMillis()
+		);
+	}
 
 	/**
 	 * Model constructor
