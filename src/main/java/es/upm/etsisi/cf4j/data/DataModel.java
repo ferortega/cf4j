@@ -493,10 +493,10 @@ public class DataModel implements Serializable {
 
     @Override
     public String toString() {
-        return "\nNumber of users: " + this.users.length +
-               "\nNumber of test users: " + this.testUsers.length +
-               "\nNumber of items: " + this.items.length +
-               "\nNumber of test items: " + this.testItems.length +
+        return "\nNumber of users: " + this.getNumberOfUsers() +
+               "\nNumber of test users: " + this.getNumberOfTestUsers() +
+               "\nNumber of items: " + this.getNumberOfItems() +
+               "\nNumber of test items: " + this.getNumberOfTestItems() +
                "\nNumber of ratings: " + this.getNumberOfRatings() +
                "\nNumber of test ratings: " + this.getNumberOfTestRatings() +
                "\nMin rating: " + this.getMinRating() +
