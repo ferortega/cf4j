@@ -493,19 +493,18 @@ public class DataModel implements Serializable {
 
     @Override
     public String toString() {
-        return new StringBuilder()
-                .append("\nNumber of users: ").append(this.users.length)
-                .append("\nNumber of test users: ").append(this.testUsers.length)
-                .append("\nNumber of items: ").append(this.items.length)
-                .append("\nNumber of test items: ").append(this.testItems.length)
-                .append("\nNumber of ratings: ").append(this.getNumberOfRatings())
-                .append("\nMin rating: ").append(this.getMinRating())
-                .append("\nMax rating: ").append(this.getMaxRating())
-                .append("\nAverage rating: ").append(this.getRatingAverage())
-                .append("\nNumber of test ratings: ").append(this.getNumberOfTestRatings())
-                .append("\nMin test rating: ").append(this.getMinTestRating())
-                .append("\nMax test rating: ").append(this.getMaxTestRating())
-                .append("\nAverage test rating: ").append(this.getTestRatingAverage())
-                .toString();
+        return "\nNumber of users: " + this.users.length +
+               "\nNumber of test users: " + this.testUsers.length +
+               "\nNumber of items: " + this.items.length +
+               "\nNumber of test items: " + this.testItems.length +
+               "\nNumber of ratings: " + this.getNumberOfRatings() +
+               "\nNumber of test ratings: " + this.getNumberOfTestRatings() +
+               "\nMin rating: " + this.getMinRating() +
+               "\nMax rating: " + this.getMaxRating() +
+               "\nAverage rating: " + this.getRatingAverage() +
+               "\nNumber of test ratings: " + this.getNumberOfTestRatings() +
+               "\nMin test rating: " + this.getMinTestRating() +
+               "\nMax test rating: " + this.getMaxTestRating() +
+               "\nAverage test rating: " + this.getTestRatingAverage();
     }
 }
