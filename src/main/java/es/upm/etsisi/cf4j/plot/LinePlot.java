@@ -10,11 +10,8 @@ import de.erichseifert.gral.io.plots.DrawableWriter;
 import de.erichseifert.gral.io.plots.DrawableWriterFactory;
 import de.erichseifert.gral.plots.XYPlot;
 import de.erichseifert.gral.plots.lines.DefaultLineRenderer2D;
-import de.erichseifert.gral.ui.InteractivePanel;
 import org.apache.commons.math3.util.Pair;
 
-import javax.swing.*;
-import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -190,10 +187,10 @@ public class LinePlot extends Plot {
         plot.setBackground(PlotSettings.getBackgroundColor());
 
         plot.setInsets(new Insets2D.Double(
-                PlotSettings.getTopInset(),
-                PlotSettings.getLeftInset(),
-                PlotSettings.getBottomInset(),
-                PlotSettings.getRightInset()
+                PlotSettings.getLegendInset(),
+                PlotSettings.getyAxisInset(),
+                PlotSettings.getxAxisInset(),
+                PlotSettings.getClearInset()
         ));
 
         plot.getAxisRenderer(XYPlot.AXIS_X).setLabel(new Label(xLabel));

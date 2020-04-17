@@ -8,13 +8,13 @@ public class PlotSettings {
 
     private static Color backgroundColor;
 
-    private static double topInset;
+    private static double legendInset;
 
-    private static double leftInset;
+    private static double yAxisInset;
 
-    private static double bottomInset;
+    private static double xAxisInset;
 
-    private static double rightInset;
+    private static double clearInset;
 
     private static Font primaryFont;
 
@@ -44,10 +44,10 @@ public class PlotSettings {
                 new Color(255,149,14)
         };
         backgroundColor = Color.WHITE;
-        topInset = 70.0;
-        leftInset = 95.0;
-        bottomInset = 75.0;
-        rightInset = 20;
+        legendInset = 70.0;
+        yAxisInset = 95.0;
+        xAxisInset = 75.0;
+        clearInset = 20;
         primaryFont = new Font("Dialog", Font.PLAIN, 17);
         secondaryFont =  new Font("Dialog", Font.PLAIN, 15);
         xAxisLabelDistance = 0.8;
@@ -77,36 +77,36 @@ public class PlotSettings {
         PlotSettings.backgroundColor = backgroundColor;
     }
 
-    public static double getTopInset() {
-        return topInset;
+    public static double getLegendInset() {
+        return legendInset;
     }
 
-    public static void setTopInset(double topInset) {
-        PlotSettings.topInset = topInset;
+    public static void setLegendInset(double legendInset) {
+        PlotSettings.legendInset = legendInset;
     }
 
-    public static double getLeftInset() {
-        return leftInset;
+    public static double getyAxisInset() {
+        return yAxisInset;
     }
 
-    public static void setLeftInset(double leftInset) {
-        PlotSettings.leftInset = leftInset;
+    public static void setyAxisInset(double yAxisInset) {
+        PlotSettings.yAxisInset = yAxisInset;
     }
 
-    public static double getBottomInset() {
-        return bottomInset;
+    public static double getxAxisInset() {
+        return xAxisInset;
     }
 
-    public static void setBottomInset(double bottomInset) {
-        PlotSettings.bottomInset = bottomInset;
+    public static void setxAxisInset(double xAxisInset) {
+        PlotSettings.xAxisInset = xAxisInset;
     }
 
-    public static double getRightInset() {
-        return rightInset;
+    public static double getClearInset() {
+        return clearInset;
     }
 
-    public static void setRightInset(double rightInset) {
-        PlotSettings.rightInset = rightInset;
+    public static void setClearInset(double clearInset) {
+        PlotSettings.clearInset = clearInset;
     }
 
     public static Font getPrimaryFont() {
