@@ -9,6 +9,7 @@ import de.erichseifert.gral.graphics.Orientation;
 import de.erichseifert.gral.io.plots.DrawableWriter;
 import de.erichseifert.gral.io.plots.DrawableWriterFactory;
 import de.erichseifert.gral.plots.XYPlot;
+import de.erichseifert.gral.plots.axes.AxisRenderer;
 import de.erichseifert.gral.plots.lines.DefaultLineRenderer2D;
 import org.apache.commons.math3.util.Pair;
 
@@ -204,25 +205,29 @@ public class LinePlot extends Plot {
                 PlotSettings.getClearInset()
         ));
 
-        plot.getAxisRenderer(XYPlot.AXIS_X).setLabel(new Label(xLabel));
-        plot.getAxisRenderer(XYPlot.AXIS_X).getLabel().setFont(PlotSettings.getPrimaryFont());
-        plot.getAxisRenderer(XYPlot.AXIS_X).setLabelDistance(PlotSettings.getxAxisLabelDistance());
+        AxisRenderer xAxisRenderer = plot.getAxisRenderer(XYPlot.AXIS_X);
 
-        plot.getAxisRenderer(XYPlot.AXIS_X).setTickFont(PlotSettings.getSecondaryFont());
-        plot.getAxisRenderer(XYPlot.AXIS_X).setTickLabelFormat(NumberFormat.getInstance(Locale.US));
-        plot.getAxisRenderer(XYPlot.AXIS_X).setTicksAutoSpaced(true);
+        xAxisRenderer.setLabel(new Label(xLabel));
+        xAxisRenderer.getLabel().setFont(PlotSettings.getPrimaryFont());
+        xAxisRenderer.setLabelDistance(PlotSettings.getxAxisLabelDistance());
 
-        plot.getAxisRenderer(XYPlot.AXIS_Y).setLabel(new Label(yLabel));
-        plot.getAxisRenderer(XYPlot.AXIS_Y).getLabel().setFont(PlotSettings.getPrimaryFont());
-        plot.getAxisRenderer(XYPlot.AXIS_Y).getLabel().setRotation(90);
-        plot.getAxisRenderer(XYPlot.AXIS_Y).setLabelDistance(PlotSettings.getyAxisLabelDistance());
+        xAxisRenderer.setTickFont(PlotSettings.getSecondaryFont());
+        xAxisRenderer.setTickLabelFormat(NumberFormat.getInstance(Locale.US));
+        xAxisRenderer.setTicksAutoSpaced(true);
 
-        plot.getAxisRenderer(XYPlot.AXIS_Y).setTickFont(PlotSettings.getSecondaryFont());
-        plot.getAxisRenderer(XYPlot.AXIS_Y).setTickLabelFormat(NumberFormat.getInstance(Locale.US));
-        plot.getAxisRenderer(XYPlot.AXIS_Y).setTicksAutoSpaced(true);
+        AxisRenderer yAxisRenderer = plot.getAxisRenderer(XYPlot.AXIS_Y);
+        
+        yAxisRenderer.setLabel(new Label(yLabel));
+        yAxisRenderer.getLabel().setFont(PlotSettings.getPrimaryFont());
+        yAxisRenderer.getLabel().setRotation(90);
+        yAxisRenderer.setLabelDistance(PlotSettings.getyAxisLabelDistance());
 
-        plot.getAxisRenderer(XYPlot.AXIS_X).setIntersection(-Double.MAX_VALUE);
-        plot.getAxisRenderer(XYPlot.AXIS_Y).setIntersection(-Double.MAX_VALUE);
+        yAxisRenderer.setTickFont(PlotSettings.getSecondaryFont());
+        yAxisRenderer.setTickLabelFormat(NumberFormat.getInstance(Locale.US));
+        yAxisRenderer.setTicksAutoSpaced(true);
+
+        xAxisRenderer.setIntersection(-Double.MAX_VALUE);
+        yAxisRenderer.setIntersection(-Double.MAX_VALUE);
 
         if (!this.hideLengend) {
             plot.setLegendLocation(Location.NORTH);
