@@ -31,15 +31,26 @@ public class LinePlot extends Plot {
 
     private String yLabel;
 
+    private boolean hideLengend;
+
 
     public LinePlot(int[] xs, String xLabel, String yLabel) {
-        this(Arrays.stream(xs).asDoubleStream().toArray(), xLabel, yLabel);
+        this(Arrays.stream(xs).asDoubleStream().toArray(), xLabel, yLabel, false);
+    }
+
+    public LinePlot(int[] xs, String xLabel, String yLabel, boolean hideLengend) {
+        this(Arrays.stream(xs).asDoubleStream().toArray(), xLabel, yLabel, hideLengend);
     }
 
     public LinePlot(double[] xs, String xLabel, String yLabel) {
+        this(xs, xLabel, yLabel, false);
+    }
+
+    public LinePlot(double[] xs, String xLabel, String yLabel, boolean hideLengend) {
         this.xs = xs;
         this.xLabel = xLabel;
         this.yLabel = yLabel;
+        this.hideLengend = hideLengend;
 
         this.series = new ArrayList<>();
     }
@@ -187,7 +198,7 @@ public class LinePlot extends Plot {
         plot.setBackground(PlotSettings.getBackgroundColor());
 
         plot.setInsets(new Insets2D.Double(
-                PlotSettings.getLegendInset(),
+                (this.hideLengend) ? PlotSettings.getClearInset() : PlotSettings.getLegendInset(),
                 PlotSettings.getyAxisInset(),
                 PlotSettings.getxAxisInset(),
                 PlotSettings.getClearInset()
@@ -213,16 +224,18 @@ public class LinePlot extends Plot {
         plot.getAxisRenderer(XYPlot.AXIS_X).setIntersection(-Double.MAX_VALUE);
         plot.getAxisRenderer(XYPlot.AXIS_Y).setIntersection(-Double.MAX_VALUE);
 
-        plot.setLegendLocation(Location.NORTH);
-        plot.setLegendVisible(true);
-        plot.setLegendDistance(PlotSettings.getLegendDistance());
-        plot.getLegend().setBorderStroke(null);
-        plot.getLegend().setOrientation(Orientation.HORIZONTAL);
-        plot.getLegend().setAlignmentX(0.5);
-        plot.getLegend().setFont(PlotSettings.getPrimaryFont());
+        if (!this.hideLengend) {
+            plot.setLegendLocation(Location.NORTH);
+            plot.setLegendVisible(true);
+            plot.setLegendDistance(PlotSettings.getLegendDistance());
+            plot.getLegend().setBorderStroke(null);
+            plot.getLegend().setOrientation(Orientation.HORIZONTAL);
+            plot.getLegend().setAlignmentX(0.5);
+            plot.getLegend().setFont(PlotSettings.getPrimaryFont());
 
-        plot.getNavigator().setZoom(0.9);
-        plot.getNavigator().setZoomable(false);
+            plot.getNavigator().setZoom(0.9);
+            plot.getNavigator().setZoomable(false);
+        }
 
         return plot;
     }
