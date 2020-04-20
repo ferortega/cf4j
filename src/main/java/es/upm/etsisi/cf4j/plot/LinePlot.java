@@ -216,7 +216,7 @@ public class LinePlot extends Plot {
         xAxisRenderer.setTicksAutoSpaced(true);
 
         AxisRenderer yAxisRenderer = plot.getAxisRenderer(XYPlot.AXIS_Y);
-        
+
         yAxisRenderer.setLabel(new Label(yLabel));
         yAxisRenderer.getLabel().setFont(PlotSettings.getPrimaryFont());
         yAxisRenderer.getLabel().setRotation(90);
