@@ -9,6 +9,7 @@ import de.erichseifert.gral.io.plots.DrawableWriterFactory;
 import de.erichseifert.gral.plots.XYPlot;
 import de.erichseifert.gral.plots.points.DefaultPointRenderer2D;
 import de.erichseifert.gral.plots.points.PointRenderer;
+import de.erichseifert.gral.util.GraphicsUtils;
 import org.apache.commons.math3.util.Pair;
 
 import java.awt.geom.Ellipse2D;
@@ -130,7 +131,7 @@ public class ScatterPlot extends Plot {
 
         PointRenderer pr = new DefaultPointRenderer2D();
         pr.setShape(new Ellipse2D.Double(-3.0, -3.0, 6.0, 6.0));
-        pr.setColor(PlotSettings.getColor(0));
+        pr.setColor(GraphicsUtils.deriveWithAlpha(PlotSettings.getColor(0), 128));
         plot.setPointRenderers(series, pr);
 
         plot.setInsets(new Insets2D.Double(
