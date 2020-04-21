@@ -98,7 +98,7 @@ public class TestItem extends Item {
 
 		minTest = Math.min(rating, minTest);
 		maxTest = Math.max(rating, maxTest);
-		averageTest = (this.usersRatings.size() <= 1) ? rating : ((averageTest * (this.usersRatings.size()-1)) + rating) / this.usersRatings.size();
+		averageTest = (this.testUsersRatings.size() <= 1) ? rating : ((averageTest * (this.testUsersRatings.size()-1)) + rating) / this.testUsersRatings.size();
 	}
 
 	/**
