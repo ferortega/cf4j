@@ -48,7 +48,7 @@ public class UserKNN extends Recommender {
      *   <li><b>metric:</b>: UserSimilarityMetric instance with the similarity metric to compute the similarity between
      *   two users.</li>
      *   <li><b>aggregationApproach</b>: UserKNN.AggregationApproach instance with the aggregation approach used to
-     *   aggregate k-nearest neighbors ratings.</li>>
+     *   aggregate k-nearest neighbors ratings.</li>
      * </ul>
      * @param datamodel DataModel instance
      * @param params Recommender's hyper-parameters values

@@ -50,7 +50,7 @@ public class ItemKNN extends Recommender {
      *   <li><b>metric:</b>: ItemSimilarityMetric instance with the similarity metric to compute the similarity between
      *   two items.</li>
      *   <li><b>aggregationApproach</b>: ItemKNN.AggregationApproach instance with the aggregation approach used to
-     *   aggregate k-nearest neighbors ratings.</li>>
+     *   aggregate k-nearest neighbors ratings.</li>
      * </ul>
      * @param datamodel DataModel instance
      * @param params Recommender's hyper-parameters values
