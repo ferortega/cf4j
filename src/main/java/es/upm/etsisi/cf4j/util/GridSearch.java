@@ -157,15 +157,15 @@ public class GridSearch {
     public void printResults(String numberFormat, boolean lowerIsBetter) {
 
         // Sort results
-        Comparator<Pair<String, Double>> comparator = Comparator.comparing(Pair::getValue, (v1, v2) -> {
-            if (Double.isNaN(v1) || Double.isNaN(v2)) {
+        Comparator<Pair<String, Double>> comparator = Comparator.comparing(Pair::getValue, (d1, d2) -> {
+            if (Double.isNaN(d1) && Double.isNaN(d2)) {
+                return 0;
+            } else if (Double.isNaN(d1)) {
                 return 1;
-            } else if (v1 > v2) {
-                return 1;
-            } else if (v2 > v1) {
+            } else if (Double.isNaN(d2)) {
                 return -1;
             } else {
-                return 0;
+                return Double.compare(d1, d2);
             }
         });
 
