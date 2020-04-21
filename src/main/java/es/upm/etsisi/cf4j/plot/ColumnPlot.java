@@ -1,78 +1,86 @@
 package es.upm.etsisi.cf4j.plot;
 
-import de.erichseifert.gral.data.DataSeries;
 import de.erichseifert.gral.data.DataTable;
-import de.erichseifert.gral.data.Row;
 import de.erichseifert.gral.data.statistics.Statistics;
 import de.erichseifert.gral.graphics.Insets2D;
 import de.erichseifert.gral.graphics.Label;
-import de.erichseifert.gral.graphics.Location;
 import de.erichseifert.gral.graphics.Orientation;
-import de.erichseifert.gral.io.plots.DrawableWriter;
-import de.erichseifert.gral.io.plots.DrawableWriterFactory;
+import de.erichseifert.gral.plots.AbstractPlot;
 import de.erichseifert.gral.plots.BarPlot;
-import de.erichseifert.gral.plots.XYPlot;
 import de.erichseifert.gral.plots.axes.AxisRenderer;
-import de.erichseifert.gral.plots.lines.DefaultLineRenderer2D;
-import de.erichseifert.gral.util.GraphicsUtils;
 import org.apache.commons.math3.util.Pair;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.*;
 import java.util.List;
 
+/**
+ * Implements a column plot.
+ */
 public class ColumnPlot extends Plot {
 
+    /**
+     * Default column width
+     */
     private final static double COLUMN_WIDTH = 0.8;
 
+    /**
+     * Columns to be showed in the plot
+     */
     private List<Pair<String, Double>> columns;
 
+    /**
+     * Label of the x axis
+     */
     private String xLabel;
 
+    /**
+     * label of the y axis
+     */
     private String yLabel;
 
+    /**
+     * Creates a new ColumnPlot
+     * @param xLabel Label of the x axis
+     * @param yLabel Label of the y axis
+     */
     public ColumnPlot(String xLabel, String yLabel) {
         this.xLabel = xLabel;
         this.yLabel = yLabel;
         this.columns = new ArrayList<>();
     }
 
+    /**
+     * Adds a column to the plot
+     * @param name Column name
+     * @param value Column value
+     */
     public void addColumn(String name, double value) {
         this.columns.add(new Pair(name, value));
     }
 
-
     @Override
-    public void exportData(String filename, String separator) throws IOException {
-        File f = new File(filename);
-        File parent = f.getAbsoluteFile().getParentFile();
-        if(!parent.exists() && !parent.mkdirs()) {
-            throw new IOException("Unable to create directory "+ parent);
-        }
-
-        PrintWriter writer = new PrintWriter(f);
-
-        writer.println("\"Name\"" + separator + "\"Value\"");
-
-        for (Pair<String, Double> column : this.columns) {
-            String name = column.getKey();
-            double value = column.getValue();
-            writer.println("\"" + name + "\"" + separator + value);
-        }
-
-        writer.close();
+    protected String getCSVHeader(String separator) {
+        return "\"Name\"" + separator + "\"Value\"";
     }
 
     @Override
-    public void printData(String xFormat, String yFormat) {
-        DecimalFormat ydf = new DecimalFormat(yFormat, new DecimalFormatSymbols(Locale.US));
+    protected Iterator<String> getCSVContent(String separator) {
+        List<String> content = new ArrayList<>();
+        for (Pair<String, Double> column : this.columns) {
+            String name = column.getKey();
+            double value = column.getValue();
+            content.add("\"" + name + "\"" + separator + value);
+        }
+        return content.iterator();
+    }
+
+    @Override
+    public String toString(String xAxisTicksFormat, String yAxisTicksFormat) {
+        DecimalFormat ydf = new DecimalFormat(yAxisTicksFormat, new DecimalFormatSymbols(Locale.US));
 
         StringBuilder sb = new StringBuilder();
 
@@ -94,7 +102,7 @@ public class ColumnPlot extends Plot {
                     .append("\t").append(ydf.format(value));
         }
 
-        System.out.println("\n" + sb.toString());
+        return sb.toString();
     }
 
     /**
@@ -112,26 +120,7 @@ public class ColumnPlot extends Plot {
     }
 
     @Override
-    public void draw() {
-        BarPlot plot = this.getPlot();
-        PlotFrame frame = new PlotFrame(plot);
-        frame.setVisible(true);
-    }
-
-    @Override
-    public void exportPlot(String filename) throws IOException {
-        BarPlot plot = this.getPlot();
-        File f = new File(filename);
-        File parent = f.getAbsoluteFile().getParentFile();
-        if(!parent.exists() && !parent.mkdirs()) {
-            throw new IOException("Unable to create directory "+ parent);
-        }
-        DrawableWriter writer = DrawableWriterFactory.getInstance().get("image/png");
-        writer.write(plot, new FileOutputStream(f), PlotSettings.getWidth(), PlotSettings.getHeight());
-    }
-
-
-    private BarPlot getPlot() {
+    protected AbstractPlot getGralPlot() {
 
         // Create column plot data
         DataTable data = new DataTable(Double.class, Double.class);
@@ -170,6 +159,8 @@ public class ColumnPlot extends Plot {
         xAxisRenderer.setTickFont(PlotSettings.getSecondaryFont());
         xAxisRenderer.setTickSpacing(Double.MAX_VALUE); // Hack to avoid default tick labels
         xAxisRenderer.setMinorTicksVisible(false);
+        xAxisRenderer.setTickAlignment(0);
+        xAxisRenderer.setTickLength(xAxisRenderer.getTickLength() / 2.0);
         xAxisRenderer.setIntersection(0);
 
         Map<Double, String> xTicks = new HashMap<>();

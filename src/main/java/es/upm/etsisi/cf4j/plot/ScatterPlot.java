@@ -6,6 +6,7 @@ import de.erichseifert.gral.graphics.Insets2D;
 import de.erichseifert.gral.graphics.Label;
 import de.erichseifert.gral.io.plots.DrawableWriter;
 import de.erichseifert.gral.io.plots.DrawableWriterFactory;
+import de.erichseifert.gral.plots.AbstractPlot;
 import de.erichseifert.gral.plots.XYPlot;
 import de.erichseifert.gral.plots.axes.AxisRenderer;
 import de.erichseifert.gral.plots.points.DefaultPointRenderer2D;
@@ -21,6 +22,7 @@ import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -44,43 +46,38 @@ public class ScatterPlot extends Plot {
     }
 
     @Override
-    public void exportData(String filename, String separator) throws IOException {
-        File f = new File(filename);
-        File parent = f.getAbsoluteFile().getParentFile();
-        if(!parent.exists() && !parent.mkdirs()) {
-            throw new IOException("Unable to create directory "+ parent);
-        }
-
-        PrintWriter writer = new PrintWriter(f);
-
-        writer.print("\"" + this.xLabel + "\"" + separator + "\"" + this.yLabel + "\"");
-
-        for (Pair<Double, Double> point : this.points) {
-            writer.print("\n" + point.getFirst() + separator + point.getSecond());
-        }
-
-        writer.close();
+    protected String getCSVHeader(String separator) {
+        return "\"" + this.xLabel + "\"" + separator + "\"" + this.yLabel + "\"";
     }
 
     @Override
-    public void printData(String xFormat, String yFormat) {
-        DecimalFormat xdf = new DecimalFormat(xFormat);
-        DecimalFormat ydf = new DecimalFormat(yFormat);
+    protected Iterator<String> getCSVContent(String separator) {
+        List<String> content = new ArrayList<>();
+        for (Pair<Double, Double> point : this.points) {
+            content.add(point.getFirst() + separator + point.getSecond());
+        }
+        return content.iterator();
+    }
+
+    @Override
+    public String toString(String xAxisTicksFormat, String yAxisTicksFormat) {
+        DecimalFormat xdf = new DecimalFormat(xAxisTicksFormat);
+        DecimalFormat ydf = new DecimalFormat(yAxisTicksFormat);
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append(this.xLabel).append(this.blankString(Math.max(0, xFormat.length() - this.xLabel.length())));
+        sb.append(this.xLabel).append(this.blankString(Math.max(0, xAxisTicksFormat.length() - this.xLabel.length())));
         sb.append("  ");
-        sb.append(this.yLabel).append(this.blankString(Math.max(0, yFormat.length() - this.yLabel.length())));
+        sb.append(this.yLabel).append(this.blankString(Math.max(0, yAxisTicksFormat.length() - this.yLabel.length())));
 
         for (Pair<Double, Double> point : this.points) {
             sb.append("\n");
-            sb.append(xdf.format(point.getFirst())).append(this.blankString(Math.max(0, xFormat.length() - this.xLabel.length())));
+            sb.append(xdf.format(point.getFirst())).append(this.blankString(Math.max(0, xAxisTicksFormat.length() - this.xLabel.length())));
             sb.append("  ");
-            sb.append(ydf.format(point.getSecond())).append(this.blankString(Math.max(0, yFormat.length() - this.yLabel.length())));
+            sb.append(ydf.format(point.getSecond())).append(this.blankString(Math.max(0, yAxisTicksFormat.length() - this.yLabel.length())));
         }
 
-        System.out.println("\n" + sb.toString());
+        return sb.toString();
     }
 
     /**
@@ -97,28 +94,11 @@ public class ScatterPlot extends Plot {
         return str.toString();
     }
 
-    @Override
-    public void draw() {
-        XYPlot plot = this.getPlot();
-        PlotFrame frame = new PlotFrame(plot);
-        frame.setVisible(true);
-    }
 
     @Override
-    public void exportPlot(String filename) throws IOException {
-        XYPlot plot = this.getPlot();
-        File f = new File(filename);
-        File parent = f.getAbsoluteFile().getParentFile();
-        if(!parent.exists() && !parent.mkdirs()) {
-            throw new IOException("Unable to create directory "+ parent);
-        }
-        DrawableWriter writer = DrawableWriterFactory.getInstance().get("image/png");
-        writer.write(plot, new FileOutputStream(f), PlotSettings.getWidth(), PlotSettings.getHeight());
-    }
+    protected AbstractPlot getGralPlot() {
 
-
-    private XYPlot getPlot() {
-
+        // Create XY plot with data
         DataTable data = new DataTable(Double.class, Double.class);
         for (Pair<Double, Double> point : this.points) {
             data.add(point.getFirst(), point.getSecond());
@@ -128,6 +108,7 @@ public class ScatterPlot extends Plot {
 
         XYPlot plot = new XYPlot(series);
 
+        // Customize plot
         plot.setBackground(PlotSettings.getBackgroundColor());
 
         PointRenderer pr = new DefaultPointRenderer2D();
@@ -142,6 +123,7 @@ public class ScatterPlot extends Plot {
                 PlotSettings.getClearInset()
         ));
 
+        // Customize x axis
         AxisRenderer xAxisRenderer = plot.getAxisRenderer(XYPlot.AXIS_X);
 
         xAxisRenderer.setLabel(new Label(xLabel));
@@ -152,7 +134,7 @@ public class ScatterPlot extends Plot {
         xAxisRenderer.setTickLabelFormat(NumberFormat.getInstance(Locale.US));
         xAxisRenderer.setTicksAutoSpaced(true);
 
-
+        // Customize y axis
         AxisRenderer yAxisRenderer = plot.getAxisRenderer(XYPlot.AXIS_Y);
 
         yAxisRenderer.setLabel(new Label(yLabel));
@@ -167,6 +149,7 @@ public class ScatterPlot extends Plot {
         xAxisRenderer.setIntersection(-Double.MAX_VALUE);
         yAxisRenderer.setIntersection(-Double.MAX_VALUE);
 
+        // Customize navigator settings
         plot.getNavigator().setZoom(0.9);
         plot.getNavigator().setZoomable(false);
 

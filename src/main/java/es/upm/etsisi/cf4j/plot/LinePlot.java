@@ -6,68 +6,127 @@ import de.erichseifert.gral.graphics.Insets2D;
 import de.erichseifert.gral.graphics.Label;
 import de.erichseifert.gral.graphics.Location;
 import de.erichseifert.gral.graphics.Orientation;
-import de.erichseifert.gral.io.plots.DrawableWriter;
-import de.erichseifert.gral.io.plots.DrawableWriterFactory;
+import de.erichseifert.gral.plots.AbstractPlot;
 import de.erichseifert.gral.plots.XYPlot;
 import de.erichseifert.gral.plots.axes.AxisRenderer;
 import de.erichseifert.gral.plots.lines.DefaultLineRenderer2D;
 import org.apache.commons.math3.util.Pair;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
 import java.util.List;
 
+/**
+ * Implements a LinePlot.
+ */
 public class LinePlot extends Plot {
 
+    /**
+     * Series data
+     */
     private List<Pair<String, double[]>> series;
 
+    /**
+     * Values of the x axis
+     */
     private double[] xs;
 
+    /**
+     * Label of the x axis
+     */
     private String xLabel;
 
+    /**
+     * Label of the y axis
+     */
     private String yLabel;
 
-    private boolean hideLengend;
+    /**
+     * Indicates if the legend must be hidden
+     */
+    private boolean hideLegend;
 
-
+    /**
+     * Creates a new LinePlot
+     * @param xs Values of the x axis
+     * @param xLabel Label of the x axis
+     * @param yLabel Label of the y axis
+     */
     public LinePlot(int[] xs, String xLabel, String yLabel) {
         this(Arrays.stream(xs).asDoubleStream().toArray(), xLabel, yLabel, false);
     }
 
-    public LinePlot(int[] xs, String xLabel, String yLabel, boolean hideLengend) {
-        this(Arrays.stream(xs).asDoubleStream().toArray(), xLabel, yLabel, hideLengend);
+    /**
+     * Creates a new LinePlot
+     * @param xs Values of the x axis
+     * @param xLabel Label of the x axis
+     * @param yLabel Label of the y axis
+     * @param hideLegend Indicates if the legend must be hidden. False by default.
+     */
+    public LinePlot(int[] xs, String xLabel, String yLabel, boolean hideLegend) {
+        this(Arrays.stream(xs).asDoubleStream().toArray(), xLabel, yLabel, hideLegend);
     }
 
+    /**
+     * Creates a new LinePlot
+     * @param xs Values of the x axis
+     * @param xLabel Label of the x axis
+     * @param yLabel Label of the y axis
+     */
     public LinePlot(double[] xs, String xLabel, String yLabel) {
         this(xs, xLabel, yLabel, false);
     }
 
-    public LinePlot(double[] xs, String xLabel, String yLabel, boolean hideLengend) {
+    /**
+     * Creates a new LinePlot
+     * @param xs Values of the x axis
+     * @param xLabel Label of the x axis
+     * @param yLabel Label of the y axis
+     * @param hideLegend Indicates if the legend must be hidden. False by default.
+     */
+    public LinePlot(double[] xs, String xLabel, String yLabel, boolean hideLegend) {
         this.xs = xs;
         this.xLabel = xLabel;
         this.yLabel = yLabel;
-        this.hideLengend = hideLengend;
+        this.hideLegend = hideLegend;
 
         this.series = new ArrayList<>();
     }
 
-    public void addSerie(String seriesName, double[] y) {
+    /**
+     * Adds a new series to the plot. y values positions must be correlated with xs values
+     * @param seriesName Series name
+     * @param y Values
+     */
+    public void addSeries(String seriesName, double[] y) {
         this.series.add(new Pair(seriesName, y));
     }
 
-    public void addSerie(String seriesName) {
+    /**
+     * Adds a new empty series to the plot. All series values are initialized to 0.
+     * @param seriesName Series name
+     */
+    public void addSeries(String seriesName) {
         this.series.add(new Pair(seriesName, new double[this.xs.length]));
     }
 
+    /**
+     * Sets a single value of a series
+     * @param seriesName Series name
+     * @param x x value. Must exists in xs.
+     * @param y y value
+     */
     public void setValue(String seriesName, int x, double y) {
         this.setValue(seriesName, (double) x, y);
     }
 
+    /**
+     * Sets a single value of a series
+     * @param seriesName Series name
+     * @param x x value. Must exists in xs.
+     * @param y y value
+     */
     public void setValue(String seriesName, double x, double y) {
         int xIndex = 0;
         while (this.xs[xIndex] != x) {
@@ -83,63 +142,61 @@ public class LinePlot extends Plot {
     }
 
     @Override
-    public void exportData(String filename, String separator) throws IOException {
-        File f = new File(filename);
-        File parent = f.getAbsoluteFile().getParentFile();
-        if(!parent.exists() && !parent.mkdirs()) {
-            throw new IOException("Unable to create directory "+ parent);
-        }
-
-        PrintWriter writer = new PrintWriter(f);
-
-        writer.print("\"" + this.xLabel + "\"");
-
+    protected String getCSVHeader(String separator) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\"").append(this.xLabel).append("\"");
         for (Pair<String, double[]> s : this.series) {
             String seriesName = s.getKey();
-            writer.print(separator + "\"" + seriesName + "\"");
+            sb.append(separator).append("\"").append(seriesName).append("\"");
         }
-
-        for (int row = 0; row < this.xs.length; row++) {
-            writer.print("\n" + this.xs[row]);
-            for (Pair<String, double[]> s : this.series) {
-                double[] ys = s.getValue();
-                writer.print(separator + ys[row]);
-            }
-        }
-
-        writer.close();
+        return sb.toString();
     }
 
     @Override
-    public void printData(String xFormat, String yFormat) {
-        DecimalFormat xdf = new DecimalFormat(xFormat);
-        DecimalFormat ydf = new DecimalFormat(yFormat);
+    protected Iterator<String> getCSVContent(String separator) {
+        List<String> content = new ArrayList<>();
+        for (int row = 0; row < this.xs.length; row++) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(this.xs[row]);
+            for (Pair<String, double[]> s : this.series) {
+                double[] ys = s.getValue();
+                sb.append(separator).append(ys[row]);
+            }
+            content.add(sb.toString());
+        }
+        return content.iterator();
+    }
+
+    @Override
+    public String toString(String xAxisTicksFormat, String yAxisTicksFormat) {
+        DecimalFormat xdf = new DecimalFormat(xAxisTicksFormat);
+        DecimalFormat ydf = new DecimalFormat(yAxisTicksFormat);
 
         StringBuilder sb = new StringBuilder();
 
         sb.append(this.yLabel).append(":\n");
 
-        sb.append(this.xLabel).append(this.blankString(Math.max(0, xFormat.length() - this.xLabel.length())));
+        sb.append(this.xLabel).append(this.blankString(Math.max(0, xAxisTicksFormat.length() - this.xLabel.length())));
 
         for (Pair<String, double[]> s : this.series) {
             String seriesName = s.getKey();
-            int blackLength = Math.max(0, yFormat.length() - seriesName.length());
+            int blackLength = Math.max(0, yAxisTicksFormat.length() - seriesName.length());
             sb.append("  ").append(seriesName).append(this.blankString(blackLength));
         }
 
         for (int row = 0; row < this.xs.length; row++) {
-            int blackLength = Math.max(0, this.xLabel.length() - xFormat.length());
+            int blackLength = Math.max(0, this.xLabel.length() - xAxisTicksFormat.length());
             sb.append("\n").append(xdf.format(this.xs[row])).append(this.blankString(blackLength));
 
             for (Pair<String, double[]> s : this.series) {
                 String seriesName = s.getKey();
                 double[] ys = s.getValue();
-                blackLength = Math.max(0, seriesName.length() - yFormat.length());
+                blackLength = Math.max(0, seriesName.length() - yAxisTicksFormat.length());
                 sb.append("  ").append(ydf.format(ys[row])).append(this.blankString(blackLength));
             }
         }
 
-        System.out.println("\n" + sb.toString());
+        return sb.toString();
     }
 
     /**
@@ -157,27 +214,9 @@ public class LinePlot extends Plot {
     }
 
     @Override
-    public void draw() {
-        XYPlot plot = this.getPlot();
-        PlotFrame frame = new PlotFrame(plot);
-        frame.setVisible(true);
-    }
+    protected AbstractPlot getGralPlot() {
 
-    @Override
-    public void exportPlot(String filename) throws IOException {
-        XYPlot plot = this.getPlot();
-        File f = new File(filename);
-        File parent = f.getAbsoluteFile().getParentFile();
-        if(!parent.exists() && !parent.mkdirs()) {
-            throw new IOException("Unable to create directory "+ parent);
-        }
-        DrawableWriter writer = DrawableWriterFactory.getInstance().get("image/png");
-        writer.write(plot, new FileOutputStream(f), PlotSettings.getWidth(), PlotSettings.getHeight());
-    }
-
-
-    private XYPlot getPlot() {
-
+        // Create XY plot with data
         XYPlot plot = new XYPlot();
 
         for (int i = 0; i < this.series.size(); i++) {
@@ -196,15 +235,17 @@ public class LinePlot extends Plot {
             plot.getLineRenderers(series).get(0).setColor(PlotSettings.getColor(i));
         }
 
+        // Customize plot
         plot.setBackground(PlotSettings.getBackgroundColor());
 
         plot.setInsets(new Insets2D.Double(
-                (this.hideLengend) ? PlotSettings.getClearInset() : PlotSettings.getLegendInset(),
+                (this.hideLegend) ? PlotSettings.getClearInset() : PlotSettings.getLegendInset(),
                 PlotSettings.getyAxisInset(),
                 PlotSettings.getxAxisInset(),
                 PlotSettings.getClearInset()
         ));
 
+        // Customize x axis
         AxisRenderer xAxisRenderer = plot.getAxisRenderer(XYPlot.AXIS_X);
 
         xAxisRenderer.setLabel(new Label(xLabel));
@@ -215,6 +256,7 @@ public class LinePlot extends Plot {
         xAxisRenderer.setTickLabelFormat(NumberFormat.getInstance(Locale.US));
         xAxisRenderer.setTicksAutoSpaced(true);
 
+        // Customize y axis
         AxisRenderer yAxisRenderer = plot.getAxisRenderer(XYPlot.AXIS_Y);
 
         yAxisRenderer.setLabel(new Label(yLabel));
@@ -229,7 +271,8 @@ public class LinePlot extends Plot {
         xAxisRenderer.setIntersection(-Double.MAX_VALUE);
         yAxisRenderer.setIntersection(-Double.MAX_VALUE);
 
-        if (!this.hideLengend) {
+        // Customize legend
+        if (!this.hideLegend) {
             plot.setLegendLocation(Location.NORTH);
             plot.setLegendVisible(true);
             plot.setLegendDistance(PlotSettings.getLegendDistance());
@@ -237,10 +280,11 @@ public class LinePlot extends Plot {
             plot.getLegend().setOrientation(Orientation.HORIZONTAL);
             plot.getLegend().setAlignmentX(0.5);
             plot.getLegend().setFont(PlotSettings.getPrimaryFont());
-
-            plot.getNavigator().setZoom(0.9);
-            plot.getNavigator().setZoomable(false);
         }
+
+        // Customize navigator settings
+        plot.getNavigator().setZoom(0.9);
+        plot.getNavigator().setZoomable(false);
 
         return plot;
     }
