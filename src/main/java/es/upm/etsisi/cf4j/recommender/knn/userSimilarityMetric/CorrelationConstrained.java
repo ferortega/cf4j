@@ -54,4 +54,9 @@ public class CorrelationConstrained extends UserSimilarityMetric {
 		// Return similarity
 		return num / Math.sqrt(denActive * denTarget);
 	}
+
+	@Override
+	public String toString() {
+		return super.toString() + "(median=" + this.median + ")";
+	}
 }

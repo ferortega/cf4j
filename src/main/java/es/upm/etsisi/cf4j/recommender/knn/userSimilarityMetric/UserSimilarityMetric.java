@@ -70,4 +70,9 @@ public abstract class UserSimilarityMetric implements Partible<User> {
 	
 	@Override
 	public void afterRun() { }
+
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName();
+	}
 }
