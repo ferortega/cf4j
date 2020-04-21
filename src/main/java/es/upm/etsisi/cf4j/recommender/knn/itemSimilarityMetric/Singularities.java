@@ -149,4 +149,9 @@ public class Singularities extends ItemSimilarityMetric {
 		// Return similarity
 		return (metric_a + metric_b + metric_c) / 3d;
 	}
+
+	@Override
+	public String toString() {
+		return super.toString() + "(relevantRatings=" + this.relevantRatings + ", notRelevantRatings=" + this.notRelevantRatings +")";
+	}
 }
