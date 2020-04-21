@@ -498,7 +498,6 @@ public class DataModel implements Serializable {
                "\nNumber of items: " + this.getNumberOfItems() +
                "\nNumber of test items: " + this.getNumberOfTestItems() +
                "\nNumber of ratings: " + this.getNumberOfRatings() +
-               "\nNumber of test ratings: " + this.getNumberOfTestRatings() +
                "\nMin rating: " + this.getMinRating() +
                "\nMax rating: " + this.getMaxRating() +
                "\nAverage rating: " + this.getRatingAverage() +
