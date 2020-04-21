@@ -131,7 +131,15 @@ public class GridSearch {
      * Prints the results of the grid search. By default, the quality measure is better the lower its value.
      */
     public void printResults() {
-        this.printResults("0.000000", true);
+        this.printResults("0.000000", this.results.size(), true);
+    }
+
+    /**
+     * Prints the results of the grid search
+     * @param topN Number of entries of the development set to be shown as the top ones
+     */
+    public void printResults(int topN) {
+        this.printResults("0.000000", topN, true);
     }
 
     /**
@@ -139,7 +147,7 @@ public class GridSearch {
      * @param numberFormat Number format for the quality measure values
      */
     public void printResults(String numberFormat) {
-        this.printResults(numberFormat, true);
+        this.printResults(numberFormat, this.results.size(), true);
     }
 
     /**
@@ -147,7 +155,25 @@ public class GridSearch {
      * @param lowerIsBetter True if the quality measure is better the lower its value. False otherwise.
      */
     public void printResults(boolean lowerIsBetter) {
-        this.printResults("0.000000", lowerIsBetter);
+        this.printResults("0.000000", this.results.size(), lowerIsBetter);
+    }
+
+    /**
+     * Prints the results of the grid search
+     * @param numberFormat Number format for the quality measure values
+     * @param topN Number of entries of the development set to be shown as the top ones
+     */
+    public void printResults(String numberFormat, int topN) {
+        this.printResults(numberFormat, topN, true);
+    }
+
+    /**
+     * Prints the results of the grid search
+     * @param topN Number of entries of the development set to be shown as the top ones
+     * @param lowerIsBetter True if the quality measure is better the lower its value. False otherwise.
+     */
+    public void printResults(int topN, boolean lowerIsBetter) {
+        this.printResults("0.000000", topN, lowerIsBetter);
     }
 
     /**
@@ -156,6 +182,16 @@ public class GridSearch {
      * @param lowerIsBetter True if the quality measure is better the lower its value. False otherwise.
      */
     public void printResults(String numberFormat, boolean lowerIsBetter) {
+        this.printResults(numberFormat, this.results.size(), lowerIsBetter);
+    }
+
+    /**
+     * Prints the results of the grid search
+     * @param numberFormat Number format for the quality measure values
+     * @param topN Number of entries of the development set to be shown as the top ones
+     * @param lowerIsBetter True if the quality measure is better the lower its value. False otherwise.
+     */
+    public void printResults(String numberFormat, int topN, boolean lowerIsBetter) {
 
         // Sort results
         Comparator<Pair<String, Double>> comparator = Comparator.comparing(Pair::getValue, (d1, d2) -> {
