@@ -7,6 +7,7 @@ import org.apache.commons.math3.util.Pair;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.*;
 
 /**
@@ -177,7 +178,7 @@ public class GridSearch {
 
         // Prepare printable results
         StringBuilder sb = new StringBuilder();
-        DecimalFormat df = new DecimalFormat(numberFormat);
+        DecimalFormat df = new DecimalFormat(numberFormat, new DecimalFormatSymbols(Locale.US));
 
         sb.append("Tuning parameters for ").append(recommenderClass.getSimpleName()).append(" recommender:\n\n");
 
