@@ -226,7 +226,8 @@ public class GridSearch {
         }
         sb.append(" scores on development set:\n\n");
 
-        for (Pair<String, Double> result : this.results) {
+        for (int i = 0; i < Math.min(topN, this.results.size()); i++) {
+            Pair<String, Double> result = this.results.get(i);
 
             String value = "";
 
@@ -234,7 +235,7 @@ public class GridSearch {
                 value = df.format(result.getValue());
             } else {
                 value = "NaN";
-                for (int i = 0; i < numberFormat.length() - "NaN".length(); i++) {
+                for (int s = 0; s < numberFormat.length() - "NaN".length(); s++) {
                     value += " ";
                 }
             }
