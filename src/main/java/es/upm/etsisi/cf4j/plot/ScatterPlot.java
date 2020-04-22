@@ -20,6 +20,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -46,54 +47,27 @@ public class ScatterPlot extends Plot {
     }
 
     @Override
-    protected String getCSVHeader(String separator) {
-        return "\"" + this.xLabel + "\"" + separator + "\"" + this.yLabel + "\"";
+    protected String[] getDataHeaders() {
+        String[] headers = {this.xLabel, this.yLabel};
+        return headers;
     }
 
     @Override
-    protected Iterator<String> getCSVContent(String separator) {
-        List<String> content = new ArrayList<>();
-        for (Pair<Double, Double> point : this.points) {
-            content.add(point.getFirst() + separator + point.getSecond());
-        }
-        return content.iterator();
-    }
+    protected String[][] getDataContent(String xAxisTicksFormat, String yAxisTicksFormat) {
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
+        DecimalFormat xdf = new DecimalFormat(xAxisTicksFormat, dfs);
+        DecimalFormat ydf = new DecimalFormat(yAxisTicksFormat, dfs);
 
-    @Override
-    public String toString(String xAxisTicksFormat, String yAxisTicksFormat) {
-        DecimalFormat xdf = new DecimalFormat(xAxisTicksFormat);
-        DecimalFormat ydf = new DecimalFormat(yAxisTicksFormat);
+        String[][] content = new String[this.points.size()][2];
 
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(this.xLabel).append(this.blankString(Math.max(0, xAxisTicksFormat.length() - this.xLabel.length())));
-        sb.append("  ");
-        sb.append(this.yLabel).append(this.blankString(Math.max(0, yAxisTicksFormat.length() - this.yLabel.length())));
-
-        for (Pair<Double, Double> point : this.points) {
-            sb.append("\n");
-            sb.append(xdf.format(point.getFirst())).append(this.blankString(Math.max(0, xAxisTicksFormat.length() - this.xLabel.length())));
-            sb.append("  ");
-            sb.append(ydf.format(point.getSecond())).append(this.blankString(Math.max(0, yAxisTicksFormat.length() - this.yLabel.length())));
+        for (int i = 0; i < this.points.size(); i++) {
+            Pair<Double, Double> point = this.points.get(i);
+            content[i][0] = xdf.format(point.getFirst());
+            content[i][1] = ydf.format(point.getSecond());
         }
 
-        return sb.toString();
+        return content;
     }
-
-    /**
-     * Generates a blank String of fixed length
-     * @param length Length of the string
-     * @return Blank String
-     */
-    private String blankString(int length) {
-        StringBuilder str = new StringBuilder();
-        while (length > 0) {
-            str.append(" ");
-            length--;
-        }
-        return str.toString();
-    }
-
 
     @Override
     protected AbstractPlot getGralPlot() {

@@ -1,9 +1,11 @@
 package es.upm.etsisi.cf4j.plot;
 
+import com.github.freva.asciitable.AsciiTable;
 import de.erichseifert.gral.io.plots.DrawableWriter;
 import de.erichseifert.gral.io.plots.DrawableWriterFactory;
 import de.erichseifert.gral.plots.AbstractPlot;
 import de.erichseifert.gral.ui.InteractivePanel;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -70,31 +72,17 @@ public abstract class Plot {
         PrintWriter writer = new PrintWriter(f);
 
         if (includeHeader) {
-            writer.println(this.getCSVHeader(separator));
+            String[] headers = this.getDataHeaders();
+            writer.println(StringUtils.join(headers, separator));
         }
 
-        Iterator<String> content = this.getCSVContent(separator);
-        while (content.hasNext()) {
-            String line = content.next();
-            writer.println(line);
+        String[][] content = this.getDataContent("#.###########","#.###########");
+        for (String[] row : content) {
+            writer.println(StringUtils.join(row, separator));
         }
 
         writer.close();
     }
-
-    /**
-     * Returns the CSV header
-     * @param separator CSV separator field
-     * @return CSV header line
-     */
-    protected abstract String getCSVHeader(String separator);
-
-    /**
-     * Returns CSV content
-     * @param separator CSV separator field
-     * @return Iterator with each data line of the CSV file
-     */
-    protected abstract Iterator<String> getCSVContent(String separator);
 
     /**
      * Prints the plot data into the standard output
@@ -127,8 +115,8 @@ public abstract class Plot {
 
     /**
      * Stringify the plot data
-     * @param axisTicksFormat Number format of the axis
-     * @return Plot data stringified
+     * @param axisTicksFormat Number format for the values of the axis
+     * @return Plot's data stringified
      */
     public String toString(String axisTicksFormat) {
         return this.toString(axisTicksFormat, axisTicksFormat);
@@ -136,11 +124,30 @@ public abstract class Plot {
 
     /**
      * Stringify the plot data
-     * @param xAxisTicksFormat Number format of the x axis
-     * @param yAxisTicksFormat Number format of the y axis
-     * @return Plot data stringified
+     * @param xAxisTicksFormat Number format for the values of the x axis
+     * @param yAxisTicksFormat Number format for the values of the x axis
+     * @return Plot's data stringified
      */
-    public abstract String toString(String xAxisTicksFormat, String yAxisTicksFormat);
+    public String toString(String xAxisTicksFormat, String yAxisTicksFormat) {
+        String[] headers = this.getDataHeaders();
+        String[][] content = this.getDataContent(xAxisTicksFormat, yAxisTicksFormat);
+        return AsciiTable.getTable(headers, content);
+    }
+
+    /**
+     * Returns an String array with the headers of the plot's data
+     * @return Headers of the plot's data
+     */
+    protected abstract String[] getDataHeaders();
+
+    /**
+     * Returns an String matrix with the content of the plot's data. First dimension denotes the row and second
+     * dimension denotes the column that must be correlated with the header returned by getDataHeaders().
+     * @param xAxisTicksFormat Number format for the values of the x axis
+     * @param yAxisTicksFormat Number format for the values of the x axis
+     * @return String matrix with the content of the plot's data
+     */
+    protected abstract String[][] getDataContent(String xAxisTicksFormat, String yAxisTicksFormat);
 
     /**
      * Draws the plot into a JFrame

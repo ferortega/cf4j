@@ -57,34 +57,6 @@ public class HistogramPlot extends Plot {
     }
 
     @Override
-    protected String getCSVHeader(String separator) {
-        return "\"From\"" + separator + "\"To\"" + separator + "\"Count\"";
-    }
-
-    @Override
-    protected Iterator<String> getCSVContent(String separator) {
-        double minValue = this.data.getStatistics().get(Statistics.MIN);
-        double maxValue = this.data.getStatistics().get(Statistics.MAX);
-        double barWidth = (maxValue - minValue) / this.numBins;
-
-        Histogram1D h1d = new Histogram1D(this.data, Orientation.VERTICAL, this.numBins);
-        DataSource histogram = new EnumeratedData(h1d, minValue + barWidth / 2, barWidth);
-
-        List<String> content = new ArrayList<>();
-        for (int r = 0; r < histogram.getRowCount(); r++) {
-            Row row = histogram.getRow(r);
-
-            double from = (Double) row.get(0) - barWidth / 2;
-            double to = (Double) row.get(0) + barWidth / 2;
-            long count = (Long) row.get(1);
-
-            content.add(from + separator + to + separator + count);
-        }
-
-        return content.iterator();
-    }
-
-    @Override
     public void printData() {
         this.printData("0.00", "0");
     }
@@ -105,7 +77,13 @@ public class HistogramPlot extends Plot {
     }
 
     @Override
-    public String toString(String xAxisTicksFormat, String yAxisTicksFormat) {
+    protected String[] getDataHeaders() {
+        String[] headers = {this.xLabel + " (From)", this.xLabel + " (To)", "Count"};
+        return headers;
+    }
+
+    @Override
+    protected String[][] getDataContent(String xAxisTicksFormat, String yAxisTicksFormat) {
         double minValue = this.data.getStatistics().get(Statistics.MIN);
         double maxValue = this.data.getStatistics().get(Statistics.MAX);
         double barWidth = (maxValue - minValue) / this.numBins;
@@ -121,11 +99,7 @@ public class HistogramPlot extends Plot {
 
         DecimalFormat ydf = new DecimalFormat(yAxisTicksFormat, dfs);
 
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(this.xLabel).append(":");
-
-        sb.append("\nInterval").append(this.blankString(Math.max(0, 2 * xAxisTicksFormat.length() - 4))).append("\tCount");
+        String[][] content = new String[histogram.getRowCount()][3];
 
         for (int r = 0; r < histogram.getRowCount(); r++) {
             Row row = histogram.getRow(r);
@@ -134,18 +108,12 @@ public class HistogramPlot extends Plot {
             double to = (Double) row.get(0) + barWidth / 2;
             long count = (Long) row.get(1);
 
-            sb.append("\n[").append(xdf.format(from)).append(", ").append(xdf.format(to));
-
-            if (r == histogram.getColumnCount() - 1) {
-                sb.append("]");
-            } else {
-                sb.append(")");
-            }
-
-            sb.append("\t").append(ydf.format(count));
+            content[r][0] = xdf.format(from);
+            content[r][1] = xdf.format(to);
+            content[r][2] = ydf.format(count);
         }
 
-        return sb.toString();
+        return content;
     }
 
     /**

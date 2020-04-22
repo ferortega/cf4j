@@ -1,5 +1,6 @@
 package es.upm.etsisi.cf4j.plot;
 
+import com.github.freva.asciitable.AsciiTable;
 import de.erichseifert.gral.data.DataTable;
 import de.erichseifert.gral.data.statistics.Statistics;
 import de.erichseifert.gral.graphics.Insets2D;
@@ -63,60 +64,28 @@ public class ColumnPlot extends Plot {
     }
 
     @Override
-    protected String getCSVHeader(String separator) {
-        return "\"Name\"" + separator + "\"Value\"";
+    protected String[] getDataHeaders() {
+        String[] headers = {this.xLabel, this.yLabel};
+        return headers;
     }
 
     @Override
-    protected Iterator<String> getCSVContent(String separator) {
-        List<String> content = new ArrayList<>();
-        for (Pair<String, Double> column : this.columns) {
-            String name = column.getKey();
-            double value = column.getValue();
-            content.add("\"" + name + "\"" + separator + value);
-        }
-        return content.iterator();
-    }
-
-    @Override
-    public String toString(String xAxisTicksFormat, String yAxisTicksFormat) {
+    protected String[][] getDataContent(String xAxisTicksFormat, String yAxisTicksFormat) {
         DecimalFormat ydf = new DecimalFormat(yAxisTicksFormat, new DecimalFormatSymbols(Locale.US));
 
-        StringBuilder sb = new StringBuilder();
+        String[][] content = new String[this.columns.size()][2];
 
-        sb.append(this.xLabel).append(":");
+        for (int i = 0; i < this.columns.size(); i++) {
+            Pair<String, Double> column = this.columns.get(i);
 
-        int longestNameLength = 6; // "Column".length() == 6
-        for (Pair<String, Double> column : this.columns) {
             String name = column.getKey();
-            longestNameLength = Math.max(longestNameLength, name.length());
-        }
+            content[i][0] = name;
 
-        sb.append("\nColumn").append(this.blankString(Math.max(0, longestNameLength - 6))).append("\tValue");
-
-        for (Pair<String, Double> column : this.columns) {
-            String name = column.getKey();
             double value = column.getValue();
-
-            sb.append("\n").append(name).append(this.blankString(Math.max(0, longestNameLength - name.length())))
-                    .append("\t").append(ydf.format(value));
+            content[i][1] = ydf.format(value);
         }
 
-        return sb.toString();
-    }
-
-    /**
-     * Generates a blank String of fixed length
-     * @param length Length of the string
-     * @return Blank String
-     */
-    private String blankString(int length) {
-        StringBuilder str = new StringBuilder();
-        while (length > 0) {
-            str.append(" ");
-            length--;
-        }
-        return str.toString();
+        return content;
     }
 
     @Override

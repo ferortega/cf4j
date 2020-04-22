@@ -13,6 +13,7 @@ import de.erichseifert.gral.plots.lines.DefaultLineRenderer2D;
 import org.apache.commons.math3.util.Pair;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.*;
 import java.util.List;
@@ -142,75 +143,38 @@ public class LinePlot extends Plot {
     }
 
     @Override
-    protected String getCSVHeader(String separator) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("\"").append(this.xLabel).append("\"");
-        for (Pair<String, double[]> s : this.series) {
+    protected String[] getDataHeaders() {
+        String[] headers = new String[1+this.series.size()];
+
+        headers[0] = this.xLabel;
+
+        for (int i = 0; i < this.series.size(); i++) {
+            Pair<String, double[]> s = this.series.get(i);
             String seriesName = s.getKey();
-            sb.append(separator).append("\"").append(seriesName).append("\"");
+            headers[i+1] = seriesName;
         }
-        return sb.toString();
+
+        return headers;
     }
 
     @Override
-    protected Iterator<String> getCSVContent(String separator) {
-        List<String> content = new ArrayList<>();
-        for (int row = 0; row < this.xs.length; row++) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(this.xs[row]);
-            for (Pair<String, double[]> s : this.series) {
-                double[] ys = s.getValue();
-                sb.append(separator).append(ys[row]);
-            }
-            content.add(sb.toString());
-        }
-        return content.iterator();
-    }
+    protected String[][] getDataContent(String xAxisTicksFormat, String yAxisTicksFormat) {
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
+        DecimalFormat xdf = new DecimalFormat(xAxisTicksFormat, dfs);
+        DecimalFormat ydf = new DecimalFormat(yAxisTicksFormat, dfs);
 
-    @Override
-    public String toString(String xAxisTicksFormat, String yAxisTicksFormat) {
-        DecimalFormat xdf = new DecimalFormat(xAxisTicksFormat);
-        DecimalFormat ydf = new DecimalFormat(yAxisTicksFormat);
-
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(this.yLabel).append(":\n");
-
-        sb.append(this.xLabel).append(this.blankString(Math.max(0, xAxisTicksFormat.length() - this.xLabel.length())));
-
-        for (Pair<String, double[]> s : this.series) {
-            String seriesName = s.getKey();
-            int blackLength = Math.max(0, yAxisTicksFormat.length() - seriesName.length());
-            sb.append("  ").append(seriesName).append(this.blankString(blackLength));
-        }
+        String[][] content = new String[this.xs.length][1+this.series.size()];
 
         for (int row = 0; row < this.xs.length; row++) {
-            int blackLength = Math.max(0, this.xLabel.length() - xAxisTicksFormat.length());
-            sb.append("\n").append(xdf.format(this.xs[row])).append(this.blankString(blackLength));
-
-            for (Pair<String, double[]> s : this.series) {
-                String seriesName = s.getKey();
+            content[row][0] = xdf.format(this.xs[row]);
+            for (int i = 0; i < this.series.size(); i++) {
+                Pair<String, double[]> s = this.series.get(i);
                 double[] ys = s.getValue();
-                blackLength = Math.max(0, seriesName.length() - yAxisTicksFormat.length());
-                sb.append("  ").append(ydf.format(ys[row])).append(this.blankString(blackLength));
+                content[row][i+1] = ydf.format(ys[row]);
             }
         }
 
-        return sb.toString();
-    }
-
-    /**
-     * Generates a blank String of fixed length
-     * @param length Length of the string
-     * @return Blank String
-     */
-    private String blankString(int length) {
-        StringBuilder str = new StringBuilder();
-        while (length > 0) {
-            str.append(" ");
-            length--;
-        }
-        return str.toString();
+        return content;
     }
 
     @Override
