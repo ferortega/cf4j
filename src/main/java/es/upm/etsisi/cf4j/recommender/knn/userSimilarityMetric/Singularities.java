@@ -3,6 +3,8 @@ package es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetric;
 import es.upm.etsisi.cf4j.data.Item;
 import es.upm.etsisi.cf4j.data.User;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 
 /**
@@ -151,5 +153,10 @@ public class Singularities extends UserSimilarityMetric {
 
 		// Return similarity
 		return (metric_a + metric_b + metric_c) / 3d;
+	}
+
+	@Override
+	public String toString() {
+		return super.toString() + "(relevantRatings=" + this.relevantRatings + ", notRelevantRatings=" + this.notRelevantRatings +")";
 	}
 }

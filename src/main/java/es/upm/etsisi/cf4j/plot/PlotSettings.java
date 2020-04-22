@@ -2,34 +2,79 @@ package es.upm.etsisi.cf4j.plot;
 
 import java.awt.*;
 
+/**
+ * This class contains global plot settings.
+ */
 public class PlotSettings {
 
+    /**
+     * Color palette
+     */
     private static Color[] colorPalette;
 
+    /**
+     * Plot's background color
+     */
     private static Color backgroundColor;
 
-    private static double topInset;
+    /**
+     * Inset for the legend
+     */
+    private static double legendInset;
 
-    private static double leftInset;
+    /**
+     * Inset for y axis
+     */
+    private static double yAxisInset;
 
-    private static double bottomInset;
+    /**
+     * Inset for x axis
+     */
+    private static double xAxisInset;
 
-    private static double rightInset;
+    /**
+     * Inset for clear borders
+     */
+    private static double clearInset;
 
+    /**
+     * Primary font
+     */
     private static Font primaryFont;
 
+    /**
+     * Secondary font
+     */
     private static Font secondaryFont;
 
+    /**
+     * Label distance in the x axis
+     */
     private static double xAxisLabelDistance;
 
+    /**
+     * Label distance in the y axis
+     */
     private static double yAxisLabelDistance;
 
+    /**
+     * Legend distance
+     */
     private static double legendDistance;
 
+    /**
+     * Plot width in pixels
+     */
     private static int width;
 
+    /**
+     * Plot height in pixels
+     */
     private static int height;
 
+    /**
+     * Static constructor
+     */
     static {
         colorPalette = new Color[]{
                 new Color(0,69,134),
@@ -44,10 +89,10 @@ public class PlotSettings {
                 new Color(255,149,14)
         };
         backgroundColor = Color.WHITE;
-        topInset = 70.0;
-        leftInset = 95.0;
-        bottomInset = 75.0;
-        rightInset = 20;
+        legendInset = 70.0;
+        yAxisInset = 95.0;
+        xAxisInset = 75.0;
+        clearInset = 20;
         primaryFont = new Font("Dialog", Font.PLAIN, 17);
         secondaryFont =  new Font("Dialog", Font.PLAIN, 15);
         xAxisLabelDistance = 0.8;
@@ -57,110 +102,219 @@ public class PlotSettings {
         height = 600;
     }
 
+    /**
+     * Gets the color palette
+     * @return Color palette
+     */
     public static Color[] getColorPalette() {
         return colorPalette;
     }
 
+    /**
+     * Sets the color paletee
+     * @param colorPalette Color palette
+     */
     public static void setColorPalette(Color[] colorPalette) {
         PlotSettings.colorPalette = colorPalette;
     }
 
+    /**
+     * Gets a color from the palette
+     * @param i Color index
+     * @return Color
+     */
     public static Color getColor(int i) {
         return colorPalette[i % colorPalette.length];
     }
 
+    /**
+     * Gets the plot's background color
+     * @return Plot's background color
+     */
     public static Color getBackgroundColor() {
         return backgroundColor;
     }
 
+    /**
+     * Sets the plot's background color
+     * @param backgroundColor Plot's background color
+     */
     public static void setBackgroundColor(Color backgroundColor) {
         PlotSettings.backgroundColor = backgroundColor;
     }
 
-    public static double getTopInset() {
-        return topInset;
+    /**
+     * Gets the inset for the legend
+     * @return Inset for the legend
+     */
+    public static double getLegendInset() {
+        return legendInset;
     }
 
-    public static void setTopInset(double topInset) {
-        PlotSettings.topInset = topInset;
+    /**
+     * Sets the inset for the legend
+     * @param legendInset Insets for the legend
+     */
+    public static void setLegendInset(double legendInset) {
+        PlotSettings.legendInset = legendInset;
     }
 
-    public static double getLeftInset() {
-        return leftInset;
+    /**
+     * Gets the inset for the y axis
+     * @return Inset for the y axis
+     */
+    public static double getyAxisInset() {
+        return yAxisInset;
     }
 
-    public static void setLeftInset(double leftInset) {
-        PlotSettings.leftInset = leftInset;
+    /**
+     * Sets the inset for the y axis
+     * @param yAxisInset Inset for the y axis
+     */
+    public static void setyAxisInset(double yAxisInset) {
+        PlotSettings.yAxisInset = yAxisInset;
     }
 
-    public static double getBottomInset() {
-        return bottomInset;
+    /**
+     * Gets the inset for the x axis
+     * @return Inset for the x axis
+     */
+    public static double getxAxisInset() {
+        return xAxisInset;
     }
 
-    public static void setBottomInset(double bottomInset) {
-        PlotSettings.bottomInset = bottomInset;
+    /**
+     * Sets the inset for the x axis
+     * @param xAxisInset Inset for the x axis
+     */
+    public static void setxAxisInset(double xAxisInset) {
+        PlotSettings.xAxisInset = xAxisInset;
     }
 
-    public static double getRightInset() {
-        return rightInset;
+    /**
+     * Gets the inset for a clear border
+     * @return Inset for a clear border
+     */
+    public static double getClearInset() {
+        return clearInset;
     }
 
-    public static void setRightInset(double rightInset) {
-        PlotSettings.rightInset = rightInset;
+    /**
+     * Sets the inset for a clear border
+     * @param clearInset Inset for a clear border
+     */
+    public static void setClearInset(double clearInset) {
+        PlotSettings.clearInset = clearInset;
     }
 
+    /**
+     * Gets the primary font
+     * @return Primary font
+     */
     public static Font getPrimaryFont() {
         return primaryFont;
     }
 
+    /**
+     * Sets the primary font
+     * @param primaryFont Primary font
+     */
     public static void setPrimaryFont(Font primaryFont) {
         PlotSettings.primaryFont = primaryFont;
     }
 
+    /**
+     * Gets the secondary font
+     * @return Secondary font
+     */
     public static Font getSecondaryFont() {
         return secondaryFont;
     }
 
+    /**
+     * Sets the secondary font
+     * @param secondaryFont Secondary font
+     */
     public static void setSecondaryFont(Font secondaryFont) {
         PlotSettings.secondaryFont = secondaryFont;
     }
 
+    /**
+     * Gets the label distance in the x axis
+     * @return Label distance in the x axis
+     */
     public static double getxAxisLabelDistance() {
         return xAxisLabelDistance;
     }
 
+    /**
+     * Sets the label distance in the x axis
+     * @param xAxisLabelDistance Label distance in the x axis
+     */
     public static void setxAxisLabelDistance(double xAxisLabelDistance) {
         PlotSettings.xAxisLabelDistance = xAxisLabelDistance;
     }
 
+    /**
+     * Gets the label distance in the y axis
+     * @return Label distance in the y axis
+     */
     public static double getyAxisLabelDistance() {
         return yAxisLabelDistance;
     }
 
+    /**
+     * Sets the label distance in the y axis
+     * @param yAxisLabelDistance Label distance in the y axis
+     */
     public static void setyAxisLabelDistance(double yAxisLabelDistance) {
         PlotSettings.yAxisLabelDistance = yAxisLabelDistance;
     }
 
+    /**
+     * Gets the legend distance
+     * @return Legend distance
+     */
     public static double getLegendDistance() {
         return legendDistance;
     }
 
+    /**
+     * Sets the legend distance
+     * @param legendDistance Legend distance
+     */
     public static void setLegendDistance(double legendDistance) {
         PlotSettings.legendDistance = legendDistance;
     }
 
+    /**
+     * Get plot with in pixels
+     * @return Plot with in pixels
+     */
     public static int getWidth() {
         return width;
     }
 
+    /**
+     * Sets the plot width in pixels
+     * @param width Plot width in pixels
+     */
     public static void setWidth(int width) {
         PlotSettings.width = width;
     }
 
+    /**
+     * Get the plot height in pixels
+     * @return Plot height in pixels
+     */
     public static int getHeight() {
         return height;
     }
 
+    /**
+     * Sets the plot height in pixels
+     * @param height Plot height in pixels
+     */
     public static void setHeight(int height) {
         PlotSettings.height = height;
     }

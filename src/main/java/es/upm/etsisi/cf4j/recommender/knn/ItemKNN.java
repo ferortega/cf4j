@@ -4,10 +4,13 @@ import es.upm.etsisi.cf4j.recommender.knn.itemSimilarityMetric.ItemSimilarityMet
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
 import es.upm.etsisi.cf4j.data.User;
+import es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetric.UserSimilarityMetric;
 import es.upm.etsisi.cf4j.util.Parallelizer;
 import es.upm.etsisi.cf4j.util.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.util.Search;
+
+import java.util.Map;
 
 /**
  * Implements item-to-item KNN based collaborative filtering
@@ -38,6 +41,28 @@ public class ItemKNN extends Recommender {
      * Contains the neighbors indexes of each item
      */
     protected int[][] neighbors;
+
+    /**
+     * Recommender constructor from a Map containing the recommender's hyper-parameters values. Map object must contains
+     * the following keys:
+     * <ul>
+     *   <li><b>numberOfNeighbors</b>: int value with the number of neighbors.</li>
+     *   <li><b>metric:</b>: ItemSimilarityMetric instance with the similarity metric to compute the similarity between
+     *   two items.</li>
+     *   <li><b>aggregationApproach</b>: ItemKNN.AggregationApproach instance with the aggregation approach used to
+     *   aggregate k-nearest neighbors ratings.</li>
+     * </ul>
+     * @param datamodel DataModel instance
+     * @param params Recommender's hyper-parameters values
+     */
+    public ItemKNN(DataModel datamodel, Map<String, Object> params) {
+        this(
+                datamodel,
+                (int) params.get("numberOfNeighbors"),
+                (ItemSimilarityMetric) params.get("metric"),
+                (ItemKNN.AggregationApproach) params.get("aggregationApproach")
+        );
+    }
 
     /**
      * Recommender constructor

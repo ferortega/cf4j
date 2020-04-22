@@ -8,6 +8,8 @@ import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetric.UserSimilarityMetric;
 import es.upm.etsisi.cf4j.util.Search;
 
+import java.util.Map;
+
 /**
  * Implements user-to-user KNN based collaborative filtering
  */
@@ -37,6 +39,28 @@ public class UserKNN extends Recommender {
      * Contains the neighbors indexes of each user
      */
     protected int[][] neighbors;
+
+    /**
+     * Recommender constructor from a Map containing the recommender's hyper-parameters values. Map object must contains
+     * the following keys:
+     * <ul>
+     *   <li><b>numberOfNeighbors</b>: int value with the number of neighbors.</li>
+     *   <li><b>metric:</b>: UserSimilarityMetric instance with the similarity metric to compute the similarity between
+     *   two users.</li>
+     *   <li><b>aggregationApproach</b>: UserKNN.AggregationApproach instance with the aggregation approach used to
+     *   aggregate k-nearest neighbors ratings.</li>
+     * </ul>
+     * @param datamodel DataModel instance
+     * @param params Recommender's hyper-parameters values
+     */
+    public UserKNN(DataModel datamodel, Map<String, Object> params) {
+        this(
+                datamodel,
+                (int) params.get("numberOfNeighbors"),
+                (UserSimilarityMetric) params.get("metric"),
+                (AggregationApproach) params.get("aggregationApproach")
+        );
+    }
 
     /**
      * Recommender constructor

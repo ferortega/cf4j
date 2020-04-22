@@ -7,11 +7,17 @@ import org.apache.commons.math3.util.Pair;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.*;
 
 /**
- * Performs a grid search.
- * @TODO complete
+ * Utility class to performs a grid search over a Recommender instance. The Recommender class used during the grid
+ * search must contains a constructor with the signature Recommender::&lt;init&gt;(DataModel, Map&lt;String, Object&gt;)
+ * that initializes the Recommender using the attributes defined in the Map object. The parameters used in the search
+ * process, i.e. the development set, must be defined in a ParamsGrid instance. The grid search is executed in such a
+ * way that it minimizes (by default) or maximizes a QualityMeasure instance. If the QualityMeasure requires parameters
+ * to work, it must contains a constructor with the signature QualityMeasure::&lt;init&gt;(Recommender, Map&lt;String,
+ * Object&gt;) that initializes the QualityMeasure using the attributes defined in the Map object.
  */
 public class GridSearch {
 
@@ -125,7 +131,15 @@ public class GridSearch {
      * Prints the results of the grid search. By default, the quality measure is better the lower its value.
      */
     public void printResults() {
-        this.printResults("0.000000", true);
+        this.printResults("0.000000", this.results.size(), true);
+    }
+
+    /**
+     * Prints the results of the grid search
+     * @param topN Number of entries of the development set to be shown as the top ones
+     */
+    public void printResults(int topN) {
+        this.printResults("0.000000", topN, true);
     }
 
     /**
@@ -133,7 +147,7 @@ public class GridSearch {
      * @param numberFormat Number format for the quality measure values
      */
     public void printResults(String numberFormat) {
-        this.printResults(numberFormat, true);
+        this.printResults(numberFormat, this.results.size(), true);
     }
 
     /**
@@ -141,7 +155,25 @@ public class GridSearch {
      * @param lowerIsBetter True if the quality measure is better the lower its value. False otherwise.
      */
     public void printResults(boolean lowerIsBetter) {
-        this.printResults("0.000000", lowerIsBetter);
+        this.printResults("0.000000", this.results.size(), lowerIsBetter);
+    }
+
+    /**
+     * Prints the results of the grid search
+     * @param numberFormat Number format for the quality measure values
+     * @param topN Number of entries of the development set to be shown as the top ones
+     */
+    public void printResults(String numberFormat, int topN) {
+        this.printResults(numberFormat, topN, true);
+    }
+
+    /**
+     * Prints the results of the grid search
+     * @param topN Number of entries of the development set to be shown as the top ones
+     * @param lowerIsBetter True if the quality measure is better the lower its value. False otherwise.
+     */
+    public void printResults(int topN, boolean lowerIsBetter) {
+        this.printResults("0.000000", topN, lowerIsBetter);
     }
 
     /**
@@ -150,17 +182,27 @@ public class GridSearch {
      * @param lowerIsBetter True if the quality measure is better the lower its value. False otherwise.
      */
     public void printResults(String numberFormat, boolean lowerIsBetter) {
+        this.printResults(numberFormat, this.results.size(), lowerIsBetter);
+    }
+
+    /**
+     * Prints the results of the grid search
+     * @param numberFormat Number format for the quality measure values
+     * @param topN Number of entries of the development set to be shown as the top ones
+     * @param lowerIsBetter True if the quality measure is better the lower its value. False otherwise.
+     */
+    public void printResults(String numberFormat, int topN, boolean lowerIsBetter) {
 
         // Sort results
-        Comparator<Pair<String, Double>> comparator = Comparator.comparing(Pair::getValue, (v1, v2) -> {
-            if (Double.isNaN(v1) || Double.isNaN(v2)) {
+        Comparator<Pair<String, Double>> comparator = Comparator.comparing(Pair::getValue, (d1, d2) -> {
+            if (Double.isNaN(d1) && Double.isNaN(d2)) {
+                return 0;
+            } else if (Double.isNaN(d1)) {
                 return 1;
-            } else if (v1 > v2) {
-                return 1;
-            } else if (v2 > v1) {
+            } else if (Double.isNaN(d2)) {
                 return -1;
             } else {
-                return 0;
+                return Double.compare(d1, d2);
             }
         });
 
@@ -172,7 +214,7 @@ public class GridSearch {
 
         // Prepare printable results
         StringBuilder sb = new StringBuilder();
-        DecimalFormat df = new DecimalFormat(numberFormat);
+        DecimalFormat df = new DecimalFormat(numberFormat, new DecimalFormatSymbols(Locale.US));
 
         sb.append("Tuning parameters for ").append(recommenderClass.getSimpleName()).append(" recommender:\n\n");
 
@@ -184,7 +226,8 @@ public class GridSearch {
         }
         sb.append(" scores on development set:\n\n");
 
-        for (Pair<String, Double> result : this.results) {
+        for (int i = 0; i < Math.min(topN, this.results.size()); i++) {
+            Pair<String, Double> result = this.results.get(i);
 
             String value = "";
 
@@ -192,7 +235,7 @@ public class GridSearch {
                 value = df.format(result.getValue());
             } else {
                 value = "NaN";
-                for (int i = 0; i < numberFormat.length() - "NaN".length(); i++) {
+                for (int s = 0; s < numberFormat.length() - "NaN".length(); s++) {
                     value += " ";
                 }
             }

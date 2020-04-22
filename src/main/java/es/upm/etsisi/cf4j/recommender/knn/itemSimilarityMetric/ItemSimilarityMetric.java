@@ -70,4 +70,9 @@ public abstract class ItemSimilarityMetric implements Partible<Item> {
 
 	@Override
 	public void afterRun() { }
+
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName();
+	}
 }

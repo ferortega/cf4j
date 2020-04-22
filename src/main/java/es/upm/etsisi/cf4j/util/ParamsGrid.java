@@ -6,7 +6,14 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 /**
- * @TODO complete
+ * This class generates the development set for a grid search. You can add two kind of params:
+ * <ul>
+ *     <li><b>Fixed params</b>: They take the same value in all entries of the development set.</li>
+ *     <li><b>Params</b>: Development set is generated with all the permutations defined by params valid values.</li>
+ * </ul>
+ * The development set is generated as an iterator of Map&lt;String, Object&gt; that contains the parameter name
+ * (String) and value (Object) of each development set entry. The casting of the values into the appropriate data type
+ * must be performed by the methods that uses the development set entries.
  */
 public class ParamsGrid {
 
@@ -27,7 +34,7 @@ public class ParamsGrid {
      * @param name Name of the parameter
      * @param values Values to be evaluated
      */
-    public void addVariableParam(String name, Object[] values) {
+    public void addParam(String name, Object[] values) {
         Pair<String, Object[]> param = new Pair<>(name, values);
         this.grid.add(param);
     }
@@ -39,7 +46,7 @@ public class ParamsGrid {
      */
     public void addFixedParam(String name, Object value) {
         Object[] values = {value};
-        this.addVariableParam(name, values);
+        this.addParam(name, values);
     }
 
     /**
@@ -56,8 +63,8 @@ public class ParamsGrid {
      * @param name Name of the parameter
      * @param values String values to be evaluated
      */
-    public void addVariableParam(String name, String[] values) {
-        this.addVariableParam(name, (Object[]) values);
+    public void addParam(String name, String[] values) {
+        this.addParam(name, (Object[]) values);
     }
 
     /**
@@ -74,8 +81,8 @@ public class ParamsGrid {
      * @param name Name of the parameter
      * @param values double values to be evaluated
      */
-    public void addVariableParam(String name, double[] values) {
-        this.addVariableParam(name, Arrays.stream(values).boxed().toArray(Double[]::new));
+    public void addParam(String name, double[] values) {
+        this.addParam(name, Arrays.stream(values).boxed().toArray(Double[]::new));
     }
 
     /**
@@ -92,8 +99,8 @@ public class ParamsGrid {
      * @param name Name of the parameter
      * @param values int values to be evaluated
      */
-    public void addVariableParam(String name, int[] values) {
-        this.addVariableParam(name, Arrays.stream(values).boxed().toArray(Integer[]::new));
+    public void addParam(String name, int[] values) {
+        this.addParam(name, Arrays.stream(values).boxed().toArray(Integer[]::new));
     }
 
     /**
@@ -110,8 +117,8 @@ public class ParamsGrid {
      * @param name Name of the parameter
      * @param values long values to be evaluated
      */
-    public void addVariableParam(String name, long[] values) {
-        this.addVariableParam(name, Arrays.stream(values).boxed().toArray(Long[]::new));
+    public void addParam(String name, long[] values) {
+        this.addParam(name, Arrays.stream(values).boxed().toArray(Long[]::new));
     }
 
     /**
@@ -128,8 +135,8 @@ public class ParamsGrid {
      * @param name Name of the parameter
      * @param values boolean values to be evaluated
      */
-    public void addVariableParam(String name, boolean[] values) {
-        this.addVariableParam(name, IntStream.range(0, values.length).mapToObj(i -> values[i]).toArray(Boolean[]::new));
+    public void addParam(String name, boolean[] values) {
+        this.addParam(name, IntStream.range(0, values.length).mapToObj(i -> values[i]).toArray(Boolean[]::new));
     }
 
     /**
