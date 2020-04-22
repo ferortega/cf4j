@@ -61,8 +61,8 @@ class RecommenderMFTest {
         assertEquals(climf.predict(testUserId,testItemId),0.8124426876014784);
         assertEquals(climf.predict(datamodel.getTestUser(testUserId))[testItemId],climf.predict(testUserId,testItemId));
 
-        //assertEquals(climf.getNumFactors(),numFactors);
-        //assertEquals(climf.getNumIters(),numIters);
+        assertEquals(climf.getNumFactors(),numFactors);
+        assertEquals(climf.getNumIters(),numIters);
     }
 
     @Test
@@ -73,8 +73,8 @@ class RecommenderMFTest {
         assertEquals(hpf.predict(testUserId,testItemId),0.07146102109130958);
         assertEquals(hpf.predict(datamodel.getTestUser(testUserId))[testItemId],hpf.predict(testUserId,testItemId));
 
-        //assertEquals(hpf.getNumFactors(),numFactors);
-        //assertEquals(hpf.getNumIters(),numIters);
+        assertEquals(hpf.getNumFactors(),numFactors);
+        assertEquals(hpf.getNumIters(),numIters);
     }
 
     @Test
