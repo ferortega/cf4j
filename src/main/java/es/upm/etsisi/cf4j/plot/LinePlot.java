@@ -96,20 +96,31 @@ public class LinePlot extends Plot {
     }
 
     /**
-     * Adds a new series to the plot. y values positions must be correlated with xs values
+     * Adds a new empty series to the plot. All series values are initialized to 0.
+     * @param seriesName Series name
+     */
+    public void addSeries(String seriesName) {
+        this.addSeries(seriesName, 0);
+    }
+
+    /**
+     * Adds a new series to the plot initializing all the values to a constant one.
+     * @param seriesName Series name
+     * @param value Constant value
+     */
+    public void addSeries(String seriesName, double value) {
+        double[] values = new double[this.xs.length];
+        Arrays.fill(values, value);
+        this.addSeries(seriesName, values);
+    }
+
+    /**
+     * Adds a new series to the plot. y values positions must be correlated with xs values.
      * @param seriesName Series name
      * @param y Values
      */
     public void addSeries(String seriesName, double[] y) {
         this.series.add(new Pair(seriesName, y));
-    }
-
-    /**
-     * Adds a new empty series to the plot. All series values are initialized to 0.
-     * @param seriesName Series name
-     */
-    public void addSeries(String seriesName) {
-        this.series.add(new Pair(seriesName, new double[this.xs.length]));
     }
 
     /**
