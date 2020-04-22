@@ -41,7 +41,7 @@ public class LinePlotExample {
 
         plot.draw();
         plot.exportPlot("exports/line-plot.png");
-        plot.printData();
+        plot.printData("0", "0.000");
         plot.exportData("exports/line-plot-data.csv");
     }
 }

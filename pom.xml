@@ -50,6 +50,13 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.10</version>
+		</dependency>
+
+
+		<dependency>
 			<groupId>de.erichseifert.gral</groupId>
 			<artifactId>gral-core</artifactId>
 			<version>0.11</version>
