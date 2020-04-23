@@ -55,7 +55,6 @@
 			<version>3.10</version>
 		</dependency>
 
-
 		<dependency>
 			<groupId>de.erichseifert.gral</groupId>
 			<artifactId>gral-core</artifactId>
@@ -86,7 +85,6 @@
 					<author>false</author>
 					<doctitle>API Documentation for Collaborative Filtering for Java (CF4J) ${project.version}</doctitle>
 					<windowtitle>CF4J ${project.version} API Documentation</windowtitle>
-					<description>aaaa</description>
 				</configuration>
 				<executions>
 					<execution>
