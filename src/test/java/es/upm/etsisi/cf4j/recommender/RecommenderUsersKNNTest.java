@@ -92,6 +92,29 @@ public class RecommenderUsersKNNTest {
     }
 
     @Test
+    void userCorrelationConstrainedKNNTest() {
+
+        //DEVIATION_FROM_MEAN
+        UserKNN uKNN = new UserKNN(datamodel,numberOfNeighbors,new CorrelationConstrained(0.5),UserKNN.AggregationApproach.DEVIATION_FROM_MEAN);
+        uKNN.fit();
+        assertEquals(uKNN.predict(testUserId,testItemId),3.4499999999999997);
+        assertEquals(uKNN.predict(datamodel.getTestUser(testUserId))[testItemId],uKNN.predict(testUserId,testItemId));
+
+        //WEIGHTED_MEAN
+        uKNN = new UserKNN(datamodel,numberOfNeighbors,new CorrelationConstrained(0.5),UserKNN.AggregationApproach.WEIGHTED_MEAN);
+        uKNN.fit();
+        assertEquals(uKNN.predict(testUserId,testItemId),4.3);
+        assertEquals(uKNN.predict(datamodel.getTestUser(testUserId))[testItemId],uKNN.predict(testUserId,testItemId));
+
+        //MEAN
+        uKNN = new UserKNN(datamodel,numberOfNeighbors,new CorrelationConstrained(0.5),UserKNN.AggregationApproach.MEAN);
+        uKNN.fit();
+        assertEquals(uKNN.predict(testUserId,testItemId),4.3);
+        assertEquals(uKNN.predict(datamodel.getTestUser(testUserId))[testItemId],uKNN.predict(testUserId,testItemId));
+
+    }
+
+    @Test
     void userJaccardKNNTest() {
 
         //DEVIATION_FROM_MEAN

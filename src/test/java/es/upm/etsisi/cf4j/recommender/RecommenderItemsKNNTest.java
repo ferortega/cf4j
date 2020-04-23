@@ -23,7 +23,7 @@ public class RecommenderItemsKNNTest {
     }
 
     @Test
-    void userAdjustedCosineKNNTest() {
+    void itemAdjustedCosineKNNTest() {
 
         //WEIGHTED_MEAN
         ItemKNN iKNN = new ItemKNN(datamodel,numberOfNeighbors,new AdjustedCosine(),ItemKNN.AggregationApproach.WEIGHTED_MEAN);
@@ -40,24 +40,7 @@ public class RecommenderItemsKNNTest {
     }
 
     @Test
-    void userCJMSDKNNTest() {
-
-        //WEIGHTED_MEAN
-        ItemKNN iKNN = new ItemKNN(datamodel,numberOfNeighbors,new JMSD(),ItemKNN.AggregationApproach.WEIGHTED_MEAN);
-        iKNN.fit();
-        assertEquals(iKNN.predict(testUserId,testItemId),2.4);
-        assertEquals(iKNN.predict(datamodel.getTestUser(testUserId))[testItemId],iKNN.predict(testUserId,testItemId));
-
-        //MEAN
-        iKNN = new ItemKNN(datamodel,numberOfNeighbors,new JMSD(),ItemKNN.AggregationApproach.MEAN);
-        iKNN.fit();
-        assertEquals(iKNN.predict(testUserId,testItemId),2.4);
-        assertEquals(iKNN.predict(datamodel.getTestUser(testUserId))[testItemId],iKNN.predict(testUserId,testItemId));
-
-    }
-
-    @Test
-    void userCorrelationKNNTest() {
+    void itemCorrelationKNNTest() {
 
         //WEIGHTED_MEAN
         ItemKNN iKNN = new ItemKNN(datamodel,numberOfNeighbors,new Correlation(),ItemKNN.AggregationApproach.WEIGHTED_MEAN);
@@ -74,7 +57,24 @@ public class RecommenderItemsKNNTest {
     }
 
     @Test
-    void userJaccardKNNTest() {
+    void itemCorrelationConstrainedKNNTest() {
+
+        //WEIGHTED_MEAN
+        ItemKNN iKNN = new ItemKNN(datamodel,numberOfNeighbors,new CorrelationConstrained(0.5),ItemKNN.AggregationApproach.WEIGHTED_MEAN);
+        iKNN.fit();
+        assertEquals(iKNN.predict(testUserId,testItemId),2.4);
+        assertEquals(iKNN.predict(datamodel.getTestUser(testUserId))[testItemId],iKNN.predict(testUserId,testItemId));
+
+        //MEAN
+        iKNN = new ItemKNN(datamodel,numberOfNeighbors,new CorrelationConstrained(0.5),ItemKNN.AggregationApproach.MEAN);
+        iKNN.fit();
+        assertEquals(iKNN.predict(testUserId,testItemId),2.4);
+        assertEquals(iKNN.predict(datamodel.getTestUser(testUserId))[testItemId],iKNN.predict(testUserId,testItemId));
+
+    }
+
+    @Test
+    void itemJaccardKNNTest() {
 
         //WEIGHTED_MEAN
         ItemKNN iKNN = new ItemKNN(datamodel,numberOfNeighbors,new Jaccard(),ItemKNN.AggregationApproach.WEIGHTED_MEAN);
@@ -91,7 +91,7 @@ public class RecommenderItemsKNNTest {
     }
 
     @Test
-    void userCosineKNNTest() {
+    void itemCosineKNNTest() {
 
         //WEIGHTED_MEAN
         ItemKNN iKNN = new ItemKNN(datamodel,numberOfNeighbors,new Cosine(),ItemKNN.AggregationApproach.WEIGHTED_MEAN);
@@ -108,7 +108,7 @@ public class RecommenderItemsKNNTest {
     }
 
     @Test
-    void userJMSDKNNTest() {
+    void itemJMSDKNNTest() {
 
         //WEIGHTED_MEAN
         ItemKNN iKNN = new ItemKNN(datamodel,numberOfNeighbors,new JMSD(),ItemKNN.AggregationApproach.WEIGHTED_MEAN);
@@ -125,7 +125,7 @@ public class RecommenderItemsKNNTest {
     }
 
     @Test
-    void userMSDKNNTest() {
+    void itemMSDKNNTest() {
 
         //WEIGHTED_MEAN
         ItemKNN iKNN = new ItemKNN(datamodel,numberOfNeighbors,new MSD(),ItemKNN.AggregationApproach.WEIGHTED_MEAN);
@@ -142,7 +142,7 @@ public class RecommenderItemsKNNTest {
     }
 
     @Test
-    void userPIPKNNTest() {
+    void itemPIPKNNTest() {
 
         //WEIGHTED_MEAN
         ItemKNN iKNN = new ItemKNN(datamodel,numberOfNeighbors,new PIP(),ItemKNN.AggregationApproach.WEIGHTED_MEAN);
@@ -159,7 +159,7 @@ public class RecommenderItemsKNNTest {
     }
 
     @Test
-    void userSingularitiesKNNTest() {
+    void itemSingularitiesKNNTest() {
 
         double[] relevantRatings = {3, 4, 5};
         double[] notRelevantRatings = {1, 2};
@@ -179,7 +179,7 @@ public class RecommenderItemsKNNTest {
     }
 
     @Test
-    void userSpearmanRankKNNTest() {
+    void itemSpearmanRankKNNTest() {
 
         //WEIGHTED_MEAN
         ItemKNN iKNN = new ItemKNN(datamodel,numberOfNeighbors,new SpearmanRank(), ItemKNN.AggregationApproach.WEIGHTED_MEAN);
