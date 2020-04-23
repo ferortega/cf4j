@@ -225,9 +225,9 @@ public class RecommenderUsersKNNTest {
         assertEquals(uKNN.predict(datamodel.getTestUser(testUserId))[testItemId],uKNN.predict(testUserId,testItemId));
 
         //MEAN
-        uKNN = new UserKNN(datamodel,numberOfNeighbors,new Singularities(relevantRatings, notRelevantRatings),UserKNN.AggregationApproach.DEVIATION_FROM_MEAN);
+        uKNN = new UserKNN(datamodel,numberOfNeighbors,new Singularities(relevantRatings, notRelevantRatings),UserKNN.AggregationApproach.MEAN);
         uKNN.fit();
-        assertEquals(uKNN.predict(testUserId,testItemId),2.249999999999999);
+        assertEquals(uKNN.predict(testUserId,testItemId),3.1);
         assertEquals(uKNN.predict(datamodel.getTestUser(testUserId))[testItemId],uKNN.predict(testUserId,testItemId));
 
     }
