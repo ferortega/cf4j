@@ -204,18 +204,13 @@ public class CLiMF extends Recommender {
 
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder("CLiMF(")
-                .append("numFactors=").append(this.numFactors)
-                .append("; ")
-                .append("numIters=").append(this.numIters)
-                .append("; ")
-                .append("gamma=").append(this.gamma)
-                .append("; ")
-                .append("lambda=").append(this.lambda)
-                .append("; ")
-                .append("threshold=").append(this.threshold)
-                .append(")");
-        return str.toString();
+        return "CLiMF(" +
+                "numFactors=" + this.numFactors + "; " +
+                "numIters=" + this.numIters + "; " +
+                "gamma=" + this.gamma + "; " +
+                "lambda=" + this.lambda + "; " +
+                "threshold=" + this.threshold +
+                ")";
     }
 
     /**
@@ -297,4 +292,21 @@ public class CLiMF extends Recommender {
             }
         }
     }
+
+    /**
+     * Get the number of factors of the model
+     * @return Number of factors
+     */
+    public int getNumFactors() {
+        return this.numFactors;
+    }
+
+    /**
+     * Get the number of iterations
+     * @return Number of iterations
+     */
+    public int getNumIters() {
+        return this.numIters;
+    }
+
 }

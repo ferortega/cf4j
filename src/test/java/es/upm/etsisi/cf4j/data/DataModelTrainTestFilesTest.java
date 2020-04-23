@@ -18,7 +18,6 @@ class DataModelTrainTestFilesTest {
             "Number of items: 4\n" +
             "Number of test items: 2\n" +
             "Number of ratings: 11\n" +
-            "Number of test ratings: 4\n" +
             "Min rating: 0.0\n" +
             "Max rating: 4.4\n" +
             "Average rating: 2.709090909090909\n" +

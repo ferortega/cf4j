@@ -207,24 +207,16 @@ public class HPF extends Recommender {
 
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder("HPF(")
-                .append("numFactors=").append(this.numFactors)
-                .append("; ")
-                .append("numIters=").append(this.numIters)
-                .append("; ")
-                .append("a=").append(this.a)
-                .append("; ")
-                .append("aPrime=").append(this.aPrime)
-                .append("; ")
-                .append("bPrime=").append(this.bPrime)
-                .append("; ")
-                .append("c=").append(this.c)
-                .append("; ")
-                .append("cPrime=").append(this.cPrime)
-                .append("; ")
-                .append("dPrime=").append(this.dPrime)
-                .append(")");
-        return str.toString();
+        return "HPF(" +
+                "numFactors=" + this.numFactors + "; " +
+                "numIters=" + this.numIters + "; " +
+                "a=" + this.a + "; " +
+                "aPrime=" + this.aPrime + "; " +
+                "bPrime=" + this.bPrime + "; " +
+                "c=" + this.c + "; " +
+                "cPrime=" + this.cPrime + "; " +
+                "dPrime=" + this.dPrime +
+                ")";
     }
 
     /**
@@ -330,4 +322,21 @@ public class HPF extends Recommender {
             }
         }
     }
+
+    /**
+     * Get the number of factors of the model
+     * @return Number of factors
+     */
+    public int getNumFactors() {
+        return this.numFactors;
+    }
+
+    /**
+     * Get the number of iterations
+     * @return Number of iterations
+     */
+    public int getNumIters() {
+        return this.numIters;
+    }
+
 }

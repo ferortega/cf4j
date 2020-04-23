@@ -32,4 +32,14 @@ class DataModelRandomSplitTest {
             assertEquals(testItem.getItemIndex(),testItem.getTestItemIndex());
         }
     }
+
+    @Test
+    void checkingIfSeedWorks(){
+        assertEquals(dataModel.getNumberOfUsers(),943);
+        assertEquals(dataModel.getNumberOfItems(),1682);
+        assertEquals(dataModel.getNumberOfTestUsers(),184);
+        assertEquals(dataModel.getNumberOfTestItems(),273);
+        assertEquals(dataModel.getNumberOfRatings(),95879);
+        assertEquals(dataModel.getNumberOfTestRatings(),4121);
+    }
 }
