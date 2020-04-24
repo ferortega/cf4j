@@ -1,4 +1,4 @@
-package es.upm.etsisi.cf4j.examples.plotting;
+package es.upm.etsisi.cf4j.examples.plot;
 
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
 import es.upm.etsisi.cf4j.data.DataModel;
@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * In this example we analyze the rating value distribution of MovieLens 1M dataset using a ColumnPlot.
+ */
 public class ColumnPlotExample {
 
     public static void main(String[] args) throws IOException {
@@ -43,6 +46,6 @@ public class ColumnPlotExample {
         plot.draw();
         plot.exportPlot("exports/column-plot.png");
         plot.printData("0");
-        plot.exportData("exports/column-data.csv");
+        plot.exportData("exports/column-plot-data.csv");
     }
 }

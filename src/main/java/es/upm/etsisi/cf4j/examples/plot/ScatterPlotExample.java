@@ -1,4 +1,4 @@
-package es.upm.etsisi.cf4j.examples.plotting;
+package es.upm.etsisi.cf4j.examples.plot;
 
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
 import es.upm.etsisi.cf4j.data.DataModel;
@@ -8,6 +8,10 @@ import es.upm.etsisi.cf4j.recommender.matrixFactorization.BiasedMF;
 
 import java.io.IOException;
 
+/**
+ * In this example we build an ScatterPlot comparing the number of ratings of each test user with his/her averaged
+ * prediction error using BiasedMF as recommender.
+ */
 public class ScatterPlotExample {
 
     public static void main(String[] args) throws IOException {
@@ -33,7 +37,6 @@ public class ScatterPlotExample {
 
             plot.addPoint(testUser.getNumberOfRatings(), userError);
         }
-
 
         plot.draw();
         plot.exportData("exports/scatter-plot-data.csv");
