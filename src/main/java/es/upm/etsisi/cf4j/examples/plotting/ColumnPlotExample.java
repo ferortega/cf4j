@@ -43,6 +43,6 @@ public class ColumnPlotExample {
         plot.draw();
         plot.exportPlot("exports/column-plot.png");
         plot.printData("0");
-        plot.exportData("exports/column-data.csv");
+        plot.exportData("exports/column-plot-data.csv");
     }
 }
