@@ -1,10 +1,8 @@
-package es.upm.etsisi.cf4j.examples.plotting;
+package es.upm.etsisi.cf4j.examples.plot;
 
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
 import es.upm.etsisi.cf4j.data.DataModel;
-import es.upm.etsisi.cf4j.plot.LinePlot;
 import es.upm.etsisi.cf4j.plot.XYPlot;
-import es.upm.etsisi.cf4j.qualityMeasure.recommendation.F1;
 import es.upm.etsisi.cf4j.qualityMeasure.recommendation.Precision;
 import es.upm.etsisi.cf4j.qualityMeasure.recommendation.Recall;
 import es.upm.etsisi.cf4j.recommender.matrixFactorization.NMF;
@@ -12,6 +10,10 @@ import es.upm.etsisi.cf4j.recommender.matrixFactorization.PMF;
 
 import java.io.IOException;
 
+/**
+ * In this example we compare the Precision score (y axis) and the Recall score (x axis) for PMF and NMF recommenders
+ * using an XYPlot.
+ */
 public class XYPlotExample {
 
     public static void main(String[] args) throws IOException  {

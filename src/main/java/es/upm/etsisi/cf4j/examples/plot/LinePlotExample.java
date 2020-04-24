@@ -1,4 +1,4 @@
-package es.upm.etsisi.cf4j.examples.plotting;
+package es.upm.etsisi.cf4j.examples.plot;
 
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
 import es.upm.etsisi.cf4j.data.DataModel;
@@ -9,6 +9,10 @@ import es.upm.etsisi.cf4j.recommender.matrixFactorization.PMF;
 
 import java.io.IOException;
 
+/**
+ * In this example we compare the F1 score of the recommendations performed by PMF and NMF recommenders. Results
+ * are included in a LinePlot that contains the number of recommendations performed in the x axis.
+ */
 public class LinePlotExample {
 
     public static void main(String[] args) throws IOException  {

@@ -13,9 +13,9 @@ import es.upm.etsisi.cf4j.data.RandomSplitDataSet;
 import java.io.IOException;
 
 /**
- * In this example we visualize MSE quality measure with two different recommenders: PMF and NMF.
- * Example used in the Getting Started section of the readme.md in github repository
- * @author Fernando Ortega
+ * In this example we analyze how the Mean Squared Error (MSE) varies according to the value of the regularization
+ * term in Probabilistic Matrix Factorization (PMF). This is the example included in the Getting Started section
+ * of the readme.md.
  */
 public class GettingStartedExample {
     public static void main (String [] args) throws IOException {

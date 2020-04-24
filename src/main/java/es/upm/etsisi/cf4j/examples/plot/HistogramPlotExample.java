@@ -1,4 +1,4 @@
-package es.upm.etsisi.cf4j.examples.plotting;
+package es.upm.etsisi.cf4j.examples.plot;
 
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
 import es.upm.etsisi.cf4j.data.DataModel;
@@ -7,6 +7,10 @@ import es.upm.etsisi.cf4j.plot.HistogramPlot;
 
 import java.io.IOException;
 
+/**
+ * In this example we analyze the average rating of each item that belongs to MovieLens 1M dataset. We show the
+ * results using a HistogramPlot.
+ */
 public class HistogramPlotExample {
 
     public static void main(String[] args) throws IOException {
