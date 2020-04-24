@@ -120,34 +120,33 @@ public class RandomSplitDataSet implements DataSet {
 
             String line; int numLines = 0;
             while ((line = datasetFile.readLine()) != null) {
+                //Loading feedback
+                numLines++;
+                if (numLines % 1000000  == 0) System.out.print(".");
+                if (numLines % 10000000 == 0) System.out.println(numLines + " ratings");
 
-            //Loading feedback
-            numLines++;
-            if (numLines % 1000000  == 0) System.out.print(".");
-            if (numLines % 10000000 == 0) System.out.println(numLines + " ratings");
+                // Parse line
+                String [] s = line.split(separator);
+                String userId = s[0];
+                String itemId = s[1];
+                double rating = Double.parseDouble(s[2]);
 
-            // Parse line
-            String [] s = line.split(separator);
-            String userId = s[0];
-            String itemId = s[1];
-            double rating = Double.parseDouble(s[2]);
+                // Filtering entries.
+                if (!testUsersFiltered.containsKey(userId)) {
+                    testUsersFiltered.put(userId, rand.nextFloat() <= testUsersPercent);
+                }
 
-            // Filtering entries.
-            if (!testUsersFiltered.containsKey(userId)) {
-                testUsersFiltered.put(userId, rand.nextFloat() <= testUsersPercent);
+                if (!testItemsFiltered.containsKey(itemId)) {
+                    testItemsFiltered.put(itemId, rand.nextFloat() <= testItemsPercent);
+                }
+
+                // Store rating
+                if (testUsersFiltered.get(userId) && testItemsFiltered.get(itemId)) {
+                    testRatings.add(new DataSetEntry(userId, itemId, rating));
+                } else {
+                    ratings.add(new DataSetEntry(userId, itemId, rating));
+                }
             }
-
-            if (!testItemsFiltered.containsKey(itemId)) {
-                testItemsFiltered.put(itemId, rand.nextFloat() <= testItemsPercent);
-            }
-
-            // Store rating
-            if (testUsersFiltered.get(userId) && testItemsFiltered.get(itemId)) {
-                testRatings.add(new DataSetEntry(userId, itemId, rating));
-            } else {
-                ratings.add(new DataSetEntry(userId, itemId, rating));
-            }
-        }
 
         datasetFile.close();
     }

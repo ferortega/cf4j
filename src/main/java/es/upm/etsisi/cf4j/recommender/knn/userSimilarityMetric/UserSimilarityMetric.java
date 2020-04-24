@@ -44,7 +44,7 @@ public abstract class UserSimilarityMetric implements Partible<User> {
 	/**
 	 * <p>This method must returns the similarity between two users.</p> 
 	 * <p>If two users do not have a similarity value, the method must return Double.NEGATIVE_INFINITY.</p>
-	 * <p>The value returned by this method should be higher the higher the similarity between users.</p>
+	 * <p>The value returned by this method should be higher the greater the similarity between users.</p>
 	 * @param user A user
 	 * @param otherUser Other user
 	 * @return Similarity between user and otherUser
