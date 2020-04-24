@@ -21,8 +21,8 @@ class DataModelTest {
             "Average rating: 2.709090909090909\n" +
             "Number of test ratings: 4\n" +
             "Min test rating: 1.1\n" +
-            "Max test rating: 2.2\n" +
-            "Average test rating: 1.6500000000000001";
+            "Max test rating: 2.1\n" +
+            "Average test rating: 1.625";
 
     private static DataModel dataModel;
 
@@ -89,8 +89,8 @@ class DataModelTest {
         assertTrue(Math.abs(dataModel.getRatingAverage() - 2.709090909090909) <= Math.ulp(2.709090909090909));
 
         assertEquals(1.1, dataModel.getMinTestRating());
-        assertEquals(2.2, dataModel.getMaxTestRating());
-        assertTrue(Math.abs(dataModel.getTestRatingAverage() - 1.65) <= Math.ulp(1.65) );
+        assertEquals(2.1, dataModel.getMaxTestRating());
+        assertTrue(Math.abs(dataModel.getTestRatingAverage() - 1.625) <= Math.ulp(1.625) );
     }
 
     @Test

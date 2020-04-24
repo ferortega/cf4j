@@ -44,7 +44,7 @@ public abstract class ItemSimilarityMetric implements Partible<Item> {
 	/**
 	 * <p>This method must returns the similarity between two items.</p>
 	 * <p>If two items do not have a similarity value, the method must return Double.NEGATIVE_INFINITY.</p>
-	 * <p>The value returned by this method should be higher the higher the similarity between items.</p>
+	 * <p>The value returned by this method should be higher the greater the similarity between items.</p>
 	 * @param item An item
 	 * @param otherItem Other item
 	 * @return Similarity between item and otherItem
