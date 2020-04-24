@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * In this example we analyze the rating value distribution of MovieLens 1M datasets using a ColumnPlot.
+ * In this example we analyze the rating value distribution of MovieLens 1M dataset using a ColumnPlot.
  */
 public class ColumnPlotExample {
 
