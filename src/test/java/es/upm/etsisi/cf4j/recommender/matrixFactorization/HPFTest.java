@@ -1,7 +1,7 @@
 package es.upm.etsisi.cf4j.recommender.matrixFactorization;
 
 import es.upm.etsisi.cf4j.data.DataModel;
-import es.upm.etsisi.cf4j.data.types.MockDataSet;
+import es.upm.etsisi.cf4j.data.MockDataSet;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +28,7 @@ class HPFTest {
         HPF hpf = new HPF(datamodel,numFactors,numIters,seed);
         hpf.fit();
 
-        assertEquals(0.07013102405389338, hpf.predict(testUserId,testItemId));
+        assertEquals(0.06581121444413429, hpf.predict(testUserId,testItemId));
         assertEquals(hpf.predict(testUserId,testItemId), hpf.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
         assertEquals(hpf.getNumFactors(),numFactors);

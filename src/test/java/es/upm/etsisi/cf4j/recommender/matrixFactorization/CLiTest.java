@@ -1,7 +1,7 @@
 package es.upm.etsisi.cf4j.recommender.matrixFactorization;
 
 import es.upm.etsisi.cf4j.data.DataModel;
-import es.upm.etsisi.cf4j.data.types.MockDataSet;
+import es.upm.etsisi.cf4j.data.MockDataSet;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

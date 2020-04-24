@@ -1,7 +1,7 @@
 package es.upm.etsisi.cf4j.recommender.knn;
 
 import es.upm.etsisi.cf4j.data.DataModel;
-import es.upm.etsisi.cf4j.data.types.MockDataSet;
+import es.upm.etsisi.cf4j.data.MockDataSet;
 import es.upm.etsisi.cf4j.recommender.knn.itemSimilarityMetric.ItemSimilarityMetricMock;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -28,13 +28,13 @@ public class ItemKNNTest {
         //WEIGHTED_MEAN
         ItemKNN iKNN = new ItemKNN(datamodel,numberOfNeighbors,new ItemSimilarityMetricMock(),ItemKNN.AggregationApproach.WEIGHTED_MEAN);
         iKNN.fit();
-        assertEquals(2.4, iKNN.predict(testUserId,testItemId));
+        assertEquals(2.0, iKNN.predict(testUserId,testItemId));
         assertEquals(iKNN.predict(testUserId,testItemId), iKNN.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
         //Mean
         iKNN = new ItemKNN(datamodel,numberOfNeighbors,new ItemSimilarityMetricMock(),ItemKNN.AggregationApproach.MEAN);
         iKNN.fit();
-        assertEquals(2.4, iKNN.predict(testUserId,testItemId));
+        assertEquals(2.0, iKNN.predict(testUserId,testItemId));
         assertEquals(iKNN.predict(testUserId,testItemId), iKNN.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
     }

@@ -1,7 +1,7 @@
 package es.upm.etsisi.cf4j.recommender.matrixFactorization;
 
 import es.upm.etsisi.cf4j.data.DataModel;
-import es.upm.etsisi.cf4j.data.types.MockDataSet;
+import es.upm.etsisi.cf4j.data.MockDataSet;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -29,7 +29,7 @@ class PMFTest {
         PMF pmf = new PMF(datamodel,numFactors,numIters,seed);
         pmf.fit();
 
-        assertEquals(0.3360184913450531, pmf.predict(testUserId,testItemId));
+        assertEquals(0.3371962186365588, pmf.predict(testUserId,testItemId));
         assertEquals(pmf.predict(testUserId,testItemId), pmf.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
         assertEquals(pmf.getNumFactors(),numFactors);

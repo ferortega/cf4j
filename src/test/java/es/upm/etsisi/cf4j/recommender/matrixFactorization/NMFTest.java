@@ -1,7 +1,7 @@
 package es.upm.etsisi.cf4j.recommender.matrixFactorization;
 
 import es.upm.etsisi.cf4j.data.DataModel;
-import es.upm.etsisi.cf4j.data.types.MockDataSet;
+import es.upm.etsisi.cf4j.data.MockDataSet;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -29,7 +29,7 @@ class NMFTest {
         NMF nmf = new NMF(datamodel,numFactors,numIters,seed);
         nmf.fit();
 
-        assertEquals(4.63541973525942, nmf.predict(testUserId,testItemId));
+        assertEquals(3.9744683282488125, nmf.predict(testUserId,testItemId));
         assertEquals(nmf.predict(testUserId,testItemId), nmf.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
         assertEquals(nmf.getNumFactors(),numFactors);

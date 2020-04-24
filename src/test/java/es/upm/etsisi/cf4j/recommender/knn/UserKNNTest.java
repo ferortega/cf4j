@@ -1,7 +1,7 @@
 package es.upm.etsisi.cf4j.recommender.knn;
 
 import es.upm.etsisi.cf4j.data.DataModel;
-import es.upm.etsisi.cf4j.data.types.MockDataSet;
+import es.upm.etsisi.cf4j.data.MockDataSet;
 import es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetric.UserSimilarityMetricMock;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -28,19 +28,19 @@ public class UserKNNTest {
         //DEVIATION_FROM_MEAN
         UserKNN uKNN = new UserKNN(datamodel,numberOfNeighbors,new UserSimilarityMetricMock(),UserKNN.AggregationApproach.DEVIATION_FROM_MEAN);
         uKNN.fit();
-        assertEquals(2.249999999999999, uKNN.predict(testUserId,testItemId));
+        assertEquals(2.0, uKNN.predict(testUserId,testItemId));
         assertEquals(uKNN.predict(testUserId,testItemId), uKNN.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
         //WEIGHTED_MEAN
         uKNN = new UserKNN(datamodel,numberOfNeighbors,new UserSimilarityMetricMock(),UserKNN.AggregationApproach.WEIGHTED_MEAN);
         uKNN.fit();
-        assertEquals(3.1, uKNN.predict(testUserId,testItemId));
+        assertEquals(3.0, uKNN.predict(testUserId,testItemId));
         assertEquals(uKNN.predict(testUserId,testItemId), uKNN.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
         //Mean
         uKNN = new UserKNN(datamodel,numberOfNeighbors,new UserSimilarityMetricMock(),UserKNN.AggregationApproach.MEAN);
         uKNN.fit();
-        assertEquals(3.1, uKNN.predict(testUserId,testItemId));
+        assertEquals(3.0, uKNN.predict(testUserId,testItemId));
         assertEquals(uKNN.predict(testUserId,testItemId), uKNN.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
     }

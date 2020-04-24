@@ -1,4 +1,4 @@
-package es.upm.etsisi.cf4j.data.types;
+package es.upm.etsisi.cf4j.data;
 
 import es.upm.etsisi.cf4j.data.DataSet;
 import es.upm.etsisi.cf4j.data.types.DataSetEntry;
@@ -14,24 +14,24 @@ public class MockDataSet implements DataSet {
 
     public MockDataSet(){
         ratings = new ArrayList<>(Arrays.asList(
-            new DataSetEntry("Laurie","Potatoad",3.1),
-            new DataSetEntry("Laurie","Yeah,IsWired",3.2),
-            new DataSetEntry("Laurie","Milk",3.3),
-            new DataSetEntry("Mike","Milk",4.1),
-            new DataSetEntry("Mike","WiredThing",0),
-            new DataSetEntry("Mike","Potatoad",4.3),
-            new DataSetEntry("Mike","Yeah,IsWired",4.4),
-            new DataSetEntry("Tim","WiredThing",1.3),
-            new DataSetEntry("Tim","Yeah,IsWired",1.4),
-            new DataSetEntry("Kim","WiredThing",2.3),
-            new DataSetEntry("Kim","Yeah,IsWired",2.4)
+            new DataSetEntry("Laurie","Potatoad",3.0),
+            new DataSetEntry("Laurie","Yeah,IsWired",3.0),
+            new DataSetEntry("Laurie","Milk",3.0),
+            new DataSetEntry("Mike","Milk",4.0),
+            new DataSetEntry("Mike","WiredThing",0.0),
+            new DataSetEntry("Mike","Potatoad",4.0),
+            new DataSetEntry("Mike","Yeah,IsWired",4.0),
+            new DataSetEntry("Tim","WiredThing",1.0),
+            new DataSetEntry("Tim","Yeah,IsWired",1.0),
+            new DataSetEntry("Kim","WiredThing",2.0),
+            new DataSetEntry("Kim","Yeah,IsWired",2.0)
         ));
 
         testRatings = new ArrayList<>(Arrays.asList(
-            new DataSetEntry("Tim","Milk", 1.1),
-            new DataSetEntry("Tim","Potatoad", 1.2),
-            new DataSetEntry("Kim","Milk", 2.1),
-            new DataSetEntry("Kim","Potatoad", 2.1)
+            new DataSetEntry("Tim","Milk", 1.0),
+            new DataSetEntry("Tim","Potatoad", 1.0),
+            new DataSetEntry("Kim","Milk", 2.0),
+            new DataSetEntry("Kim","Potatoad", 2.0)
         ));
     }
 
