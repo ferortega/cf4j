@@ -31,8 +31,12 @@ class URPTest {
         assertEquals(3.0, urp.predict(testUserId,testItemId));
         assertEquals(urp.predict(testUserId,testItemId), urp.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
-        assertEquals(urp.getNumFactors(),numFactors);
-        assertEquals(urp.getNumIters(),numIters);
-        assertEquals(urp.getRatings()[1],1.0);
+        assertEquals(numFactors, urp.getNumFactors());
+        assertEquals(numIters, urp.getNumIters());
+        assertEquals(0.0, urp.getRatings()[0]);
+        assertEquals(1.0, urp.getRatings()[1]);
+        assertEquals(2.0, urp.getRatings()[2]);
+        assertEquals(3.0, urp.getRatings()[3]);
+        assertEquals(4.0, urp.getRatings()[4]);
     }
 }

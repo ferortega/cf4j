@@ -26,42 +26,42 @@ public class URP extends Recommender {
     /**
      * Number of iterations
      */
-    private int numIters;
+    private final int numIters;
 
     /**
      * Number of latent factors
      */
-    private int numFactors;
+    private final int numFactors;
 
     /**
      * Heuristic factor to control number of iterations during E-Step
      */
-    private double H;
+    private final double H;
 
     /**
      * Plausible ratings (must be sorted in ascending order)
      */
-    private double[] ratings;
+    private final double[] ratings;
 
     /**
      * Gamma parameter
      */
-    private double[][] gamma;
+    private final double[][] gamma;
 
     /**
      * Beta parameter
      */
-    private double[][][] beta;
+    private final double[][][] beta;
 
     /**
      * Alpha parameter
      */
-    private double[] alpha;
+    private final double[] alpha;
 
     /**
      * Phi parameter
      */
-    private Map<Integer, double[][]> phi;
+    private final Map<Integer, double[][]> phi;
 
   /**
    * Model constructor from a Map containing the model's hyper-parameters values. Map object must
@@ -197,6 +197,14 @@ public class URP extends Recommender {
         return ratings;
     }
 
+    /**
+     * Get the H value
+     * @return H value
+     */
+    public double getH() {
+        return H;
+    }
+
     @Override
     public void fit() {
         System.out.println("\nFitting " + this.toString());
@@ -291,16 +299,12 @@ public class URP extends Recommender {
 
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder("URP(")
-                .append("numFactors=").append(this.numFactors)
-                .append("; ")
-                .append("numIters=").append(this.numIters)
-                .append("; ")
-                .append("ratings=").append(Arrays.toString(this.ratings))
-                .append("; ")
-                .append("H=").append(this.H)
-                .append(")");
-        return str.toString();
+        return "URP(" +
+                "numFactors=" + this.numFactors + "; " +
+                "numIters=" + this.numIters + "; " +
+                "ratings=" + Arrays.toString(this.ratings) + "; " +
+                "H=" + this.H +
+                ")";
     }
 
     /**
