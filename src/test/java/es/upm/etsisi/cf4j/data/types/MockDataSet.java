@@ -1,4 +1,4 @@
-package es.upm.etsisi.cf4j.recommender;
+package es.upm.etsisi.cf4j.data.types;
 
 import es.upm.etsisi.cf4j.data.DataSet;
 import es.upm.etsisi.cf4j.data.types.DataSetEntry;

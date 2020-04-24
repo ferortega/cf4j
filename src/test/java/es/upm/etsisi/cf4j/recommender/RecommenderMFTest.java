@@ -16,7 +16,7 @@ class RecommenderMFTest {
     final private static String testFilename = "src/test/resources/testPartDataset.data";
     final private static int seed = 69;
     final private static int numFactors = 2;
-    final private static int numIters = 2;
+    final private static int numIters = 1;
 
     final private static int testUserId = 1;
     final private static int testItemId = 1;
@@ -43,7 +43,7 @@ class RecommenderMFTest {
 
     @Test
     void bnmfTest() {
-        BNMF bnmf = new BNMF(datamodel,numFactors,numIters,0.5,seed);
+        BNMF bnmf = new BNMF(datamodel,numFactors,numIters,0.2,1,seed);
         bnmf.fit();
 
         assertEquals(bnmf.predict(testUserId,testItemId),3.0);

@@ -1,6 +1,7 @@
 package es.upm.etsisi.cf4j.recommender;
 
 import es.upm.etsisi.cf4j.data.DataModel;
+import es.upm.etsisi.cf4j.data.types.MockDataSet;
 import es.upm.etsisi.cf4j.recommender.knn.ItemKNN;
 import es.upm.etsisi.cf4j.recommender.knn.itemSimilarityMetric.*;
 import org.junit.jupiter.api.BeforeAll;
@@ -8,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class RecommenderItemsKNNTest {
+public class ItemKNNTest {
 
     final private static int numberOfNeighbors = 2;
 
