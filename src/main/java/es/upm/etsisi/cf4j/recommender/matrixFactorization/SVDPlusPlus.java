@@ -22,47 +22,47 @@ public class SVDPlusPlus extends Recommender {
     /**
      * Number of latent factors
      */
-    private int numFactors;
+    private final int numFactors;
 
     /**
      * Number of iterations
      */
-    private int numIters;
+    private final int numIters;
 
     /**
      * Learning rate hyper-parameter
      */
-    private double gamma;
+    private final double gamma;
 
     /**
      * Regularization hyper-parameter
      */
-    private double lambda;
+    private final double lambda;
 
     /**
      * bu parameter
      */
-    private double[] bu;
+    private final double[] bu;
 
     /**
      * bi parameter
      */
-    private double[] bi;
+    private final double[] bi;
 
     /**
      * p parameter
      */
-    private double[][] p;
+    private final double[][] p;
 
     /**
      * q parameter
      */
-    private double[][] q;
+    private final double[][] q;
 
     /**
      * y parameter
      */
-    private double[][] y;
+    private final double[][] y;
 
     /**
      * Model constructor from a Map containing the model's hyper-parameters values. Map object must contains the
@@ -238,15 +238,43 @@ public class SVDPlusPlus extends Recommender {
 
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder("SVDPlusPlus(")
-                .append("numFactors=").append(this.numFactors)
-                .append("; ")
-                .append("numIters=").append(this.numIters)
-                .append("; ")
-                .append("gamma=").append(this.gamma)
-                .append("; ")
-                .append("lambda=").append(this.lambda)
-                .append(")");
-        return str.toString();
+        return "SVDPlusPlus(" +
+                "numFactors=" + this.numFactors + "; " +
+                "numIters=" + this.numIters + "; " +
+                "gamma=" + this.gamma + "; " +
+                "lambda=" + this.lambda +
+                ")";
+    }
+
+    /**
+     * Number of factors used in this recommender.
+     * @return Number of factors
+     */
+    public int getNumFactors() {
+        return numFactors;
+    }
+
+    /**
+     * Number of iterations used in this recommender.
+     * @return Number of factors
+     */
+    public int getNumIters() {
+        return numIters;
+    }
+
+    /**
+     * Getter of the gamma value.
+     * @return Gamma value
+     */
+    public double getGamma() {
+        return gamma;
+    }
+
+    /**
+     * Getter of the Lambda value.
+     * @return Lambda value
+     */
+    public double getLambda() {
+        return lambda;
     }
 }

@@ -36,24 +36,24 @@ class DataBankTest {
 
         assertTrue(databank.contains("double"));
         assertTrue(databank.contains("doubleArray"));
-        assertEquals(databank.getDouble("double"), 123.123);
-        assertEquals(databank.getDoubleArray("doubleArray").length, 2);
-        assertEquals(databank.getDoubleArray("doubleArray")[0], 123.123);
-        assertEquals(databank.getDoubleArray("doubleArray")[1], 234.234);
+        assertEquals(123.123,databank.getDouble("double") );
+        assertEquals(2, databank.getDoubleArray("doubleArray").length);
+        assertEquals(123.123, databank.getDoubleArray("doubleArray")[0]);
+        assertEquals(234.234, databank.getDoubleArray("doubleArray")[1]);
 
         assertTrue(databank.contains("integer"));
         assertTrue(databank.contains("integerArray"));
-        assertEquals(databank.getInt("integer"), 69);
-        assertEquals(databank.getIntArray("integerArray").length, 2);
-        assertEquals(databank.getIntArray("integerArray")[0], 68);
-        assertEquals(databank.getIntArray("integerArray")[1], 70);
+        assertEquals(69, databank.getInt("integer"));
+        assertEquals(2, databank.getIntArray("integerArray").length);
+        assertEquals(68, databank.getIntArray("integerArray")[0]);
+        assertEquals(70, databank.getIntArray("integerArray")[1]);
 
         assertTrue(databank.contains("string"));
         assertTrue(databank.contains("stringArray"));
-        assertEquals(databank.getString("string"), "goodbye");
-        assertEquals(databank.getStringArray("stringArray").length, 2);
-        assertEquals(databank.getStringArray("stringArray")[0], "goodbye");
-        assertEquals(databank.getStringArray("stringArray")[1], "hi");
+        assertEquals("goodbye", databank.getString("string"));
+        assertEquals(2, databank.getStringArray("stringArray").length);
+        assertEquals("goodbye", databank.getStringArray("stringArray")[0]);
+        assertEquals("hi", databank.getStringArray("stringArray")[1]);
 
         assertFalse(databank.contains("etsisi"));
     }

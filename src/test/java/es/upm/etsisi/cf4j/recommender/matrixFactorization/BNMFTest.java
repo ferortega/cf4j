@@ -28,8 +28,8 @@ class BNMFTest {
         BNMF bnmf = new BNMF(datamodel,numFactors,numIters,0.2,1,seed);
         bnmf.fit();
 
-        assertEquals(bnmf.predict(testUserId,testItemId),3.0);
-        assertEquals(bnmf.predict(datamodel.getTestUser(testUserId))[testItemId],bnmf.predict(testUserId,testItemId));
+        assertEquals(3.0, bnmf.predict(testUserId,testItemId));
+        assertEquals(bnmf.predict(testUserId,testItemId), bnmf.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
         assertEquals(bnmf.getNumFactors(),numFactors);
         assertEquals(bnmf.getNumIters(),numIters);
