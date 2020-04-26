@@ -104,16 +104,17 @@ public class BenchmarkDataModels {
     }
 
     /**
-     * Loads a DataModel instance of BookCrossing dataset. The DataModel contains:
+     * Loads a DataModel instance of BookCrossing dataset. Only explicit ratings has been included. The DataModel
+     * contains:
      *
      * <ul>
-     *   <li>Number of users: 105,283</li>
-     *   <li>Number of test users: 16,114</li>
-     *   <li>Number of items: 340,556</li>
-     *   <li>Number of test items: 48,642</li>
-     *   <li>Number of ratings: 1,043,456</li>
-     *   <li>Number of test ratings: 10,6324</li>
-     *   <li>Min rating: 0.0</li>
+     *   <li>Number of users: 77,805</li>
+     *   <li>Number of test users: 11,426</li>
+     *   <li>Number of items: 185,973</li>
+     *   <li>Number of test items: 25,697</li>
+     *   <li>Number of ratings: 390,351</li>
+     *   <li>Number of test ratings: 43,320</li>
+     *   <li>Min rating: 1.0</li>
      *   <li>Max rating: 10.0</li>
      * </ul>
      *

@@ -349,5 +349,5 @@ The datasets included in CF4J are:
 | MovieLens1M   | 6,040           | 3,706           | 911,031           | 89,178                 | 1 to 5       |
 | MovieLens10M  | 69,878          | 10,677          | 9,104,681         | 895,373                | 0,5 to 5,0   |
 | FilmTrust     | 1,508           | 2,071           | 32,675            | 2,819                  | 0.5 to 4.0   |
-| BookCroosing  | 105,283         | 340,556         | 1,043,456         | 10,6324                | 1 to 10      |
+| BookCrossing  | 77,805          | 185,973         | 390,351           | 43,320                 | 1 to 10      |
 
