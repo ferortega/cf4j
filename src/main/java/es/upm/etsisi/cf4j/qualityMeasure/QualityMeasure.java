@@ -1,8 +1,8 @@
 package es.upm.etsisi.cf4j.qualityMeasure;
 
 import es.upm.etsisi.cf4j.data.TestUser;
-import es.upm.etsisi.cf4j.util.Parallelizer;
-import es.upm.etsisi.cf4j.util.Partible;
+import es.upm.etsisi.cf4j.util.process.Parallelizer;
+import es.upm.etsisi.cf4j.util.process.Partible;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 
 /**

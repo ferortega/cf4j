@@ -3,7 +3,7 @@ package es.upm.etsisi.cf4j.examples.plot;
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.TestUser;
-import es.upm.etsisi.cf4j.plot.ScatterPlot;
+import es.upm.etsisi.cf4j.util.plot.ScatterPlot;
 import es.upm.etsisi.cf4j.recommender.matrixFactorization.BiasedMF;
 
 import java.io.IOException;

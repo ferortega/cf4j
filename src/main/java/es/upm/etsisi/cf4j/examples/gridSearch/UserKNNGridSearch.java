@@ -5,8 +5,8 @@ import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.qualityMeasure.recommendation.Precision;
 import es.upm.etsisi.cf4j.recommender.knn.UserKNN;
 import es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetric.*;
-import es.upm.etsisi.cf4j.util.GridSearch;
-import es.upm.etsisi.cf4j.util.ParamsGrid;
+import es.upm.etsisi.cf4j.util.optimization.GridSearch;
+import es.upm.etsisi.cf4j.util.optimization.ParamsGrid;
 
 import java.io.IOException;
 import java.util.HashMap;

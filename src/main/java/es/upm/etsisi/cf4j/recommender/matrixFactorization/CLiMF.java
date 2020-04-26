@@ -2,8 +2,8 @@ package es.upm.etsisi.cf4j.recommender.matrixFactorization;
 
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.util.Maths;
-import es.upm.etsisi.cf4j.util.Parallelizer;
-import es.upm.etsisi.cf4j.util.Partible;
+import es.upm.etsisi.cf4j.util.process.Parallelizer;
+import es.upm.etsisi.cf4j.util.process.Partible;
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.User;
 

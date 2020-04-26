@@ -2,7 +2,7 @@ package es.upm.etsisi.cf4j.examples.plot;
 
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
 import es.upm.etsisi.cf4j.data.DataModel;
-import es.upm.etsisi.cf4j.plot.XYPlot;
+import es.upm.etsisi.cf4j.util.plot.XYPlot;
 import es.upm.etsisi.cf4j.qualityMeasure.recommendation.Precision;
 import es.upm.etsisi.cf4j.qualityMeasure.recommendation.Recall;
 import es.upm.etsisi.cf4j.recommender.matrixFactorization.NMF;

@@ -1,4 +1,4 @@
-package es.upm.etsisi.cf4j.util;
+package es.upm.etsisi.cf4j.util.process;
 
 /**
  * This class is used to simplify the parallelization of collaborative filtering algorithms

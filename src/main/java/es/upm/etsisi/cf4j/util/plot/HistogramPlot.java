@@ -1,4 +1,4 @@
-package es.upm.etsisi.cf4j.plot;
+package es.upm.etsisi.cf4j.util.plot;
 
 import de.erichseifert.gral.data.*;
 import de.erichseifert.gral.data.statistics.Histogram1D;
@@ -15,7 +15,6 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.*;
-import java.util.List;
 
 /**
  * Implements a histogram plot.

@@ -1,11 +1,9 @@
-package es.upm.etsisi.cf4j.plot;
+package es.upm.etsisi.cf4j.util.plot;
 
 import de.erichseifert.gral.data.DataSeries;
 import de.erichseifert.gral.data.DataTable;
 import de.erichseifert.gral.graphics.Insets2D;
 import de.erichseifert.gral.graphics.Label;
-import de.erichseifert.gral.io.plots.DrawableWriter;
-import de.erichseifert.gral.io.plots.DrawableWriterFactory;
 import de.erichseifert.gral.plots.AbstractPlot;
 import de.erichseifert.gral.plots.XYPlot;
 import de.erichseifert.gral.plots.axes.AxisRenderer;
@@ -15,15 +13,10 @@ import de.erichseifert.gral.util.GraphicsUtils;
 import org.apache.commons.math3.util.Pair;
 
 import java.awt.geom.Ellipse2D;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 

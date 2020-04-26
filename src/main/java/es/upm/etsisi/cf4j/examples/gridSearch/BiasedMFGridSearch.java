@@ -4,8 +4,8 @@ import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.qualityMeasure.prediction.MAE;
 import es.upm.etsisi.cf4j.recommender.matrixFactorization.BiasedMF;
-import es.upm.etsisi.cf4j.util.GridSearch;
-import es.upm.etsisi.cf4j.util.ParamsGrid;
+import es.upm.etsisi.cf4j.util.optimization.GridSearch;
+import es.upm.etsisi.cf4j.util.optimization.ParamsGrid;
 
 import java.io.IOException;
 

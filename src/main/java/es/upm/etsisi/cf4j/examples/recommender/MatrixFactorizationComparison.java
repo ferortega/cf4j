@@ -1,15 +1,12 @@
 package es.upm.etsisi.cf4j.examples.recommender;
 
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
-import es.upm.etsisi.cf4j.plot.LinePlot;
+import es.upm.etsisi.cf4j.util.plot.LinePlot;
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.util.Range;
 import es.upm.etsisi.cf4j.data.DataModel;
-import es.upm.etsisi.cf4j.data.DataSet;
-import es.upm.etsisi.cf4j.data.RandomSplitDataSet;
 import es.upm.etsisi.cf4j.qualityMeasure.prediction.RMSE;
-import es.upm.etsisi.cf4j.qualityMeasure.recommendation.F1;
 import es.upm.etsisi.cf4j.recommender.matrixFactorization.*;
 
 import java.io.IOException;

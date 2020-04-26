@@ -1,7 +1,7 @@
 package es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetric;
 
 import es.upm.etsisi.cf4j.data.User;
-import es.upm.etsisi.cf4j.util.Partible;
+import es.upm.etsisi.cf4j.util.process.Partible;
 import es.upm.etsisi.cf4j.data.DataModel;
 
 /**

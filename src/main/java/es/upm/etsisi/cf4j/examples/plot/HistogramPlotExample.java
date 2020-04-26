@@ -3,7 +3,7 @@ package es.upm.etsisi.cf4j.examples.plot;
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.Item;
-import es.upm.etsisi.cf4j.plot.HistogramPlot;
+import es.upm.etsisi.cf4j.util.plot.HistogramPlot;
 
 import java.io.IOException;
 
