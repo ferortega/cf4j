@@ -1,4 +1,4 @@
-package es.upm.etsisi.cf4j.util;
+package es.upm.etsisi.cf4j.util.optimization;
 
 import org.apache.commons.math3.util.Pair;
 

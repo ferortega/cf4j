@@ -1,4 +1,4 @@
-package es.upm.etsisi.cf4j.util;
+package es.upm.etsisi.cf4j.util.process;
 
 /**
  * <p>This interface handles the parallel execution of an array of T thorough Parallelizer class. Each execution of a

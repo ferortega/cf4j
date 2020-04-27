@@ -1,4 +1,4 @@
-package es.upm.etsisi.cf4j.plot;
+package es.upm.etsisi.cf4j.util.plot;
 
 import com.github.freva.asciitable.AsciiTable;
 import de.erichseifert.gral.io.plots.DrawableWriter;
@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Iterator;
 
 /**
  * Abstract class that represents a CF4J plot. With a CF4J plot final users can:

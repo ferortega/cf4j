@@ -4,7 +4,7 @@ import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.recommender.knn.itemSimilarityMetric.Cosine;
 import es.upm.etsisi.cf4j.recommender.knn.itemSimilarityMetric.ItemSimilarityMetric;
-import es.upm.etsisi.cf4j.util.Parallelizer;
+import es.upm.etsisi.cf4j.util.process.Parallelizer;
 import es.upm.etsisi.cf4j.data.TestUser;
 import es.upm.etsisi.cf4j.util.Search;
 

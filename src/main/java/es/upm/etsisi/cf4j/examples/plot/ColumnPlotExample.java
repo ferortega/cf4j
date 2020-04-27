@@ -3,8 +3,8 @@ package es.upm.etsisi.cf4j.examples.plot;
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.User;
-import es.upm.etsisi.cf4j.plot.ColumnPlot;
-import es.upm.etsisi.cf4j.plot.PlotSettings;
+import es.upm.etsisi.cf4j.util.plot.ColumnPlot;
+import es.upm.etsisi.cf4j.util.plot.PlotSettings;
 
 import java.io.IOException;
 import java.util.HashMap;

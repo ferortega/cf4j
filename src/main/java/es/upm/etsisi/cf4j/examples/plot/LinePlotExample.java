@@ -2,7 +2,7 @@ package es.upm.etsisi.cf4j.examples.plot;
 
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
 import es.upm.etsisi.cf4j.data.DataModel;
-import es.upm.etsisi.cf4j.plot.LinePlot;
+import es.upm.etsisi.cf4j.util.plot.LinePlot;
 import es.upm.etsisi.cf4j.qualityMeasure.recommendation.F1;
 import es.upm.etsisi.cf4j.recommender.matrixFactorization.NMF;
 import es.upm.etsisi.cf4j.recommender.matrixFactorization.PMF;

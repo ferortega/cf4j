@@ -1,6 +1,5 @@
-package es.upm.etsisi.cf4j.plot;
+package es.upm.etsisi.cf4j.util.plot;
 
-import com.github.freva.asciitable.AsciiTable;
 import de.erichseifert.gral.data.DataTable;
 import de.erichseifert.gral.data.statistics.Statistics;
 import de.erichseifert.gral.graphics.Insets2D;

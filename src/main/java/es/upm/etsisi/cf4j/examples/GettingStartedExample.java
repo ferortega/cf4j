@@ -1,14 +1,11 @@
 package es.upm.etsisi.cf4j.examples;
 
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
-import es.upm.etsisi.cf4j.plot.LinePlot;
+import es.upm.etsisi.cf4j.util.plot.LinePlot;
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.qualityMeasure.prediction.MSE;
-import es.upm.etsisi.cf4j.recommender.matrixFactorization.NMF;
 import es.upm.etsisi.cf4j.recommender.matrixFactorization.PMF;
 import es.upm.etsisi.cf4j.data.DataModel;
-import es.upm.etsisi.cf4j.data.DataSet;
-import es.upm.etsisi.cf4j.data.RandomSplitDataSet;
 
 import java.io.IOException;
 

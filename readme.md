@@ -163,7 +163,7 @@ Let's encode our first experiment with CF4J.
 
 ## Project Structure
 
-The following image shows the summarized class diagram of the whole project. You can see the full version of this diagram [here](http://rs.etsisi.upm.es/cf4j-2.0.1/images/class-diagram.jpg). The project has been divided into 5 main packages: `data`, `recommender`, `qualityMeasure`, `plot` and `util`.
+The following image shows the summarized class diagram of the whole project. You can see the full version of this diagram [here](http://rs.etsisi.upm.es/cf4j-2.0.1/images/class-diagram.jpg). The project has been divided into four main packages: `data`, `recommender`, `qualityMeasure` and `util`.
 
 ![CF4J class diagram](http://rs.etsisi.upm.es/cf4j-2.0.1/images/class-diagram-summarized.jpg)
 
@@ -208,28 +208,30 @@ This package contains the implementation of different quality measures for colla
 
 Each quality measure included in CF4J extends `QualityMeasure` abstract class. This class simplifies the computation of a quality measure from the test ratings. It contains the `getScore()` method that computes the score of the quality measure for each test user and returns the averaged score. The computation of the quality measure score for each test user is performed in parallel.
 
-### `es.upm.etsisi.cf4j.plot` package
-
-This package includes plotting tools designed to analyze data of results obtained as consequence of collaborative filtering research. The following plot types:
-
-- `LinePlot`. Displays multiple data series with common numerical values on the x axis. Example:
-  ![LinePlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.0/line-plot.png)
-   
-- `XYPlot`.Displays multiple data series defined by a sequence of XY points. All the points in a series must be assigned to a common plot's label.
-  ![XYPlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.0/xy-plot.png)
-   
-- `ScatterPlot`. Displays the values of two numerical variables.
-  ![ScatterPlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.0/scatter-plot.png)
-  
-- `HistogramPlot`. Displays the histogram of a numerical variable by defining the number of bins.
-  ![HistogramPlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.0/histogram-plot.png)
-  
-- `ColumnPlot`. Displays numerical values related with a discrete variable placed on the x axis.
-  ![ColumnPlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.0/column-plot.png) 
-
 ### `es.upm.etsisi.cf4j.util` package
 
-This package contains different utilities to be used with the library. 
+This package contains different utilities designed to ease common operations used in collaborative filtering research. This package includes the following sub-packages:
+
+- `es.upm.etsisi.cf4j.util.plot` includes plotting tools designed to analyze data of results obtained as consequence of collaborative filtering research. The following plot types:
+ 
+  - `LinePlot`. Displays multiple data series with common numerical values on the x axis. Example:
+    ![LinePlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.0/line-plot.png)
+    
+  - `XYPlot`.Displays multiple data series defined by a sequence of XY points. All the points in a series must be assigned to a common plot's label.
+    ![XYPlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.0/xy-plot.png)
+    
+  - `ScatterPlot`. Displays the values of two numerical variables.
+    ![ScatterPlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.0/scatter-plot.png)
+   
+  - `HistogramPlot`. Displays the histogram of a numerical variable by defining the number of bins.
+    ![HistogramPlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.0/histogram-plot.png)
+   
+  - `ColumnPlot`. Displays numerical values related with a discrete variable placed on the x axis.
+    ![ColumnPlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.0/column-plot.png) 
+    
+- `es.upm.etsisi.cf4j.util.optimization`  includes optimization utils designed to tune recommenders' hyper-parameters.
+
+- `es.upm.etsisi.cf4j.util.process` includes processing utils designed to simplify the parallelization of collaborative filtering algorithms.
 
 Read the [javadoc](http://cf4j.etsisi.upm.es/apidocs/v2.1.0/) documentation for additional information.
 
@@ -347,5 +349,5 @@ The datasets included in CF4J are:
 | MovieLens1M   | 6,040           | 3,706           | 911,031           | 89,178                 | 1 to 5       |
 | MovieLens10M  | 69,878          | 10,677          | 9,104,681         | 895,373                | 0,5 to 5,0   |
 | FilmTrust     | 1,508           | 2,071           | 32,675            | 2,819                  | 0.5 to 4.0   |
-| BookCroosing  | 105,283         | 340,556         | 1,043,456         | 10,6324                | 1 to 10      |
+| BookCrossing  | 77,805          | 185,973         | 390,351           | 43,320                 | 1 to 10      |
 

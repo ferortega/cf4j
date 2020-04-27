@@ -1,4 +1,4 @@
-package es.upm.etsisi.cf4j.util;
+package es.upm.etsisi.cf4j.util.optimization;
 
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;

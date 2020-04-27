@@ -1,7 +1,7 @@
 package es.upm.etsisi.cf4j.examples.recommender;
 
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
-import es.upm.etsisi.cf4j.plot.LinePlot;
+import es.upm.etsisi.cf4j.util.plot.LinePlot;
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.qualityMeasure.recommendation.NDCG;
 import es.upm.etsisi.cf4j.recommender.Recommender;

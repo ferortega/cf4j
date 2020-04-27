@@ -1,4 +1,4 @@
-package es.upm.etsisi.cf4j.plot;
+package es.upm.etsisi.cf4j.util.plot;
 
 import de.erichseifert.gral.data.DataSeries;
 import de.erichseifert.gral.data.DataTable;
