@@ -23,42 +23,42 @@ public class BiasedMF extends Recommender {
 	/**
 	 * User factors
 	 */
-	private double[][] p;
+	private final double[][] p;
 
 	/**
 	 * Item factors
 	 */
-	private double[][] q;
+	private final double[][] q;
 
 	/**
 	 * User bias
 	 */
-	private double[] bu;
+	private final double[] bu;
 
 	/**
 	 * Item bias
 	 */
-	private double[] bi;
+	private final double[] bi;
 
 	/**
 	 * Learning rate
 	 */
-	private double gamma;
+	private final double gamma;
 
 	/**
 	 * Regularization parameter
 	 */
-	private double lambda;
+	private final double lambda;
 
 	/**
 	 * Number of latent factors
 	 */
-	private int numFactors;
+	private final int numFactors;
 
 	/**
 	 * Number of iterations
 	 */
-	private int numIters;
+	private final int numIters;
 
 	/**
 	 * Model constructor from a Map containing the model's hyper-parameters values. Map object must contains the
@@ -227,16 +227,12 @@ public class BiasedMF extends Recommender {
 
 	@Override
 	public String toString() {
-		StringBuilder str = new StringBuilder("BiasedMF(")
-				.append("numFactors=").append(this.numFactors)
-				.append("; ")
-				.append("numIters=").append(this.numIters)
-				.append("; ")
-				.append("gamma=").append(this.gamma)
-				.append("; ")
-				.append("lambda=").append(this.lambda)
-				.append(")");
-		return str.toString();
+		return "BiasedMF(" +
+				"numFactors=" + this.numFactors + "; " +
+				"numIters=" + this.numIters + "; " +
+				"gamma=" + this.gamma + "; " +
+				"lambda=" + this.lambda +
+				")";
 	}
 
 	/**

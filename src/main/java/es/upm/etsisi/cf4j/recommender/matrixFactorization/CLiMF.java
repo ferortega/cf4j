@@ -226,8 +226,8 @@ public class CLiMF extends Recommender {
      * Auxiliary inner class to parallelize model update
      */
     private class UpdateModel implements Partible<User> {
-        private double[][] usersGradients;
-        private Map<Integer, double[][]> itemsGradients;
+        private final double[][] usersGradients;
+        private final Map<Integer, double[][]> itemsGradients;
 
         public UpdateModel () {
             this.usersGradients = new double[datamodel.getNumberOfUsers()][numFactors];
@@ -307,6 +307,22 @@ public class CLiMF extends Recommender {
      */
     public int getNumIters() {
         return this.numIters;
+    }
+
+    /**
+     * Get the regularization parameter of the model
+     * @return Lambda
+     */
+    public double getLambda() {
+        return this.lambda;
+    }
+
+    /**
+     * Get the learning rate parameter of the model
+     * @return Gamma
+     */
+    public double getGamma() {
+        return this.gamma;
     }
 
 }

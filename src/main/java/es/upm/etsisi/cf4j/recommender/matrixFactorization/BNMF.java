@@ -51,28 +51,28 @@ public class BNMF extends Recommender {
 	 * This hyper-parameter is related to the possibility of obtaining overlapping groups of users sharing the same
 	 * tastes.
 	 */
-	private double alpha;
+	private final double alpha;
 
 	/**
 	 * This hyper-parameter represents the amount of evidence that the algorithm requires to deduce that a group of
 	 * users likes an item.
 	 */
-	private double beta;
+	private final double beta;
 
 	/**
 	 * Hyper-parameter of the binomial distribution.
 	 */
-	private double r;
+	private final double r;
 
 	/**
 	 * Number of factors
 	 */
-	private int numFactors;
+	private final int numFactors;
 
 	/**
 	 * Number of iterations
 	 */
-	private int numIters;
+	private final int numIters;
 
   /**
    * Model constructor from a Map containing the model's hyper-parameters values. Map object must
@@ -188,6 +188,31 @@ public class BNMF extends Recommender {
 	}
 
 	/**
+	 * Get the alpha value
+	 * @return Alpha value
+	 */
+	public double getAlpha() {
+		return this.alpha;
+	}
+
+	/**
+	 * Get the beta value
+	 * @return Beta value
+	 */
+	public double getBeta() {
+		return this.beta;
+	}
+
+	/**
+	 * Get the r value
+	 * @return r value
+	 */
+	public double getR() {
+		return this.r;
+	}
+
+
+	/**
 	 * Get the gamma vector of an user
 	 * @param userIndex user index
 	 * @return User's gamma vector
@@ -273,18 +298,13 @@ public class BNMF extends Recommender {
 
 	@Override
 	public String toString() {
-		StringBuilder str = new StringBuilder("BNMF(")
-				.append("numFactors=").append(this.numFactors)
-				.append("; ")
-				.append("numIters=").append(this.numIters)
-				.append("; ")
-				.append("alpha=").append(this.alpha)
-				.append("; ")
-				.append("beta=").append(this.beta)
-				.append("; ")
-				.append("r=").append(this.r)
-				.append(")");
-		return str.toString();
+		return "BNMF(" +
+				"numFactors=" + this.numFactors + "; " +
+				"numIters=" + this.numIters + "; " +
+				"alpha=" + this.alpha + "; " +
+				"beta=" + this.beta + "; " +
+				"r=" + this.r +
+				")";
 	}
 
 	/**
@@ -294,13 +314,13 @@ public class BNMF extends Recommender {
 
 		private final static int NUM_LOCKS = 100;
 
-		private ReentrantLock[] locks;
+		private final ReentrantLock[] locks;
 
-		private double[][] gamma;
+		private final double[][] gamma;
 
-		private double[][] epsilonPlus;
+		private final double[][] epsilonPlus;
 
-		private double[][] epsilonMinus;
+		private final double[][] epsilonMinus;
 
 		public UpdateModel() {
 
