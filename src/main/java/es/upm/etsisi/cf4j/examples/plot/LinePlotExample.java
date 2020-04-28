@@ -40,7 +40,6 @@ public class LinePlotExample {
             F1 f1 = new F1(nmf, N, 4.0);
             double score = f1.getScore();
             plot.setValue("NMF", N, score);
-
         }
 
         plot.draw();
