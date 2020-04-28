@@ -98,7 +98,7 @@ public class LinePlot extends Plot {
     /**
      * Adds a new empty series to the plot. All series values are initialized to 0.
      * @param seriesName Series name
-     * @return LinePlot instance
+     * @return Self LinePlot instance
      */
     public LinePlot addSeries(String seriesName) {
         return this.addSeries(seriesName, 0);
@@ -108,7 +108,7 @@ public class LinePlot extends Plot {
      * Adds a new series to the plot initializing all the values to a constant one.
      * @param seriesName Series name
      * @param value Constant value
-     * @return LinePlot instance
+     * @return Self LinePlot instance
      */
     public LinePlot addSeries(String seriesName, double value) {
         double[] values = new double[this.xs.length];
@@ -121,7 +121,7 @@ public class LinePlot extends Plot {
      * Adds a new series to the plot. y values positions must be correlated with xs values.
      * @param seriesName Series name
      * @param y Values
-     * @return LinePlot instance
+     * @return Self LinePlot instance
      */
     public LinePlot addSeries(String seriesName, double[] y) {
         this.series.add(new Pair(seriesName, y));
@@ -133,7 +133,7 @@ public class LinePlot extends Plot {
      * @param seriesName Series name
      * @param x x value. Must exists in xs.
      * @param y y value
-     * @return LinePlot instance
+     * @return Self LinePlot instance
      */
     public LinePlot setValue(String seriesName, int x, double y) {
         return this.setValue(seriesName, (double) x, y);
@@ -144,7 +144,7 @@ public class LinePlot extends Plot {
      * @param seriesName Series name
      * @param x x value. Must exists in xs.
      * @param y y value
-     * @return LinePlot instance
+     * @return Self LinePlot instance
      */
     public LinePlot setValue(String seriesName, double x, double y) {
         int xIndex = 0;

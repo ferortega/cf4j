@@ -82,7 +82,7 @@ public class XYPlot extends Plot {
     /**
      * Adds a new empty series to the plot. Points are initialized to x=0 and y=0 all point labels.
      * @param seriesName Series name
-     * @return XYPlot instance
+     * @return Self XYPlot instance
      */
     public XYPlot addSeries(String seriesName) {
         return this.addSeries(seriesName, 0, 0);
@@ -93,7 +93,7 @@ public class XYPlot extends Plot {
      * @param seriesName Series name
      * @param x x initialization
      * @param y y initialization
-     * @return XYPlot instance
+     * @return Self XYPlot instance
      */
     public XYPlot addSeries(String seriesName, double x, double y) {
         double[] xs = new double[this.pointsLabels.length];
@@ -110,7 +110,7 @@ public class XYPlot extends Plot {
      * @param seriesName Series name
      * @param xs x values
      * @param ys y values
-     * @return XYPlot instance
+     * @return Self XYPlot instance
      */
     public XYPlot addSeries(String seriesName, double[] xs, double[] ys) {
         this.series.add(new MutableTriple(seriesName, xs, ys));
@@ -123,7 +123,7 @@ public class XYPlot extends Plot {
      * @param label Label value of the point. Must exists
      * @param x x value
      * @param y y value
-     * @return XYPlot instance
+     * @return Self XYPlot instance
      */
     public XYPlot setXY(String seriesName, String label, double x, double y) {
         int labelIndex = 0;
@@ -145,7 +145,7 @@ public class XYPlot extends Plot {
     /**
      * Set the labels visible for a series
      * @param seriesName Series name
-     * @return XYPlot instance
+     * @return Self XYPlot instance
      */
     public XYPlot setLabelsVisible(String seriesName) {
         this.hasLabelsVisible.add(seriesName);
@@ -155,7 +155,7 @@ public class XYPlot extends Plot {
     /**
      * Set the labels not visible for a series
      * @param seriesName Series name
-     * @return XYPlot instance
+     * @return Self XYPlot instance
      */
     public XYPlot setLabelsNotVisible(String seriesName) {
         this.hasLabelsVisible.remove(seriesName);

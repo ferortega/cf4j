@@ -56,7 +56,7 @@ public class ScatterPlot extends Plot {
      * Adds new point to the scatter plot
      * @param x x value
      * @param y y value
-     * @return ScatterPlot instance
+     * @return Self ScatterPlot instance
      */
     public ScatterPlot addPoint(double x, double y) {
         this.points.add(new Pair<>(x, y));

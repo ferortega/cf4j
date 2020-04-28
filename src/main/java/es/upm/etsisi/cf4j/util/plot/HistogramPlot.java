@@ -50,7 +50,7 @@ public class HistogramPlot extends Plot {
     /**
      * Adds new value to the histogram
      * @param value Value
-     * @return HistogramPlot instance
+     * @return Self HistogramPlot instance
      */
     public HistogramPlot addValue(double value) {
         this.data.add(value);
