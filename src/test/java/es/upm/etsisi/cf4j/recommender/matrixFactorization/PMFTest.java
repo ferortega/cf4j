@@ -32,8 +32,11 @@ class PMFTest {
         assertEquals(0.3371962186365588, pmf.predict(testUserId,testItemId));
         assertEquals(pmf.predict(testUserId,testItemId), pmf.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
-        assertEquals(pmf.getNumFactors(),numFactors);
-        assertEquals(pmf.getNumIters(),numIters);
+        assertEquals(numFactors, pmf.getNumFactors());
+        assertEquals(numIters, pmf.getNumIters());
+
+        assertEquals(0.01, pmf.getGamma());
+        assertEquals(0.05, pmf.getLambda());
     }
 
 }

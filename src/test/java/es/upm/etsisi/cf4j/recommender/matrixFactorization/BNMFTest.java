@@ -31,8 +31,12 @@ class BNMFTest {
         assertEquals(3.0, bnmf.predict(testUserId,testItemId));
         assertEquals(bnmf.predict(testUserId,testItemId), bnmf.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
-        assertEquals(bnmf.getNumFactors(),numFactors);
-        assertEquals(bnmf.getNumIters(),numIters);
+        assertEquals(numFactors, bnmf.getNumFactors());
+        assertEquals(numIters, bnmf.getNumIters());
+
+        assertEquals(0.2, bnmf.getAlpha());
+        assertEquals(1, bnmf.getBeta());
+        assertEquals(4.0, bnmf.getR());
     }
 
 }

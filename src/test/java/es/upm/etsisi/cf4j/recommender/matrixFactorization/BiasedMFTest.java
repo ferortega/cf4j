@@ -31,8 +31,11 @@ class BiasedMFTest {
         assertEquals(2.5873137380617095, biasedmf.predict(testUserId,testItemId));
         assertEquals(biasedmf.predict(testUserId,testItemId), biasedmf.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
-        assertEquals(biasedmf.getNumFactors(),numFactors);
-        assertEquals(biasedmf.getNumIters(),numIters);
+        assertEquals(numFactors, biasedmf.getNumFactors());
+        assertEquals(numIters, biasedmf.getNumIters());
+
+        assertEquals(0.01, biasedmf.getGamma());
+        assertEquals(0.1, biasedmf.getLambda());
     }
 
 }

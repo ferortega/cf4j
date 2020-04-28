@@ -38,5 +38,6 @@ class URPTest {
         assertEquals(2.0, urp.getRatings()[2]);
         assertEquals(3.0, urp.getRatings()[3]);
         assertEquals(4.0, urp.getRatings()[4]);
+        assertEquals(0.1, urp.getH());
     }
 }

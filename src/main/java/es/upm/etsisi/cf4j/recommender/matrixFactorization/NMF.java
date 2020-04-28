@@ -20,22 +20,22 @@ public class NMF extends Recommender {
 	/**
 	 * User factors
 	 */
-	private double[][] w;
+	private final double[][] w;
 
 	/**
 	 * Item factors
 	 */
-	private double[][] h;
+	private final double[][] h;
 
 	/**
 	 * Number of factors
 	 */
-	private int numFactors;
+	private final int numFactors;
 
 	/**
 	 * Number of iterations
 	 */
-	private int numIters;
+	private final int numIters;
 
 
 	/**
@@ -137,12 +137,10 @@ public class NMF extends Recommender {
 
 	@Override
 	public String toString() {
-		StringBuilder str = new StringBuilder("NMF(")
-				.append("numFactors=").append(this.numFactors)
-				.append("; ")
-				.append("numIters=").append(this.numIters)
-				.append(")");
-		return str.toString();
+		return "NMF(" +
+				"numFactors=" + this.numFactors + "; " +
+				"numIters=" + this.numIters +
+				")";
 	}
 
 	/**

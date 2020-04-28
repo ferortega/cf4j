@@ -31,8 +31,11 @@ class CLiTest {
         assertEquals(0.8124318087775715, climf.predict(testUserId,testItemId));
         assertEquals(climf.predict(testUserId,testItemId), climf.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
-        assertEquals(climf.getNumFactors(),numFactors);
-        assertEquals(climf.getNumIters(),numIters);
+        assertEquals(numFactors, climf.getNumFactors());
+        assertEquals(numIters, climf.getNumIters());
+
+        assertEquals(1.0E-5, climf.getGamma());
+        assertEquals(1.0E-4, climf.getLambda());
     }
 
 }

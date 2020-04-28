@@ -33,5 +33,8 @@ class SVDPlusPlusTest {
 
         assertEquals(numFactors, svdPlusPlus.getNumFactors());
         assertEquals(numIters, svdPlusPlus.getNumIters());
+
+        assertEquals(0.001, svdPlusPlus.getGamma());
+        assertEquals(0.01, svdPlusPlus.getLambda());
     }
 }

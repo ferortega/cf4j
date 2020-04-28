@@ -28,32 +28,32 @@ public class HPF extends Recommender {
     /**
      * Number of latent factors
      */
-    private int numFactors;
+    private final int numFactors;
 
     /**
      * Number of iterations
      */
-    private int numIters;
+    private final int numIters;
 
     // Model hyperparameters
-    private double a;
-    private double aPrime;
-    private double bPrime;
-    private double c;
-    private double cPrime;
-    private double dPrime;
+    private final double a;
+    private final double aPrime;
+    private final double bPrime;
+    private final double c;
+    private final double cPrime;
+    private final double dPrime;
 
     // Model parameters
-    private double[][] gamma;
-    private double[][] gammaShp;
-    private double[][] gammaRte;
-    private double kappaShp;
-    private double[] kappaRte;
-    private double[][] lambda;
-    private double[][] lambdaShp;
-    private double[][] lambdaRte;
-    private double tauShp;
-    private double[] tauRte;
+    private final double[][] gamma;
+    private final double[][] gammaShp;
+    private final double[][] gammaRte;
+    private final double kappaShp;
+    private final double[] kappaRte;
+    private final double[][] lambda;
+    private final double[][] lambdaShp;
+    private final double[][] lambdaRte;
+    private final double tauShp;
+    private final double[] tauRte;
 
     /**
      * Model constructor from a Map containing the model's hyper-parameters values. Map object must contains the
