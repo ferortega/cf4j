@@ -29,15 +29,14 @@ public class ColumnPlotExample {
             }
         }
 
-        PlotSettings.setyAxisInset(125);
-        PlotSettings.setyAxisLabelDistance(3.1);
+        PlotSettings.setyAxisInset(125).setyAxisLabelDistance(3.1);
 
-        ColumnPlot plot = new ColumnPlot("Rating value", "Number of ratings");
-        plot.addColumn("1.0", count.get("1.0"));
-        plot.addColumn("2.0", count.get("2.0"));
-        plot.addColumn("3.0", count.get("3.0"));
-        plot.addColumn("4.0", count.get("4.0"));
-        plot.addColumn("5.0", count.get("5.0"));
+        ColumnPlot plot = new ColumnPlot("Rating value", "Number of ratings")
+            .addColumn("1.0", count.get("1.0"))
+            .addColumn("2.0", count.get("2.0"))
+            .addColumn("3.0", count.get("3.0"))
+            .addColumn("4.0", count.get("4.0"))
+            .addColumn("5.0", count.get("5.0"));
 
         plot.draw();
         plot.exportPlot("exports/column-plot.png");
