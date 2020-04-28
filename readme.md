@@ -163,9 +163,9 @@ Let's encode our first experiment with CF4J.
 
 ## Project Structure
 
-The following image shows the summarized class diagram of the whole project. You can see the full version of this diagram [here](http://rs.etsisi.upm.es/cf4j-2.0.1/images/class-diagram.jpg). The project has been divided into four main packages: `data`, `recommender`, `qualityMeasure` and `util`.
+The following image shows the  class diagram of the whole project.  The project has been divided into four main packages: `data`, `recommender`, `qualityMeasure` and `util`.
 
-![CF4J class diagram](http://rs.etsisi.upm.es/cf4j-2.0.1/images/class-diagram-summarized.jpg)
+![CF4J class diagram](http://cf4j.etsisi.upm.es/github-resources/v2.1.0/cf4j-class-diagram.png)
 
 ### `es.upm.etsisi.cf4j.data` package
 
@@ -350,4 +350,6 @@ The datasets included in CF4J are:
 | MovieLens10M  | 69,878          | 10,677          | 9,104,681         | 895,373                | 0,5 to 5,0   |
 | FilmTrust     | 1,508           | 2,071           | 32,675            | 2,819                  | 0.5 to 4.0   |
 | BookCrossing  | 77,805          | 185,973         | 390,351           | 43,320                 | 1 to 10      |
-
+| LibimSeTi     | 135,359         | 168,791         | 15,846,347        | 1,512,999              | 1 to 10      |
+| MyAnimeList   | 69,600          | 9,927           | 5,788,207         | 549,027                | 1 to 10      |
+| LibimSeTi     | 54,905          | 140             | 1,662,713         | 179,657                | -10 to 10    |

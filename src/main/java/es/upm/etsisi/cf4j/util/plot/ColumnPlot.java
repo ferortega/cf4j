@@ -57,9 +57,11 @@ public class ColumnPlot extends Plot {
      * Adds a column to the plot
      * @param name Column name
      * @param value Column value
+     * @return ColumnPlot instance
      */
-    public void addColumn(String name, double value) {
+    public ColumnPlot addColumn(String name, double value) {
         this.columns.add(new Pair(name, value));
+        return this;
     }
 
     @Override

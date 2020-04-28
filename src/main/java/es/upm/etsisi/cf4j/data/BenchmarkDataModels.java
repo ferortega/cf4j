@@ -129,6 +129,75 @@ public class BenchmarkDataModels {
     }
 
     /**
+     * Loads a DataModel instance of LibimSeTi  dataset. The DataModel contains:
+     *
+     * <ul>
+     *   <li>Number of users: 135,359</li>
+     *   <li>Number of test users: 40,940</li>
+     *   <li>Number of items: 168,791</li>
+     *   <li>Number of test items: 40,532</li>
+     *   <li>Number of ratings: 15,846,347</li>
+     *   <li>Number of test ratings: 1,512,999</li>
+     *   <li>Min rating: 1.0</li>
+     *   <li>Max rating: 10.0</li>
+     * </ul>
+     *
+     * Visit <a href="http://www.occamslab.com/petricek/data/">http://www.occamslab.com/petricek/data/</a> for more information.
+     *
+     * @return A DataModel instance with LibimSeTi dataset.
+     * @throws IOException When the DataModel can not be loaded.
+     */
+    public static DataModel LibimSeTi() throws IOException {
+        return loadRemoteDataModel("http://cf4j.etsisi.upm.es/datamodels/libimseti.cf4j");
+    }
+
+    /**
+     * Loads a DataModel instance of MyAnimeList dataset. Only explicit ratings has been included. The DataModel contains:
+     *
+     * <ul>
+     *   <li>Number of users: 69,600</li>
+     *   <li>Number of test users: 19,179</li>
+     *   <li>Number of items: 9,927</li>
+     *   <li>Number of test items: 2,692</li>
+     *   <li>Number of ratings: 5,788,207</li>
+     *   <li>Number of test ratings: 549,027</li>
+     *   <li>Min rating: 1.0</li>
+     *   <li>Max rating: 10.0</li>
+     * </ul>
+     *
+     * Visit <a href="https://www.kaggle.com/CooperUnion/anime-recommendations-database/data">https://www.kaggle.com/CooperUnion/anime-recommendations-database/data</a> for more information.
+     *
+     * @return A DataModel instance with LibimSeTi dataset.
+     * @throws IOException When the DataModel can not be loaded.
+     */
+    public static DataModel MyAnimeList() throws IOException {
+        return loadRemoteDataModel("http://cf4j.etsisi.upm.es/datamodels/myanimelist.cf4j");
+    }
+
+    /**
+     * Loads a DataModel instance of Jester (Dataset 3) dataset. The DataModel contains:
+     *
+     * <ul>
+     *   <li>Number of users: 54,905</li>
+     *   <li>Number of test users: 16,465</li>
+     *   <li>Number of items: 140</li>
+     *   <li>Number of test items: 37</li>
+     *   <li>Number of ratings: 1,662,713</li>
+     *   <li>Number of test ratings: 179,657</li>
+     *   <li>Min rating: -10.0</li>
+     *   <li>Max rating: 10.0</li>
+     * </ul>
+     *
+     * Visit <a href="http://eigentaste.berkeley.edu/dataset/">http://eigentaste.berkeley.edu/dataset/</a> for more information.
+     *
+     * @return A DataModel instance with Jester dataset.
+     * @throws IOException When the DataModel can not be loaded.
+     */
+    public static DataModel Jester() throws IOException {
+        return loadRemoteDataModel("http://cf4j.etsisi.upm.es/datamodels/jester.cf4j");
+    }
+
+    /**
      * Loads a DataModel instance from a remote URL
      * @param spec The String with the URL of the DataModel
      * @return DataModel instance

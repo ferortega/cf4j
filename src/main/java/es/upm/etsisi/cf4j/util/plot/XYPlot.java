@@ -82,9 +82,10 @@ public class XYPlot extends Plot {
     /**
      * Adds a new empty series to the plot. Points are initialized to x=0 and y=0 all point labels.
      * @param seriesName Series name
+     * @return XYPlot instance
      */
-    public void addSeries(String seriesName) {
-        this.addSeries(seriesName, 0, 0);
+    public XYPlot addSeries(String seriesName) {
+        return this.addSeries(seriesName, 0, 0);
     }
 
     /**
@@ -92,15 +93,16 @@ public class XYPlot extends Plot {
      * @param seriesName Series name
      * @param x x initialization
      * @param y y initialization
+     * @return XYPlot instance
      */
-    public void addSeries(String seriesName, double x, double y) {
+    public XYPlot addSeries(String seriesName, double x, double y) {
         double[] xs = new double[this.pointsLabels.length];
         Arrays.fill(xs, x);
 
         double[] ys = new double[this.pointsLabels.length];
         Arrays.fill(ys, y);
 
-        this.addSeries(seriesName, xs, ys);
+        return this.addSeries(seriesName, xs, ys);
     }
 
     /**
@@ -108,9 +110,11 @@ public class XYPlot extends Plot {
      * @param seriesName Series name
      * @param xs x values
      * @param ys y values
+     * @return XYPlot instance
      */
-    public void addSeries(String seriesName, double[] xs, double[] ys) {
+    public XYPlot addSeries(String seriesName, double[] xs, double[] ys) {
         this.series.add(new MutableTriple(seriesName, xs, ys));
+        return this;
     }
 
     /**
@@ -119,8 +123,9 @@ public class XYPlot extends Plot {
      * @param label Label value of the point. Must exists
      * @param x x value
      * @param y y value
+     * @return XYPlot instance
      */
-    public void setXY(String seriesName, String label, double x, double y) {
+    public XYPlot setXY(String seriesName, String label, double x, double y) {
         int labelIndex = 0;
         while (!this.pointsLabels[labelIndex].equals(label)) {
             labelIndex++;
@@ -133,22 +138,28 @@ public class XYPlot extends Plot {
 
         this.series.get(seriesIndex).getMiddle()[labelIndex] = x;
         this.series.get(seriesIndex).getRight()[labelIndex] = y;
+
+        return this;
     }
 
     /**
      * Set the labels visible for a series
      * @param seriesName Series name
+     * @return XYPlot instance
      */
-    public void setLabelsVisible(String seriesName) {
+    public XYPlot setLabelsVisible(String seriesName) {
         this.hasLabelsVisible.add(seriesName);
+        return this;
     }
 
     /**
      * Set the labels not visible for a series
      * @param seriesName Series name
+     * @return XYPlot instance
      */
-    public void setLabelsNotVisible(String seriesName) {
+    public XYPlot setLabelsNotVisible(String seriesName) {
         this.hasLabelsVisible.remove(seriesName);
+        return this;
     }
 
     @Override

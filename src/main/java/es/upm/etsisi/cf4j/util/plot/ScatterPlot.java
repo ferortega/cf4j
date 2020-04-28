@@ -20,14 +20,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Implements an ScatterPlot.
+ */
 public class ScatterPlot extends Plot {
 
+    /**
+     * List of points of the scatter plot
+     */
     private List<Pair<Double, Double>> points;
 
+    /**
+     * Label of the x axis
+     */
     private String xLabel;
 
+    /**
+     * Label of the y axis
+     */
     private String yLabel;
 
+    /**
+     * Creates new ScatterPlot
+     * @param xLabel Label of the x axis
+     * @param yLabel Label of the y axis
+     */
     public ScatterPlot(String xLabel, String yLabel) {
         this.xLabel = xLabel;
         this.yLabel = yLabel;
@@ -35,8 +52,15 @@ public class ScatterPlot extends Plot {
         this.points = new ArrayList<>();
     }
 
-    public void addPoint(double x, double y) {
+    /**
+     * Adds new point to the scatter plot
+     * @param x x value
+     * @param y y value
+     * @return ScatterPlot instance
+     */
+    public ScatterPlot addPoint(double x, double y) {
         this.points.add(new Pair<>(x, y));
+        return this;
     }
 
     @Override
