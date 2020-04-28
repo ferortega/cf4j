@@ -19,22 +19,18 @@ public class ColumnPlotExample {
         DataModel datamodel = BenchmarkDataModels.MovieLens1M();
 
         Map<String, Integer> count = new HashMap<>();
-        count.put("1.0", 0);
-        count.put("2.0", 0);
-        count.put("3.0", 0);
-        count.put("4.0", 0);
-        count.put("5.0", 0);
 
         for (User user : datamodel.getUsers()) {
             for (int pos = 0; pos < user.getNumberOfRatings(); pos++) {
                 double rating = user.getRatingAt(pos);
                 String key = String.valueOf(rating);
-                count.put(key, count.get(key)+1);
+                int num = count.containsKey(key) ? count.get(key) : 0;
+                count.put(key, num+1);
             }
         }
 
-        PlotSettings.setyAxisInset(110);
-        PlotSettings.setyAxisLabelDistance(3.0);
+        PlotSettings.setyAxisInset(125);
+        PlotSettings.setyAxisLabelDistance(3.1);
 
         ColumnPlot plot = new ColumnPlot("Rating value", "Number of ratings");
         plot.addColumn("1.0", count.get("1.0"));

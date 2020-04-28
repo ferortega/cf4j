@@ -90,11 +90,11 @@ public class PlotSettings {
         };
         backgroundColor = Color.WHITE;
         legendInset = 70.0;
-        yAxisInset = 95.0;
-        xAxisInset = 75.0;
+        yAxisInset = 102.0;
+        xAxisInset = 85.0;
         clearInset = 20;
-        primaryFont = new Font("Dialog", Font.PLAIN, 17);
-        secondaryFont =  new Font("Dialog", Font.PLAIN, 15);
+        primaryFont = new Font("Dialog", Font.PLAIN, 20);
+        secondaryFont =  new Font("Dialog", Font.PLAIN, 17);
         xAxisLabelDistance = 0.8;
         yAxisLabelDistance = 1.8;
         legendDistance = 0.5;
