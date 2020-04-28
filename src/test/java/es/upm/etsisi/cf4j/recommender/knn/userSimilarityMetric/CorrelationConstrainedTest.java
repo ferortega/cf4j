@@ -2,6 +2,7 @@ package es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetric;
 
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.data.MockDataSet;
+import es.upm.etsisi.cf4j.data.User;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -22,12 +23,17 @@ class CorrelationConstrainedTest {
         CorrelationConstrained sim = new CorrelationConstrained(0.5);
         sim.setDatamodel(datamodel);
         sim.beforeRun();
-        assertEquals(1.0,sim.similarity(datamodel.getUser(0),datamodel.getUser(1)));
-        assertEquals(0.6,sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
-        assertEquals(0.6,sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
-        assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))>sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
-        assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))>sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
-        assertEquals(sim.similarity(datamodel.getUser(1),datamodel.getUser(3)), sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+
+        User user0 = datamodel.getUser(0);
+        User user1 = datamodel.getUser(1);
+        User user2 = datamodel.getUser(3);
+
+        assertEquals(0.95577900872195,sim.similarity(user0,user1));
+        assertEquals(0.9922778767136677,sim.similarity(user0,user2));
+        assertEquals(0.9119215051751064,sim.similarity(user1,user2));
+        assertTrue(sim.similarity(user0,user1)<sim.similarity(user0,user2));
+        assertTrue(sim.similarity(user0,user1)>sim.similarity(user1,user2));
+        assertTrue(sim.similarity(user1,user2)< sim.similarity(user0,user2));
         sim.afterRun();
     }
 }

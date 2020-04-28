@@ -29,7 +29,7 @@ class NMFTest {
         NMF nmf = new NMF(datamodel,numFactors,numIters,seed);
         nmf.fit();
 
-        assertEquals(3.9744683282488125, nmf.predict(testUserId,testItemId));
+        assertEquals(3.7788494345385586, nmf.predict(testUserId,testItemId));
         assertEquals(nmf.predict(testUserId,testItemId), nmf.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
         assertEquals(numFactors, nmf.getNumFactors());

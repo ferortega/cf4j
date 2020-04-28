@@ -29,7 +29,7 @@ class PMFTest {
         PMF pmf = new PMF(datamodel,numFactors,numIters,seed);
         pmf.fit();
 
-        assertEquals(0.3371962186365588, pmf.predict(testUserId,testItemId));
+        assertEquals(0.3587833412033989, pmf.predict(testUserId,testItemId));
         assertEquals(pmf.predict(testUserId,testItemId), pmf.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
         assertEquals(numFactors, pmf.getNumFactors());
