@@ -28,7 +28,7 @@ class SVDPlusPlusTest {
         SVDPlusPlus svdPlusPlus = new SVDPlusPlus(datamodel,numFactors,numIters,seed);
         svdPlusPlus.fit();
 
-        assertEquals(4.308595462865821, svdPlusPlus.predict(testUserId,testItemId));
+        assertEquals(4.382725933596731, svdPlusPlus.predict(testUserId,testItemId));
         assertEquals(svdPlusPlus.predict(testUserId,testItemId), svdPlusPlus.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
         assertEquals(numFactors, svdPlusPlus.getNumFactors());

@@ -28,7 +28,7 @@ class HPFTest {
         HPF hpf = new HPF(datamodel,numFactors,numIters,seed);
         hpf.fit();
 
-        assertEquals(0.06581121444413429, hpf.predict(testUserId,testItemId));
+        assertEquals(0.06484894290927823, hpf.predict(testUserId,testItemId));
         assertEquals(hpf.predict(testUserId,testItemId), hpf.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
         assertEquals(numFactors, hpf.getNumFactors());

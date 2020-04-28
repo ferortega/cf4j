@@ -28,13 +28,13 @@ public class ItemKNNTest {
         //WEIGHTED_MEAN
         ItemKNN iKNN = new ItemKNN(datamodel,numberOfNeighbors,new ItemSimilarityMetricMock(),ItemKNN.AggregationApproach.WEIGHTED_MEAN);
         iKNN.fit();
-        assertEquals(2.0, iKNN.predict(testUserId,testItemId));
+        assertEquals(4.0, iKNN.predict(testUserId,testItemId));
         assertEquals(iKNN.predict(testUserId,testItemId), iKNN.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
         //Mean
         iKNN = new ItemKNN(datamodel,numberOfNeighbors,new ItemSimilarityMetricMock(),ItemKNN.AggregationApproach.MEAN);
         iKNN.fit();
-        assertEquals(2.0, iKNN.predict(testUserId,testItemId));
+        assertEquals(4.0, iKNN.predict(testUserId,testItemId));
         assertEquals(iKNN.predict(testUserId,testItemId), iKNN.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
     }

@@ -21,11 +21,11 @@ class AdjustedCosineTest {
         AdjustedCosine sim = new AdjustedCosine();
         sim.setDatamodel(datamodel);
         sim.beforeRun();
-        assertEquals(0.4472135954999579,sim.similarity(datamodel.getUser(0),datamodel.getUser(1)));
-        assertEquals(-0.8320502943378436,sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
-        assertEquals(-0.8682431421244593,sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
-        assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))>sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
-        assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))>sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
+        assertEquals(-0.9958621106686815,sim.similarity(datamodel.getUser(0),datamodel.getUser(1)));
+        assertEquals(0.3596303145667904,sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+        assertEquals(-0.4429392073418437,sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
+        assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))<sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+        assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))<sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
         assertTrue(sim.similarity(datamodel.getUser(1),datamodel.getUser(3))<sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
         sim.afterRun();
     }

@@ -22,12 +22,12 @@ class MSDTest {
         MSD sim = new MSD();
         sim.setDatamodel(datamodel);
         sim.beforeRun();
-        assertEquals(0.9375,sim.similarity(datamodel.getUser(0),datamodel.getUser(1)));
-        assertEquals(0.6875,sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
-        assertEquals(0.75,sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
-        assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))>sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
-        assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))>sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
-        assertTrue(sim.similarity(datamodel.getUser(1),datamodel.getUser(3))>sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+        assertEquals(0.75,sim.similarity(datamodel.getUser(0),datamodel.getUser(1)));
+        assertEquals(0.96875,sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+        assertEquals(0.84375,sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
+        assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))<sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+        assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))<sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
+        assertTrue(sim.similarity(datamodel.getUser(1),datamodel.getUser(3))<sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
         sim.afterRun();
     }
 }

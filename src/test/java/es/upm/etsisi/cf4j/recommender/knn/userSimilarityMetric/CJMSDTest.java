@@ -23,11 +23,11 @@ class CJMSDTest {
         sim.setDatamodel(datamodel);
         sim.beforeRun();
         assertEquals(0,sim.similarity(datamodel.getUser(0),datamodel.getUser(1)));
-        assertEquals(0.171875,sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
-        assertEquals(0.1875,sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
+        assertEquals(0.2421875,sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+        assertEquals(0.2109375,sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
         assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))<sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
         assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))<sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
-        assertTrue(sim.similarity(datamodel.getUser(1),datamodel.getUser(3))>sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+        assertTrue(sim.similarity(datamodel.getUser(1),datamodel.getUser(3))<sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
         sim.afterRun();
     }
 }

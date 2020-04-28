@@ -22,12 +22,12 @@ class CorrelationConstrainedTest {
         CorrelationConstrained sim = new CorrelationConstrained(0.5);
         sim.setDatamodel(datamodel);
         sim.beforeRun();
-        assertEquals(1.0,sim.similarity(datamodel.getUser(0),datamodel.getUser(1)));
-        assertEquals(0.6,sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
-        assertEquals(0.6,sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
-        assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))>sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+        assertEquals(0.95577900872195,sim.similarity(datamodel.getUser(0),datamodel.getUser(1)));
+        assertEquals(0.9922778767136677,sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+        assertEquals(0.9119215051751064,sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
+        assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))<sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
         assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))>sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
-        assertEquals(sim.similarity(datamodel.getUser(1),datamodel.getUser(3)), sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+        assertTrue(sim.similarity(datamodel.getUser(1),datamodel.getUser(3))< sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
         sim.afterRun();
     }
 }

@@ -28,19 +28,19 @@ public class UserKNNTest {
         //DEVIATION_FROM_MEAN
         UserKNN uKNN = new UserKNN(datamodel,numberOfNeighbors,new UserSimilarityMetricMock(),UserKNN.AggregationApproach.DEVIATION_FROM_MEAN);
         uKNN.fit();
-        assertEquals(2.0, uKNN.predict(testUserId,testItemId));
+        assertEquals(1.8333333333333335, uKNN.predict(testUserId,testItemId));
         assertEquals(uKNN.predict(testUserId,testItemId), uKNN.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
         //WEIGHTED_MEAN
         uKNN = new UserKNN(datamodel,numberOfNeighbors,new UserSimilarityMetricMock(),UserKNN.AggregationApproach.WEIGHTED_MEAN);
         uKNN.fit();
-        assertEquals(3.0, uKNN.predict(testUserId,testItemId));
+        assertEquals(1.0, uKNN.predict(testUserId,testItemId));
         assertEquals(uKNN.predict(testUserId,testItemId), uKNN.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
         //Mean
         uKNN = new UserKNN(datamodel,numberOfNeighbors,new UserSimilarityMetricMock(),UserKNN.AggregationApproach.MEAN);
         uKNN.fit();
-        assertEquals(3.0, uKNN.predict(testUserId,testItemId));
+        assertEquals(1.0, uKNN.predict(testUserId,testItemId));
         assertEquals(uKNN.predict(testUserId,testItemId), uKNN.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
     }

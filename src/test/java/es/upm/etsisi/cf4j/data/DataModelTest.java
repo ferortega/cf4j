@@ -15,13 +15,13 @@ class DataModelTest {
             "Number of items: 4\n" +
             "Number of test items: 2\n" +
             "Number of ratings: 11\n" +
-            "Min rating: 0.0\n" +
-            "Max rating: 4.0\n" +
-            "Average rating: 2.4545454545454546\n" +
+            "Min rating: 1.0\n" +
+            "Max rating: 5.0\n" +
+            "Average rating: 2.5454545454545454\n" +
             "Number of test ratings: 4\n" +
             "Min test rating: 1.0\n" +
-            "Max test rating: 2.0\n" +
-            "Average test rating: 1.5";
+            "Max test rating: 5.0\n" +
+            "Average test rating: 2.25";
 
     private static DataModel dataModel;
 
@@ -83,13 +83,13 @@ class DataModelTest {
 
     @Test
     void generalMetrics () {
-        assertEquals(0, dataModel.getMinRating());
-        assertEquals(4.0, dataModel.getMaxRating());
-        assertTrue(Math.abs(dataModel.getRatingAverage() - 2.4545454545454546) <= Math.ulp(2.4545454545454546));
+        assertEquals(1.0, dataModel.getMinRating());
+        assertEquals(5.0, dataModel.getMaxRating());
+        assertTrue(Math.abs(dataModel.getRatingAverage() - 2.5454545454545454) <= Math.ulp(2.5454545454545454));
 
         assertEquals(1.0, dataModel.getMinTestRating());
-        assertEquals(2.0, dataModel.getMaxTestRating());
-        assertTrue(Math.abs(dataModel.getTestRatingAverage() - 1.5) <= Math.ulp(1.5) );
+        assertEquals(5.0, dataModel.getMaxTestRating());
+        assertTrue(Math.abs(dataModel.getTestRatingAverage() - 2.25) <= Math.ulp(2.25) );
     }
 
     @Test

@@ -22,12 +22,12 @@ class SingularitiesTest {
         Singularities sim = new Singularities(new double[]{0.0,1.0,4.0}, new double[]{2.0,3.0});
         sim.setDatamodel(datamodel);
         sim.beforeRun();
-        assertEquals(0.09765625,sim.similarity(datamodel.getUser(0),datamodel.getUser(1)));
-        assertEquals(0.057291666666666664,sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
-        assertEquals(0.078125,sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
-        assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))>sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
-        assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))>sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
-        assertTrue(sim.similarity(datamodel.getUser(1),datamodel.getUser(3))>sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+        assertEquals(0.0703125,sim.similarity(datamodel.getUser(0),datamodel.getUser(1)));
+        assertEquals(0.10286458333333333,sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+        assertEquals(0.076171875,sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
+        assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))<sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+        assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))<sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
+        assertTrue(sim.similarity(datamodel.getUser(1),datamodel.getUser(3))<sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
         sim.afterRun();
     }
 }

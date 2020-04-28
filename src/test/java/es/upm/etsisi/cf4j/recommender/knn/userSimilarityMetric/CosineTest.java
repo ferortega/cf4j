@@ -22,12 +22,12 @@ class CosineTest {
         Cosine sim = new Cosine();
         sim.setDatamodel(datamodel);
         sim.beforeRun();
-        assertEquals(0.9999999999999998,sim.similarity(datamodel.getUser(0),datamodel.getUser(1)));
-        assertEquals(0.7071067811865475,sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
-        assertEquals(0.7071067811865475,sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
-        assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))>sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+        assertEquals(0.9838699100999074,sim.similarity(datamodel.getUser(0),datamodel.getUser(1)));
+        assertEquals(0.9899494936611664,sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+        assertEquals(0.9486832980505138,sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
+        assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))<sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
         assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))>sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
-        assertEquals(sim.similarity(datamodel.getUser(1),datamodel.getUser(3)), sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+        assertTrue(sim.similarity(datamodel.getUser(1),datamodel.getUser(3))< sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
         sim.afterRun();
     }
 }

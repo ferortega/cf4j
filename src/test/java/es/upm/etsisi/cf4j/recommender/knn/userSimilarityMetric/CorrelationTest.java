@@ -23,12 +23,12 @@ class CorrelationTest {
         Correlation sim = new Correlation();
         sim.setDatamodel(datamodel);
         sim.beforeRun();
-        assertEquals(-Infinity,sim.similarity(datamodel.getUser(0),datamodel.getUser(1)));
-        assertEquals(-Infinity,sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
-        assertEquals(-Infinity,sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
-        assertEquals(sim.similarity(datamodel.getUser(0),datamodel.getUser(1)), sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
-        assertEquals(sim.similarity(datamodel.getUser(0),datamodel.getUser(1)),sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
-        assertEquals(sim.similarity(datamodel.getUser(1),datamodel.getUser(3)),sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+        assertEquals(1.0,sim.similarity(datamodel.getUser(0),datamodel.getUser(1)));
+        assertEquals(0.9472135954999579,sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+        assertEquals(0.9472135954999579,sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
+        assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1)) > sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+        assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1)) > sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
+        assertEquals(sim.similarity(datamodel.getUser(1),datamodel.getUser(3)), sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
         sim.afterRun();
     }
 }

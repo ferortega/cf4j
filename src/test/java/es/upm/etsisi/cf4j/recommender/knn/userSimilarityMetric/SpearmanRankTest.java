@@ -22,12 +22,12 @@ class SpearmanRankTest {
         SpearmanRank sim = new SpearmanRank();
         sim.setDatamodel(datamodel);
         sim.beforeRun();
-        assertEquals(-1.0,sim.similarity(datamodel.getUser(0),datamodel.getUser(1)));
-        assertEquals(-9.0,sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
-        assertEquals(-7.0,sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
-        assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))>sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
-        assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))>sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
-        assertTrue(sim.similarity(datamodel.getUser(1),datamodel.getUser(3))>sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+        assertEquals(-7.0,sim.similarity(datamodel.getUser(0),datamodel.getUser(1)));
+        assertEquals(0.0,sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+        assertEquals(-4.0,sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
+        assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))<sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+        assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))<sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
+        assertTrue(sim.similarity(datamodel.getUser(1),datamodel.getUser(3))<sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
         sim.afterRun();
     }
 }

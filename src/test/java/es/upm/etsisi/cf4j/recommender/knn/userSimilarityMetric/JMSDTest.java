@@ -22,12 +22,12 @@ class JMSDTest {
         JMSD sim = new JMSD();
         sim.setDatamodel(datamodel);
         sim.beforeRun();
-        assertEquals(0.9375,sim.similarity(datamodel.getUser(0),datamodel.getUser(1)));
-        assertEquals(0.34375,sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
-        assertEquals(0.375,sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
+        assertEquals(0.75,sim.similarity(datamodel.getUser(0),datamodel.getUser(1)));
+        assertEquals(0.484375,sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+        assertEquals(0.421875,sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
         assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))>sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
         assertTrue(sim.similarity(datamodel.getUser(0),datamodel.getUser(1))>sim.similarity(datamodel.getUser(1),datamodel.getUser(3)));
-        assertTrue(sim.similarity(datamodel.getUser(1),datamodel.getUser(3))>sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
+        assertTrue(sim.similarity(datamodel.getUser(1),datamodel.getUser(3))<sim.similarity(datamodel.getUser(0),datamodel.getUser(3)));
         sim.afterRun();
     }
 }
