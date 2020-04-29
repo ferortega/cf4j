@@ -1,5 +1,10 @@
 # CF4J: Collaborative Filtering for Java
 
+[![Build Status](https://travis-ci.org/ferortega/cf4j.svg?branch=master)](https://travis-ci.org/ferortega/cf4j)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/es.upm.etsisi/cf4j/badge.svg)](https://maven-badges.herokuapp.com/maven-central/es.upm.etsisi/cf4j)
+[![javadoc](https://javadoc.io/badge2/es.upm.etsisi/cf4j/javadoc.svg)](https://javadoc.io/doc/es.upm.etsisi/cf4j)
+[![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/ferortega/cf4j.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ferortega/cf4j/context:java)
+
 A Java's Collaborative Filtering library to carry out experiments in research on Collaborative Filtering based Recommender Systems. The library has been designed from researchers to researchers.
 
 ## Index
