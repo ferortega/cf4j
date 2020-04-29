@@ -1,6 +1,6 @@
 # CF4J: Collaborative Filtering for Java
 
-A Java's Collaborative Filtering library to carry out experiments in research of Collaborative Filtering based Recommender Systems. The library has been designed from researchers to researchers.
+A Java's Collaborative Filtering library to carry out experiments in research on Collaborative Filtering based Recommender Systems. The library has been designed from researchers to researchers.
 
 ## Index
 
@@ -45,7 +45,7 @@ Let's encode our first experiment with CF4J. In this experiment, we will compare
     DataSet ml100k = new RandomSplitDataSet(filename, testUsers, testItems, separator, seed);
 	```
 
-2. Now, we are going to create a `DataModel` from the previous `DataSet`. A `DataModel` is a high level in memory representation of the data structure required by collaborative filtering algorithms. 
+2. Now, we are going to create a `DataModel` from the previous `DataSet`. A `DataModel` is a high level memory representation of the data structure required by collaborative filtering algorithms. 
 
     ```Java
    DataModel datamodel = new DataModel(ml100k);
