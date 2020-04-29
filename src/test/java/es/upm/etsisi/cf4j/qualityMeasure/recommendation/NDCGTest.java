@@ -29,7 +29,7 @@ class NDCGTest {
         NDCG metric = new NDCG(null,6); //Recommender not needed;
 
         assertEquals(1.0,metric.getScore(user, perfectPrediction));
-        assertEquals(0.9963853307632083,metric.getScore(user, randomPrediction));
+        assertEquals(0.7124848526889838,metric.getScore(user, randomPrediction));
         assertEquals(0.6096185378873756,metric.getScore(user, allMinimumPrediction));
         assertEquals(0.6096185378873756,metric.getScore(user, allMaximumPrediction));
     }
