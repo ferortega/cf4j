@@ -9,33 +9,34 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BiasedMFTest {
 
-    final private static int seed = 69;
-    final private static int numFactors = 2;
-    final private static int numIters = 1;
+  private static final int seed = 69;
+  private static final int numFactors = 2;
+  private static final int numIters = 1;
 
-    final private static int testUserId = 1;
-    final private static int testItemId = 1;
+  private static final int testUserId = 1;
+  private static final int testItemId = 1;
 
-    private static DataModel datamodel;
+  private static DataModel datamodel;
 
-    @BeforeAll
-    static void initAll() {
-        datamodel = new DataModel(new MockDataSet());
-    }
+  @BeforeAll
+  static void initAll() {
+    datamodel = new DataModel(new MockDataSet());
+  }
 
-    @Test
-    void biasedmfTest() {
-        BiasedMF biasedmf = new BiasedMF(datamodel,numFactors,numIters,seed);
-        biasedmf.fit();
+  @Test
+  void biasedmfTest() {
+    BiasedMF biasedmf = new BiasedMF(datamodel, numFactors, numIters, seed);
+    biasedmf.fit();
 
-        assertEquals(2.6843560265981696, biasedmf.predict(testUserId,testItemId));
-        assertEquals(biasedmf.predict(testUserId,testItemId), biasedmf.predict(datamodel.getTestUser(testUserId))[testItemId]);
+    assertEquals(2.6843560265981696, biasedmf.predict(testUserId, testItemId));
+    assertEquals(
+        biasedmf.predict(testUserId, testItemId),
+        biasedmf.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
-        assertEquals(numFactors, biasedmf.getNumFactors());
-        assertEquals(numIters, biasedmf.getNumIters());
+    assertEquals(numFactors, biasedmf.getNumFactors());
+    assertEquals(numIters, biasedmf.getNumIters());
 
-        assertEquals(0.01, biasedmf.getGamma());
-        assertEquals(0.1, biasedmf.getLambda());
-    }
-
+    assertEquals(0.01, biasedmf.getGamma());
+    assertEquals(0.1, biasedmf.getLambda());
+  }
 }

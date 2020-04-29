@@ -12,29 +12,29 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CorrelationTest {
 
-    private static DataModel datamodel;
+  private static DataModel datamodel;
 
-    @BeforeAll
-    static void initAll() {
-        datamodel = new DataModel(new MockDataSet());
-    }
+  @BeforeAll
+  static void initAll() {
+    datamodel = new DataModel(new MockDataSet());
+  }
 
-    @Test
-    void similarity() {
-        Correlation sim = new Correlation();
-        sim.setDatamodel(datamodel);
-        sim.beforeRun();
+  @Test
+  void similarity() {
+    Correlation sim = new Correlation();
+    sim.setDatamodel(datamodel);
+    sim.beforeRun();
 
-        User user0 = datamodel.getUser(0);
-        User user1 = datamodel.getUser(1);
-        User user2 = datamodel.getUser(3);
+    User user0 = datamodel.getUser(0);
+    User user1 = datamodel.getUser(1);
+    User user2 = datamodel.getUser(3);
 
-        assertEquals(1.0,sim.similarity(user0,user1));
-        assertEquals(0.9472135954999579,sim.similarity(user0,user2));
-        assertEquals(0.9472135954999579,sim.similarity(user1,user2));
-        assertTrue(sim.similarity(user0,user1) > sim.similarity(user0,user2));
-        assertTrue(sim.similarity(user0,user1) > sim.similarity(user1,user2));
-        assertEquals(sim.similarity(user1,user2), sim.similarity(user0,user2));
-        sim.afterRun();
-    }
+    assertEquals(1.0, sim.similarity(user0, user1));
+    assertEquals(0.9472135954999579, sim.similarity(user0, user2));
+    assertEquals(0.9472135954999579, sim.similarity(user1, user2));
+    assertTrue(sim.similarity(user0, user1) > sim.similarity(user0, user2));
+    assertTrue(sim.similarity(user0, user1) > sim.similarity(user1, user2));
+    assertEquals(sim.similarity(user1, user2), sim.similarity(user0, user2));
+    sim.afterRun();
+  }
 }

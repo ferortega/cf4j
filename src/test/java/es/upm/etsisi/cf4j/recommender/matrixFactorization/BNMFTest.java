@@ -9,34 +9,35 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BNMFTest {
 
-    final private static int seed = 69;
-    final private static int numFactors = 2;
-    final private static int numIters = 1;
+  private static final int seed = 69;
+  private static final int numFactors = 2;
+  private static final int numIters = 1;
 
-    final private static int testUserId = 1;
-    final private static int testItemId = 1;
+  private static final int testUserId = 1;
+  private static final int testItemId = 1;
 
-    private static DataModel datamodel;
+  private static DataModel datamodel;
 
-    @BeforeAll
-    static void initAll() {
-        datamodel = new DataModel(new MockDataSet());
-    }
+  @BeforeAll
+  static void initAll() {
+    datamodel = new DataModel(new MockDataSet());
+  }
 
-    @Test
-    void bnmfTest() {
-        BNMF bnmf = new BNMF(datamodel,numFactors,numIters,0.2,1,seed);
-        bnmf.fit();
+  @Test
+  void bnmfTest() {
+    BNMF bnmf = new BNMF(datamodel, numFactors, numIters, 0.2, 1, seed);
+    bnmf.fit();
 
-        assertEquals(3.0, bnmf.predict(testUserId,testItemId));
-        assertEquals(bnmf.predict(testUserId,testItemId), bnmf.predict(datamodel.getTestUser(testUserId))[testItemId]);
+    assertEquals(3.0, bnmf.predict(testUserId, testItemId));
+    assertEquals(
+        bnmf.predict(testUserId, testItemId),
+        bnmf.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
-        assertEquals(numFactors, bnmf.getNumFactors());
-        assertEquals(numIters, bnmf.getNumIters());
+    assertEquals(numFactors, bnmf.getNumFactors());
+    assertEquals(numIters, bnmf.getNumIters());
 
-        assertEquals(0.2, bnmf.getAlpha());
-        assertEquals(1, bnmf.getBeta());
-        assertEquals(4.0, bnmf.getR());
-    }
-
+    assertEquals(0.2, bnmf.getAlpha());
+    assertEquals(1, bnmf.getBeta());
+    assertEquals(4.0, bnmf.getR());
+  }
 }

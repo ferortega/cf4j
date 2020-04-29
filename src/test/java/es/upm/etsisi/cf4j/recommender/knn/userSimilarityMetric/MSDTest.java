@@ -11,29 +11,29 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MSDTest {
 
-    private static DataModel datamodel;
+  private static DataModel datamodel;
 
-    @BeforeAll
-    static void initAll() {
-        datamodel = new DataModel(new MockDataSet());
-    }
+  @BeforeAll
+  static void initAll() {
+    datamodel = new DataModel(new MockDataSet());
+  }
 
-    @Test
-    void similarity() {
-        MSD sim = new MSD();
-        sim.setDatamodel(datamodel);
-        sim.beforeRun();
+  @Test
+  void similarity() {
+    MSD sim = new MSD();
+    sim.setDatamodel(datamodel);
+    sim.beforeRun();
 
-        User user0 = datamodel.getUser(0);
-        User user1 = datamodel.getUser(1);
-        User user2 = datamodel.getUser(3);
+    User user0 = datamodel.getUser(0);
+    User user1 = datamodel.getUser(1);
+    User user2 = datamodel.getUser(3);
 
-        assertEquals(0.75,sim.similarity(user0,user1));
-        assertEquals(0.96875,sim.similarity(user0,user2));
-        assertEquals(0.84375,sim.similarity(user1,user2));
-        assertTrue(sim.similarity(user0,user1)<sim.similarity(user0,user2));
-        assertTrue(sim.similarity(user0,user1)<sim.similarity(user1,user2));
-        assertTrue(sim.similarity(user1,user2)<sim.similarity(user0,user2));
-        sim.afterRun();
-    }
+    assertEquals(0.75, sim.similarity(user0, user1));
+    assertEquals(0.96875, sim.similarity(user0, user2));
+    assertEquals(0.84375, sim.similarity(user1, user2));
+    assertTrue(sim.similarity(user0, user1) < sim.similarity(user0, user2));
+    assertTrue(sim.similarity(user0, user1) < sim.similarity(user1, user2));
+    assertTrue(sim.similarity(user1, user2) < sim.similarity(user0, user2));
+    sim.afterRun();
+  }
 }

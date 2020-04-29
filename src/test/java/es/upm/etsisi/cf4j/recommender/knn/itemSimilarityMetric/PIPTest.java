@@ -11,29 +11,29 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PIPTest {
 
-    private static DataModel datamodel;
+  private static DataModel datamodel;
 
-    @BeforeAll
-    static void initAll() {
-        datamodel = new DataModel(new MockDataSet());
-    }
+  @BeforeAll
+  static void initAll() {
+    datamodel = new DataModel(new MockDataSet());
+  }
 
-    @Test
-    void similarity() {
-        PIP sim = new PIP();
-        sim.setDatamodel(datamodel);
-        sim.beforeRun();
+  @Test
+  void similarity() {
+    PIP sim = new PIP();
+    sim.setDatamodel(datamodel);
+    sim.beforeRun();
 
-        Item item0 = datamodel.getItem(0);
-        Item item1 = datamodel.getItem(1);
-        Item item2 = datamodel.getItem(3);
+    Item item0 = datamodel.getItem(0);
+    Item item1 = datamodel.getItem(1);
+    Item item2 = datamodel.getItem(3);
 
-        assertEquals(6.361111111111111,sim.similarity(item0,item1));
-        assertEquals(1.5,sim.similarity(item0,item2));
-        assertEquals(768.0,sim.similarity(item1,item2));
-        assertTrue(sim.similarity(item0,item1)>sim.similarity(item0,item2));
-        assertTrue(sim.similarity(item0,item1)<sim.similarity(item1,item2));
-        assertTrue(sim.similarity(item1,item2)>sim.similarity(item0,item2));
-        sim.afterRun();
-    }
+    assertEquals(6.361111111111111, sim.similarity(item0, item1));
+    assertEquals(1.5, sim.similarity(item0, item2));
+    assertEquals(768.0, sim.similarity(item1, item2));
+    assertTrue(sim.similarity(item0, item1) > sim.similarity(item0, item2));
+    assertTrue(sim.similarity(item0, item1) < sim.similarity(item1, item2));
+    assertTrue(sim.similarity(item1, item2) > sim.similarity(item0, item2));
+    sim.afterRun();
+  }
 }

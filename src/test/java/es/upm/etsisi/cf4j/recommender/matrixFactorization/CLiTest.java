@@ -9,33 +9,34 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CLiTest {
 
-    final private static int seed = 69;
-    final private static int numFactors = 2;
-    final private static int numIters = 1;
+  private static final int seed = 69;
+  private static final int numFactors = 2;
+  private static final int numIters = 1;
 
-    final private static int testUserId = 1;
-    final private static int testItemId = 1;
+  private static final int testUserId = 1;
+  private static final int testItemId = 1;
 
-    private static DataModel datamodel;
+  private static DataModel datamodel;
 
-    @BeforeAll
-    static void initAll() {
-        datamodel = new DataModel(new MockDataSet());
-    }
+  @BeforeAll
+  static void initAll() {
+    datamodel = new DataModel(new MockDataSet());
+  }
 
-    @Test
-    void climfTest() {
-        CLiMF climf = new CLiMF(datamodel,numFactors,numIters,seed);
-        climf.fit();
+  @Test
+  void climfTest() {
+    CLiMF climf = new CLiMF(datamodel, numFactors, numIters, seed);
+    climf.fit();
 
-        assertEquals(0.8124318087775715, climf.predict(testUserId,testItemId));
-        assertEquals(climf.predict(testUserId,testItemId), climf.predict(datamodel.getTestUser(testUserId))[testItemId]);
+    assertEquals(0.8124318087775715, climf.predict(testUserId, testItemId));
+    assertEquals(
+        climf.predict(testUserId, testItemId),
+        climf.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
-        assertEquals(numFactors, climf.getNumFactors());
-        assertEquals(numIters, climf.getNumIters());
+    assertEquals(numFactors, climf.getNumFactors());
+    assertEquals(numIters, climf.getNumIters());
 
-        assertEquals(1.0E-5, climf.getGamma());
-        assertEquals(1.0E-4, climf.getLambda());
-    }
-
+    assertEquals(1.0E-5, climf.getGamma());
+    assertEquals(1.0E-4, climf.getLambda());
+  }
 }
