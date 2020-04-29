@@ -21,43 +21,43 @@ import org.apache.commons.math3.special.Gamma;
  */
 public class BNMF extends Recommender {
 
-  private static final double DEFAULT_R = 4;
+  protected static final double DEFAULT_R = 4;
 
   /** User factors */
-  private double[][] a;
+  protected double[][] a;
 
   /** Item factors */
-  private double[][] b;
+  protected double[][] b;
 
   /** Gamma parameters */
-  private double[][] gamma;
+  protected double[][] gamma;
 
   /** Epsilon+ parameters */
-  private double[][] epsilonPlus;
+  protected double[][] epsilonPlus;
 
   /** Epsilon- parameters */
-  private double[][] epsilonMinus;
+  protected double[][] epsilonMinus;
 
   /**
    * This hyper-parameter is related to the possibility of obtaining overlapping groups of users
    * sharing the same tastes.
    */
-  private final double alpha;
+  protected final double alpha;
 
   /**
    * This hyper-parameter represents the amount of evidence that the algorithm requires to deduce
    * that a group of users likes an item.
    */
-  private final double beta;
+  protected final double beta;
 
   /** Hyper-parameter of the binomial distribution. */
-  private final double r;
+  protected final double r;
 
   /** Number of factors */
-  private final int numFactors;
+  protected final int numFactors;
 
   /** Number of iterations */
-  private final int numIters;
+  protected final int numIters;
 
   /**
    * Model constructor from a Map containing the model's hyper-parameters values. Map object must

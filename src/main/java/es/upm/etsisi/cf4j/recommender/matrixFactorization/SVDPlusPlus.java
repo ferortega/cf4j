@@ -15,35 +15,35 @@ import java.util.Random;
  */
 public class SVDPlusPlus extends Recommender {
 
-  private static final double DEFAULT_GAMMA = 0.001;
-  private static final double DEFAULT_LAMBDA = 0.01;
+  protected static final double DEFAULT_GAMMA = 0.001;
+  protected static final double DEFAULT_LAMBDA = 0.01;
 
   /** Number of latent factors */
-  private final int numFactors;
+  protected final int numFactors;
 
   /** Number of iterations */
-  private final int numIters;
+  protected final int numIters;
 
   /** Learning rate hyper-parameter */
-  private final double gamma;
+  protected final double gamma;
 
   /** Regularization hyper-parameter */
-  private final double lambda;
+  protected final double lambda;
 
   /** bu parameter */
-  private final double[] bu;
+  protected final double[] bu;
 
   /** bi parameter */
-  private final double[] bi;
+  protected final double[] bi;
 
   /** p parameter */
-  private final double[][] p;
+  protected final double[][] p;
 
   /** q parameter */
-  private final double[][] q;
+  protected final double[][] q;
 
   /** y parameter */
-  private final double[][] y;
+  protected final double[][] y;
 
   /**
    * Model constructor from a Map containing the model's hyper-parameters values. Map object must

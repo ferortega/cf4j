@@ -18,38 +18,38 @@ import java.util.Random;
  */
 public class HPF extends Recommender {
 
-  private static final double DEFAULT_A = 0.3;
-  private static final double DEFAULT_A_PRIME = 0.3;
-  private static final double DEFAULT_B_PRIME = 1.0;
-  private static final double DEFAULT_C = 0.3;
-  private static final double DEFAULT_C_PRIME = 0.3;
-  private static final double DEFAULT_D_PRIME = 1.0;
+  protected static final double DEFAULT_A = 0.3;
+  protected static final double DEFAULT_A_PRIME = 0.3;
+  protected static final double DEFAULT_B_PRIME = 1.0;
+  protected static final double DEFAULT_C = 0.3;
+  protected static final double DEFAULT_C_PRIME = 0.3;
+  protected static final double DEFAULT_D_PRIME = 1.0;
 
   /** Number of latent factors */
-  private final int numFactors;
+  protected final int numFactors;
 
   /** Number of iterations */
-  private final int numIters;
+  protected final int numIters;
 
   // Model hyperparameters
-  private final double a;
-  private final double aPrime;
-  private final double bPrime;
-  private final double c;
-  private final double cPrime;
-  private final double dPrime;
+  protected final double a;
+  protected final double aPrime;
+  protected final double bPrime;
+  protected final double c;
+  protected final double cPrime;
+  protected final double dPrime;
 
   // Model parameters
-  private final double[][] gamma;
-  private final double[][] gammaShp;
-  private final double[][] gammaRte;
-  private final double kappaShp;
-  private final double[] kappaRte;
-  private final double[][] lambda;
-  private final double[][] lambdaShp;
-  private final double[][] lambdaRte;
-  private final double tauShp;
-  private final double[] tauRte;
+  protected final double[][] gamma;
+  protected final double[][] gammaShp;
+  protected final double[][] gammaRte;
+  protected final double kappaShp;
+  protected final double[] kappaRte;
+  protected final double[][] lambda;
+  protected final double[][] lambdaShp;
+  protected final double[][] lambdaRte;
+  protected final double tauShp;
+  protected final double[] tauRte;
 
   /**
    * Model constructor from a Map containing the model's hyper-parameters values. Map object must

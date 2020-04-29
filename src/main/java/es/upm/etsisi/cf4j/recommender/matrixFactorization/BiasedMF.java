@@ -17,32 +17,32 @@ import java.util.Random;
  */
 public class BiasedMF extends Recommender {
 
-  private static final double DEFAULT_GAMMA = 0.01;
-  private static final double DEFAULT_LAMBDA = 0.1;
+  protected static final double DEFAULT_GAMMA = 0.01;
+  protected static final double DEFAULT_LAMBDA = 0.1;
 
   /** User factors */
-  private final double[][] p;
+  protected final double[][] p;
 
   /** Item factors */
-  private final double[][] q;
+  protected final double[][] q;
 
   /** User bias */
-  private final double[] bu;
+  protected final double[] bu;
 
   /** Item bias */
-  private final double[] bi;
+  protected final double[] bi;
 
   /** Learning rate */
-  private final double gamma;
+  protected final double gamma;
 
   /** Regularization parameter */
-  private final double lambda;
+  protected final double lambda;
 
   /** Number of latent factors */
-  private final int numFactors;
+  protected final int numFactors;
 
   /** Number of iterations */
-  private final int numIters;
+  protected final int numIters;
 
   /**
    * Model constructor from a Map containing the model's hyper-parameters values. Map object must

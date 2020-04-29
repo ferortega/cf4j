@@ -18,16 +18,16 @@ import java.util.Random;
 public class NMF extends Recommender {
 
   /** User factors */
-  private final double[][] w;
+  protected final double[][] w;
 
   /** Item factors */
-  private final double[][] h;
+  protected final double[][] h;
 
   /** Number of factors */
-  private final int numFactors;
+  protected final int numFactors;
 
   /** Number of iterations */
-  private final int numIters;
+  protected final int numIters;
 
   /**
    * Model constructor from a Map containing the model's hyper-parameters values. Map object must

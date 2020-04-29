@@ -24,10 +24,10 @@ public class UserKNN extends Recommender {
   protected int numberOfNeighbors;
 
   /** Similarity metric to compute the similarity between two users */
-  private UserSimilarityMetric metric;
+  protected UserSimilarityMetric metric;
 
   /** Aggregation approach used to aggregate k-nearest neighbors ratings */
-  private AggregationApproach aggregationApproach;
+  protected AggregationApproach aggregationApproach;
 
   /** Contains the neighbors indexes of each user */
   protected int[][] neighbors;

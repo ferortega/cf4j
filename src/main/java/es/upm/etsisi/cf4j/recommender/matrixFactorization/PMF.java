@@ -17,26 +17,26 @@ import java.util.Random;
  */
 public class PMF extends Recommender {
 
-  private static final double DEFAULT_GAMMA = 0.01;
-  private static final double DEFAULT_LAMBDA = 0.05;
+  protected static final double DEFAULT_GAMMA = 0.01;
+  protected static final double DEFAULT_LAMBDA = 0.05;
 
   /** User factors */
-  private final double[][] p;
+  protected final double[][] p;
 
   /** Item factors */
-  private final double[][] q;
+  protected final double[][] q;
 
   /** Learning rate */
-  private final double gamma;
+  protected final double gamma;
 
   /** Regularization parameter */
-  private final double lambda;
+  protected final double lambda;
 
   /** Number of latent factors */
-  private final int numFactors;
+  protected final int numFactors;
 
   /** Number of iterations */
-  private final int numIters;
+  protected final int numIters;
 
   /**
    * Model constructor from a Map containing the model's hyper-parameters values. Map object must

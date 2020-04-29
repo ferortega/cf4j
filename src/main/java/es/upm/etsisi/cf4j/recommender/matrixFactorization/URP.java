@@ -20,32 +20,32 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class URP extends Recommender {
 
-  private static final double DEFAULT_H = 0.1;
-  private static final double EPSILON = 1E-2;
+  protected static final double DEFAULT_H = 0.1;
+  protected static final double EPSILON = 1E-2;
 
   /** Number of iterations */
-  private final int numIters;
+  protected final int numIters;
 
   /** Number of latent factors */
-  private final int numFactors;
+  protected final int numFactors;
 
   /** Heuristic factor to control number of iterations during E-Step */
-  private final double H;
+  protected final double H;
 
   /** Plausible ratings (must be sorted in ascending order) */
-  private final double[] ratings;
+  protected final double[] ratings;
 
   /** Gamma parameter */
-  private final double[][] gamma;
+  protected final double[][] gamma;
 
   /** Beta parameter */
-  private final double[][][] beta;
+  protected final double[][][] beta;
 
   /** Alpha parameter */
-  private final double[] alpha;
+  protected final double[] alpha;
 
   /** Phi parameter */
-  private final Map<Integer, double[][]> phi;
+  protected final Map<Integer, double[][]> phi;
 
   /**
    * Model constructor from a Map containing the model's hyper-parameters values. Map object must

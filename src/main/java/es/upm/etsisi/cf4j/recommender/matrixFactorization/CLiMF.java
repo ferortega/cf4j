@@ -18,8 +18,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class CLiMF extends Recommender {
 
-  private static final double DEFAULT_GAMMA = 1E-5;
-  private static final double DEFAULT_LAMBDA = 1E-4;
+  protected static final double DEFAULT_GAMMA = 1E-5;
+  protected static final double DEFAULT_LAMBDA = 1E-4;
 
   /** Number of latent factors */
   protected int numFactors;
