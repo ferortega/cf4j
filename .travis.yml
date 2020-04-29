@@ -1,5 +1,9 @@
 language: java
 jdk: openjdk8
 
-install: true
-script: ./mvn clean install
+install: false
+script: ./mvnw test
+
+cache:
+  directories:
+    - $HOME/.m2
