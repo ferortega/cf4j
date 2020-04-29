@@ -13,10 +13,7 @@ class NoveltyTest {
     private static TestUser testUser;
     private static DataModel dataModel;
 
-    private static final double[] perfectPrediction = new double[]{1.0,2.0};
-    private static final double[] slightlyPrefectPrediction = new double[]{2.0,2.0};
-    private static final double[] allMinimumPrediction = new double[]{1.0,1.0};
-    private static final double[] allMaximumPrediction = new double[]{5.0,5.0};
+    private static final double[] prediction = new double[]{1.0,2.0};
 
     @BeforeAll
     static void initAll() {
@@ -28,9 +25,6 @@ class NoveltyTest {
     void getScore() {
         Novelty metric = new Novelty(new DummyRecommender(dataModel),2);
 
-        assertEquals(2.4594316186372973,metric.getScore(testUser, perfectPrediction));
-        assertEquals(2.4594316186372973,metric.getScore(testUser, slightlyPrefectPrediction));
-        assertEquals(2.4594316186372973,metric.getScore(testUser, allMinimumPrediction));
-        assertEquals(2.4594316186372973,metric.getScore(testUser, allMaximumPrediction));
+        assertEquals(2.4594316186372973,metric.getScore(testUser, prediction));
     }
 }

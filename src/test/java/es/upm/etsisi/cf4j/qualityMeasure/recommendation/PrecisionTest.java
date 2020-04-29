@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class PrecisionTest {
     private static TestUser user;
     private static final double[] perfectPrediction = new double[]{2.0,3.0,1.0,5.0,4.0,3.0};
-    private static final double[] slightlyPrefectPrediction = new double[]{2.0,2.0,1.0,4.0,4.0,3.0};
+    private static final double[] randomPrediction = new double[]{3.0,2.0,5.0,4.0,4.0,1.0};
     private static final double[] allMinimumPrediction = new double[]{1.0,1.0,1.0,1.0,1.0,1.0};
     private static final double[] allMaximumPrediction = new double[]{5.0,5.0,5.0,5.0,5.0,5.0};
 
@@ -26,11 +26,11 @@ class PrecisionTest {
 
     @Test
     void getScore() {
-        Precision metric = new Precision(null,6,4.0); //Recommender not needed;
+        Precision metric = new Precision(null,3,4.0); //Recommender not needed;
 
-        assertEquals(0.3333333333333333,metric.getScore(user, perfectPrediction));
-        assertEquals(0.3333333333333333,metric.getScore(user, slightlyPrefectPrediction));
-        assertEquals(0.3333333333333333,metric.getScore(user, allMinimumPrediction));
-        assertEquals(0.3333333333333333,metric.getScore(user, allMaximumPrediction));
+        assertEquals(0.6666666666666666,metric.getScore(user, perfectPrediction));
+        assertEquals(0.6666666666666666,metric.getScore(user, randomPrediction));
+        assertEquals(0.0,metric.getScore(user, allMinimumPrediction));
+        assertEquals(0.0,metric.getScore(user, allMaximumPrediction));
     }
 }

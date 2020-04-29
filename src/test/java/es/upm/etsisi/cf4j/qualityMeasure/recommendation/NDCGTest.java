@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class NDCGTest {
     private static TestUser user;
     private static final double[] perfectPrediction = new double[]{2.0,3.0,1.0,5.0,4.0,3.0};
-    private static final double[] slightlyPrefectPrediction = new double[]{2.0,2.0,1.0,4.0,4.0,3.0};
+    private static final double[] randomPrediction = new double[]{3.0,2.0,5.0,4.0,4.0,1.0};
     private static final double[] allMinimumPrediction = new double[]{1.0,1.0,1.0,1.0,1.0,1.0};
     private static final double[] allMaximumPrediction = new double[]{5.0,5.0,5.0,5.0,5.0,5.0};
 
@@ -29,7 +29,7 @@ class NDCGTest {
         NDCG metric = new NDCG(null,6); //Recommender not needed;
 
         assertEquals(1.0,metric.getScore(user, perfectPrediction));
-        assertEquals(0.9963853307632083,metric.getScore(user, slightlyPrefectPrediction));
+        assertEquals(0.9963853307632083,metric.getScore(user, randomPrediction));
         assertEquals(0.6096185378873756,metric.getScore(user, allMinimumPrediction));
         assertEquals(0.6096185378873756,metric.getScore(user, allMaximumPrediction));
     }
