@@ -78,7 +78,7 @@ public class Diversity extends QualityMeasure {
         if (iPos != jPos) {
           int jTestItemIndex = testUser.getTestItemAt(jPos);
           int jItemIndex = super.recommender.getDataModel().getTestItem(jTestItemIndex).getItemIndex();
-          
+
           double sim = similarities[jItemIndex];
 
           // Ignore items without common ratings (sim == Double.NEGATIVE_INFINITY)
