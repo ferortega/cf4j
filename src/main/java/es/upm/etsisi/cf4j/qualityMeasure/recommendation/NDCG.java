@@ -53,31 +53,31 @@ public class NDCG extends QualityMeasure {
 
     double dcg = 0d;
 
-    for (int pos = 0; pos < recommendations.length; pos++) {
-      int i = recommendations[pos];
-      if (i == -1) break;
+    for (int i = 0; i < recommendations.length; i++) {
+      int pos = recommendations[i];
+      if (pos == -1) break;
 
-      double rating = testUser.getTestRatingAt(i);
-      dcg += (Math.pow(2, rating) - 1) / (Math.log(pos + 2) / Math.log(2));
+      double rating = testUser.getTestRatingAt(pos);
+      dcg += (Math.pow(2, rating) - 1) / (Math.log(i + 2) / Math.log(2));
     }
 
     // Compute IDCG
 
     double[] testRatings = new double[testUser.getNumberOfTestRatings()];
-    for (int i = 0; i < testRatings.length; i++) {
-      testRatings[i] = testUser.getTestRatingAt(i);
+    for (int pos = 0; pos < testRatings.length; pos++) {
+      testRatings[pos] = testUser.getTestRatingAt(pos);
     }
 
     int[] idealRecommendations = Search.findTopN(testRatings, this.numberOfRecommendations);
 
     double idcg = 0d;
 
-    for (int pos = 0; pos < idealRecommendations.length; pos++) {
-      int i = idealRecommendations[pos];
-      if (i == -1) break;
+    for (int i = 0; i < idealRecommendations.length; i++) {
+      int pos = idealRecommendations[i];
+      if (pos == -1) break;
 
-      double rating = testUser.getTestRatingAt(i);
-      idcg += (Math.pow(2, rating) - 1) / (Math.log(pos + 2) / Math.log(2));
+      double rating = testUser.getTestRatingAt(pos);
+      idcg += (Math.pow(2, rating) - 1) / (Math.log(i + 2) / Math.log(2));
     }
 
     // Compute NDCG
