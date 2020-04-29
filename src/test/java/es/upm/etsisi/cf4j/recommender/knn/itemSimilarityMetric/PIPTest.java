@@ -31,9 +31,6 @@ class PIPTest {
     assertEquals(6.361111111111111, sim.similarity(item0, item1));
     assertEquals(1.5, sim.similarity(item0, item2));
     assertEquals(768.0, sim.similarity(item1, item2));
-    assertTrue(sim.similarity(item0, item1) > sim.similarity(item0, item2));
-    assertTrue(sim.similarity(item0, item1) < sim.similarity(item1, item2));
-    assertTrue(sim.similarity(item1, item2) > sim.similarity(item0, item2));
     sim.afterRun();
   }
 }

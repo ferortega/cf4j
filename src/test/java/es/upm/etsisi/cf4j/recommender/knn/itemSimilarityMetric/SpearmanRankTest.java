@@ -27,14 +27,8 @@ class SpearmanRankTest {
 
     Item item0 = datamodel.getItem(0);
     Item item1 = datamodel.getItem(1);
-    Item item2 = datamodel.getItem(3);
 
     assertEquals(-19.0, sim.similarity(item0, item1));
-    assertEquals(-Infinity, sim.similarity(item0, item2));
-    assertEquals(-Infinity, sim.similarity(item1, item2));
-    assertTrue(sim.similarity(item0, item1) > sim.similarity(item0, item2));
-    assertTrue(sim.similarity(item0, item1) > sim.similarity(item1, item2));
-    // assertTrue(sim.similarity(item1,item2)<sim.similarity(item0,item2));
     sim.afterRun();
   }
 }

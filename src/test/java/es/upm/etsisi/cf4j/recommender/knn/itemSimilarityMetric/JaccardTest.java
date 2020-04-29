@@ -31,9 +31,6 @@ class JaccardTest {
     assertEquals(1.0, sim.similarity(item0, item1));
     assertEquals(0.25, sim.similarity(item0, item2));
     assertEquals(0.25, sim.similarity(item1, item2));
-    assertTrue(sim.similarity(item0, item1) > sim.similarity(item0, item2));
-    assertTrue(sim.similarity(item0, item1) > sim.similarity(item1, item2));
-    assertTrue(sim.similarity(item1, item2) <= sim.similarity(item0, item2));
     sim.afterRun();
   }
 }

@@ -31,9 +31,6 @@ class SingularitiesTest {
     assertEquals(0.03125, sim.similarity(item0, item1));
     assertEquals(0.036458333333333336, sim.similarity(item0, item2));
     assertEquals(0.078125, sim.similarity(item1, item2));
-    assertTrue(sim.similarity(item0, item1) < sim.similarity(item0, item2));
-    assertTrue(sim.similarity(item0, item1) < sim.similarity(item1, item2));
-    assertTrue(sim.similarity(item1, item2) > sim.similarity(item0, item2));
     sim.afterRun();
   }
 }
