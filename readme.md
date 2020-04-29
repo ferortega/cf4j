@@ -1,4 +1,4 @@
-# CF4J: Collaborative Filtering for Java
+# CF4J: Collaborative Filtering for Java 
 
 A Java's Collaborative Filtering library to carry out experiments in research on Collaborative Filtering based Recommender Systems. The library has been designed from researchers to researchers.
 
