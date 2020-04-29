@@ -65,7 +65,7 @@ public class NDCG extends QualityMeasure {
 
     double[] testRatings = new double[testUser.getNumberOfTestRatings()];
     for (int i = 0; i < testRatings.length; i++) {
-      testRatings[i] = testUser.getRatingAt(i);
+      testRatings[i] = testUser.getTestRatingAt(i);
     }
 
     int[] idealRecommendations = Search.findTopN(testRatings, this.numberOfRecommendations);
