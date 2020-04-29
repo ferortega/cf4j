@@ -1,5 +1,6 @@
 package es.upm.etsisi.cf4j.qualityMeasure.recommendation;
 
+import es.upm.etsisi.cf4j.data.TestItem;
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.recommender.knn.itemSimilarityMetric.Cosine;
@@ -43,7 +44,7 @@ public class Diversity extends QualityMeasure {
    * Constructor of Diversity
    *
    * @param recommender Recommender instance for which the precision are going to be computed
-   * @param numberOfRecommendations Number of recommendations
+   * @param numberOfRecommendations Number of recommendations. It must be greater than 1
    */
   public Diversity(Recommender recommender, int numberOfRecommendations) {
     super(recommender);
@@ -63,18 +64,22 @@ public class Diversity extends QualityMeasure {
     double sum = 0;
     int count = 0;
 
-    for (int i : recommendations) {
-      if (i == -1) break;
+    for (int iPos : recommendations) {
+      if (iPos == -1) break;
 
-      int iIndex = testUser.getTestItemAt(i);
-      double[] similarities = this.itemSimilarityMetric.getSimilarities(iIndex);
+      int iTestItemIndex = testUser.getTestItemAt(iPos);
+      int iItemIndex = super.recommender.getDataModel().getTestItem(iTestItemIndex).getItemIndex();
 
-      for (int j : recommendations) {
-        if (j == -1) break;
+      double[] similarities = this.itemSimilarityMetric.getSimilarities(iItemIndex);
 
-        if (i != j) {
-          int jIndex = testUser.getTestItemAt(j);
-          double sim = similarities[jIndex];
+      for (int jPos : recommendations) {
+        if (jPos == -1) break;
+
+        if (iPos != jPos) {
+          int jTestItemIndex = testUser.getTestItemAt(jPos);
+          int jItemIndex = super.recommender.getDataModel().getTestItem(jTestItemIndex).getItemIndex();
+          
+          double sim = similarities[jItemIndex];
 
           // Ignore items without common ratings (sim == Double.NEGATIVE_INFINITY)
           if (!Double.isInfinite(sim)) {
