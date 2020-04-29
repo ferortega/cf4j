@@ -11,81 +11,80 @@ import es.upm.etsisi.cf4j.util.Search;
 import java.util.Map;
 
 /**
- * This class the averaged diversity of the recomendations. Diversity value is computed as explained in "Hurley, N.,
- * &amp; Zhang, M. (2011). Novelty and diversity in top-n recommendation--analysis and evaluation. ACM Transactions on
- * Internet Technology (TOIT), 10(4), 1-30.". Lower values denotes more diverse recommendations.
+ * This class the averaged diversity of the recomendations. Diversity value is computed as explained
+ * in "Hurley, N., &amp; Zhang, M. (2011). Novelty and diversity in top-n recommendation--analysis
+ * and evaluation. ACM Transactions on Internet Technology (TOIT), 10(4), 1-30.". Lower values
+ * denotes more diverse recommendations.
  */
 public class Diversity extends QualityMeasure {
 
-	/**
-	 * Number of recommended items
-	 */
-	private int numberOfRecommendations;
+  /** Number of recommended items */
+  private int numberOfRecommendations;
 
-	/**
-	 * Similarity between items
-	 */
-	ItemSimilarityMetric itemSimilarityMetric;
+  /** Similarity between items */
+  ItemSimilarityMetric itemSimilarityMetric;
 
-	/**
-	 * Constructor from a Map object with the quality measure parameters. Map object must contains the
-	 * following keys:
-	 * <ul>
-	 *   <li><b>numberOfRecommendations</b>: int value with the number of items to be recommended.</li>
-	 * </ul>
-	 * @param recommender Recommender instance for which the Diversity are going to be computed
-	 * @param params Quality measure's parameters
-	 */
-	public Diversity(Recommender recommender, Map<String, Object> params) {
-		this(recommender, (int) params.get("numberOfRecommendations"));
-	}
+  /**
+   * Constructor from a Map object with the quality measure parameters. Map object must contains the
+   * following keys:
+   *
+   * <ul>
+   *   <li><b>numberOfRecommendations</b>: int value with the number of items to be recommended.
+   * </ul>
+   *
+   * @param recommender Recommender instance for which the Diversity are going to be computed
+   * @param params Quality measure's parameters
+   */
+  public Diversity(Recommender recommender, Map<String, Object> params) {
+    this(recommender, (int) params.get("numberOfRecommendations"));
+  }
 
-	/**
-	 * Constructor of Diversity
-	 * @param recommender Recommender instance for which the precision are going to be computed
-	 * @param numberOfRecommendations Number of recommendations
-	 */
-	public Diversity(Recommender recommender, int numberOfRecommendations) {
-		super(recommender);
-		this.numberOfRecommendations = numberOfRecommendations;
+  /**
+   * Constructor of Diversity
+   *
+   * @param recommender Recommender instance for which the precision are going to be computed
+   * @param numberOfRecommendations Number of recommendations
+   */
+  public Diversity(Recommender recommender, int numberOfRecommendations) {
+    super(recommender);
+    this.numberOfRecommendations = numberOfRecommendations;
 
-		// Compute similarity between items
-		this.itemSimilarityMetric = new Cosine();
-		this.itemSimilarityMetric.setDatamodel(super.recommender.getDataModel());
-		Parallelizer.exec(recommender.getDataModel().getItems(), this.itemSimilarityMetric);
-	}
+    // Compute similarity between items
+    this.itemSimilarityMetric = new Cosine();
+    this.itemSimilarityMetric.setDatamodel(super.recommender.getDataModel());
+    Parallelizer.exec(recommender.getDataModel().getItems(), this.itemSimilarityMetric);
+  }
 
-	@Override
-	protected double getScore(TestUser testUser, double[] predictions) {
+  @Override
+  protected double getScore(TestUser testUser, double[] predictions) {
 
-		int [] recommendations = Search.findTopN(predictions, this.numberOfRecommendations);
-		
-		double sum = 0;
-		int count = 0;
+    int[] recommendations = Search.findTopN(predictions, this.numberOfRecommendations);
 
-		for (int i : recommendations) {
-			if (i == -1) break;
+    double sum = 0;
+    int count = 0;
 
-			int iIndex = testUser.getTestItemAt(i);
-			double[] similarities = this.itemSimilarityMetric.getSimilarities(iIndex);
+    for (int i : recommendations) {
+      if (i == -1) break;
 
-			for (int j : recommendations) {
-				if (j == -1) break;
+      int iIndex = testUser.getTestItemAt(i);
+      double[] similarities = this.itemSimilarityMetric.getSimilarities(iIndex);
 
-				if (i != j) {
-					int jIndex = testUser.getTestItemAt(j);
-					double sim = similarities[jIndex];
+      for (int j : recommendations) {
+        if (j == -1) break;
 
-					// Ignore items without common ratings (sim == Double.NEGATIVE_INFINITY)
-					if (!Double.isInfinite(sim)) {
-						sum += sim;
-						count++;
-					}
+        if (i != j) {
+          int jIndex = testUser.getTestItemAt(j);
+          double sim = similarities[jIndex];
 
-				}
-			}
-		}
+          // Ignore items without common ratings (sim == Double.NEGATIVE_INFINITY)
+          if (!Double.isInfinite(sim)) {
+            sum += sim;
+            count++;
+          }
+        }
+      }
+    }
 
-		return (count == 0) ? Double.NaN : (sum / count);
-	}
+    return (count == 0) ? Double.NaN : (sum / count);
+  }
 }

@@ -20,130 +20,124 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Implements an ScatterPlot.
- */
+/** Implements an ScatterPlot. */
 public class ScatterPlot extends Plot {
 
-    /**
-     * List of points of the scatter plot
-     */
-    private List<Pair<Double, Double>> points;
+  /** List of points of the scatter plot */
+  private List<Pair<Double, Double>> points;
 
-    /**
-     * Label of the x axis
-     */
-    private String xLabel;
+  /** Label of the x axis */
+  private String xLabel;
 
-    /**
-     * Label of the y axis
-     */
-    private String yLabel;
+  /** Label of the y axis */
+  private String yLabel;
 
-    /**
-     * Creates new ScatterPlot
-     * @param xLabel Label of the x axis
-     * @param yLabel Label of the y axis
-     */
-    public ScatterPlot(String xLabel, String yLabel) {
-        this.xLabel = xLabel;
-        this.yLabel = yLabel;
+  /**
+   * Creates new ScatterPlot
+   *
+   * @param xLabel Label of the x axis
+   * @param yLabel Label of the y axis
+   */
+  public ScatterPlot(String xLabel, String yLabel) {
+    this.xLabel = xLabel;
+    this.yLabel = yLabel;
 
-        this.points = new ArrayList<>();
+    this.points = new ArrayList<>();
+  }
+
+  /**
+   * Adds new point to the scatter plot
+   *
+   * @param x x value
+   * @param y y value
+   * @return Self ScatterPlot instance
+   */
+  public ScatterPlot addPoint(double x, double y) {
+    this.points.add(new Pair<>(x, y));
+    return this;
+  }
+
+  @Override
+  protected String[] getDataHeaders() {
+    String[] headers = {this.xLabel, this.yLabel};
+    return headers;
+  }
+
+  @Override
+  protected String[][] getDataContent(String xAxisTicksFormat, String yAxisTicksFormat) {
+    DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
+    DecimalFormat xdf = new DecimalFormat(xAxisTicksFormat, dfs);
+    DecimalFormat ydf = new DecimalFormat(yAxisTicksFormat, dfs);
+
+    String[][] content = new String[this.points.size()][2];
+
+    for (int i = 0; i < this.points.size(); i++) {
+      Pair<Double, Double> point = this.points.get(i);
+      content[i][0] = xdf.format(point.getFirst());
+      content[i][1] = ydf.format(point.getSecond());
     }
 
-    /**
-     * Adds new point to the scatter plot
-     * @param x x value
-     * @param y y value
-     * @return Self ScatterPlot instance
-     */
-    public ScatterPlot addPoint(double x, double y) {
-        this.points.add(new Pair<>(x, y));
-        return this;
+    return content;
+  }
+
+  @Override
+  protected AbstractPlot getGralPlot() {
+
+    // Create XY plot with data
+    DataTable data = new DataTable(Double.class, Double.class);
+    for (Pair<Double, Double> point : this.points) {
+      data.add(point.getFirst(), point.getSecond());
     }
 
-    @Override
-    protected String[] getDataHeaders() {
-        String[] headers = {this.xLabel, this.yLabel};
-        return headers;
-    }
+    DataSeries series = new DataSeries("Series", data);
 
-    @Override
-    protected String[][] getDataContent(String xAxisTicksFormat, String yAxisTicksFormat) {
-        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
-        DecimalFormat xdf = new DecimalFormat(xAxisTicksFormat, dfs);
-        DecimalFormat ydf = new DecimalFormat(yAxisTicksFormat, dfs);
+    XYPlot plot = new XYPlot(series);
 
-        String[][] content = new String[this.points.size()][2];
+    // Customize plot
+    plot.setBackground(PlotSettings.getBackgroundColor());
 
-        for (int i = 0; i < this.points.size(); i++) {
-            Pair<Double, Double> point = this.points.get(i);
-            content[i][0] = xdf.format(point.getFirst());
-            content[i][1] = ydf.format(point.getSecond());
-        }
+    PointRenderer pr = new DefaultPointRenderer2D();
+    pr.setShape(new Ellipse2D.Double(-3.0, -3.0, 6.0, 6.0));
+    pr.setColor(GraphicsUtils.deriveWithAlpha(PlotSettings.getColor(0), 128));
+    plot.setPointRenderers(series, pr);
 
-        return content;
-    }
+    plot.setInsets(
+        new Insets2D.Double(
+            PlotSettings.getClearInset(),
+            PlotSettings.getyAxisInset(),
+            PlotSettings.getxAxisInset(),
+            PlotSettings.getClearInset()));
 
-    @Override
-    protected AbstractPlot getGralPlot() {
+    // Customize x axis
+    AxisRenderer xAxisRenderer = plot.getAxisRenderer(XYPlot.AXIS_X);
 
-        // Create XY plot with data
-        DataTable data = new DataTable(Double.class, Double.class);
-        for (Pair<Double, Double> point : this.points) {
-            data.add(point.getFirst(), point.getSecond());
-        }
+    xAxisRenderer.setLabel(new Label(xLabel));
+    xAxisRenderer.getLabel().setFont(PlotSettings.getPrimaryFont());
+    xAxisRenderer.setLabelDistance(PlotSettings.getxAxisLabelDistance());
 
-        DataSeries series = new DataSeries("Series", data);
+    xAxisRenderer.setTickFont(PlotSettings.getSecondaryFont());
+    xAxisRenderer.setTickLabelFormat(NumberFormat.getInstance(Locale.US));
+    xAxisRenderer.setTicksAutoSpaced(true);
 
-        XYPlot plot = new XYPlot(series);
+    // Customize y axis
+    AxisRenderer yAxisRenderer = plot.getAxisRenderer(XYPlot.AXIS_Y);
 
-        // Customize plot
-        plot.setBackground(PlotSettings.getBackgroundColor());
+    yAxisRenderer.setLabel(new Label(yLabel));
+    yAxisRenderer.getLabel().setFont(PlotSettings.getPrimaryFont());
+    yAxisRenderer.getLabel().setRotation(90);
+    yAxisRenderer.setLabelDistance(PlotSettings.getyAxisLabelDistance());
 
-        PointRenderer pr = new DefaultPointRenderer2D();
-        pr.setShape(new Ellipse2D.Double(-3.0, -3.0, 6.0, 6.0));
-        pr.setColor(GraphicsUtils.deriveWithAlpha(PlotSettings.getColor(0), 128));
-        plot.setPointRenderers(series, pr);
+    yAxisRenderer.setTickFont(PlotSettings.getSecondaryFont());
+    yAxisRenderer.setTickLabelFormat(NumberFormat.getInstance(Locale.US));
+    yAxisRenderer.setTicksAutoSpaced(true);
 
-        plot.setInsets(new Insets2D.Double(
-                PlotSettings.getClearInset(),
-                PlotSettings.getyAxisInset(),
-                PlotSettings.getxAxisInset(),
-                PlotSettings.getClearInset()
-        ));
+    xAxisRenderer.setIntersection(-Double.MAX_VALUE);
+    yAxisRenderer.setIntersection(-Double.MAX_VALUE);
 
-        // Customize x axis
-        AxisRenderer xAxisRenderer = plot.getAxisRenderer(XYPlot.AXIS_X);
+    // Customize navigator settings
+    plot.getNavigator().setZoom(0.9);
+    plot.getNavigator().setZoomable(false);
 
-        xAxisRenderer.setLabel(new Label(xLabel));
-        xAxisRenderer.getLabel().setFont(PlotSettings.getPrimaryFont());
-        xAxisRenderer.setLabelDistance(PlotSettings.getxAxisLabelDistance());
-
-        xAxisRenderer.setTickFont(PlotSettings.getSecondaryFont());
-        xAxisRenderer.setTickLabelFormat(NumberFormat.getInstance(Locale.US));
-        xAxisRenderer.setTicksAutoSpaced(true);
-
-        // Customize y axis
-        AxisRenderer yAxisRenderer = plot.getAxisRenderer(XYPlot.AXIS_Y);
-
-        yAxisRenderer.setLabel(new Label(yLabel));
-        yAxisRenderer.getLabel().setFont(PlotSettings.getPrimaryFont());
-        yAxisRenderer.getLabel().setRotation(90);
-        yAxisRenderer.setLabelDistance(PlotSettings.getyAxisLabelDistance());
-
-        yAxisRenderer.setTickFont(PlotSettings.getSecondaryFont());
-        yAxisRenderer.setTickLabelFormat(NumberFormat.getInstance(Locale.US));
-        yAxisRenderer.setTicksAutoSpaced(true);
-
-        xAxisRenderer.setIntersection(-Double.MAX_VALUE);
-        yAxisRenderer.setIntersection(-Double.MAX_VALUE);
-
-        // Customize navigator settings
-        plot.getNavigator().setZoom(0.9);
-        plot.getNavigator().setZoomable(false);
-
-        return plot;
-    }
+    return plot;
+  }
 }
