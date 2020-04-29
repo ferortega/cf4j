@@ -101,13 +101,13 @@ Let's encode our first experiment with CF4J.
    
    ```java
    for (double reg : regValues) {
-       PMF pmf = new PMF(datamodel, 6, 50, reg, 0.01, 43);
-       pmf.fit();
+     PMF pmf = new PMF(datamodel, 6, 50, reg, 0.01, 43);
+     pmf.fit();
 
-       QualityMeasure mse = new MSE(pmf);
-       double mseScore = mse.getScore();
+     QualityMeasure mse = new MSE(pmf);
+     double mseScore = mse.getScore();
 
-       plot.setValue("PMF", reg, mseScore);
+     plot.setValue("PMF", reg, mseScore);
    }
    ``` 
    
