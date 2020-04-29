@@ -1,6 +1,7 @@
 package es.upm.etsisi.cf4j.recommender;
 
 import es.upm.etsisi.cf4j.data.DataModel;
+import es.upm.etsisi.cf4j.data.TestItem;
 import es.upm.etsisi.cf4j.data.TestUser;
 
 /**
@@ -59,7 +60,9 @@ public abstract class Recommender {
     int userIndex = testUser.getUserIndex();
     double[] predictions = new double[testUser.getNumberOfTestRatings()];
     for (int i = 0; i < predictions.length; i++) {
-      int itemIndex = testUser.getTestItemAt(i);
+      int testItemIndex = testUser.getTestItemAt(i);
+      TestItem testItem = this.datamodel.getTestItem(testItemIndex);
+      int itemIndex = testItem.getItemIndex();
       predictions[i] = this.predict(userIndex, itemIndex);
     }
     return predictions;
