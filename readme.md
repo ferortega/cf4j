@@ -220,18 +220,23 @@ This package contains different utilities designed to ease common operations use
 - `es.upm.etsisi.cf4j.util.plot` includes plotting tools designed to analyze data of results obtained as consequence of collaborative filtering research. The following plot types:
  
   - `LinePlot`. Displays multiple data series with common numerical values on the x axis. Example:
+  
     ![LinePlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.0/line-plot.png)
     
-  - `XYPlot`.Displays multiple data series defined by a sequence of XY points. All the points in a series must be assigned to a common plot's label.
+  - `XYPlot`.Displays multiple data series defined by a sequence of XY points. All the points in a series must be assigned to a common plot's label. Example:
+  
     ![XYPlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.0/xy-plot.png)
     
-  - `ScatterPlot`. Displays the values of two numerical variables.
+  - `ScatterPlot`. Displays the values of two numerical variables. Example:
+  
     ![ScatterPlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.0/scatter-plot.png)
    
-  - `HistogramPlot`. Displays the histogram of a numerical variable by defining the number of bins.
+  - `HistogramPlot`. Displays the histogram of a numerical variable by defining the number of bins. Example:
+  
     ![HistogramPlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.0/histogram-plot.png)
    
-  - `ColumnPlot`. Displays numerical values related with a discrete variable placed on the x axis.
+  - `ColumnPlot`. Displays numerical values related with a discrete variable placed on the x axis. Example:
+  
     ![ColumnPlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.0/column-plot.png) 
     
 - `es.upm.etsisi.cf4j.util.optimization`  includes optimization utils designed to tune recommenders' hyper-parameters.
