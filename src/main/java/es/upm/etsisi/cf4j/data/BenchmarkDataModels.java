@@ -225,6 +225,8 @@ public class BenchmarkDataModels {
       System.err.println(
           "A problem has occurred while loading the DataModel. If the problem persists in a few minutes, open an issue in CF4J GitHub's repository.");
       e.printStackTrace();
+    } finally{
+      in.close();
     }
     return datamodel;
   }
