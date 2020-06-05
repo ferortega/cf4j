@@ -114,7 +114,9 @@ public class GridSearch {
         e.printStackTrace();
       }
 
-      recommender.fit();
+      if (recommender != null) {
+        recommender.fit();
+      }
 
       QualityMeasure qm = null;
 
@@ -140,9 +142,10 @@ public class GridSearch {
         e.printStackTrace();
       }
 
-      double score = qm.getScore();
-
-      results.add(new Pair<>(params.toString(), score));
+      if (qm != null) {
+        double score = qm.getScore();
+        results.add(new Pair<>(params.toString(), score));
+      }
     }
   }
 
