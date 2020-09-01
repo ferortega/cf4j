@@ -209,6 +209,31 @@ public class BenchmarkDataModels {
   }
 
   /**
+   * Loads a DataModel instance of Netflix Prize dataset. The DataModel contains:
+   *
+   * <ul>
+   *   <li>Number of users: 480,189
+   *   <li>Number of test users: 23,012
+   *   <li>Number of items: 17,770
+   *   <li>Number of test items: 1,750
+   *   <li>Number of ratings: 9,9945,049
+   *   <li>Number of test ratings: 535,458
+   *   <li>Min rating: 1.0
+   *   <li>Max rating: 5.0
+   * </ul>
+   *
+   * Visit <a
+   * href="https://www.kaggle.com/netflix-inc/netflix-prize-data">https://www.kaggle.com/netflix-inc/netflix-prize-data</a>
+   * for more information.
+   *
+   * @return A DataModel instance with Netflix Prize dataset.
+   * @throws IOException When the DataModel can not be loaded.
+   */
+  public static DataModel NetflixPrize() throws IOException {
+    return loadRemoteDataModel("http://cf4j.etsisi.upm.es/datamodels/netflix.cf4j");
+  }
+
+  /**
    * Loads a DataModel instance from a remote URL
    *
    * @param spec The String with the URL of the DataModel
