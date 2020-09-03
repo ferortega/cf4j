@@ -282,6 +282,14 @@ In this section we include the full list of algorithms implemented in the librar
    | `URP`         | Marlin, B. M. (2004). *Modeling user rating profiles for collaborative filtering*. In Advances in neural information processing systems (pp. 627-634) |
 
 
+* Collaborative filtering based on neural networks (`es.upm.etisi.recommender.neural` package):
+
+   | Class         | Publication |
+   |---------------|-------------|
+   | `NCCF`        | Bobadilla, J., Ortega, F., Gutiérrez, A., & Alonso, S. (2020). Classification-based Deep Neural Network Architecture for Collaborative Filtering Recommender Systems. International Journal of Interactive Multimedia & Artificial Intelligence, 6(1) |
+   
+
+
 * kNN based CF (both user-to-user and item-to-item approaches):
 
   + Traditional similarity metrics inspired by statistics (`es.upm.etsisi.cf4j.recommender.knn.userSimilairtyMetrics` and `es.upm.etsisi.cf4j.recommender.knn.itemSimilairtyMetrics` packages):
