@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CLiTest {
+class CLiMFTest {
 
   private static final int seed = 69;
   private static final int numFactors = 2;
