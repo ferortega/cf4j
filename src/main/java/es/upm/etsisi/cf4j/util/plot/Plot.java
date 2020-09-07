@@ -181,7 +181,9 @@ public abstract class Plot {
       throw new IOException("Unable to create directory " + parent);
     }
     DrawableWriter writer = DrawableWriterFactory.getInstance().get("image/png");
-    writer.write(plot, new FileOutputStream(f), PlotSettings.getWidth(), PlotSettings.getHeight());
+    FileOutputStream fos = new FileOutputStream(f);
+    writer.write(plot, fos, PlotSettings.getWidth(), PlotSettings.getHeight());
+    fos.close();
   }
 
   /**

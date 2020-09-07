@@ -27,46 +27,46 @@ For Maven:
 <dependency>
   <groupId>es.upm.etsisi</groupId>
   <artifactId>cf4j</artifactId>
-  <version>2.1.0</version>
+  <version>2.1.1</version>
 </dependency>
 ```
 
 For Gradle:
 
 ```
-compile group: 'es.upm.etsisi', name: 'cf4j', version: '2.1.0'
+compile group: 'es.upm.etsisi', name: 'cf4j', version: '2.1.1'
 ```
 
 For SBT:
 
 ```
-libraryDependencies += "es.upm.etsisi" % "cf4j" % "2.1.0"
+libraryDependencies += "es.upm.etsisi" % "cf4j" % "2.1.1"
 ```
 
 For Ivy:
 
 ```xml
-<dependency org="es.upm.etsisi" name="cf4j" rev="2.1.0"/>
+<dependency org="es.upm.etsisi" name="cf4j" rev="2.1.1"/>
 ```
 
 For Grape:
 
 ```
 @Grapes(
-    @Grab(group='es.upm.etsisi', module='cf4j', version='2.1.0')
+    @Grab(group='es.upm.etsisi', module='cf4j', version='2.1.1')
 )
 ```
 
 For Leiningen:
 
 ```
-[es.upm.etsisi/cf4j "2.1.0"]
+[es.upm.etsisi/cf4j "2.1.1"]
 ```
 
 For Buildr:
 
 ```
-'es.upm.etsisi:cf4j:jar:2.1.0'
+'es.upm.etsisi:cf4j:jar:2.1.1'
 ```
 
 You can find additional information about these dependencies in [https://mvnrepository.com/artifact/es.upm.etsisi/cf4j](https://mvnrepository.com/artifact/es.upm.etsisi/cf4j)
@@ -81,7 +81,7 @@ You can also package your own `jar` file . To do that, clone the repository usin
 
 Let's encode our first experiment with CF4J. 
 
-1. First of all, we need to load MovieLens's ratings. CF4J includes a preloaded version of most popular ratings databases. You can retrieve them using [`BenchmarkDataModels`](http://cf4j.etsisi.upm.es/apidocs/v2.1.0/es/upm/etsisi/cf4j/data/BenchmarkDataModels.html) class. In this experiment we will load [MovieLens 100k dataset](https://grouplens.org/datasets/movielens/100k/).
+1. First of all, we need to load MovieLens's ratings. CF4J includes a preloaded version of most popular ratings databases. You can retrieve them using [`BenchmarkDataModels`](http://cf4j.etsisi.upm.es/apidocs/v2.1.1/es/upm/etsisi/cf4j/data/BenchmarkDataModels.html) class. In this experiment we will load [MovieLens 100k dataset](https://grouplens.org/datasets/movielens/100k/).
 
    ```java
    DataModel datamodel = BenchmarkDataModels.MovieLens100K();
@@ -89,7 +89,7 @@ Let's encode our first experiment with CF4J.
    
    As you can observe, MovieLens dataset has been loaded into a `DataModel`. A `DataModel` is a high level in memory representation of the data structure required by collaborative filtering algorithms. 
    
-2. Now, we need to create an object store the results of our experiment. CF4J includes some amazing tools to analyze the experimental results. You can find them in the [`es.upm.etsisi.plot`](http://cf4j.etsisi.upm.es/apidocs/v2.1.0/es/upm/etsisi/cf4j/plot/package-summary.html) package. In this case, we want to analyze how the Mean Squared Error (MSE) varies according to the value of the regularization term in Probabilistic Matrix Factorization ([`PMF`](http://cf4j.etsisi.upm.es/apidocs/v2.1.0/es/upm/etsisi/cf4j/recommender/matrixFactorization/PMF.html)) recommender, so we will use a [`LinePlot`](http://cf4j.etsisi.upm.es/apidocs/v2.1.0/es/upm/etsisi/cf4j/plot/LinePlot.html)].
+2. Now, we need to create an object store the results of our experiment. CF4J includes some amazing tools to analyze the experimental results. You can find them in the [`es.upm.etsisi.plot`](http://cf4j.etsisi.upm.es/apidocs/v2.1.1/es/upm/etsisi/cf4j/plot/package-summary.html) package. In this case, we want to analyze how the Mean Squared Error (MSE) varies according to the value of the regularization term in Probabilistic Matrix Factorization ([`PMF`](http://cf4j.etsisi.upm.es/apidocs/v2.1.1/es/upm/etsisi/cf4j/recommender/matrixFactorization/PMF.html)) recommender, so we will use a [`LinePlot`](http://cf4j.etsisi.upm.es/apidocs/v2.1.1/es/upm/etsisi/cf4j/plot/LinePlot.html)].
 
    ```java
    double[] regValues = {0.000, 0.025, 0.05, 0.075, 0.100, 0.125, 0.150, 0.175, 0.200, 0.225, 0.250};
@@ -102,7 +102,7 @@ Let's encode our first experiment with CF4J.
    plot.addSeries("PMF");
    ```
    
-   And we iterate over the different regularization values fitting a new instance of ([`PMF`](http://cf4j.etsisi.upm.es/apidocs/v2.1.0/es/upm/etsisi/cf4j/recommender/matrixFactorization/PMF.html)) recommender for each of them, computing the [`MSE`](http://cf4j.etsisi.upm.es/apidocs/v2.1.0/es/upm/etsisi/cf4j/qualityMeasure/prediction/MSE.html) of the fitted recommender predictions and adding the MSE score to the plot data. Note that the remaining model's hyper-parameters has been fixed for this experiment (`numFactors=6`, `numIters=50`, `gamma=0.01` and `seed=43`):
+   And we iterate over the different regularization values fitting a new instance of ([`PMF`](http://cf4j.etsisi.upm.es/apidocs/v2.1.1/es/upm/etsisi/cf4j/recommender/matrixFactorization/PMF.html)) recommender for each of them, computing the [`MSE`](http://cf4j.etsisi.upm.es/apidocs/v2.1.1/es/upm/etsisi/cf4j/qualityMeasure/prediction/MSE.html) of the fitted recommender predictions and adding the MSE score to the plot data. Note that the remaining model's hyper-parameters has been fixed for this experiment (`numFactors=6`, `numIters=50`, `gamma=0.01` and `seed=43`):
    
    ```java
    for (double reg : regValues) {
@@ -126,7 +126,7 @@ Let's encode our first experiment with CF4J.
 
    And we obtain the following chart:
    
-   ![PMF regularization term experiment](http://cf4j.etsisi.upm.es/github-resources/v2.1.0/pmf-regularization-getting-started.png)
+   ![PMF regularization term experiment](http://cf4j.etsisi.upm.es/github-resources/v2.1.1/pmf-regularization-getting-started.png)
    
    To print the plot data in the standard output console we use:
    
@@ -170,7 +170,7 @@ Let's encode our first experiment with CF4J.
 
 The following image shows the  class diagram of the whole project.  The project has been divided into four main packages: `data`, `recommender`, `qualityMeasure` and `util`.
 
-![CF4J class diagram](http://cf4j.etsisi.upm.es/github-resources/v2.1.0/cf4j-class-diagram.png)
+![CF4J class diagram](http://cf4j.etsisi.upm.es/github-resources/v2.1.1/cf4j-class-diagram.png)
 
 ### `es.upm.etsisi.cf4j.data` package
 
@@ -221,29 +221,29 @@ This package contains different utilities designed to ease common operations use
  
   - `LinePlot`. Displays multiple data series with common numerical values on the x axis. Example:
   
-    ![LinePlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.0/line-plot.png)
+    ![LinePlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.1/line-plot.png)
     
   - `XYPlot`.Displays multiple data series defined by a sequence of XY points. All the points in a series must be assigned to a common plot's label. Example:
   
-    ![XYPlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.0/xy-plot.png)
+    ![XYPlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.1/xy-plot.png)
     
   - `ScatterPlot`. Displays the values of two numerical variables. Example:
   
-    ![ScatterPlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.0/scatter-plot.png)
+    ![ScatterPlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.1/scatter-plot.png)
    
   - `HistogramPlot`. Displays the histogram of a numerical variable by defining the number of bins. Example:
   
-    ![HistogramPlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.0/histogram-plot.png)
+    ![HistogramPlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.1/histogram-plot.png)
    
   - `ColumnPlot`. Displays numerical values related with a discrete variable placed on the x axis. Example:
   
-    ![ColumnPlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.0/column-plot.png) 
+    ![ColumnPlot example](http://cf4j.etsisi.upm.es/github-resources/v2.1.1/column-plot.png) 
     
 - `es.upm.etsisi.cf4j.util.optimization`  includes optimization utils designed to tune recommenders' hyper-parameters.
 
 - `es.upm.etsisi.cf4j.util.process` includes processing utils designed to simplify the parallelization of collaborative filtering algorithms.
 
-Read the [javadoc](http://cf4j.etsisi.upm.es/apidocs/v2.1.0/) documentation for additional information.
+Read the [javadoc](http://cf4j.etsisi.upm.es/apidocs/v2.1.1/) documentation for additional information.
 
 ## Customize CF4J
 
@@ -280,6 +280,14 @@ In this section we include the full list of algorithms implemented in the librar
    | `PMF`         | Mnih, A., &amp; Salakhutdinov, R. R. (2008). *Probabilistic matrix factorization*. In Advances in neural information processing systems (pp. 1257-1264) |
    | `SVDPlusPlus` | Koren, Y. (2008, August). *Factorization meets the neighborhood: a multifaceted collaborative filtering model*. In Proceedings of the 14th ACM SIGKDD international conference on Knowledge discovery and data mining (pp. 426-434) |
    | `URP`         | Marlin, B. M. (2004). *Modeling user rating profiles for collaborative filtering*. In Advances in neural information processing systems (pp. 627-634) |
+
+
+* Collaborative filtering based on neural networks (`es.upm.etisi.recommender.neural` package):
+
+   | Class         | Publication |
+   |---------------|-------------|
+   | `NCCF`        | Bobadilla, J., Ortega, F., Gutiérrez, A., & Alonso, S. (2020). Classification-based Deep Neural Network Architecture for Collaborative Filtering Recommender Systems. International Journal of Interactive Multimedia & Artificial Intelligence, 6(1) |
+   
 
 
 * kNN based CF (both user-to-user and item-to-item approaches):
@@ -349,7 +357,7 @@ In `examples/gridSearch` you will find examples showing how to use GridSearch to
 
 ## Datasets
 
-CF4J includes the most popular datasets used in collaborative filtering research. These datasets has been preloaded into DataModel instances and can be retrieved using [`BenchmarkDataModels`](http://cf4j.etsisi.upm.es/apidocs/v2.1.0/es/upm/etsisi/cf4j/data/BenchmarkDataModels.html) class.
+CF4J includes the most popular datasets used in collaborative filtering research. These datasets has been preloaded into DataModel instances and can be retrieved using [`BenchmarkDataModels`](http://cf4j.etsisi.upm.es/apidocs/v2.1.1/es/upm/etsisi/cf4j/data/BenchmarkDataModels.html) class.
 
 The datasets included in CF4J are:
 
@@ -357,9 +365,10 @@ The datasets included in CF4J are:
 |---------------|-----------------|-----------------|-------------------|------------------------|--------------|
 | MovieLens100K | 943             | 1,682           | 92,026            | 7,974                  | 1 to 5       |
 | MovieLens1M   | 6,040           | 3,706           | 911,031           | 89,178                 | 1 to 5       |
-| MovieLens10M  | 69,878          | 10,677          | 9,104,681         | 895,373                | 0,5 to 5,0   |
+| MovieLens10M  | 69,878          | 10,677          | 9,104,681         | 895,373                | 0.5 to 5.0   |
 | FilmTrust     | 1,508           | 2,071           | 32,675            | 2,819                  | 0.5 to 4.0   |
 | BookCrossing  | 77,805          | 185,973         | 390,351           | 43,320                 | 1 to 10      |
 | LibimSeTi     | 135,359         | 168,791         | 15,846,347        | 1,512,999              | 1 to 10      |
 | MyAnimeList   | 69,600          | 9,927           | 5,788,207         | 549,027                | 1 to 10      |
 | Jester        | 54,905          | 140             | 1,662,713         | 179,657                | -10 to 10    |
+| Netflix Prize | 480,189         | 17,770          | 99,945,049        | 535,458                | 1 to 5       |
