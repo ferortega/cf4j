@@ -18,9 +18,9 @@ import org.nd4j.linalg.cpu.nativecpu.NDArray;
 import java.util.Map;
 
 /**
- * Implements short method of Bobadilla, J., Ortega, F., Gutiérrez, A., & Alonso, S. (2020).
+ * Implements short method of Bobadilla, J., Ortega, F., Gutiérrez, A., &amp; Alonso, S. (2020).
  * Classification-based Deep Neural Network Architecture for Collaborative Filtering Recommender
- * Systems. International Journal of Interactive Multimedia & Artificial Intelligence, 6(1).
+ * Systems. International Journal of Interactive Multimedia &amp; Artificial Intelligence, 6(1).
  */
 public class NCCF extends Recommender {
 
