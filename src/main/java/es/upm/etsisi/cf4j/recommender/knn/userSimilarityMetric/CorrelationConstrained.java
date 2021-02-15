@@ -6,7 +6,7 @@ import es.upm.etsisi.cf4j.data.User;
 public class CorrelationConstrained extends UserSimilarityMetric {
 
   /** Median of the ratings of the datamodel */
-  private double median;
+  private final double median;
 
   /**
    * Constructor of the similarity metric

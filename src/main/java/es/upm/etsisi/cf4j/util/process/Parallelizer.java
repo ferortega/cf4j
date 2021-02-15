@@ -52,11 +52,11 @@ public class Parallelizer {
   /** Inner class used to handle parallel execution of the objects in the array */
   private static class PartibleThread implements Runnable {
 
-    private Thread thread;
-    private int threadIndex;
-    private int numThreads;
-    private Object[] objects;
-    private Partible partible;
+    private final Thread thread;
+    private final int threadIndex;
+    private final int numThreads;
+    private final Object[] objects;
+    private final Partible partible;
 
     public PartibleThread(int threadIndex, Partible partible, Object[] objects, int numThreads) {
       this.threadIndex = threadIndex;

@@ -20,7 +20,7 @@ import java.util.Map;
 public class Diversity extends QualityMeasure {
 
   /** Number of recommended items */
-  private int numberOfRecommendations;
+  private final int numberOfRecommendations;
 
   /** Similarity between items */
   ItemSimilarityMetric itemSimilarityMetric;
