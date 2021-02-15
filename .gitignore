@@ -11,6 +11,8 @@ pom.xml.releaseBackup
 
 out/
 target/
+datasets/
+exports/
 .idea
 *.iml
 /src/test/resources/dataset.save
