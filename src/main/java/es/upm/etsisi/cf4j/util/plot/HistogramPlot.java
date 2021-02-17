@@ -20,13 +20,13 @@ import java.util.*;
 public class HistogramPlot extends Plot {
 
   /** Plot data */
-  private DataTable data;
+  private final DataTable data;
 
   /** Number of bins of the histogram */
-  private int numBins;
+  private final int numBins;
 
   /** Label of the x axis */
-  private String xLabel;
+  private final String xLabel;
 
   /**
    * Creates a new HistogramPlot
@@ -73,8 +73,7 @@ public class HistogramPlot extends Plot {
 
   @Override
   protected String[] getDataHeaders() {
-    String[] headers = {this.xLabel + " (From)", this.xLabel + " (To)", "Count"};
-    return headers;
+    return new String[]{this.xLabel + " (From)", this.xLabel + " (To)", "Count"};
   }
 
   @Override

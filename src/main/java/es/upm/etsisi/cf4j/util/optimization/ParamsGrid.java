@@ -22,7 +22,7 @@ import java.util.stream.IntStream;
 public class ParamsGrid {
 
   /** Grid parameters to generate the development set */
-  private List<Pair<String, Object[]>> grid;
+  private final List<Pair<String, Object[]>> grid;
 
   /** Creates a new ParamsGrid */
   public ParamsGrid() {

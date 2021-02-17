@@ -22,19 +22,19 @@ import java.util.List;
 public class LinePlot extends Plot {
 
   /** Series data */
-  private List<Pair<String, double[]>> series;
+  private final List<Pair<String, double[]>> series;
 
   /** Values of the x axis */
-  private double[] xs;
+  private final double[] xs;
 
   /** Label of the x axis */
-  private String xLabel;
+  private final String xLabel;
 
   /** Label of the y axis */
-  private String yLabel;
+  private final String yLabel;
 
   /** Indicates if the legend must be hidden */
-  private boolean hideLegend;
+  private final boolean hideLegend;
 
   /**
    * Creates a new LinePlot
