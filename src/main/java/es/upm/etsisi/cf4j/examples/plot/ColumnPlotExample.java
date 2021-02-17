@@ -25,7 +25,7 @@ public class ColumnPlotExample {
       for (int pos = 0; pos < user.getNumberOfRatings(); pos++) {
         double rating = user.getRatingAt(pos);
         String key = String.valueOf(rating);
-        int num = count.containsKey(key) ? count.get(key) : 0;
+        int num = count.getOrDefault(key, 0);
         count.put(key, num + 1);
       }
     }

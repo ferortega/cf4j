@@ -1,6 +1,5 @@
 package es.upm.etsisi.cf4j.qualityMeasure.recommendation;
 
-import es.upm.etsisi.cf4j.data.TestItem;
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.recommender.knn.itemSimilarityMetric.Cosine;
