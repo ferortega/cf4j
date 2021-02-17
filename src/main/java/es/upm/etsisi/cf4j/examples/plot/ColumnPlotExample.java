@@ -30,7 +30,8 @@ public class ColumnPlotExample {
       }
     }
 
-    PlotSettings.setyAxisInset(125).setyAxisLabelDistance(3.1);
+    PlotSettings.setyAxisInset(125);
+    PlotSettings.setyAxisLabelDistance(3.1);
 
     ColumnPlot plot =
         new ColumnPlot("Rating value", "Number of ratings")
