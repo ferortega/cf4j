@@ -6,7 +6,6 @@ import es.upm.etsisi.cf4j.data.MockDataSet;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static jdk.nashorn.internal.objects.Global.Infinity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
