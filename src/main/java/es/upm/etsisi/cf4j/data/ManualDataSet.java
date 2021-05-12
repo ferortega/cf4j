@@ -28,7 +28,7 @@ public class ManualDataSet implements DataSet {
      * @param entries arraylist of datasetentries
      * @param trainPercentage set custom train data percentage
      */
-    public ManualDataSet(ArrayList<DataSetEntry> entries, double trainPercentage, @Nullable long seed){
+    public ManualDataSet(ArrayList<DataSetEntry> entries, double trainPercentage, @Nullable Long seed){
 
         ratings = new ArrayList<>();
         testRatings = new ArrayList<>();
