@@ -5,6 +5,9 @@ import es.upm.etsisi.cf4j.data.types.DataSetEntry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Random;
+
+import javax.annotation.Nullable;
 
 public class ManualDataSet implements DataSet {
 
@@ -25,12 +28,16 @@ public class ManualDataSet implements DataSet {
      * @param entries arraylist of datasetentries
      * @param trainPercentage set custom train data percentage
      */
-    public ManualDataSet(ArrayList<DataSetEntry> entries, double trainPercentage){
+    public ManualDataSet(ArrayList<DataSetEntry> entries, double trainPercentage, @Nullable long seed){
 
         ratings = new ArrayList<>();
         testRatings = new ArrayList<>();
 
-        Collections.shuffle(entries);
+        if (seed != null)
+            Collections.shuffle(entries, new Random(seed));
+        else
+            Collections.shuffle(entries, new Random());
+        
 
         int cut = (int) (entries.size() * trainPercentage);
         int cnt = 0;
