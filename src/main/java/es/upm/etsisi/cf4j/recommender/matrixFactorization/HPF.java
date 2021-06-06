@@ -261,7 +261,7 @@ public class HPF extends Recommender {
   @Override
   public double predict(int userIndex, int itemIndex) {
     double dot = Maths.dotProduct(this.gamma[userIndex], this.lambda[itemIndex]);
-    return 1 - Math.exp(-1 * dot);
+    return (1 - Math.exp(-1 * dot)) * datamodel.getMaxRating();
   }
 
   @Override
@@ -374,7 +374,7 @@ public class HPF extends Recommender {
 
         for (int pos = 0; pos < item.getNumberOfRatings(); pos++) {
           int userIndex = item.getUserAt(pos);
-          double rating = item.getRatingAt(pos);
+          double rating = item.getRatingAt(pos) / datamodel.getMaxRating();
 
           lambdaShp[itemIndex][k] += rating * phi[pos][k];
           lambdaRte[itemIndex][k] += gammaShp[userIndex][k] / gammaRte[userIndex][k];
