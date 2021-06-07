@@ -122,7 +122,7 @@ public class NCCF extends Recommender {
         int itemIndex = user.getItemAt(pos);
         X[i] = userMask.clone();
         X[i][itemIndex] = 0;
-        y[i][itemIndex] = 1;
+        y[i][itemIndex] = user.getRatingAt(pos) / datamodel.getMaxRating();
         i++;
       }
     }
