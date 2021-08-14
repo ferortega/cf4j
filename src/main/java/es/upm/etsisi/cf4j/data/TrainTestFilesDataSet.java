@@ -52,48 +52,49 @@ public class TrainTestFilesDataSet implements DataSet {
 
     System.out.println("\nLoading " + trainingFileName + "...");
 
-    BufferedReader datasetFile = new BufferedReader(new FileReader(new File(trainingFileName)));
-    this.ratings = new ArrayList<>();
+    try(BufferedReader datasetFile = new BufferedReader(new FileReader(trainingFileName))) {
+      this.ratings = new ArrayList<>();
 
-    String line;
-    int numLines = 0;
-    while ((line = datasetFile.readLine()) != null) {
-      numLines++;
-      if (numLines % 1000000 == 0) System.out.print(".");
-      if (numLines % 10000000 == 0) System.out.println(numLines + " ratings");
+      String line;
+      int numLines = 0;
+      while ((line = datasetFile.readLine()) != null) {
+        numLines++;
+        if (numLines % 1000000 == 0) System.out.print(".");
+        if (numLines % 10000000 == 0) System.out.println(numLines + " ratings");
 
-      String[] s = line.split(separator);
-      String userId = s[0];
-      String itemId = s[1];
-      double rating = Double.parseDouble(s[2]);
+        String[] s = line.split(separator);
+        String userId = s[0];
+        String itemId = s[1];
+        double rating = Double.parseDouble(s[2]);
 
-      this.ratings.add(new DataSetEntry(userId, itemId, rating));
+        this.ratings.add(new DataSetEntry(userId, itemId, rating));
+      }
+
     }
-
-    datasetFile.close();
 
     // Load test file
 
     System.out.println("\nLoading " + testFileName + "...");
 
-    BufferedReader testDatasetFile = new BufferedReader(new FileReader(new File(testFileName)));
-    this.testRatings = new ArrayList<>();
+    try(BufferedReader testDatasetFile = new BufferedReader(new FileReader(new File(testFileName)))) {
+      this.testRatings = new ArrayList<>();
 
-    numLines = 0;
-    while ((line = testDatasetFile.readLine()) != null) {
-      numLines++;
-      if (numLines % 1000000 == 0) System.out.print(".");
-      if (numLines % 10000000 == 0) System.out.println(numLines + " ratings");
+      String line;
+      int numLines = 0;
+      while ((line = testDatasetFile.readLine()) != null) {
+        numLines++;
+        if (numLines % 1000000 == 0) System.out.print(".");
+        if (numLines % 10000000 == 0) System.out.println(numLines + " ratings");
 
-      String[] s = line.split(separator);
-      String userId = s[0];
-      String itemId = s[1];
-      double rating = Double.parseDouble(s[2]);
+        String[] s = line.split(separator);
+        String userId = s[0];
+        String itemId = s[1];
+        double rating = Double.parseDouble(s[2]);
 
-      this.testRatings.add(new DataSetEntry(userId, itemId, rating));
+        this.testRatings.add(new DataSetEntry(userId, itemId, rating));
+      }
+
     }
-
-    testDatasetFile.close();
   }
 
   @Override

@@ -64,6 +64,7 @@ public class NDCG extends QualityMeasure {
 
     double idcg = dataCalculation(testUser,idealRecommendations);
 
+    if (idcg == 0) return Double.NEGATIVE_INFINITY;
     // Compute NDCG
     return dcg / idcg;
   }
