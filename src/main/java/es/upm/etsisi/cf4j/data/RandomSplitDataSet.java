@@ -3,6 +3,7 @@ package es.upm.etsisi.cf4j.data;
 import es.upm.etsisi.cf4j.data.types.DataSetEntry;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -125,44 +126,44 @@ public class RandomSplitDataSet implements DataSet {
     System.out.println("\nLoading dataset...");
 
     // Dataset reader
-    try(BufferedReader datasetFile = new BufferedReader(new FileReader(filename))) {
+    BufferedReader datasetFile = new BufferedReader(new FileReader(new File(filename)));
 
-      // Test selectors
-      TreeMap<String, Boolean> testUsersFiltered = new TreeMap<>();
-      TreeMap<String, Boolean> testItemsFiltered = new TreeMap<>();
+    // Test selectors
+    TreeMap<String, Boolean> testUsersFiltered = new TreeMap<>();
+    TreeMap<String, Boolean> testItemsFiltered = new TreeMap<>();
 
-      String line;
-      int numLines = 0;
-      while ((line = datasetFile.readLine()) != null) {
-        // Loading feedback
-        numLines++;
-        if (numLines % 1000000 == 0) System.out.print(".");
-        if (numLines % 10000000 == 0) System.out.println(numLines + " ratings");
+    String line;
+    int numLines = 0;
+    while ((line = datasetFile.readLine()) != null) {
+      // Loading feedback
+      numLines++;
+      if (numLines % 1000000 == 0) System.out.print(".");
+      if (numLines % 10000000 == 0) System.out.println(numLines + " ratings");
 
-        // Parse line
-        String[] s = line.split(separator);
-        String userId = s[0];
-        String itemId = s[1];
-        double rating = Double.parseDouble(s[2]);
+      // Parse line
+      String[] s = line.split(separator);
+      String userId = s[0];
+      String itemId = s[1];
+      double rating = Double.parseDouble(s[2]);
 
-        // Filtering entries.
-        if (!testUsersFiltered.containsKey(userId)) {
-          testUsersFiltered.put(userId, rand.nextFloat() <= testUsersPercent);
-        }
-
-        if (!testItemsFiltered.containsKey(itemId)) {
-          testItemsFiltered.put(itemId, rand.nextFloat() <= testItemsPercent);
-        }
-
-        // Store rating
-        if (testUsersFiltered.get(userId) && testItemsFiltered.get(itemId)) {
-          testRatings.add(new DataSetEntry(userId, itemId, rating));
-        } else {
-          ratings.add(new DataSetEntry(userId, itemId, rating));
-        }
+      // Filtering entries.
+      if (!testUsersFiltered.containsKey(userId)) {
+        testUsersFiltered.put(userId, rand.nextFloat() <= testUsersPercent);
       }
 
+      if (!testItemsFiltered.containsKey(itemId)) {
+        testItemsFiltered.put(itemId, rand.nextFloat() <= testItemsPercent);
+      }
+
+      // Store rating
+      if (testUsersFiltered.get(userId) && testItemsFiltered.get(itemId)) {
+        testRatings.add(new DataSetEntry(userId, itemId, rating));
+      } else {
+        ratings.add(new DataSetEntry(userId, itemId, rating));
+      }
     }
+
+    datasetFile.close();
   }
 
   @Override

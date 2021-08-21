@@ -187,10 +187,12 @@ public class DataModel implements Serializable {
    * @throws IOException When the file is not accessible by the system with write permissions.
    */
   public void save(String filePath) throws IOException {
-    try (FileOutputStream fileOut = new FileOutputStream(filePath); ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
-      out.writeObject(this);
-      System.out.println("Serialized DataModel is saved in " + filePath + ".");
-    }
+    FileOutputStream fileOut = new FileOutputStream(filePath);
+    ObjectOutputStream out = new ObjectOutputStream(fileOut);
+    out.writeObject(this);
+    out.close();
+    fileOut.close();
+    System.out.println("Serialized DataModel is saved in " + filePath + ".");
   }
 
   /**
@@ -204,9 +206,12 @@ public class DataModel implements Serializable {
    *     valid instance.
    */
   public static DataModel load(String filePath) throws IOException, ClassNotFoundException {
-    try (FileInputStream fileIn = new FileInputStream(filePath); ObjectInputStream in = new ObjectInputStream(fileIn);) {
-      return (DataModel) in.readObject();
-    }
+    FileInputStream fileIn = new FileInputStream(filePath);
+    ObjectInputStream in = new ObjectInputStream(fileIn);
+    DataModel dataModel = (DataModel) in.readObject();
+    in.close();
+    fileIn.close();
+    return dataModel;
   }
 
   /**
