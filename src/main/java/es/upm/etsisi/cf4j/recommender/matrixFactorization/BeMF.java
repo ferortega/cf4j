@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- * Implements Ortega, F., Lara-Cabrera, R., González-Prieto, Á., & Bobadilla, J. (2021). Providing reliability in
+ * Implements Ortega, F., Lara-Cabrera, R., González-Prieto, Á., &amp; Bobadilla, J. (2021). Providing reliability in
  * recommender systems through Bernoulli matrix factorization. Information Sciences, 553, 110-128.
  */
 public class BeMF extends Recommender {

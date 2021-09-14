@@ -75,6 +75,16 @@ public class TestUser extends User {
   }
 
   /**
+   * Finds position of a user's test rating given the index of the TestItem in the DataModel.
+   *
+   * @param testItemIndex Test item index
+   * @return TestItem position if the test item has been rated by the test user or -1 if do not
+   */
+  public int findTestItem(int testItemIndex) {
+    return testItemsRatings.find(testItemIndex);
+  }
+
+  /**
    * Gets the number of test items rated by the user.
    *
    * @return Number of test ratings
