@@ -109,6 +109,7 @@
 					<author>false</author>
 					<doctitle>API Documentation for Collaborative Filtering for Java (CF4J) ${project.version}</doctitle>
 					<windowtitle>CF4J ${project.version} API Documentation</windowtitle>
+					<javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
 				</configuration>
 				<executions>
 					<execution>
