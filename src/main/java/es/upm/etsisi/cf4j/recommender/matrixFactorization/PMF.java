@@ -191,7 +191,7 @@ public class PMF extends Recommender {
   /**
    * Get the latent factors vector of a user (pu)
    *
-   * @param userIndex User
+   * @param userIndex User index
    * @return Latent factors vector
    */
   public double[] getUserFactors(int userIndex) {
@@ -201,7 +201,7 @@ public class PMF extends Recommender {
   /**
    * Get the latent factors vector of an item (qi)
    *
-   * @param itemIndex User
+   * @param itemIndex Item index
    * @return Latent factors vector
    */
   public double[] getItemFactors(int itemIndex) {
