@@ -59,8 +59,7 @@ public class ScatterPlot extends Plot {
 
   @Override
   protected String[] getDataHeaders() {
-    String[] headers = {this.xLabel, this.yLabel};
-    return headers;
+    return new String[]{this.xLabel, this.yLabel};
   }
 
   @Override

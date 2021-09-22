@@ -69,6 +69,7 @@ class TestItemTest {
     assertEquals(3.0, testItem.getTestRatingAt(4));
     assertEquals(333, testItem.getTestUserAt(5));
     assertEquals(3.5, testItem.getTestRatingAt(5));
+    assertEquals(2, testItem.findTestUser(testUser.getTestUserIndex()));
 
     assertEquals("020", testItem.getId());
     assertEquals(20, testItem.getItemIndex());

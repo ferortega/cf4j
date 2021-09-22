@@ -30,7 +30,7 @@ public abstract class Plot {
    * Exports plot data into a CSV file
    *
    * @param filename File name
-   * @throws IOException
+   * @throws IOException When file is not found or is locked.
    */
   public void exportData(String filename) throws IOException {
     this.exportData(filename, ",", true);
@@ -41,7 +41,7 @@ public abstract class Plot {
    *
    * @param filename File name
    * @param separator CSV separator field. By default: colon character (,)
-   * @throws IOException
+   * @throws IOException When file is not found or is locked.
    */
   public void exportData(String filename, String separator) throws IOException {
     this.exportData(filename, separator, true);
@@ -52,7 +52,7 @@ public abstract class Plot {
    *
    * @param filename File name
    * @param includeHeader Include CSV header line. By default: true
-   * @throws IOException
+   * @throws IOException When file is not found or is locked.
    */
   public void exportData(String filename, boolean includeHeader) throws IOException {
     this.exportData(filename, ",", includeHeader);
@@ -64,7 +64,7 @@ public abstract class Plot {
    * @param filename File name
    * @param separator CSV separator field. By default: colon character (,)
    * @param includeHeader Include CSV header line. By default: true
-   * @throws IOException
+   * @throws IOException When file is not found or is locked.
    */
   public void exportData(String filename, String separator, boolean includeHeader)
       throws IOException {
@@ -171,7 +171,7 @@ public abstract class Plot {
    * Exports the plot to a PNG file
    *
    * @param filename PNG file name
-   * @throws IOException
+   * @throws IOException When file is not found or is locked.
    */
   public void exportPlot(String filename) throws IOException {
     AbstractPlot plot = this.getGralPlot();

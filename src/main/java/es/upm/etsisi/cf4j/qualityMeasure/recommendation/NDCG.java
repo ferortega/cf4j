@@ -16,7 +16,7 @@ import java.util.Map;
 public class NDCG extends QualityMeasure {
 
   /** Number of recommended items */
-  private int numberOfRecommendations;
+  private final int numberOfRecommendations;
 
   /**
    * Constructor from a Map object with the quality measure parameters. Map object must contains the
@@ -51,15 +51,7 @@ public class NDCG extends QualityMeasure {
 
     int[] recommendations = Search.findTopN(predictions, this.numberOfRecommendations);
 
-    double dcg = 0d;
-
-    for (int i = 0; i < recommendations.length; i++) {
-      int pos = recommendations[i];
-      if (pos == -1) break;
-
-      double rating = testUser.getTestRatingAt(pos);
-      dcg += (Math.pow(2, rating) - 1) / (Math.log(i + 2) / Math.log(2));
-    }
+    double dcg = dataCalculation(testUser,recommendations);
 
     // Compute IDCG
 
@@ -70,17 +62,29 @@ public class NDCG extends QualityMeasure {
 
     int[] idealRecommendations = Search.findTopN(testRatings, this.numberOfRecommendations);
 
-    double idcg = 0d;
-
-    for (int i = 0; i < idealRecommendations.length; i++) {
-      int pos = idealRecommendations[i];
-      if (pos == -1) break;
-
-      double rating = testUser.getTestRatingAt(pos);
-      idcg += (Math.pow(2, rating) - 1) / (Math.log(i + 2) / Math.log(2));
-    }
+    double idcg = dataCalculation(testUser,idealRecommendations);
 
     // Compute NDCG
     return dcg / idcg;
+  }
+
+  /**
+   * Function to process de data in the NDCG algorithm. Extracted in order to dont repeat code.
+   *
+   * @param testUser Related used
+   * @param elements Recomendations or ideal recommendations
+   */
+  protected double dataCalculation(TestUser testUser, int[] elements){
+    double result = 0d;
+
+    for (int i = 0; i < elements.length; i++) {
+      int pos = elements[i];
+      if (pos == -1) break;
+
+      double rating = testUser.getTestRatingAt(pos);
+      result += (Math.pow(2, rating) - 1) / (Math.log(i + 2) / Math.log(2));
+    }
+
+    return result;
   }
 }

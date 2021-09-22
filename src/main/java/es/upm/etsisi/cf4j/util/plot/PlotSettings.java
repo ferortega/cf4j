@@ -44,7 +44,6 @@ public class PlotSettings {
   /** Plot height in pixels */
   private static int height;
 
-  /** Static constructor */
   static {
     colorPalette =
         new Color[] {
@@ -74,6 +73,11 @@ public class PlotSettings {
   }
 
   /**
+   * Private constructor to avoid class instantiation.
+   */
+  private PlotSettings() {}
+
+  /**
    * Gets the color palette
    *
    * @return Color palette
@@ -86,11 +90,9 @@ public class PlotSettings {
    * Sets the color paletee
    *
    * @param colorPalette Color palette
-   * @return PlotSettings instance
    */
-  public static PlotSettings setColorPalette(Color[] colorPalette) {
+  public static void setColorPalette(Color[] colorPalette) {
     PlotSettings.colorPalette = colorPalette;
-    return new PlotSettings();
   }
 
   /**
@@ -116,11 +118,9 @@ public class PlotSettings {
    * Sets the plot's background color
    *
    * @param backgroundColor Plot's background color
-   * @return PlotSettings instance
    */
-  public static PlotSettings setBackgroundColor(Color backgroundColor) {
+  public static void setBackgroundColor(Color backgroundColor) {
     PlotSettings.backgroundColor = backgroundColor;
-    return new PlotSettings();
   }
 
   /**
@@ -136,11 +136,9 @@ public class PlotSettings {
    * Sets the inset for the legend
    *
    * @param legendInset Insets for the legend
-   * @return PlotSettings instance
    */
-  public static PlotSettings setLegendInset(double legendInset) {
+  public static void setLegendInset(double legendInset) {
     PlotSettings.legendInset = legendInset;
-    return new PlotSettings();
   }
 
   /**
@@ -156,11 +154,9 @@ public class PlotSettings {
    * Sets the inset for the y axis
    *
    * @param yAxisInset Inset for the y axis
-   * @return PlotSettings instance
    */
-  public static PlotSettings setyAxisInset(double yAxisInset) {
+  public static void setyAxisInset(double yAxisInset) {
     PlotSettings.yAxisInset = yAxisInset;
-    return new PlotSettings();
   }
 
   /**
@@ -176,11 +172,9 @@ public class PlotSettings {
    * Sets the inset for the x axis
    *
    * @param xAxisInset Inset for the x axis
-   * @return PlotSettings instance
    */
-  public static PlotSettings setxAxisInset(double xAxisInset) {
+  public static void setxAxisInset(double xAxisInset) {
     PlotSettings.xAxisInset = xAxisInset;
-    return new PlotSettings();
   }
 
   /**
@@ -196,11 +190,9 @@ public class PlotSettings {
    * Sets the inset for a clear border
    *
    * @param clearInset Inset for a clear border
-   * @return PlotSettings instance
    */
-  public static PlotSettings setClearInset(double clearInset) {
+  public static void setClearInset(double clearInset) {
     PlotSettings.clearInset = clearInset;
-    return new PlotSettings();
   }
 
   /**
@@ -216,11 +208,9 @@ public class PlotSettings {
    * Sets the primary font
    *
    * @param primaryFont Primary font
-   * @return PlotSettings instance
    */
-  public static PlotSettings setPrimaryFont(Font primaryFont) {
+  public static void setPrimaryFont(Font primaryFont) {
     PlotSettings.primaryFont = primaryFont;
-    return new PlotSettings();
   }
 
   /**
@@ -236,11 +226,9 @@ public class PlotSettings {
    * Sets the secondary font
    *
    * @param secondaryFont Secondary font
-   * @return PlotSettings instance
    */
-  public static PlotSettings setSecondaryFont(Font secondaryFont) {
+  public static void setSecondaryFont(Font secondaryFont) {
     PlotSettings.secondaryFont = secondaryFont;
-    return new PlotSettings();
   }
 
   /**
@@ -256,11 +244,9 @@ public class PlotSettings {
    * Sets the label distance in the x axis
    *
    * @param xAxisLabelDistance Label distance in the x axis
-   * @return PlotSettings instance
    */
-  public static PlotSettings setxAxisLabelDistance(double xAxisLabelDistance) {
+  public static void setxAxisLabelDistance(double xAxisLabelDistance) {
     PlotSettings.xAxisLabelDistance = xAxisLabelDistance;
-    return new PlotSettings();
   }
 
   /**
@@ -276,11 +262,9 @@ public class PlotSettings {
    * Sets the label distance in the y axis
    *
    * @param yAxisLabelDistance Label distance in the y axis
-   * @return PlotSettings instance
    */
-  public static PlotSettings setyAxisLabelDistance(double yAxisLabelDistance) {
+  public static void setyAxisLabelDistance(double yAxisLabelDistance) {
     PlotSettings.yAxisLabelDistance = yAxisLabelDistance;
-    return new PlotSettings();
   }
 
   /**
@@ -296,11 +280,9 @@ public class PlotSettings {
    * Sets the legend distance
    *
    * @param legendDistance Legend distance
-   * @return PlotSettings instance
    */
-  public static PlotSettings setLegendDistance(double legendDistance) {
+  public static void setLegendDistance(double legendDistance) {
     PlotSettings.legendDistance = legendDistance;
-    return new PlotSettings();
   }
 
   /**
@@ -316,11 +298,9 @@ public class PlotSettings {
    * Sets the plot width in pixels
    *
    * @param width Plot width in pixels
-   * @return PlotSettings instance
    */
-  public static PlotSettings setWidth(int width) {
+  public static void setWidth(int width) {
     PlotSettings.width = width;
-    return new PlotSettings();
   }
 
   /**
@@ -336,10 +316,8 @@ public class PlotSettings {
    * Sets the plot height in pixels
    *
    * @param height Plot height in pixels
-   * @return PlotSettings instance
    */
-  public static PlotSettings setHeight(int height) {
+  public static void setHeight(int height) {
     PlotSettings.height = height;
-    return new PlotSettings();
   }
 }

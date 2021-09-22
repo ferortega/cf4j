@@ -25,10 +25,10 @@ import java.util.Map;
 public class NCCF extends Recommender {
 
   /** Neural network * */
-  private MultiLayerNetwork network;
+  private final MultiLayerNetwork network;
 
   /** Number of epochs * */
-  private int numEpochs;
+  private final int numEpochs;
 
   /**
    * Model constructor from a Map containing the model's hyper-parameters values. Map object must

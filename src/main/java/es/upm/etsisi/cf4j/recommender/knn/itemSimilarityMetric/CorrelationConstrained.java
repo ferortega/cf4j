@@ -6,7 +6,7 @@ import es.upm.etsisi.cf4j.data.Item;
 public class CorrelationConstrained extends ItemSimilarityMetric {
 
   /** Median of the ratings of the dataset */
-  private double median;
+  private final double median;
 
   /**
    * Constructor of the similarity metric

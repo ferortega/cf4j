@@ -75,6 +75,17 @@ public class TestItem extends Item {
   }
 
   /**
+   * Finds position of a rating that an test user has made to the test item given the index of the
+   * TestUser in the DataModel.
+   *
+   * @param testUserIndex Test user index
+   * @return TestUser position if the test item has been rated by the test user or -1 if do not
+   */
+  public int findTestUser(int testUserIndex) {
+    return this.testUsersRatings.find(testUserIndex);
+  }
+
+  /**
    * Gets the number of test users that have rated the item.
    *
    * @return Number of test ratings

@@ -14,7 +14,7 @@ import java.util.Map;
 public class Perfect extends QualityMeasure {
 
   /** Threshold value to measure if a prediction is perfect or not */
-  private double threshold;
+  private final double threshold;
 
   /**
    * Constructor from a Map object with the quality measure parameters. Map object must contains the

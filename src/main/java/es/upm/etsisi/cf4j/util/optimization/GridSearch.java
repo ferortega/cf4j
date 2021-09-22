@@ -24,22 +24,22 @@ import java.util.*;
 public class GridSearch {
 
   /** DataModel instance */
-  private DataModel datamodel;
+  private final DataModel datamodel;
 
   /** ParamsGrid instance containing the development set */
-  private ParamsGrid grid;
+  private final ParamsGrid grid;
 
   /** Recommender class to be evaluated */
-  private Class<? extends Recommender> recommenderClass;
+  private final Class<? extends Recommender> recommenderClass;
 
   /** QualityMeasure class used to evaluate the Recommender */
-  private Class<? extends QualityMeasure> qualityMeasureClass;
+  private final Class<? extends QualityMeasure> qualityMeasureClass;
 
   /** Map object containing the quality measure parameters names (keys) and values (value) */
-  private Map<String, Object> qualityMeasureParams;
+  private final Map<String, Object> qualityMeasureParams;
 
   /** List to store grid search results */
-  private List<Pair<String, Double>> results;
+  private final List<Pair<String, Double>> results;
 
   /**
    * GridSearch constructor
@@ -271,14 +271,14 @@ public class GridSearch {
     for (int i = 0; i < Math.min(topN, this.results.size()); i++) {
       Pair<String, Double> result = this.results.get(i);
 
-      String value = "";
+      StringBuilder value = new StringBuilder();
 
       if (!Double.isNaN(result.getValue())) {
-        value = df.format(result.getValue());
+        value = new StringBuilder(df.format(result.getValue()));
       } else {
-        value = "NaN";
+        value = new StringBuilder("NaN");
         for (int s = 0; s < numberFormat.length() - "NaN".length(); s++) {
-          value += " ";
+          value.append(" ");
         }
       }
 

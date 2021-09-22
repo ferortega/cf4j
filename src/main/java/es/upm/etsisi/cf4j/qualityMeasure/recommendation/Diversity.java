@@ -1,6 +1,5 @@
 package es.upm.etsisi.cf4j.qualityMeasure.recommendation;
 
-import es.upm.etsisi.cf4j.data.TestItem;
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.recommender.knn.itemSimilarityMetric.Cosine;
@@ -20,7 +19,7 @@ import java.util.Map;
 public class Diversity extends QualityMeasure {
 
   /** Number of recommended items */
-  private int numberOfRecommendations;
+  private final int numberOfRecommendations;
 
   /** Similarity between items */
   ItemSimilarityMetric itemSimilarityMetric;

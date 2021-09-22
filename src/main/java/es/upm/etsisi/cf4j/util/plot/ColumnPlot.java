@@ -24,13 +24,13 @@ public class ColumnPlot extends Plot {
   private static final double COLUMN_WIDTH = 0.8;
 
   /** Columns to be showed in the plot */
-  private List<Pair<String, Double>> columns;
+  private final List<Pair<String, Double>> columns;
 
   /** Label of the x axis */
-  private String xLabel;
+  private final String xLabel;
 
   /** label of the y axis */
-  private String yLabel;
+  private final String yLabel;
 
   /**
    * Creates a new ColumnPlot
@@ -58,8 +58,7 @@ public class ColumnPlot extends Plot {
 
   @Override
   protected String[] getDataHeaders() {
-    String[] headers = {this.xLabel, this.yLabel};
-    return headers;
+    return new String[]{this.xLabel, this.yLabel};
   }
 
   @Override

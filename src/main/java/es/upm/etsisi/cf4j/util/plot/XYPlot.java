@@ -23,22 +23,22 @@ import java.util.*;
 public class XYPlot extends Plot {
 
   /** Series data */
-  private List<Triple<String, double[], double[]>> series;
+  private final List<Triple<String, double[], double[]>> series;
 
   /** Labels related witch each xy point */
-  private String[] pointsLabels;
+  private final String[] pointsLabels;
 
   /** Series names that must show the points labels */
-  private Set<String> hasLabelsVisible;
+  private final Set<String> hasLabelsVisible;
 
   /** Label of the x axis */
-  private String xLabel;
+  private final String xLabel;
 
   /** Label of the y axis */
-  private String yLabel;
+  private final String yLabel;
 
   /** Indicates if the legend must be hidden */
-  private boolean hideLegend;
+  private final boolean hideLegend;
 
   /**
    * Creates a new XYPlot

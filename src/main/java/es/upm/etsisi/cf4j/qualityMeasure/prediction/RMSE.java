@@ -1,7 +1,6 @@
 package es.upm.etsisi.cf4j.qualityMeasure.prediction;
 
 import es.upm.etsisi.cf4j.data.TestUser;
-import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 
 /**
@@ -11,7 +10,7 @@ import es.upm.etsisi.cf4j.recommender.Recommender;
  * <p>MSE = &radic;(&#8721;(&lt;test item rating prediction&gt; - &lt;test item
  * rating&gt;)<sup>2</sup> / &lt;number of predictions&gt;)
  */
-public class RMSE extends QualityMeasure {
+public class RMSE extends MSE { //QualityMeasure through MSE
 
   /**
    * Constructor of the class which basically calls the father's one
@@ -25,17 +24,12 @@ public class RMSE extends QualityMeasure {
   @Override
   public double getScore(TestUser testUser, double[] predictions) {
 
-    double sum = 0d;
-    int count = 0;
+    double scoreFromMSE = super.getScore(testUser, predictions);
 
-    for (int pos = 0; pos < testUser.getNumberOfTestRatings(); pos++) {
-      if (!Double.isNaN(predictions[pos])) {
-        double diff = predictions[pos] - testUser.getTestRatingAt(pos);
-        sum += diff * diff;
-        count++;
-      }
-    }
+    //Problem: Every number is distinct from Not A Number)
+    //You cannot compare with Double.NaN because always is equal to false.
+    //Solution, compare the variable by itself. If it's false, that variable is equal to Double.NaN.
+    return (scoreFromMSE != scoreFromMSE) ? Double.NaN : Math.sqrt(scoreFromMSE);
 
-    return (count == 0) ? Double.NaN : Math.sqrt(sum / count);
   }
 }

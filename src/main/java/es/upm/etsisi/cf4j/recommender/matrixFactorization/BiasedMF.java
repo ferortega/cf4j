@@ -198,6 +198,46 @@ public class BiasedMF extends Recommender {
     return this.gamma;
   }
 
+  /**
+   * Get the latent factors vector of a user (pu)
+   *
+   * @param userIndex User index
+   * @return Latent factors vector
+   */
+  public double[] getUserFactors(int userIndex) {
+    return this.p[userIndex];
+  }
+
+  /**
+   * Get the bias of a user (bu)
+   *
+   * @param userIndex User index
+   * @return Bias
+   */
+  public double getUserBias(int userIndex) {
+    return this.bu[userIndex];
+  }
+
+  /**
+   * Get the latent factors vector of an item (qi)
+   *
+   * @param itemIndex Item index
+   * @return Latent factors vector
+   */
+  public double[] getItemFactors(int itemIndex) {
+    return this.q[itemIndex];
+  }
+
+  /**
+   * Get the bias of a item (bi)
+   *
+   * @param itemIndex Item index
+   * @return Bias
+   */
+  public double getItemBias(int itemIndex) {
+    return this.bi[itemIndex];
+  }
+
   @Override
   public void fit() {
 

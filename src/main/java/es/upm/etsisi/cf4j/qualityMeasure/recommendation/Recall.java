@@ -16,10 +16,10 @@ import java.util.Map;
 public class Recall extends QualityMeasure {
 
   /** Number of recommended items */
-  private int numberOfRecommendations;
+  private final int numberOfRecommendations;
 
   /** Relevant rating threshold */
-  private double relevantThreshold;
+  private final double relevantThreshold;
 
   /**
    * Constructor from a Map object with the quality measure parameters. Map object must contains the

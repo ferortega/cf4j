@@ -18,10 +18,10 @@ public class Singularities extends UserSimilarityMetric {
   private double maxDiff;
 
   /** Relevant ratings set */
-  private HashSet<Double> relevantRatings;
+  private final HashSet<Double> relevantRatings;
 
   /** Not relevant ratings set */
-  private HashSet<Double> notRelevantRatings;
+  private final HashSet<Double> notRelevantRatings;
 
   /** Singularity of the relevant ratings */
   private double[] singularityOfRelevantRatings;
