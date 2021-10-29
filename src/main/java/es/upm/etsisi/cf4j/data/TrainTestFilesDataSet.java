@@ -5,6 +5,7 @@ import es.upm.etsisi.cf4j.data.types.DataSetEntry;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * This class implements the DataSet interface by loading training and test ratings from separated
@@ -20,10 +21,10 @@ public class TrainTestFilesDataSet implements DataSet {
   protected static final String DEFAULT_SEPARATOR = ";";
 
   /** Raw stored ratings */
-  protected ArrayList<DataSetEntry> ratings;
+  protected List<DataSetEntry> ratings;
 
   /** Raw stored test ratings */
-  protected ArrayList<DataSetEntry> testRatings;
+  protected List<DataSetEntry> testRatings;
 
   /**
    * Generates a DataSet form training and test ratings files. Semicolon is used as separator.
