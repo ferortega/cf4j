@@ -15,11 +15,11 @@ import java.util.*;
  * during the grid search must contains a constructor with the signature
  * Recommender::&lt;init&gt;(DataModel, Map&lt;String, Object&gt;) that initializes the Recommender
  * using the attributes defined in the Map object. The parameters used in the search process, i.e.
- * the development set, must be defined in a ParamsGrid instance. The grid search is executed in
- * such a way that it minimizes (by default) or maximizes a QualityMeasure instance. If the
- * QualityMeasure requires parameters to work, it must contains a constructor with the signature
- * QualityMeasure::&lt;init&gt;(Recommender, Map&lt;String, Object&gt;) that initializes the
- * QualityMeasure using the attributes defined in the Map object.
+ * the development set, must be defined in a ParamsGrid instance. The random search is executed in
+ * such a way that it minimizes (by default) or maximizes a QualityMeasure instance over the test
+ * set of the DataModel instance. If the QualityMeasure requires parameters to work, it must contains
+ * a constructor with the signature QualityMeasure::&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
+ * that initializes the QualityMeasure using the attributes defined in the Map object.
  */
 public class GridSearch extends RandomSearch {
 

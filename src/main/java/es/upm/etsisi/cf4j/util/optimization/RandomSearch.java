@@ -11,15 +11,16 @@ import java.text.DecimalFormatSymbols;
 import java.util.*;
 
 /**
- * Utility class to performs a grid search over a Recommender instance. The Recommender class used
- * during the grid search must contains a constructor with the signature
+ * Utility class to performs a random search over a Recommender instance. The Recommender class used
+ * during the random search must contains a constructor with the signature
  * Recommender::&lt;init&gt;(DataModel, Map&lt;String, Object&gt;) that initializes the Recommender
  * using the attributes defined in the Map object. The parameters used in the search process, i.e.
- * the development set, must be defined in a ParamsGrid instance. The grid search is executed in
- * such a way that it minimizes (by default) or maximizes a QualityMeasure instance. If the
- * QualityMeasure requires parameters to work, it must contains a constructor with the signature
- * QualityMeasure::&lt;init&gt;(Recommender, Map&lt;String, Object&gt;) that initializes the
- * QualityMeasure using the attributes defined in the Map object.
+ * the development set, must be defined in a ParamsGrid instance. The random search is executed in
+ * such a way that it minimizes (by default) or maximizes a QualityMeasure instance over the test
+ * set of the DataModel instance. If the QualityMeasure requires parameters to work, it must contains
+ * a constructor with the signature QualityMeasure::&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
+ * that initializes the QualityMeasure using the attributes defined in the Map object. The search
+ * is performed by selecting numIters parameters of the development set.
  */
 public class RandomSearch {
 
@@ -38,20 +39,27 @@ public class RandomSearch {
   /** Map object containing the quality measure parameters names (keys) and values (value) */
   private final Map<String, Object> qualityMeasureParams;
 
+  /** Number of samples of the development set to be evaluated */
+  private final int numIters;
+
+  /** Random seed for random numbers generation **/
+  private final long seed;
+
   /** List to store grid search results */
   private final List<Pair<String, Double>> results;
 
-  private final int numIters;
-
-  private final long seed;
-
   /**
-   * GridSearch constructor
+   * RandomSearch constructor
    *
    * @param datamodel DataModel instance
    * @param grid ParamsGrid instance containing the development set
-   * @param recommenderClass Recommender class to be evaluated
-   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender
+   * @param recommenderClass Recommender class to be evaluated. This class must contains a
+   *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
+   *     Object&gt;)
+   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
+   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
+   * @param numIters Number of samples of the development set to be evaluated
    */
   public RandomSearch(
       DataModel datamodel,
@@ -62,6 +70,20 @@ public class RandomSearch {
     this(datamodel, grid, recommenderClass, qualityMeasureClass, null, numIters, System.currentTimeMillis());
   }
 
+  /**
+   * RandomSearch constructor
+   *
+   * @param datamodel DataModel instance
+   * @param grid ParamsGrid instance containing the development set
+   * @param recommenderClass Recommender class to be evaluated. This class must contains a
+   *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
+   *     Object&gt;)
+   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
+   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
+   * @param numIters Number of samples of the development set to be evaluated
+   * @param seed Random seed for random numbers generation
+   */
   public RandomSearch(
           DataModel datamodel,
           ParamsGrid grid,
@@ -72,6 +94,21 @@ public class RandomSearch {
     this(datamodel, grid, recommenderClass, qualityMeasureClass, null, numIters, seed);
   }
 
+  /**
+   * RandomSearch constructor
+   *
+   * @param datamodel DataModel instance
+   * @param grid ParamsGrid instance containing the development set
+   * @param recommenderClass Recommender class to be evaluated. This class must contains a
+   *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
+   *     Object&gt;)
+   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
+   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
+   * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
+   *     and values (value)
+   * @param numIters Number of samples of the development set to be evaluated
+   */
   public RandomSearch(
           DataModel datamodel,
           ParamsGrid grid,
@@ -82,6 +119,19 @@ public class RandomSearch {
     this(datamodel, grid, recommenderClass, qualityMeasureClass, qualityMeasureParams, numIters, System.currentTimeMillis());
   }
 
+  /**
+   * RandomSearch constructor
+   *
+   * @param datamodel DataModel instance
+   * @param grid ParamsGrid instance containing the development set
+   * @param recommenderClass Recommender class to be evaluated. This class must contains a
+   *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
+   *     Object&gt;)
+   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
+   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
+   * @param coverage Percentage of samples of the development set to be evaluated
+   */
   public RandomSearch(
           DataModel datamodel,
           ParamsGrid grid,
@@ -98,6 +148,21 @@ public class RandomSearch {
             System.currentTimeMillis());
   }
 
+  /**
+   * RandomSearch constructor
+   *
+   * @param datamodel DataModel instance
+   * @param grid ParamsGrid instance containing the development set
+   * @param recommenderClass Recommender class to be evaluated. This class must contains a
+   *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
+   *     Object&gt;)
+   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
+   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
+   * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
+   *     and values (value)
+   * @param coverage Percentage of samples of the development set to be evaluated
+   */
   public RandomSearch(
           DataModel datamodel,
           ParamsGrid grid,
@@ -115,6 +180,20 @@ public class RandomSearch {
             System.currentTimeMillis());
   }
 
+  /**
+   * RandomSearch constructor
+   *
+   * @param datamodel DataModel instance
+   * @param grid ParamsGrid instance containing the development set
+   * @param recommenderClass Recommender class to be evaluated. This class must contains a
+   *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
+   *     Object&gt;)
+   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
+   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
+   * @param coverage Percentage of samples of the development set to be evaluated
+   * @param seed Random seed for random numbers generation
+   */
   public RandomSearch(
           DataModel datamodel,
           ParamsGrid grid,
@@ -132,6 +211,22 @@ public class RandomSearch {
         seed);
   }
 
+  /**
+   * RandomSearch constructor
+   *
+   * @param datamodel DataModel instance
+   * @param grid ParamsGrid instance containing the development set
+   * @param recommenderClass Recommender class to be evaluated. This class must contains a
+   *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
+   *     Object&gt;)
+   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
+   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
+   * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
+   *     and values (value)
+   * @param coverage Percentage of samples of the development set to be evaluated
+   * @param seed Random seed for random numbers generation
+   */
   public RandomSearch(
           DataModel datamodel,
           ParamsGrid grid,
@@ -151,7 +246,7 @@ public class RandomSearch {
   }
 
   /**
-   * GridSearch constructor
+   * RandomSearch constructor
    *
    * @param datamodel DataModel instance
    * @param grid ParamsGrid instance containing the development set
@@ -163,6 +258,8 @@ public class RandomSearch {
    *     Map&lt;String, Object&gt;)
    * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
    *     and values (value)
+   * @param numIters Number of samples of the development set to be evaluated
+   * @param seed Random seed for random numbers generation
    */
   public RandomSearch(
       DataModel datamodel,
@@ -179,7 +276,6 @@ public class RandomSearch {
     this.qualityMeasureParams = qualityMeasureParams;
     this.numIters = Math.min(numIters, grid.getDevelopmentSetSize());
     this.seed = seed;
-
     this.results = new ArrayList<>();
   }
 
@@ -249,7 +345,7 @@ public class RandomSearch {
   }
 
   /**
-   * Prints the results of the grid search. By default, the quality measure is better the lower its
+   * Prints the results of the random search. By default, the quality measure is better the lower its
    * value.
    */
   public void printResults() {
@@ -257,7 +353,7 @@ public class RandomSearch {
   }
 
   /**
-   * Prints the results of the grid search
+   * Prints the results of the random search
    *
    * @param topN Number of entries of the development set to be shown as the top ones
    */
@@ -266,7 +362,7 @@ public class RandomSearch {
   }
 
   /**
-   * Prints the results of the grid search. By default, the quality measure is better the lower its
+   * Prints the results of the random search. By default, the quality measure is better the lower its
    * value.
    *
    * @param numberFormat Number format for the quality measure values
@@ -276,7 +372,7 @@ public class RandomSearch {
   }
 
   /**
-   * Prints the results of the grid search
+   * Prints the results of the random search
    *
    * @param lowerIsBetter True if the quality measure is better the lower its value. False
    *     otherwise.
@@ -286,7 +382,7 @@ public class RandomSearch {
   }
 
   /**
-   * Prints the results of the grid search
+   * Prints the results of the random search
    *
    * @param numberFormat Number format for the quality measure values
    * @param topN Number of entries of the development set to be shown as the top ones
@@ -296,7 +392,7 @@ public class RandomSearch {
   }
 
   /**
-   * Prints the results of the grid search
+   * Prints the results of the random search
    *
    * @param topN Number of entries of the development set to be shown as the top ones
    * @param lowerIsBetter True if the quality measure is better the lower its value. False
@@ -307,7 +403,7 @@ public class RandomSearch {
   }
 
   /**
-   * Prints the results of the grid search
+   * Prints the results of the random search
    *
    * @param numberFormat Number format for the quality measure values
    * @param lowerIsBetter True if the quality measure is better the lower its value. False
@@ -318,7 +414,7 @@ public class RandomSearch {
   }
 
   /**
-   * Prints the results of the grid search
+   * Prints the results of the random search
    *
    * @param numberFormat Number format for the quality measure values
    * @param topN Number of entries of the development set to be shown as the top ones
