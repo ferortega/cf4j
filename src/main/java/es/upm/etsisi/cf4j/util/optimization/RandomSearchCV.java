@@ -269,10 +269,9 @@ public class RandomSearchCV {
                 to = ratings.size();
             }
 
+            List <DataSetEntry> trainRatings = new ArrayList<>(ratings.subList(0, from));
             List <DataSetEntry> testRatings = ratings.subList(from, to);
-
-            List <DataSetEntry> trainRatings = new ArrayList<>(ratings);
-            trainRatings.removeAll(testRatings);
+            trainRatings.addAll(ratings.subList(to, ratings.size()));
 
             DataSet validationDataset = new ManualDataSet(trainRatings, testRatings);
             DataModel validationDatamodel = new DataModel(validationDataset);
