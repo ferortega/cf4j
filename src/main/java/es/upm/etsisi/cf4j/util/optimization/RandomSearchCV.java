@@ -5,8 +5,12 @@ import es.upm.etsisi.cf4j.data.types.DataSetEntry;
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.util.Maths;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.math3.util.Pair;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.*;
@@ -428,12 +432,116 @@ public class RandomSearchCV {
                 }
             }
 
-            sb.append(value)
-                    .append(" ").append(Arrays.toString(this.results.get(result.getKey())))
+            sb.append(this.qualityMeasureClass.getSimpleName().toLowerCase())
+                    .append('=')
+                    .append(Arrays.toString(this.results.get(result.getKey())))
+                    .append(", avg=")
+                    .append(value)
+                    .append(", std=")
+                    .append(df.format(Maths.arrayStandardDeviation(this.results.get(result.getKey()))))
                     .append(" for ").append(result.getKey()).append("\n");
         }
 
         // Print results
         System.out.println("\n" + sb.toString());
+    }
+
+    /**
+     * Exports results of RandomSerachCV in csv format
+     * @param filename File name
+     * @throws IOException When file is not found or is locked.
+     */
+    public void exportResults(String filename)
+      throws IOException {
+        exportResults(filename, true);
+    }
+
+    /**
+     * Exports results of RandomSerachCV in csv format
+     * @param filename File name
+     * @param includeHeader Include CSV header line. By default: true
+     * @throws IOException When file is not found or is locked.
+     */
+    public void exportResults(String filename, boolean includeHeader) throws IOException {
+        exportResults(filename, ",", includeHeader);
+
+    }
+
+    /**
+     * Exports results of RandomSerachCV in csv format
+     * @param filename File name
+     * @param separator CSV separator field. By default: colon character (,)
+     * @throws IOException When file is not found or is locked.
+     */
+    public void exportResults(String filename, String separator) throws IOException {
+        exportResults(filename, separator, true);
+    }
+
+    /**
+     * Exports results of RandomSerachCV in csv format
+     * @param filename File name
+     * @param separator CSV separator field. By default: colon character (,)
+     * @param includeHeader Include CSV header line. By default: true
+     * @throws IOException When file is not found or is locked.
+     */
+    public void exportResults(String filename, String separator, boolean includeHeader) throws IOException {
+        File f = new File(filename);
+        File parent = f.getAbsoluteFile().getParentFile();
+        if (!parent.exists() && !parent.mkdirs()) {
+            throw new IOException("Unable to create directory " + parent);
+        }
+
+        String measure = this.qualityMeasureClass.getSimpleName().toLowerCase();
+
+        PrintWriter writer = new PrintWriter(f);
+
+        if (includeHeader) {
+            for (int fold = 0; fold < this.cv; fold++) {
+                writer.print(measure);
+                writer.print("_fold_");
+                writer.print(fold);
+                writer.print(separator);
+            }
+
+            writer.print(measure);
+            writer.print("_avg");
+            writer.print(separator);
+
+            writer.print(measure);
+            writer.print("_std");
+            writer.print(separator);
+
+            writer.println("params");
+        }
+
+        for (String params : this.results.keySet()) {
+            double[] errors = this.results.get(params);
+            double avg = Maths.arrayAverage(errors);
+            double std = Maths.arrayStandardDeviation(errors);
+
+            for (int fold = 0; fold < this.cv; fold++) {
+                writer.print(errors[fold]);
+                writer.print(separator);
+            }
+
+            writer.print(avg);
+            writer.print(separator);
+
+            writer.print(std);
+            writer.print(separator);
+
+            if (separator.equals(",")) {
+                writer.print("\"");
+            }
+            writer.print(params);
+
+            if (separator.equals(",")) {
+                writer.print("\"");
+            }
+
+            writer.println();
+        }
+
+        writer.close();
     }
 }
