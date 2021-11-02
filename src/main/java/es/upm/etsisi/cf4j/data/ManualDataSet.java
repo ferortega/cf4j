@@ -2,20 +2,17 @@ package es.upm.etsisi.cf4j.data;
 
 import es.upm.etsisi.cf4j.data.types.DataSetEntry;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Random;
+import java.util.*;
 
 import javax.annotation.Nullable;
 
 public class ManualDataSet implements DataSet {
 
     /** Raw stored ratings */
-    protected ArrayList<DataSetEntry> ratings;
+    protected List<DataSetEntry> ratings;
 
     /** Raw stored test ratings */
-    protected ArrayList<DataSetEntry> testRatings;
+    protected List<DataSetEntry> testRatings;
 
     /**
      * Method separates the given data set entries into train and test rating
@@ -28,7 +25,7 @@ public class ManualDataSet implements DataSet {
      * @param entries arraylist of datasetentries
      * @param trainPercentage set custom train data percentage
      */
-    public ManualDataSet(ArrayList<DataSetEntry> entries, double trainPercentage, @Nullable Long seed){
+    public ManualDataSet(List<DataSetEntry> entries, double trainPercentage, @Nullable Long seed){
 
         ratings = new ArrayList<>();
         testRatings = new ArrayList<>();
@@ -54,6 +51,20 @@ public class ManualDataSet implements DataSet {
                 ratings.add(entry);
             cnt++;
         }
+    }
+
+    /**
+     * Method to specify the train and test entries.
+     *
+     * This class is used when the manual import of data is required instead of using
+     * csv or similar formats.
+     *
+     * @param trainEntries List of DataSetEntry with the train ratings
+     * @param testEntries List of DataSetEntry with the test ratings
+     */
+    public ManualDataSet(List<DataSetEntry> trainEntries, List<DataSetEntry> testEntries){
+        this.ratings = trainEntries;
+        this.testRatings = testEntries;
     }
 
     @Override

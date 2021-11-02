@@ -27,46 +27,46 @@ For Maven:
 <dependency>
   <groupId>es.upm.etsisi</groupId>
   <artifactId>cf4j</artifactId>
-  <version>2.1.2</version>
+  <version>2.2.1</version>
 </dependency>
 ```
 
 For Gradle:
 
 ```
-compile group: 'es.upm.etsisi', name: 'cf4j', version: '2.1.2'
+compile group: 'es.upm.etsisi', name: 'cf4j', version: '2.2.1'
 ```
 
 For SBT:
 
 ```
-libraryDependencies += "es.upm.etsisi" % "cf4j" % "2.1.2"
+libraryDependencies += "es.upm.etsisi" % "cf4j" % "2.2.1"
 ```
 
 For Ivy:
 
 ```xml
-<dependency org="es.upm.etsisi" name="cf4j" rev="2.1.2"/>
+<dependency org="es.upm.etsisi" name="cf4j" rev="2.2.1"/>
 ```
 
 For Grape:
 
 ```
 @Grapes(
-    @Grab(group='es.upm.etsisi', module='cf4j', version='2.1.2')
+    @Grab(group='es.upm.etsisi', module='cf4j', version='2.2.1')
 )
 ```
 
 For Leiningen:
 
 ```
-[es.upm.etsisi/cf4j "2.1.2"]
+[es.upm.etsisi/cf4j "2.2.1"]
 ```
 
 For Buildr:
 
 ```
-'es.upm.etsisi:cf4j:jar:2.1.2'
+'es.upm.etsisi:cf4j:jar:2.2.1'
 ```
 
 You can find additional information about these dependencies in [https://mvnrepository.com/artifact/es.upm.etsisi/cf4j](https://mvnrepository.com/artifact/es.upm.etsisi/cf4j)
@@ -126,7 +126,7 @@ Let's encode our first experiment with CF4J.
 
    And we obtain the following chart:
    
-   ![PMF regularization term experiment](http://cf4j.etsisi.upm.es/github-resources/latest/pmf-regularization-getting-started.png)
+   ![PMF regularization term experiment](http://cf4j.etsisi.upm.es/github-resources/pmf-regularization-getting-started.png)
    
    To print the plot data in the standard output console we use:
    
@@ -170,7 +170,7 @@ Let's encode our first experiment with CF4J.
 
 The following image shows the  class diagram of the whole project.  The project has been divided into four main packages: `data`, `recommender`, `qualityMeasure` and `util`.
 
-![CF4J class diagram](http://cf4j.etsisi.upm.es/github-resources/latest/cf4j-class-diagram.png)
+![CF4J class diagram](http://cf4j.etsisi.upm.es/github-resources/cf4j-class-diagram.png)
 
 ### `es.upm.etsisi.cf4j.data` package
 
@@ -221,23 +221,23 @@ This package contains different utilities designed to ease common operations use
  
   - `LinePlot`. Displays multiple data series with common numerical values on the x axis. Example:
   
-    ![LinePlot example](http://cf4j.etsisi.upm.es/github-resources/latest/line-plot.png)
+    ![LinePlot example](http://cf4j.etsisi.upm.es/github-resources/line-plot.png)
     
   - `XYPlot`.Displays multiple data series defined by a sequence of XY points. All the points in a series must be assigned to a common plot's label. Example:
   
-    ![XYPlot example](http://cf4j.etsisi.upm.es/github-resources/latest/xy-plot.png)
+    ![XYPlot example](http://cf4j.etsisi.upm.es/github-resources/xy-plot.png)
     
   - `ScatterPlot`. Displays the values of two numerical variables. Example:
   
-    ![ScatterPlot example](http://cf4j.etsisi.upm.es/github-resources/latest/scatter-plot.png)
+    ![ScatterPlot example](http://cf4j.etsisi.upm.es/github-resources/scatter-plot.png)
    
   - `HistogramPlot`. Displays the histogram of a numerical variable by defining the number of bins. Example:
   
-    ![HistogramPlot example](http://cf4j.etsisi.upm.es/github-resources/latest/histogram-plot.png)
+    ![HistogramPlot example](http://cf4j.etsisi.upm.es/github-resources/histogram-plot.png)
    
   - `ColumnPlot`. Displays numerical values related with a discrete variable placed on the x axis. Example:
   
-    ![ColumnPlot example](http://cf4j.etsisi.upm.es/github-resources/latest/column-plot.png) 
+    ![ColumnPlot example](http://cf4j.etsisi.upm.es/github-resources/column-plot.png) 
     
 - `es.upm.etsisi.cf4j.util.optimization`  includes optimization utils designed to tune recommenders' hyper-parameters.
 

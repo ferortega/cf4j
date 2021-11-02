@@ -6,10 +6,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Random;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * This class implements the DataSet interface by random splitting the collaborative filtering
@@ -28,10 +25,10 @@ public class RandomSplitDataSet implements DataSet {
   protected static final String DEFAULT_SEPARATOR = ";";
 
   /** Raw stored ratings */
-  protected ArrayList<DataSetEntry> ratings;
+  protected List<DataSetEntry> ratings;
 
   /** Raw stored test ratings */
-  protected ArrayList<DataSetEntry> testRatings;
+  protected List<DataSetEntry> testRatings;
 
   /**
    * Generates a DataSet form a text file. The DataSet is loaded without test items and test users.

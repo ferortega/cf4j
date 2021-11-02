@@ -29,6 +29,7 @@ public class ParamsGrid {
     this.grid = new ArrayList<>();
   }
 
+
   /**
    * Adds a variable parameter
    *
@@ -78,7 +79,7 @@ public class ParamsGrid {
    * @param value double value
    */
   public void addFixedParam(String name, double value) {
-    this.addFixedParam(name, new Double(value));
+    this.addFixedParam(name, Double.valueOf(value));
   }
 
   /**
@@ -98,7 +99,7 @@ public class ParamsGrid {
    * @param value int value
    */
   public void addFixedParam(String name, int value) {
-    this.addFixedParam(name, new Integer(value));
+    this.addFixedParam(name, Integer.valueOf(value));
   }
 
   /**
@@ -118,7 +119,7 @@ public class ParamsGrid {
    * @param value long value
    */
   public void addFixedParam(String name, long value) {
-    this.addFixedParam(name, new Long(value));
+    this.addFixedParam(name, Long.valueOf(value));
   }
 
   /**
@@ -138,7 +139,7 @@ public class ParamsGrid {
    * @param value boolean
    */
   public void addFixedParam(String name, boolean value) {
-    this.addFixedParam(name, new Boolean(value));
+    this.addFixedParam(name, Boolean.valueOf(value));
   }
 
   /**
@@ -152,13 +153,51 @@ public class ParamsGrid {
         name, IntStream.range(0, values.length).mapToObj(i -> values[i]).toArray(Boolean[]::new));
   }
 
+  public int getDevelopmentSetSize() {
+    if (grid.isEmpty()) {
+      return 0;
+    } else {
+      int size = 1;
+      for (Pair<String, Object[]> param : grid) {
+        size *= param.getSecond().length;
+      }
+      return size;
+    }
+  }
+
   /**
    * Returns the development set created from the grid parameters
    *
    * @return Development set
    */
   public Iterator<Map<String, Object>> getDevelopmentSetIterator() {
+    return this.getDevelopmentSetIterator(false);
+  }
+
+  /**
+   * Returns the development set created from the grid parameters
+   *
+   * @param shuffle True if development set order must be shuffled
+   *
+   * @return Development set
+   */
+  public Iterator<Map<String, Object>> getDevelopmentSetIterator(boolean shuffle) {
+    return getDevelopmentSetIterator(shuffle, System.currentTimeMillis());
+  }
+
+  /**
+   * Returns the development set created from the grid parameters
+   *
+   * @param shuffle True if development set order must be shuffled
+   * @param seed Random seed to allow reproducibility of the shuffle
+   *
+   * @return Development set
+   */
+  public Iterator<Map<String, Object>> getDevelopmentSetIterator(boolean shuffle, long seed) {
     List<Map<String, Object>> permutations = getPermutations(this.grid);
+    if (shuffle) {
+      Collections.shuffle(permutations, new Random(seed));
+    }
     return permutations.iterator();
   }
 
