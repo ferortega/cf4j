@@ -23,13 +23,7 @@ public class RMSE extends MSE { //QualityMeasure through MSE
 
   @Override
   public double getScore(TestUser testUser, double[] predictions) {
-
-    double scoreFromMSE = super.getScore(testUser, predictions);
-
-    //Problem: Every number is distinct from Not A Number)
-    //You cannot compare with Double.NaN because always is equal to false.
-    //Solution, compare the variable by itself. If it's false, that variable is equal to Double.NaN.
-    return (scoreFromMSE != scoreFromMSE) ? Double.NaN : Math.sqrt(scoreFromMSE);
-
+    double mse = super.getScore(testUser, predictions);
+    return (Double.isNaN(mse)) ? Double.NaN : Math.sqrt(mse);
   }
 }
