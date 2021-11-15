@@ -3,8 +3,7 @@ package es.upm.etsisi.cf4j.data;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ItemTest {
 
@@ -52,5 +51,16 @@ class ItemTest {
     assertEquals(1, item.getMinRating());
     assertEquals(3.5, item.getMaxRating());
     assertTrue(Math.abs(item.getRatingAverage() - 2.2) <= Math.ulp(2.2));
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      item.addRating(111, 1.3);
+    });
+
+    String expectedMessage = "Provided rating already exist in item: 010";
+    String actualMessage = exception.getMessage();
+
+    assertTrue(actualMessage.contains(expectedMessage));
+
   }
+
 }

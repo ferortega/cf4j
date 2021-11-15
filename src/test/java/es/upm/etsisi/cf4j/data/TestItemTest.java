@@ -82,6 +82,15 @@ class TestItemTest {
     assertEquals(1, testItem.getMinTestRating());
     assertEquals(3.5, testItem.getMaxTestRating());
     assertTrue(Math.abs(testItem.getTestRatingAverage() - 2.2) <= Math.ulp(2.2));
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      testItem.addTestRating(111, 1.3);
+    });
+
+    String expectedMessage = "Provided rating already exist in test item: 020";
+    String actualMessage = exception.getMessage();
+
+    assertTrue(actualMessage.contains(expectedMessage));
   }
 
   @Test

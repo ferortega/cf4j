@@ -11,7 +11,7 @@ class URPTest {
 
   private static final int seed = 69;
   private static final int numFactors = 2;
-  private static final int numIters = 1;
+  private static final int numIterations = 1;
 
   private static final int testUserId = 1;
   private static final int testItemId = 1;
@@ -26,7 +26,7 @@ class URPTest {
   @Test
   void urpTest() {
     URP urp =
-        new URP(datamodel, numFactors, new double[] {1.0, 2.0, 3.0, 4.0, 5.0}, numIters, seed);
+        new URP(datamodel, numFactors, new double[] {1.0, 2.0, 3.0, 4.0, 5.0}, numIterations, seed);
     urp.fit();
 
     assertEquals(1.0, urp.predict(testUserId, testItemId));
@@ -35,7 +35,7 @@ class URPTest {
         urp.predict(datamodel.getTestUser(testUserId))[testItemId]);
 
     assertEquals(numFactors, urp.getNumFactors());
-    assertEquals(numIters, urp.getNumIters());
+    assertEquals(numIterations, urp.getNumIters());
     assertEquals(1.0, urp.getRatings()[0]);
     assertEquals(2.0, urp.getRatings()[1]);
     assertEquals(3.0, urp.getRatings()[2]);
