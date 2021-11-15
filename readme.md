@@ -27,46 +27,46 @@ For Maven:
 <dependency>
   <groupId>es.upm.etsisi</groupId>
   <artifactId>cf4j</artifactId>
-  <version>2.2.1</version>
+  <version>2.2.2</version>
 </dependency>
 ```
 
 For Gradle:
 
 ```
-compile group: 'es.upm.etsisi', name: 'cf4j', version: '2.2.1'
+compile group: 'es.upm.etsisi', name: 'cf4j', version: '2.2.2'
 ```
 
 For SBT:
 
 ```
-libraryDependencies += "es.upm.etsisi" % "cf4j" % "2.2.1"
+libraryDependencies += "es.upm.etsisi" % "cf4j" % "2.2.2"
 ```
 
 For Ivy:
 
 ```xml
-<dependency org="es.upm.etsisi" name="cf4j" rev="2.2.1"/>
+<dependency org="es.upm.etsisi" name="cf4j" rev="2.2.2"/>
 ```
 
 For Grape:
 
 ```
 @Grapes(
-    @Grab(group='es.upm.etsisi', module='cf4j', version='2.2.1')
+    @Grab(group='es.upm.etsisi', module='cf4j', version='2.2.2')
 )
 ```
 
 For Leiningen:
 
 ```
-[es.upm.etsisi/cf4j "2.2.1"]
+[es.upm.etsisi/cf4j "2.2.2"]
 ```
 
 For Buildr:
 
 ```
-'es.upm.etsisi:cf4j:jar:2.2.1'
+'es.upm.etsisi:cf4j:jar:2.2.2'
 ```
 
 You can find additional information about these dependencies in [https://mvnrepository.com/artifact/es.upm.etsisi/cf4j](https://mvnrepository.com/artifact/es.upm.etsisi/cf4j)
