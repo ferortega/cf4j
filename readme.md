@@ -280,6 +280,8 @@ In this section we include the full list of algorithms implemented in the librar
    | `PMF`         | Mnih, A., &amp; Salakhutdinov, R. R. (2008). *Probabilistic matrix factorization*. In Advances in neural information processing systems (pp. 1257-1264) |
    | `SVDPlusPlus` | Koren, Y. (2008, August). *Factorization meets the neighborhood: a multifaceted collaborative filtering model*. In Proceedings of the 14th ACM SIGKDD international conference on Knowledge discovery and data mining (pp. 426-434) |
    | `URP`         | Marlin, B. M. (2004). *Modeling user rating profiles for collaborative filtering*. In Advances in neural information processing systems (pp. 627-634) |
+   | `BeMF`        | Ortega, F., Lara-Cabrera, R., González-Prieto, Á., &amp; Bobadilla, J. (2021). *Providing reliability in recommender systems through Bernoulli matrix factorization*. Information Sciences, 553, 110-128. |
+   | `DeepMF`      | Lara-Cabrera, R., González-Prieto, Á., &amp; Ortega, F. (2020). *Deep matrix factorization approach for collaborative filtering recommender systems*. Applied Sciences, 10(14), 4926. |
 
 
 * Collaborative filtering based on neural networks (`es.upm.etisi.recommender.neural` package):
@@ -354,10 +356,12 @@ In `examples/gridSearch` you will find examples showing how to use GridSearch to
 
 - [`BiasedMFGridSearch`](src/main/java/es/upm/etsisi/cf4j/examples/gridSearch/BiasedMFGridSearch.java) tunes the hyper-parameters of BiasedMF recommender using the GridSearch tool. Top 5 results with lowest Mean Absolute Error (MAE) are printed.
 - [`UserKNNGridSearch`](src/main/java/es/upm/etsisi/cf4j/examples/gridSearch/UserKNNGridSearch.java) tunes the parameters of UserKNN recommender using the GridSearch tool. Top 5 results with highest Precision score are printed.
+- [`PMFRandomSearchCV`](src/main/java/es/upm/etsisi/cf4j/examples/gridSearch/PMFRandomSearchCV.java) tunes the parameters of PMF recommender using the RandomSearchCV tool. Top 10 results with lowest Mean Squared Error (MSE) are printed.
+
 
 ## Datasets
 
-CF4J includes the most popular datasets used in collaborative filtering research. These datasets has been preloaded into DataModel instances and can be retrieved using [`BenchmarkDataModels`](http://cf4j.etsisi.upm.es/apidocs/latest/es/upm/etsisi/cf4j/data/BenchmarkDataModels.html) class.
+CF4J includes the most popular datasets used in collaborative filtering research. These datasets have been preloaded into DataModel instances and can be retrieved using [`BenchmarkDataModels`](http://cf4j.etsisi.upm.es/apidocs/latest/es/upm/etsisi/cf4j/data/BenchmarkDataModels.html) class.
 
 The datasets included in CF4J are:
 
