@@ -3,6 +3,7 @@ package es.upm.etsisi.cf4j.data;
 import es.upm.etsisi.cf4j.data.types.DataSetEntry;
 
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -541,5 +542,91 @@ public class DataModel implements Serializable {
         + this.getMaxTestRating()
         + "\nAverage test rating: "
         + this.getTestRatingAverage();
+  }
+
+  /**
+   * Exports datamodel into a CSV for train ratings and other CSV for test ratings.
+   * @param path Path where store the files
+   * @param baseName Base name for CSV files. Suffixes
+   * @param useIndexesAsIds Use CF4J indexes as ids
+   * @throws IOException
+   */
+  public void exportToCSV(String path, String baseName, boolean useIndexesAsIds) throws IOException {
+    this.exportToCSV(path, baseName, ";", useIndexesAsIds);
+  }
+
+  /**
+   * Exports datamodel into a CSV for train ratings and other CSV for test ratings.
+   * @param path Path where store the files
+   * @param baseName Base name for CSV files. Suffixes.
+   * @throws IOException
+   */
+  public void exportToCSV(String path, String baseName) throws IOException {
+    this.exportToCSV(path, baseName, ";", true);
+  }
+
+  /**
+   * Exports datamodel into a CSV for train ratings and other CSV for test ratings.
+   * @param path Path where store the files
+   * @param baseName Base name for CSV files. Suffixes.
+   * @param separator CSV separator
+   * @throws IOException
+   */
+  public void exportToCSV(String path, String baseName, String separator) throws IOException {
+    this.exportToCSV(path, baseName, separator, true);
+  }
+
+  /**
+   * Exports datamodel into a CSV for train ratings and other CSV for test ratings.
+   * @param path Path where store the files
+   * @param baseName Base name for CSV files. Suffixes
+   * @param separator CSV separator
+   * @param useIndexesAsIds Use CF4J indexes as ids
+   * @throws IOException
+   */
+  public void exportToCSV(String path, String baseName, String separator,  boolean useIndexesAsIds) throws IOException {
+    File trainFile = new File(Paths.get(path, baseName + "-train.csv").toString());
+    trainFile.getAbsoluteFile().getParentFile().mkdirs();
+
+    PrintWriter trainWriter = new PrintWriter(trainFile);
+    trainWriter.println("user" + separator + "item" + separator + "rating");
+
+    for (User user : this.getUsers()) {
+      for (int pos = 0; pos < user.getNumberOfRatings(); pos++) {
+        int itemIndex = user.getItemAt(pos);
+        Item item = this.getItem(itemIndex);
+        double rating = user.getRatingAt(pos);
+
+        if (useIndexesAsIds) {
+          trainWriter.println(user.getUserIndex() + separator + itemIndex + separator + rating);
+        } else {
+          trainWriter.println(user.getId() + separator + item.getId() + separator + rating);
+        }
+      }
+    }
+
+    trainWriter.close();
+
+    File testFile = new File(Paths.get(path, baseName + "-test.csv").toString());
+    testFile.getAbsoluteFile().getParentFile().mkdirs();
+
+    PrintWriter testWriter = new PrintWriter(testFile);
+    testWriter.println("user" + separator + "item" + separator + "rating");
+
+    for (TestUser testUser : this.getTestUsers()) {
+      for (int pos = 0; pos < testUser.getNumberOfTestRatings(); pos++) {
+        int testItemIndex = testUser.getTestItemAt(pos);
+        TestItem testItem = this.getTestItem(testItemIndex);
+        double rating = testUser.getTestRatingAt(pos);
+
+        if (useIndexesAsIds) {
+          testWriter.println(testUser.getUserIndex() + separator + testItem.getItemIndex() + separator + rating);
+        } else {
+          testWriter.println(testUser.getId() + separator + testItem.getId() + separator + rating);
+        }
+      }
+    }
+
+    testWriter.close();
   }
 }
