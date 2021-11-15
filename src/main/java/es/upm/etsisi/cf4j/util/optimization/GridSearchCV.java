@@ -49,11 +49,49 @@ public class GridSearchCV extends RandomSearchCV {
      * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
      *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
      *     Map&lt;String, Object&gt;)
+     * @param cv Number of folds for the cross validation
+     * @param seed Random seed for random numbers generation
+     */
+    public GridSearchCV(DataModel datamodel, ParamsGrid grid, Class<? extends Recommender> recommenderClass, Class<? extends QualityMeasure> qualityMeasureClass, int cv, long seed) {
+        super(datamodel, grid, recommenderClass, qualityMeasureClass, cv, grid.getDevelopmentSetSize(), seed);
+    }
+
+    /**
+     * GridSearchCV constructor
+     *
+     * @param datamodel DataModel instance
+     * @param grid ParamsGrid instance containing the development set
+     * @param recommenderClass Recommender class to be evaluated. This class must contains a
+     *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
+     *     Object&gt;)
+     * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
+     *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+     *     Map&lt;String, Object&gt;)
      * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
      *     and values (value)
      * @param cv Number of folds for the cross validation
      */
     public GridSearchCV(DataModel datamodel, ParamsGrid grid, Class<? extends Recommender> recommenderClass, Class<? extends QualityMeasure> qualityMeasureClass, Map<String, Object> qualityMeasureParams, int cv) {
         super(datamodel, grid, recommenderClass, qualityMeasureClass, qualityMeasureParams, cv, grid.getDevelopmentSetSize());
+    }
+
+    /**
+     * GridSearchCV constructor
+     *
+     * @param datamodel DataModel instance
+     * @param grid ParamsGrid instance containing the development set
+     * @param recommenderClass Recommender class to be evaluated. This class must contains a
+     *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
+     *     Object&gt;)
+     * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
+     *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+     *     Map&lt;String, Object&gt;)
+     * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
+     *     and values (value)
+     * @param cv Number of folds for the cross validation
+     * @param seed Random seed for random numbers generation
+     */
+    public GridSearchCV(DataModel datamodel, ParamsGrid grid, Class<? extends Recommender> recommenderClass, Class<? extends QualityMeasure> qualityMeasureClass, Map<String, Object> qualityMeasureParams, int cv, long seed) {
+        super(datamodel, grid, recommenderClass, qualityMeasureClass, qualityMeasureParams, cv, grid.getDevelopmentSetSize(), seed);
     }
 }
