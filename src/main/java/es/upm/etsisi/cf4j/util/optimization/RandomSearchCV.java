@@ -386,9 +386,9 @@ public class RandomSearchCV {
                             if (Double.isNaN(d1) && Double.isNaN(d2)) {
                                 return 0;
                             } else if (Double.isNaN(d1)) {
-                                return 1;
-                            } else if (Double.isNaN(d2)) {
                                 return -1;
+                            } else if (Double.isNaN(d2)) {
+                                return 1;
                             } else {
                                 return Double.compare(d1, d2);
                             }
