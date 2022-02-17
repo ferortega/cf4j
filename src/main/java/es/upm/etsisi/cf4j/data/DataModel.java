@@ -549,7 +549,7 @@ public class DataModel implements Serializable {
    * @param path Path where store the files
    * @param baseName Base name for CSV files. Suffixes
    * @param useIndexesAsIds Use CF4J indexes as ids
-   * @throws IOException
+   * @throws IOException IOException
    */
   public void exportToCSV(String path, String baseName, boolean useIndexesAsIds) throws IOException {
     this.exportToCSV(path, baseName, ";", useIndexesAsIds);
@@ -559,7 +559,7 @@ public class DataModel implements Serializable {
    * Exports datamodel into a CSV for train ratings and other CSV for test ratings.
    * @param path Path where store the files
    * @param baseName Base name for CSV files. Suffixes.
-   * @throws IOException
+   * @throws IOException IOException
    */
   public void exportToCSV(String path, String baseName) throws IOException {
     this.exportToCSV(path, baseName, ";", true);
@@ -570,7 +570,7 @@ public class DataModel implements Serializable {
    * @param path Path where store the files
    * @param baseName Base name for CSV files. Suffixes.
    * @param separator CSV separator
-   * @throws IOException
+   * @throws IOException IOException
    */
   public void exportToCSV(String path, String baseName, String separator) throws IOException {
     this.exportToCSV(path, baseName, separator, true);
@@ -582,7 +582,7 @@ public class DataModel implements Serializable {
    * @param baseName Base name for CSV files. Suffixes
    * @param separator CSV separator
    * @param useIndexesAsIds Use CF4J indexes as ids
-   * @throws IOException
+   * @throws IOException IOException
    */
   public void exportToCSV(String path, String baseName, String separator,  boolean useIndexesAsIds) throws IOException {
     File trainFile = new File(Paths.get(path, baseName + "-train.csv").toString());

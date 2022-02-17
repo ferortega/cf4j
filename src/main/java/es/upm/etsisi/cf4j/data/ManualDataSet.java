@@ -24,6 +24,7 @@ public class ManualDataSet implements DataSet {
      * 
      * @param entries arraylist of datasetentries
      * @param trainPercentage set custom train data percentage
+     * @param seed random seed for random numbers generation
      */
     public ManualDataSet(List<DataSetEntry> entries, double trainPercentage, @Nullable Long seed){
 

@@ -73,6 +73,8 @@ public class NDCG extends QualityMeasure {
    *
    * @param testUser Related used
    * @param elements Recomendations or ideal recommendations
+   *
+   * @return discounted cumulative gain
    */
   protected double dataCalculation(TestUser testUser, int[] elements){
     double result = 0d;

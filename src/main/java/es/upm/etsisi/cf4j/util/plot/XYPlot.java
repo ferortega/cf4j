@@ -43,6 +43,7 @@ public class XYPlot extends Plot {
   /**
    * Creates a new XYPlot
    *
+   * @param values Point labels values
    * @param xLabel Label of the x axis
    * @param yLabel Label of the y axis
    */
@@ -53,6 +54,7 @@ public class XYPlot extends Plot {
   /**
    * Creates a new XYPlot
    *
+   * @param values Point labels values
    * @param xLabel Label of the x axis
    * @param yLabel Label of the y axis
    * @param hideLegend Indicates if the legend must be hidden. False by default.

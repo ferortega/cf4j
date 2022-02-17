@@ -14,8 +14,8 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- * Implements Lara-Cabrera, R., González, Á., Ortega, F., & González-Prieto, Á. (2022). Dirichlet Matrix Factorization:
- * A Reliable Classification-Based Recommender System. Applied Sciences, 12(3), 1223.
+ * Implements Lara-Cabrera, R., Gonz&aacute;lez, &Aacute;., Ortega, F., &amp; Gonz&aacute;lez-Prieto, &Aacute;. (2022).
+ * Dirichlet Matrix Factorization: A Reliable Classification-Based Recommender System. Applied Sciences, 12(3), 1223.
  */
 public class DirMF extends Recommender {
 
