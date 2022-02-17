@@ -113,7 +113,6 @@ public class BeMF extends Recommender {
             }
         }
 
-
         this.V = new double[ratings.length][datamodel.getNumberOfItems()][numFactors];
         for (int r = 0; r < ratings.length; r++) {
             for (int i = 0; i < datamodel.getNumberOfItems(); i++) {
