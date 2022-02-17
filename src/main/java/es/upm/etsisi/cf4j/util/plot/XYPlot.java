@@ -165,7 +165,7 @@ public class XYPlot extends Plot {
     for (int i = 0; i < this.series.size(); i++) {
       Triple<String, double[], double[]> s = this.series.get(i);
       String seriesName = s.getLeft();
-      headers[1 + i * 2] = seriesName + "(" + this.xLabel + ")";
+      headers[1 + i * 2] = seriesName + " (" + this.xLabel + ")";
       headers[2 + i * 2] = seriesName + " (" + this.yLabel + ")";
     }
 
