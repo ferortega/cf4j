@@ -1,6 +1,9 @@
 package es.upm.etsisi.cf4j.examples.recommender;
 
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
+import es.upm.etsisi.cf4j.qualityMeasure.prediction.MAE;
+import es.upm.etsisi.cf4j.qualityMeasure.prediction.MSE;
+import es.upm.etsisi.cf4j.recommender.neural.GMF;
 import es.upm.etsisi.cf4j.util.plot.LinePlot;
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
@@ -17,9 +20,15 @@ import java.io.IOException;
  */
 public class MatrixFactorizationComparison {
 
-  private static final int[] NUM_FACTORS = Range.ofIntegers(5, 5, 5);
+  //private static final int[] NUM_FACTORS = Range.ofIntegers(5, 5, 5);
 
-  private static final int NUM_ITERS = 50;
+  //private static final int NUM_ITERS = 50;
+
+  private static final int[] NUM_FACTORS = Range.ofIntegers(5, 5, 6);
+
+  private static final int[] NUM_ITERS = Range.ofIntegers(50, 100, 9);
+
+  private static final double[] LEARNING_RATE = new double[]{1.0, 0.1, 0.01, 0.001};
 
   private static final long RANDOM_SEED = 43;
 
@@ -29,7 +38,33 @@ public class MatrixFactorizationComparison {
     DataModel datamodel = BenchmarkDataModels.MovieLens100K();
 
     // To store results
-    LinePlot plot = new LinePlot(NUM_FACTORS, "Number of latent factors", "RMSE");
+    //LinePlot plot = new LinePlot(NUM_FACTORS, "Number of latent factors", "RMSE");
+
+    //plot.addSeries("GMF");
+    for (int factors : NUM_FACTORS) {
+      for (int iters : NUM_ITERS) {
+        for (double lr : LEARNING_RATE) {
+          Recommender gmf = new GMF(datamodel, factors, iters, lr, RANDOM_SEED);
+          gmf.fit();
+
+          QualityMeasure mae = new MAE(gmf);
+          double maeScore = mae.getScore();
+
+          QualityMeasure mse = new MSE(gmf);
+          double mseScore = mse.getScore();
+
+          QualityMeasure rmse = new RMSE(gmf);
+          double rmseScore = rmse.getScore();
+
+          System.out.println("NUM_FACTORS: "+factors+" - NUM_ITERS: "+iters+" - LEARNING_RATE: "+lr+" --- MAE: "+maeScore+" --- MSE "+mseScore+" --- RMSE "+rmseScore);
+
+          //plot.setValue("GMF", factors, rmseScore);
+        }
+      }
+    }
+
+
+    /*
 
     // Evaluate PMF Recommender
     plot.addSeries("PMF");
@@ -121,7 +156,10 @@ public class MatrixFactorizationComparison {
       plot.setValue("URP", factors, rmseScore);
     }
 
+
     // Print results
     plot.printData("0", "0.0000");
+
+     */
   }
 }
