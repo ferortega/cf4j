@@ -37,7 +37,9 @@ public class GMF extends Recommender {
    * contains the following keys:
    *
    * <ul>
+   *   <li><b>numFactors</b>: int value with the number of latent factors.
    *   <li><b>numEpochs</b>: int value with the number of epochs.
+   *   <li><b>learningRate</b>: double value with the learning rate.
    *   <li><b><em>seed</em></b> (optional): random seed for random numbers generation. If missing,
    *       random value is used.
    * </ul>
@@ -58,7 +60,9 @@ public class GMF extends Recommender {
    * Model constructor
    *
    * @param datamodel DataModel instance
+   * @param numFactors Number of factors
    * @param numEpochs Number of epochs
+   * @param learningRate Learning rate
    */
   public GMF(DataModel datamodel, int numFactors, int numEpochs, double learningRate) {this(datamodel, numFactors, numEpochs, learningRate, System.currentTimeMillis());}
 
@@ -66,7 +70,9 @@ public class GMF extends Recommender {
    * Model constructor
    *
    * @param datamodel DataModel instance
+   * @param numFactors Number of factors
    * @param numEpochs Number of epochs
+   * @param learningRate Learning rate
    * @param seed Seed for random numbers generation
    */
   public GMF(DataModel datamodel, int numFactors, int numEpochs, double learningRate, long seed) {
@@ -139,9 +145,8 @@ public class GMF extends Recommender {
 
 
   /**
-   * Computes the probability that an item will be of interest to the user. This prediction can not
-   * be used as the predicted rating, so prediction quality measures such as MAE or MSE can not be
-   * used to evaluate this recommender.
+   * Returns the prediction of a rating of a certain user for a certain item,
+   * through these predictions the metrics of MAE, MSE and RMSE can be obtained.
    *
    * @param userIndex Index of the user in the array of Users of the DataModel instance
    * @param itemIndex Index of the item in the array of Items of the DataModel instance
@@ -168,11 +173,12 @@ public class GMF extends Recommender {
    * @return Number of epochs.
    */
   public int getNumEpochs() {
-    return numEpochs;
+    return this.numEpochs;
   }
 
   @Override
   public String toString() {
-    return "GMF(" + "numEpochs=" + this.numEpochs + " numFactors="+this.numFactors+")";
+    StringBuilder sbuilder = new StringBuilder("GMF(" + "numEpochs=" + this.numEpochs + " numFactors="+this.numFactors+" learningRate="+this.learningRate+")");
+    return sbuilder.toString();
   }
 }
