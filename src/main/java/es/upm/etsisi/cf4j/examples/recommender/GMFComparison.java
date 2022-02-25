@@ -15,11 +15,11 @@ import java.io.IOException;
 
 public class GMFComparison {
 
-    private static final int[] NUM_FACTORS = Range.ofIntegers(5, 5, 2);
+    private static final int[] NUM_FACTORS = Range.ofIntegers(5, 5, 6);
 
-    private static final int[] NUM_ITERS = Range.ofIntegers(50, 100, 2);
+    private static final int[] NUM_ITERS = Range.ofIntegers(50, 100, 9);
 
-    private static final double[] LEARNING_RATE = new double[]{1.0};
+    private static final double[] LEARNING_RATE = new double[]{1.0, 0.1, 0.01, 0.001};
 
     private static final long RANDOM_SEED = 43;
 
