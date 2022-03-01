@@ -55,7 +55,7 @@ public class RandomSearchCV {
     private final int numIters;
 
     /** Map to store grid search results */
-    private final Map<String, double[]> results;
+    private final Map<Map<String, Object>, double[]> results;
 
     /**
      * RandomSearchCV constructor
@@ -283,13 +283,58 @@ public class RandomSearchCV {
             RandomSearch randomSearch = new RandomSearch(validationDatamodel, grid, recommenderClass, qualityMeasureClass, qualityMeasureParams, numIters, seed);
             randomSearch.fit();
 
-            List <Pair<String, Double>> randomSearchResults = randomSearch.getResults();
-            for (Pair<String, Double> result : randomSearchResults) {
+            List <Pair<Map<String, Object>, Double>> randomSearchResults = randomSearch.getResults();
+            for (Pair<Map<String, Object>, Double> result : randomSearchResults) {
                 double[] errors = (fold == 0) ? new double[cv] : this.results.get(result.getFirst());
                 errors[fold] = result.getSecond();
                 this.results.put(result.getFirst(), errors);
             }
         }
+    }
+
+    /**
+     * Get the best result. By default, the quality measure is better the lower its
+     * value.
+     */
+    public Pair<Map<String, Object>, Double> getBest(){ return getBest(true); }
+
+    /**
+     * Get the best result. By default, the quality measure is better the lower its
+     * value.
+     *
+     * @param lowerIsBetter True if the quality measure is better the lower its value. False
+     *     otherwise.
+     */
+    public Pair<Map<String, Object>, Double> getBest(boolean lowerIsBetter){
+        List<Pair<Map<String, Object>, Double>> cvResults = new ArrayList<>();
+        for (Map<String, Object> params : this.results.keySet()) {
+            double[] errors = this.results.get(params);
+            double averageError = Maths.arrayAverage(errors);
+            cvResults.add(new Pair<>(params, averageError));
+        }
+
+        // Sort results
+        Comparator<Pair<Map<String, Object>, Double>> comparator =
+                Comparator.comparing(
+                        Pair::getValue,
+                        (d1, d2) -> {
+                            if (Double.isNaN(d1) && Double.isNaN(d2)) {
+                                return 0;
+                            } else if (Double.isNaN(d1)) {
+                                return -1;
+                            } else if (Double.isNaN(d2)) {
+                                return 1;
+                            } else {
+                                return Double.compare(d1, d2);
+                            }
+                        });
+
+        if (!lowerIsBetter) {
+            comparator = comparator.reversed();
+        }
+
+        cvResults.sort(comparator);
+        return cvResults.get(0);
     }
 
     /**
@@ -371,15 +416,15 @@ public class RandomSearchCV {
      */
     public void printResults(String numberFormat, int topN, boolean lowerIsBetter) {
 
-        List<Pair<String, Double>> cvResults = new ArrayList<>();
-        for (String params : this.results.keySet()) {
+        List<Pair<Map<String, Object>, Double>> cvResults = new ArrayList<>();
+        for (Map<String, Object> params : this.results.keySet()) {
             double[] errors = this.results.get(params);
             double averageError = Maths.arrayAverage(errors);
             cvResults.add(new Pair<>(params, averageError));
         }
 
         // Sort results
-        Comparator<Pair<String, Double>> comparator =
+        Comparator<Pair<Map<String, Object>, Double>> comparator =
                 Comparator.comparing(
                         Pair::getValue,
                         (d1, d2) -> {
@@ -419,7 +464,7 @@ public class RandomSearchCV {
         sb.append(" scores on development set:\n\n");
 
         for (int i = 0; i < Math.min(topN, cvResults.size()); i++) {
-            Pair<String, Double> result = cvResults.get(i);
+            Pair<Map<String, Object>, Double> result = cvResults.get(i);
 
             StringBuilder value = new StringBuilder();
 
@@ -514,7 +559,7 @@ public class RandomSearchCV {
             writer.println("params");
         }
 
-        for (String params : this.results.keySet()) {
+        for (Map<String, Object> params : this.results.keySet()) {
             double[] errors = this.results.get(params);
             double avg = Maths.arrayAverage(errors);
             double std = Maths.arrayStandardDeviation(errors);

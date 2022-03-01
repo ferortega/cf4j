@@ -46,7 +46,7 @@ public class RandomSearch {
   private final long seed;
 
   /** List to store grid search results */
-  private final List<Pair<String, Double>> results;
+  private final List<Pair<Map<String, Object>, Double>> results;
 
   /**
    * RandomSearch constructor
@@ -339,10 +339,49 @@ public class RandomSearch {
 
       if (qm != null) {
         double score = qm.getScore();
-        results.add(new Pair<>(params.toString(), score));
+        results.add(new Pair<>(params, score));
       }
     }
   }
+
+  /**
+   * Get the best result. By default, the quality measure is better the lower its
+   * value.
+   */
+   public Pair<Map<String, Object>, Double> getBest(){ return getBest(true); }
+
+  /**
+   * Get the best result. By default, the quality measure is better the lower its
+   * value.
+   *
+   * @param lowerIsBetter True if the quality measure is better the lower its value. False
+   *     otherwise.
+   */
+  public Pair<Map<String, Object>, Double> getBest(boolean lowerIsBetter){
+    // Sort results
+    Comparator<Pair<Map<String, Object>, Double>> comparator =
+            Comparator.comparing(
+                    Pair::getValue,
+                    (d1, d2) -> {
+                      if (Double.isNaN(d1) && Double.isNaN(d2)) {
+                        return 0;
+                      } else if (Double.isNaN(d1)) {
+                        return -1;
+                      } else if (Double.isNaN(d2)) {
+                        return 1;
+                      } else {
+                        return Double.compare(d1, d2);
+                      }
+                    });
+
+    if (!lowerIsBetter) {
+      comparator = comparator.reversed();
+    }
+
+    this.results.sort(comparator);
+    return results.get(0);
+  }
+
 
   /**
    * Prints the results of the random search. By default, the quality measure is better the lower its
@@ -424,7 +463,7 @@ public class RandomSearch {
   public void printResults(String numberFormat, int topN, boolean lowerIsBetter) {
 
     // Sort results
-    Comparator<Pair<String, Double>> comparator =
+    Comparator<Pair<Map<String, Object>, Double>> comparator =
         Comparator.comparing(
             Pair::getValue,
             (d1, d2) -> {
@@ -464,7 +503,7 @@ public class RandomSearch {
     sb.append(" scores on development set:\n\n");
 
     for (int i = 0; i < Math.min(topN, this.results.size()); i++) {
-      Pair<String, Double> result = this.results.get(i);
+      Pair<Map<String, Object>, Double> result = this.results.get(i);
 
       StringBuilder value = new StringBuilder();
 
@@ -484,7 +523,7 @@ public class RandomSearch {
     System.out.println("\n" + sb.toString());
   }
 
-  public List<Pair<String, Double>> getResults() {
+  public List<Pair<Map<String, Object>, Double>> getResults() {
     return results;
   }
 }
