@@ -17,6 +17,10 @@ import org.nd4j.linalg.lossfunctions.LossFunctions;
 
 import java.util.Map;
 
+/**
+ * He, Xiangnan & Liao, Lizi & Zhang, Hanwang. (2017). Neural Collaborative Filtering.
+ * Proceedings of the 26th International Conference on World Wide Web.
+ */
 
 public class GMF extends Recommender {
 
@@ -86,24 +90,23 @@ public class GMF extends Recommender {
             .seed(seed)
             .updater(new Adam(learningRate))
             .graphBuilder()
-            .addInputs("input1", "input2")
-            .addLayer("L1", new EmbeddingLayer.Builder()
+            .addInputs("user", "item")
+            .addLayer("userEmbeddingLayer", new EmbeddingLayer.Builder()
                     .nIn(super.getDataModel().getNumberOfUsers())
                     .nOut(this.numFactors)
-                    .build(), "input1")
-            .addLayer("L2", new EmbeddingLayer.Builder()
+                    .build(), "user")
+            .addLayer("itemEmbeddingLayer", new EmbeddingLayer.Builder()
                     .nIn(super.getDataModel().getNumberOfItems())
                     .nOut(this.numFactors)
-                    .build(), "input2")
-            .addVertex("mul",new ElementWiseVertex(ElementWiseVertex.Op.Product),"L1","L2")
+                    .build(), "item")
+            .addVertex("product",new ElementWiseVertex(ElementWiseVertex.Op.Product),"userEmbeddingLayer","itemEmbeddingLayer")
             .addLayer("out", new OutputLayer.Builder(LossFunctions.LossFunction.MSE)
                     .nIn(this.numFactors)
                     .nOut(1)
                     .activation(Activation.IDENTITY)
-                    .build(), "mul")
+                    .build(), "product")
             .setOutputs("out")
             .build();
-
 
     this.network = new ComputationGraph(conf);
     this.network.init();
@@ -111,7 +114,6 @@ public class GMF extends Recommender {
 
   @Override
   public void fit() {
-
     System.out.println("\nFitting " + this.toString());
 
     NDArray[] X = new NDArray[2];
@@ -132,15 +134,16 @@ public class GMF extends Recommender {
         i++;
       }
     }
+
     X[0] = new NDArray(users);
     X[1] = new NDArray(items);
     y[0] = new NDArray(ratings);
+
     for (int epoch = 1; epoch <= this.numEpochs; epoch++) {
       this.network.fit(X, y);
       if ((epoch % 5) == 0) System.out.print(".");
       if ((epoch % 50) == 0) System.out.println(epoch + " iterations");
     }
-
   }
 
 

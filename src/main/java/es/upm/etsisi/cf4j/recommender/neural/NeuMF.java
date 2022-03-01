@@ -19,6 +19,10 @@ import org.nd4j.linalg.lossfunctions.LossFunctions;
 
 import java.util.Map;
 
+/**
+ * He, Xiangnan & Liao, Lizi & Zhang, Hanwang. (2017). Neural Collaborative Filtering.
+ * Proceedings of the 26th International Conference on World Wide Web.
+ */
 
 public class NeuMF extends Recommender {
 
@@ -96,25 +100,25 @@ public class NeuMF extends Recommender {
                 .seed(seed)
                 .updater(new Adam(learningRate))
                 .graphBuilder()
-                .addInputs("input1", "input2")
-                .addLayer("L1mf", new EmbeddingLayer.Builder()
+                .addInputs("user", "item")
+                .addLayer("userEmbeddingLayerMF", new EmbeddingLayer.Builder()
                         .nIn(super.getDataModel().getNumberOfUsers())
                         .nOut(this.numFactors)
-                        .build(), "input1")
-                .addLayer("L2mf", new EmbeddingLayer.Builder()
+                        .build(), "user")
+                .addLayer("itemEmbeddingLayerMF", new EmbeddingLayer.Builder()
                         .nIn(super.getDataModel().getNumberOfItems())
                         .nOut(this.numFactors)
-                        .build(), "input2")
-                .addLayer("L1mlp", new EmbeddingLayer.Builder()
+                        .build(), "item")
+                .addLayer("userEmbeddingLayerMLP", new EmbeddingLayer.Builder()
                         .nIn(super.getDataModel().getNumberOfUsers())
                         .nOut(layers[0]/2)
-                        .build(), "input1")
-                .addLayer("L2mlp", new EmbeddingLayer.Builder()
+                        .build(), "user")
+                .addLayer("itemEmbeddingLayerMLP", new EmbeddingLayer.Builder()
                         .nIn(super.getDataModel().getNumberOfItems())
                         .nOut(layers[0]/2)
-                        .build(), "input2")
-                .addVertex("mul",new ElementWiseVertex(ElementWiseVertex.Op.Product),"L1mf","L2mf")
-                .addVertex("concat",new MergeVertex(),"L1mlp","L2mlp");
+                        .build(), "item")
+                .addVertex("product",new ElementWiseVertex(ElementWiseVertex.Op.Product),"userEmbeddingLayerMF","itemEmbeddingLayerMF")
+                .addVertex("concat",new MergeVertex(),"userEmbeddingLayerMLP","itemEmbeddingLayerMLP");
         int i = 0;
         for(;i<this.layers.length;i++){
             if(i == 0)
@@ -129,7 +133,7 @@ public class NeuMF extends Recommender {
                         .build(), "hiddenLayer"+(i-1));
         }
 
-        builder.addVertex("finalConcat",new MergeVertex(),"mul","hiddenLayer"+(i-1))
+        builder.addVertex("finalConcat",new MergeVertex(),"product","hiddenLayer"+(i-1))
                 .addLayer("out", new OutputLayer.Builder(LossFunctions.LossFunction.MSE)
                 .nIn(layers[i-1]+this.numFactors)
                 .nOut(1)
@@ -138,16 +142,12 @@ public class NeuMF extends Recommender {
                 .setOutputs("out")
                 .build();
 
-
-
-
         this.network = new ComputationGraph(builder.build());
         this.network.init();
     }
 
     @Override
     public void fit() {
-
         System.out.println("\nFitting " + this.toString());
 
         NDArray[] X = new NDArray[2];
@@ -168,15 +168,16 @@ public class NeuMF extends Recommender {
                 i++;
             }
         }
+
         X[0] = new NDArray(users);
         X[1] = new NDArray(items);
         y[0] = new NDArray(ratings);
+
         for (int epoch = 1; epoch <= this.numEpochs; epoch++) {
             this.network.fit(X, y);
             if ((epoch % 5) == 0) System.out.print(".");
             if ((epoch % 50) == 0) System.out.println(epoch + " iterations");
         }
-
     }
 
 

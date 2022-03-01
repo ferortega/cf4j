@@ -18,6 +18,10 @@ import org.nd4j.linalg.lossfunctions.LossFunctions;
 
 import java.util.Map;
 
+/**
+ * He, Xiangnan & Liao, Lizi & Zhang, Hanwang. (2017). Neural Collaborative Filtering.
+ * Proceedings of the 26th International Conference on World Wide Web.
+ */
 
 public class MLP extends Recommender {
 
@@ -87,16 +91,16 @@ public class MLP extends Recommender {
                 .seed(seed)
                 .updater(new Adam(learningRate))
                 .graphBuilder()
-                .addInputs("input1", "input2")
-                .addLayer("L1", new EmbeddingLayer.Builder()
+                .addInputs("user", "item")
+                .addLayer("userEmbeddingLayer", new EmbeddingLayer.Builder()
                         .nIn(super.getDataModel().getNumberOfUsers())
                         .nOut(layers[0]/2)
-                        .build(), "input1")
-                .addLayer("L2", new EmbeddingLayer.Builder()
+                        .build(), "user")
+                .addLayer("itemEmbeddingLayer", new EmbeddingLayer.Builder()
                         .nIn(super.getDataModel().getNumberOfItems())
                         .nOut(layers[0]/2)
-                        .build(), "input2")
-                .addVertex("concat",new MergeVertex(),"L1","L2");
+                        .build(), "item")
+                .addVertex("concat",new MergeVertex(),"userEmbeddingLayer","itemEmbeddingLayer");
         int i = 0;
         for(;i<this.layers.length;i++){
             if(i == 0)
@@ -119,16 +123,12 @@ public class MLP extends Recommender {
                 .setOutputs("out")
                 .build();
 
-
-
-
         this.network = new ComputationGraph(builder.build());
         this.network.init();
     }
 
     @Override
     public void fit() {
-
         System.out.println("\nFitting " + this.toString());
 
         NDArray[] X = new NDArray[2];
@@ -149,15 +149,16 @@ public class MLP extends Recommender {
                 i++;
             }
         }
+
         X[0] = new NDArray(users);
         X[1] = new NDArray(items);
         y[0] = new NDArray(ratings);
+
         for (int epoch = 1; epoch <= this.numEpochs; epoch++) {
             this.network.fit(X, y);
             if ((epoch % 5) == 0) System.out.print(".");
             if ((epoch % 50) == 0) System.out.println(epoch + " iterations");
         }
-
     }
 
 
