@@ -83,7 +83,7 @@ public class GMF extends Recommender {
     this.learningRate = learningRate;
 
     ComputationGraphConfiguration conf = new NeuralNetConfiguration.Builder()
-            .seed(42L)
+            .seed(seed)
             .updater(new Adam(learningRate))
             .graphBuilder()
             .addInputs("input1", "input2")
