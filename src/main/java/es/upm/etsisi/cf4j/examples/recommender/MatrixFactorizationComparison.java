@@ -112,8 +112,8 @@ public class MatrixFactorizationComparison {
     plot.addSeries("URP");
     for (int factors : NUM_FACTORS) {
       Recommender urp =
-              new URP(
-                      datamodel, factors, new double[] {1.0, 2.0, 3.0, 4.0, 5.0}, NUM_ITERS, RANDOM_SEED);
+          new URP(
+              datamodel, factors, new double[] {1.0, 2.0, 3.0, 4.0, 5.0}, NUM_ITERS, RANDOM_SEED);
       urp.fit();
 
       QualityMeasure rmse = new RMSE(urp);
