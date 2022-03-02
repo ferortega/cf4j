@@ -17,11 +17,13 @@ import org.nd4j.linalg.cpu.nativecpu.NDArray;
 import org.nd4j.linalg.learning.config.Adam;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
 
+import java.util.Arrays;
 import java.util.Map;
 
 /**
- * Implements He, Xiangnan & Liao, Lizi &amp; Zhang, Hanwang. (2017). Neural Collaborative
- * Filtering. Proceedings of the 26th International Conference on World Wide Web.
+ * Implements He, X., Liao, L., Zhang, H., Nie, L., Hu, X., &amp; Chua, T. S. (2017, April).
+ * Neural collaborative filtering. In Proceedings of the 26th international conference on
+ * world wide web (pp. 173-182).
  */
 public class NeuMF extends Recommender {
 
@@ -214,13 +216,16 @@ public class NeuMF extends Recommender {
 
     @Override
     public String toString() {
-        String layerPrint = "[";
-        for(int i = 0; i<layers.length;i++)
-            layerPrint += " "+layers[i]+" ";
-        layerPrint+="]";
-
-        StringBuilder sbuilder = new StringBuilder("MLP(" + "numEpochs=" + this.numEpochs + " numFactors="+this.numFactors+" learningRate="+this.learningRate+" layers="+layerPrint+")");
-        return sbuilder.toString();
+        StringBuilder str = new StringBuilder("NewMF(")
+                .append("numEpochs=").append(this.numEpochs)
+                .append("; ")
+                .append("numFactors=").append(this.numFactors)
+                .append("; ")
+                .append("learningRate=").append(this.learningRate)
+                .append("; ")
+                .append("layers=").append(Arrays.toString(layers))
+                .append(")");
+        return str.toString();
     }
 }
 

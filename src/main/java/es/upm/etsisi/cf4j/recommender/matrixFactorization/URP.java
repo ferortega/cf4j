@@ -296,19 +296,16 @@ public class URP extends Recommender {
 
   @Override
   public String toString() {
-    return "URP("
-        + "numFactors="
-        + this.numFactors
-        + "; "
-        + "numIters="
-        + this.numIters
-        + "; "
-        + "ratings="
-        + Arrays.toString(this.ratings)
-        + "; "
-        + "H="
-        + this.H
-        + ")";
+    StringBuilder str = new StringBuilder("URP(")
+            .append("numFactors=").append(this.numFactors)
+            .append("; ")
+            .append("numIters=").append(this.numIters)
+            .append("; ")
+            .append("ratings=").append(Arrays.toString(this.ratings))
+            .append("; ")
+            .append("H=").append(this.H)
+            .append(")");
+    return str.toString();
   }
 
   /**

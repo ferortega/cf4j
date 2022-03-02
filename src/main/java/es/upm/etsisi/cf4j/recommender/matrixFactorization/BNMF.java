@@ -308,22 +308,18 @@ public class BNMF extends Recommender {
 
   @Override
   public String toString() {
-    return "BNMF("
-        + "numFactors="
-        + this.numFactors
-        + "; "
-        + "numIters="
-        + this.numIters
-        + "; "
-        + "alpha="
-        + this.alpha
-        + "; "
-        + "beta="
-        + this.beta
-        + "; "
-        + "r="
-        + this.r
-        + ")";
+    StringBuilder str = new StringBuilder("BNMF(")
+            .append("numFactors=").append(this.numFactors)
+            .append("; ")
+            .append("numIters=").append(this.numIters)
+            .append("; ")
+            .append("alpha=").append(this.alpha)
+            .append("; ")
+            .append("beta=").append(this.beta)
+            .append("; ")
+            .append("r=").append(this.r)
+            .append(")");
+    return str.toString();
   }
 
   /** Auxiliary inner class to parallelize model update */
