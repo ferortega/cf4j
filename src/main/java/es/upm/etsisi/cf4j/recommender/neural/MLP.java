@@ -19,10 +19,9 @@ import org.nd4j.linalg.lossfunctions.LossFunctions;
 import java.util.Map;
 
 /**
- * He, Xiangnan & Liao, Lizi & Zhang, Hanwang. (2017). Neural Collaborative Filtering.
- * Proceedings of the 26th International Conference on World Wide Web.
+ * Implements He, Xiangnan & Liao, Lizi &amp; Zhang, Hanwang. (2017). Neural Collaborative
+ * Filtering. Proceedings of the 26th International Conference on World Wide Web.
  */
-
 public class MLP extends Recommender {
 
     /** Neural network * */
