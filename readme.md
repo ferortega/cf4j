@@ -282,15 +282,16 @@ In this section we include the full list of algorithms implemented in the librar
    | `URP`         | Marlin, B. M. (2004). *Modeling user rating profiles for collaborative filtering*. In Advances in neural information processing systems (pp. 627-634) |
    | `BeMF`        | Ortega, F., Lara-Cabrera, R., González-Prieto, Á., &amp; Bobadilla, J. (2021). *Providing reliability in recommender systems through Bernoulli matrix factorization*. Information Sciences, 553, 110-128. |
    | `DeepMF`      | Lara-Cabrera, R., González-Prieto, Á., &amp; Ortega, F. (2020). *Deep matrix factorization approach for collaborative filtering recommender systems*. Applied Sciences, 10(14), 4926. |
-
+   | `DirMF`       | Lara-Cabrera, R., González, Á., Ortega, F., & González-Prieto, Á. (2022). *Dirichlet Matrix Factorization: A Reliable Classification-Based Recommender System*. Applied Sciences, 12(3), 1223. |
 
 * Collaborative filtering based on neural networks (`es.upm.etisi.recommender.neural` package):
 
-   | Class         | Publication |
-   |---------------|-------------|
-   | `NCCF`        | Bobadilla, J., Ortega, F., Gutiérrez, A., & Alonso, S. (2020). Classification-based Deep Neural Network Architecture for Collaborative Filtering Recommender Systems. International Journal of Interactive Multimedia & Artificial Intelligence, 6(1) |
-   
-
+   | Class   | Publication                                                                                                                                                                                                                                             |
+   |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+   | `NCCF`  | Bobadilla, J., Ortega, F., Gutiérrez, A., & Alonso, S. (2020). *Classification-based Deep Neural Network Architecture for Collaborative Filtering Recommender Systems*. International Journal of Interactive Multimedia & Artificial Intelligence, 6(1) |
+   | `GMF`   | He, Xiangnan & Liao, Lizi & Zhang, Hanwang. (2017). *Neural Collaborative Filtering*. Proceedings of the 26th International Conference on World Wide Web.                                                                                               |
+   | `MLP`   | He, Xiangnan & Liao, Lizi & Zhang, Hanwang. (2017). *Neural Collaborative Filtering*. Proceedings of the 26th International Conference on World Wide Web.                                                                                               |
+   | `NeuMF` | He, Xiangnan & Liao, Lizi & Zhang, Hanwang. (2017). *Neural Collaborative Filtering*. Proceedings of the 26th International Conference on World Wide Web.                                                                                               |
 
 * kNN based CF (both user-to-user and item-to-item approaches):
 
