@@ -75,9 +75,10 @@ public class NeuMF extends Recommender {
      * @param numFactors Number of factors
      * @param numEpochs Number of epochs
      * @param learningRate Learning rate
-     * @param layers Array of layers neurons
      */
-    public NeuMF(DataModel datamodel, int numFactors, int numEpochs, double learningRate, int[] layers) {this(datamodel, numFactors, numEpochs, learningRate, layers, System.currentTimeMillis());}
+    public NeuMF(DataModel datamodel, int numFactors, int numEpochs, double learningRate) {
+        this(datamodel, numFactors, numEpochs, learningRate, System.currentTimeMillis());
+    }
 
     /**
      * Model constructor
@@ -86,7 +87,33 @@ public class NeuMF extends Recommender {
      * @param numFactors Number of factors
      * @param numEpochs Number of epochs
      * @param learningRate Learning rate
-     * @param layers Array of layers neurons
+     * @param seed random seed for random numbers generation
+     */
+    public NeuMF(DataModel datamodel, int numFactors, int numEpochs, double learningRate, long seed) {
+        this(datamodel, numFactors, numEpochs, learningRate, new int[]{10}, seed);
+    }
+
+    /**
+     * Model constructor
+     *
+     * @param datamodel DataModel instance
+     * @param numFactors Number of factors
+     * @param numEpochs Number of epochs
+     * @param learningRate Learning rate
+     * @param layers Array of layers neurons. [10] by default.
+     */
+    public NeuMF(DataModel datamodel, int numFactors, int numEpochs, double learningRate, int[] layers) {
+        this(datamodel, numFactors, numEpochs, learningRate, layers, System.currentTimeMillis());
+    }
+
+    /**
+     * Model constructor
+     *
+     * @param datamodel DataModel instance
+     * @param numFactors Number of factors
+     * @param numEpochs Number of epochs
+     * @param learningRate Learning rate
+     * @param layers Array of layers neurons. [10] by default.
      * @param seed Seed for random numbers generation
      */
     public NeuMF(DataModel datamodel, int numFactors, int numEpochs, double learningRate, int[] layers, long seed) {
@@ -120,6 +147,7 @@ public class NeuMF extends Recommender {
                         .build(), "item")
                 .addVertex("product",new ElementWiseVertex(ElementWiseVertex.Op.Product),"userEmbeddingLayerMF","itemEmbeddingLayerMF")
                 .addVertex("concat",new MergeVertex(),"userEmbeddingLayerMLP","itemEmbeddingLayerMLP");
+
         int i = 0;
         for(;i<this.layers.length;i++){
             if(i == 0)
@@ -180,7 +208,6 @@ public class NeuMF extends Recommender {
             if ((epoch % 50) == 0) System.out.println(epoch + " iterations");
         }
     }
-
 
     /**
      * Returns the prediction of a rating of a certain user for a certain item,
