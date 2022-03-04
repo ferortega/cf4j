@@ -265,19 +265,16 @@ public class BiasedMF extends Recommender {
 
   @Override
   public String toString() {
-    return "BiasedMF("
-        + "numFactors="
-        + this.numFactors
-        + "; "
-        + "numIters="
-        + this.numIters
-        + "; "
-        + "gamma="
-        + this.gamma
-        + "; "
-        + "lambda="
-        + this.lambda
-        + ")";
+    StringBuilder str = new StringBuilder("BiasedMF(")
+            .append("numFactors=").append(this.numFactors)
+            .append("; ")
+            .append("numIters=").append(this.numIters)
+            .append("; ")
+            .append("gamma=").append(this.gamma)
+            .append("; ")
+            .append("lambda=").append(this.lambda)
+            .append(")");
+    return str.toString();
   }
 
   /** Auxiliary inner class to parallelize user factors computation */

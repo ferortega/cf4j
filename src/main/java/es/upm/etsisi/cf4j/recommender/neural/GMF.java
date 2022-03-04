@@ -15,13 +15,14 @@ import org.nd4j.linalg.cpu.nativecpu.NDArray;
 import org.nd4j.linalg.learning.config.Adam;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
 
+import java.util.Arrays;
 import java.util.Map;
 
 /**
- * He, Xiangnan & Liao, Lizi & Zhang, Hanwang. (2017). Neural Collaborative Filtering.
- * Proceedings of the 26th International Conference on World Wide Web.
+ * Implements He, X., Liao, L., Zhang, H., Nie, L., Hu, X., &amp; Chua, T. S. (2017, April).
+ * Neural collaborative filtering. In Proceedings of the 26th international conference on
+ * world wide web (pp. 173-182).
  */
-
 public class GMF extends Recommender {
 
   /** Neural network * */
@@ -181,7 +182,13 @@ public class GMF extends Recommender {
 
   @Override
   public String toString() {
-    StringBuilder sbuilder = new StringBuilder("GMF(" + "numEpochs=" + this.numEpochs + " numFactors="+this.numFactors+" learningRate="+this.learningRate+")");
-    return sbuilder.toString();
+    StringBuilder str = new StringBuilder("GMF(")
+            .append("numEpochs=").append(this.numEpochs)
+            .append("; ")
+            .append("numFactors=").append(this.numFactors)
+            .append("; ")
+            .append("learningRate=").append(this.learningRate)
+            .append(")");
+    return str.toString();
   }
 }

@@ -17,13 +17,14 @@ import org.nd4j.linalg.cpu.nativecpu.NDArray;
 import org.nd4j.linalg.learning.config.Adam;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
 
+import java.util.Arrays;
 import java.util.Map;
 
 /**
- * He, Xiangnan & Liao, Lizi & Zhang, Hanwang. (2017). Neural Collaborative Filtering.
- * Proceedings of the 26th International Conference on World Wide Web.
+ * Implements He, X., Liao, L., Zhang, H., Nie, L., Hu, X., &amp; Chua, T. S. (2017, April).
+ * Neural collaborative filtering. In Proceedings of the 26th international conference on
+ * world wide web (pp. 173-182).
  */
-
 public class NeuMF extends Recommender {
 
     /** Neural network * */
@@ -74,9 +75,10 @@ public class NeuMF extends Recommender {
      * @param numFactors Number of factors
      * @param numEpochs Number of epochs
      * @param learningRate Learning rate
-     * @param layers Array of layers neurons
      */
-    public NeuMF(DataModel datamodel, int numFactors, int numEpochs, double learningRate, int[] layers) {this(datamodel, numFactors, numEpochs, learningRate, layers, System.currentTimeMillis());}
+    public NeuMF(DataModel datamodel, int numFactors, int numEpochs, double learningRate) {
+        this(datamodel, numFactors, numEpochs, learningRate, System.currentTimeMillis());
+    }
 
     /**
      * Model constructor
@@ -85,7 +87,33 @@ public class NeuMF extends Recommender {
      * @param numFactors Number of factors
      * @param numEpochs Number of epochs
      * @param learningRate Learning rate
-     * @param layers Array of layers neurons
+     * @param seed random seed for random numbers generation
+     */
+    public NeuMF(DataModel datamodel, int numFactors, int numEpochs, double learningRate, long seed) {
+        this(datamodel, numFactors, numEpochs, learningRate, new int[]{10}, seed);
+    }
+
+    /**
+     * Model constructor
+     *
+     * @param datamodel DataModel instance
+     * @param numFactors Number of factors
+     * @param numEpochs Number of epochs
+     * @param learningRate Learning rate
+     * @param layers Array of layers neurons. [10] by default.
+     */
+    public NeuMF(DataModel datamodel, int numFactors, int numEpochs, double learningRate, int[] layers) {
+        this(datamodel, numFactors, numEpochs, learningRate, layers, System.currentTimeMillis());
+    }
+
+    /**
+     * Model constructor
+     *
+     * @param datamodel DataModel instance
+     * @param numFactors Number of factors
+     * @param numEpochs Number of epochs
+     * @param learningRate Learning rate
+     * @param layers Array of layers neurons. [10] by default.
      * @param seed Seed for random numbers generation
      */
     public NeuMF(DataModel datamodel, int numFactors, int numEpochs, double learningRate, int[] layers, long seed) {
@@ -119,6 +147,7 @@ public class NeuMF extends Recommender {
                         .build(), "item")
                 .addVertex("product",new ElementWiseVertex(ElementWiseVertex.Op.Product),"userEmbeddingLayerMF","itemEmbeddingLayerMF")
                 .addVertex("concat",new MergeVertex(),"userEmbeddingLayerMLP","itemEmbeddingLayerMLP");
+
         int i = 0;
         for(;i<this.layers.length;i++){
             if(i == 0)
@@ -180,7 +209,6 @@ public class NeuMF extends Recommender {
         }
     }
 
-
     /**
      * Returns the prediction of a rating of a certain user for a certain item,
      * through these predictions the metrics of MAE, MSE and RMSE can be obtained.
@@ -215,13 +243,16 @@ public class NeuMF extends Recommender {
 
     @Override
     public String toString() {
-        String layerPrint = "[";
-        for(int i = 0; i<layers.length;i++)
-            layerPrint += " "+layers[i]+" ";
-        layerPrint+="]";
-
-        StringBuilder sbuilder = new StringBuilder("MLP(" + "numEpochs=" + this.numEpochs + " numFactors="+this.numFactors+" learningRate="+this.learningRate+" layers="+layerPrint+")");
-        return sbuilder.toString();
+        StringBuilder str = new StringBuilder("NewMF(")
+                .append("numEpochs=").append(this.numEpochs)
+                .append("; ")
+                .append("numFactors=").append(this.numFactors)
+                .append("; ")
+                .append("learningRate=").append(this.learningRate)
+                .append("; ")
+                .append("layers=").append(Arrays.toString(layers))
+                .append(")");
+        return str.toString();
     }
 }
 

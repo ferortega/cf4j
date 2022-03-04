@@ -5,6 +5,7 @@ import es.upm.etsisi.cf4j.data.User;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.util.Maths;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Random;
 
@@ -230,19 +231,16 @@ public class SVDPlusPlus extends Recommender {
 
   @Override
   public String toString() {
-    return "SVDPlusPlus("
-        + "numFactors="
-        + this.numFactors
-        + "; "
-        + "numIters="
-        + this.numIters
-        + "; "
-        + "gamma="
-        + this.gamma
-        + "; "
-        + "lambda="
-        + this.lambda
-        + ")";
+    StringBuilder str = new StringBuilder("SVDPlusPlus(")
+            .append("numFactors=").append(this.numFactors)
+            .append("; ")
+            .append("numIters=").append(this.numIters)
+            .append("; ")
+            .append("gamma=").append(this.gamma)
+            .append("; ")
+            .append("lambda=").append(this.lambda)
+            .append(")");
+    return str.toString();
   }
 
   /**

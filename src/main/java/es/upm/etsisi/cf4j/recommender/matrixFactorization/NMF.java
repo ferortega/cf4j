@@ -133,7 +133,12 @@ public class NMF extends Recommender {
 
   @Override
   public String toString() {
-    return "NMF(" + "numFactors=" + this.numFactors + "; " + "numIters=" + this.numIters + ")";
+    StringBuilder str = new StringBuilder("NMF(")
+            .append("numFactors=").append(this.numFactors)
+            .append("; ")
+            .append("numIters=").append(this.numIters)
+            .append(")");
+    return str.toString();
   }
 
   /** Auxiliary inner class to parallelize user factors computation */
