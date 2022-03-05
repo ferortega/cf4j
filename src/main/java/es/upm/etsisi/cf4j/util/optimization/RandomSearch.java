@@ -345,41 +345,80 @@ public class RandomSearch {
   }
 
   /**
-   * Get the best result. By default, the quality measure is better the lower its
+   * Get the best result params. By default, the quality measure is better the lower its
    * value.
    */
-   public Pair<Map<String, Object>, Double> getBest(){ return getBest(true); }
+   public Map<String, Object> getBestParams(){ return getBestParams(true); }
 
   /**
-   * Get the best result. By default, the quality measure is better the lower its
+   * Get the best result params. By default, the quality measure is better the lower its
    * value.
    *
    * @param lowerIsBetter True if the quality measure is better the lower its value. False
    *     otherwise.
    */
-  public Pair<Map<String, Object>, Double> getBest(boolean lowerIsBetter){
-    // Sort results
-    Comparator<Pair<Map<String, Object>, Double>> comparator =
-            Comparator.comparing(
-                    Pair::getValue,
-                    (d1, d2) -> {
-                      if (Double.isNaN(d1) && Double.isNaN(d2)) {
-                        return 0;
-                      } else if (Double.isNaN(d1)) {
-                        return -1;
-                      } else if (Double.isNaN(d2)) {
-                        return 1;
-                      } else {
-                        return Double.compare(d1, d2);
-                      }
-                    });
+  public Map<String, Object> getBestParams(boolean lowerIsBetter){
+    Map<String, Object> bestParams = null;
+    Double bestScore;
 
-    if (!lowerIsBetter) {
-      comparator = comparator.reversed();
+    if(lowerIsBetter){
+      bestScore = Double.MAX_VALUE;
+      for(Pair<Map<String, Object>, Double> result : results)
+      {
+        if(result.getSecond() < bestScore){
+          bestScore = result.getSecond();
+          bestParams = result.getFirst();
+        }
+      }
+    }else{
+      bestScore = Double.MIN_VALUE;
+      for(Pair<Map<String, Object>, Double> result : results)
+      {
+        if(result.getSecond() > bestScore){
+          bestScore = result.getSecond();
+          bestParams = result.getFirst();
+        }
+      }
     }
 
-    this.results.sort(comparator);
-    return results.get(0);
+    return bestParams;
+  }
+
+  /**
+   * Get the best result score. By default, the quality measure is better the lower its
+   * value.
+   */
+  public Double getBestScore(){ return getBestScore(true); }
+
+  /**
+   * Get the best result score. By default, the quality measure is better the lower its
+   * value.
+   *
+   * @param lowerIsBetter True if the quality measure is better the lower its value. False
+   *     otherwise.
+   */
+  public Double getBestScore(boolean lowerIsBetter){
+    Double bestScore;
+
+    if(lowerIsBetter){
+      bestScore = Double.MAX_VALUE;
+      for(Pair<Map<String, Object>, Double> result : results)
+      {
+        if(result.getSecond() < bestScore){
+          bestScore = result.getSecond();
+        }
+      }
+    }else{
+      bestScore = Double.MIN_VALUE;
+      for(Pair<Map<String, Object>, Double> result : results)
+      {
+        if(result.getSecond() > bestScore){
+          bestScore = result.getSecond();
+        }
+      }
+    }
+
+    return bestScore;
   }
 
 

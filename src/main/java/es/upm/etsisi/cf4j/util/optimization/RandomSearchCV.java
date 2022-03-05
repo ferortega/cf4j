@@ -293,48 +293,84 @@ public class RandomSearchCV {
     }
 
     /**
-     * Get the best result. By default, the quality measure is better the lower its
+     * Get the best result params. By default, the quality measure is better the lower its
      * value.
      */
-    public Pair<Map<String, Object>, Double> getBest(){ return getBest(true); }
+    public Map<String, Object> getBestParams(){ return getBestParams(true); }
 
     /**
-     * Get the best result. By default, the quality measure is better the lower its
+     * Get the best result params. By default, the quality measure is better the lower its
      * value.
      *
      * @param lowerIsBetter True if the quality measure is better the lower its value. False
      *     otherwise.
      */
-    public Pair<Map<String, Object>, Double> getBest(boolean lowerIsBetter){
-        List<Pair<Map<String, Object>, Double>> cvResults = new ArrayList<>();
-        for (Map<String, Object> params : this.results.keySet()) {
-            double[] errors = this.results.get(params);
-            double averageError = Maths.arrayAverage(errors);
-            cvResults.add(new Pair<>(params, averageError));
+    public Map<String, Object> getBestParams(boolean lowerIsBetter){
+        Map<String, Object> bestParams = null;
+        Double bestScore;
+
+        if(lowerIsBetter){
+            bestScore = Double.MAX_VALUE;
+            for (Map<String, Object> params : this.results.keySet()) {
+                double[] errors = this.results.get(params);
+                double averageError = Maths.arrayAverage(errors);
+                if(averageError < bestScore){
+                    bestScore = averageError;
+                    bestParams = params;
+                }
+            }
+        }else{
+            bestScore = Double.MIN_VALUE;
+            for (Map<String, Object> params : this.results.keySet()) {
+                double[] errors = this.results.get(params);
+                double averageError = Maths.arrayAverage(errors);
+                if(averageError > bestScore){
+                    bestScore = averageError;
+                    bestParams = params;
+                }
+            }
         }
 
-        // Sort results
-        Comparator<Pair<Map<String, Object>, Double>> comparator =
-                Comparator.comparing(
-                        Pair::getValue,
-                        (d1, d2) -> {
-                            if (Double.isNaN(d1) && Double.isNaN(d2)) {
-                                return 0;
-                            } else if (Double.isNaN(d1)) {
-                                return -1;
-                            } else if (Double.isNaN(d2)) {
-                                return 1;
-                            } else {
-                                return Double.compare(d1, d2);
-                            }
-                        });
+        return bestParams;
+    }
 
-        if (!lowerIsBetter) {
-            comparator = comparator.reversed();
+    /**
+     * Get the best result score. By default, the quality measure is better the lower its
+     * value.
+     */
+    public Double getBestScore(){ return getBestScore(true); }
+
+    /**
+     * Get the best result score. By default, the quality measure is better the lower its
+     * value.
+     *
+     * @param lowerIsBetter True if the quality measure is better the lower its value. False
+     *     otherwise.
+     */
+    public Double getBestScore(boolean lowerIsBetter){
+        Double bestScore;
+
+        if(lowerIsBetter){
+            bestScore = Double.MAX_VALUE;
+            for (Map<String, Object> params : this.results.keySet()) {
+                double[] errors = this.results.get(params);
+                double averageError = Maths.arrayAverage(errors);
+                if(averageError < bestScore){
+                    bestScore = averageError;
+                }
+            }
+        }else{
+            bestScore = Double.MIN_VALUE;
+            for (Map<String, Object> params : this.results.keySet()) {
+                double[] errors = this.results.get(params);
+                double averageError = Maths.arrayAverage(errors);
+                if(averageError > bestScore){
+                    bestScore = averageError;
+                }
+            }
         }
 
-        cvResults.sort(comparator);
-        return cvResults.get(0);
+        return bestScore;
     }
 
     /**

@@ -243,7 +243,7 @@ public class NeuMF extends Recommender {
 
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder("NewMF(")
+        StringBuilder str = new StringBuilder("NeuMF(")
                 .append("numEpochs=").append(this.numEpochs)
                 .append("; ")
                 .append("numFactors=").append(this.numFactors)
