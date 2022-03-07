@@ -32,8 +32,11 @@ public class MLP extends Recommender {
     /** Number of epochs * */
     private final int numEpochs;
 
-    /** Learning Rate */
+    /** Learning rate */
     protected final double learningRate;
+
+    /** Number of factors */
+    protected final int numFactors;
 
     /** Array of layers neurons */
     protected final int[] layers;
@@ -43,9 +46,11 @@ public class MLP extends Recommender {
      * contains the following keys:
      *
      * <ul>
+     *   <li><b>numFactors</b>: int value with the number of factors.
      *   <li><b>numEpochs</b>: int value with the number of epochs.
      *   <li><b>learningRate</b>: double value with the learning rate.
-     *   <li><b>layers</b>: Array of layers neurons.
+     *   <li><b>layers</b> (optional): Array of layers neurons. If missing,
+     *       default [20, 10] Array is used.
      *   <li><b><em>seed</em></b> (optional): random seed for random numbers generation. If missing,
      *       random value is used.
      * </ul>
@@ -56,21 +61,33 @@ public class MLP extends Recommender {
     public MLP(DataModel datamodel, Map<String, Object> params) {
         this(
                 datamodel,
+                (int) params.get("numFactors"),
                 (int) params.get("numEpochs"),
                 (double) params.get("learningRate"),
-                (int[]) params.get("layers"),
+                params.containsKey("layers") ? (int[]) params.get("layers") : new int[]{20, 10},
                 params.containsKey("seed") ? (long) params.get("seed") : System.currentTimeMillis());
     }
 
     /**
      * Model constructor
      *
+     * @param numFactors Number of factors
      * @param datamodel DataModel instance
      * @param numEpochs Number of epochs
      * @param learningRate Learning rate
-     * @param layers Array of layers neurons
      */
-    public MLP(DataModel datamodel, int numEpochs, double learningRate, int[] layers) {this(datamodel, numEpochs, learningRate, layers, System.currentTimeMillis());}
+    public MLP(DataModel datamodel, int numFactors, int numEpochs, double learningRate) {this(datamodel, numFactors, numEpochs, learningRate, new int[]{20, 10}, System.currentTimeMillis());}
+
+    /**
+     * Model constructor
+     *
+     * @param numFactors Number of factors
+     * @param datamodel DataModel instance
+     * @param numEpochs Number of epochs
+     * @param learningRate Learning rate
+     * @param seed Seed for random numbers generation
+     */
+    public MLP(DataModel datamodel, int numFactors, int numEpochs, double learningRate, long seed) {this(datamodel, numFactors, numEpochs, learningRate, new int[]{20, 10}, seed);}
 
     /**
      * Model constructor
@@ -78,14 +95,27 @@ public class MLP extends Recommender {
      * @param datamodel DataModel instance
      * @param numEpochs Number of epochs
      * @param learningRate Learning rate
-     * @param layers Array of layers neurons
+     * @param numFactors Number of factors
+     * @param layers Array of layers neurons. [20, 10] by default.
+     */
+    public MLP(DataModel datamodel, int numFactors, int numEpochs, double learningRate, int[] layers) {this(datamodel, numFactors, numEpochs, learningRate, layers, System.currentTimeMillis());}
+
+    /**
+     * Model constructor
+     *
+     * @param datamodel DataModel instance
+     * @param numEpochs Number of epochs
+     * @param learningRate Learning rate
+     * @param numFactors Number of factors
+     * @param layers Array of layers neurons. [20, 10] by default.
      * @param seed Seed for random numbers generation
      */
-    public MLP(DataModel datamodel, int numEpochs, double learningRate, int[] layers, long seed) {
+    public MLP(DataModel datamodel, int numFactors, int numEpochs, double learningRate, int[] layers, long seed) {
         super(datamodel);
 
         this.numEpochs = numEpochs;
         this.learningRate = learningRate;
+        this.numFactors = numFactors;
         this.layers = layers;
 
         ComputationGraphConfiguration.GraphBuilder builder = new NeuralNetConfiguration.Builder()
@@ -95,18 +125,18 @@ public class MLP extends Recommender {
                 .addInputs("user", "item")
                 .addLayer("userEmbeddingLayer", new EmbeddingLayer.Builder()
                         .nIn(super.getDataModel().getNumberOfUsers())
-                        .nOut(layers[0]/2)
+                        .nOut(this.numFactors)
                         .build(), "user")
                 .addLayer("itemEmbeddingLayer", new EmbeddingLayer.Builder()
                         .nIn(super.getDataModel().getNumberOfItems())
-                        .nOut(layers[0]/2)
+                        .nOut(this.numFactors)
                         .build(), "item")
                 .addVertex("concat",new MergeVertex(),"userEmbeddingLayer","itemEmbeddingLayer");
         int i = 0;
         for(;i<this.layers.length;i++){
             if(i == 0)
                 builder.addLayer("hiddenLayer"+i, new DenseLayer.Builder()
-                        .nIn(layers[0])
+                        .nIn(this.numFactors*2)
                         .nOut(layers[i])
                         .build(), "concat");
             else
@@ -201,6 +231,8 @@ public class MLP extends Recommender {
                 .append("numEpochs=").append(this.numEpochs)
                 .append("; ")
                 .append("learningRate=").append(this.learningRate)
+                .append("; ")
+                .append("numFactors=").append(this.numFactors)
                 .append("; ")
                 .append("layers=").append(Arrays.toString(layers))
                 .append(")");

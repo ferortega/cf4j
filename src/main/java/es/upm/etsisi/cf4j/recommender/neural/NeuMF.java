@@ -50,7 +50,8 @@ public class NeuMF extends Recommender {
      *   <li><b>numFactors</b>: int value with the number of latent factors.
      *   <li><b>numEpochs</b>: int value with the number of epochs.
      *   <li><b>learningRate</b>: double value with the learning rate.
-     *   <li><b>layers</b>: Array of layers neurons.
+     *   <li><b>layers</b> (optional): Array of layers neurons. If missing,
+     *       default [10] Array is used.
      *   <li><b><em>seed</em></b> (optional): random seed for random numbers generation. If missing,
      *       random value is used.
      * </ul>
@@ -64,21 +65,19 @@ public class NeuMF extends Recommender {
                 (int) params.get("numFactors"),
                 (int) params.get("numEpochs"),
                 (double) params.get("learningRate"),
-                (int[]) params.get("layers"),
+                params.containsKey("layers") ? (int[]) params.get("layers") : new int[]{10},
                 params.containsKey("seed") ? (long) params.get("seed") : System.currentTimeMillis());
     }
 
     /**
      * Model constructor
      *
-     * @param datamodel DataModel instance
      * @param numFactors Number of factors
+     * @param datamodel DataModel instance
      * @param numEpochs Number of epochs
      * @param learningRate Learning rate
      */
-    public NeuMF(DataModel datamodel, int numFactors, int numEpochs, double learningRate) {
-        this(datamodel, numFactors, numEpochs, learningRate, System.currentTimeMillis());
-    }
+    public NeuMF(DataModel datamodel, int numFactors, int numEpochs, double learningRate) {this(datamodel, numFactors, numEpochs, learningRate, new int[]{10}, System.currentTimeMillis());}
 
     /**
      * Model constructor
@@ -89,9 +88,7 @@ public class NeuMF extends Recommender {
      * @param learningRate Learning rate
      * @param seed random seed for random numbers generation
      */
-    public NeuMF(DataModel datamodel, int numFactors, int numEpochs, double learningRate, long seed) {
-        this(datamodel, numFactors, numEpochs, learningRate, new int[]{10}, seed);
-    }
+    public NeuMF(DataModel datamodel, int numFactors, int numEpochs, double learningRate, long seed) { this(datamodel, numFactors, numEpochs, learningRate, new int[]{10}, seed); }
 
     /**
      * Model constructor
@@ -102,9 +99,7 @@ public class NeuMF extends Recommender {
      * @param learningRate Learning rate
      * @param layers Array of layers neurons. [10] by default.
      */
-    public NeuMF(DataModel datamodel, int numFactors, int numEpochs, double learningRate, int[] layers) {
-        this(datamodel, numFactors, numEpochs, learningRate, layers, System.currentTimeMillis());
-    }
+    public NeuMF(DataModel datamodel, int numFactors, int numEpochs, double learningRate, int[] layers) { this(datamodel, numFactors, numEpochs, learningRate, layers, System.currentTimeMillis()); }
 
     /**
      * Model constructor
@@ -139,11 +134,11 @@ public class NeuMF extends Recommender {
                         .build(), "item")
                 .addLayer("userEmbeddingLayerMLP", new EmbeddingLayer.Builder()
                         .nIn(super.getDataModel().getNumberOfUsers())
-                        .nOut(layers[0]/2)
+                        .nOut(this.numFactors)
                         .build(), "user")
                 .addLayer("itemEmbeddingLayerMLP", new EmbeddingLayer.Builder()
                         .nIn(super.getDataModel().getNumberOfItems())
-                        .nOut(layers[0]/2)
+                        .nOut(this.numFactors)
                         .build(), "item")
                 .addVertex("product",new ElementWiseVertex(ElementWiseVertex.Op.Product),"userEmbeddingLayerMF","itemEmbeddingLayerMF")
                 .addVertex("concat",new MergeVertex(),"userEmbeddingLayerMLP","itemEmbeddingLayerMLP");
@@ -152,7 +147,7 @@ public class NeuMF extends Recommender {
         for(;i<this.layers.length;i++){
             if(i == 0)
                 builder.addLayer("hiddenLayer"+i, new DenseLayer.Builder()
-                        .nIn(layers[0])
+                        .nIn(this.numFactors*2)
                         .nOut(layers[i])
                         .build(), "concat");
             else
