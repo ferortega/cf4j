@@ -160,6 +160,7 @@ public class NCCF extends Recommender {
 
   /**
    * Returns the number of epochs.
+   *
    * @return Number of epochs.
    */
   public int getNumEpochs() {
@@ -168,9 +169,8 @@ public class NCCF extends Recommender {
 
   @Override
   public String toString() {
-    StringBuilder str = new StringBuilder("NCCF(")
-            .append("numEpochs=").append(this.numEpochs)
-            .append(")");
+    StringBuilder str =
+        new StringBuilder("NCCF(").append("numEpochs=").append(this.numEpochs).append(")");
     return str.toString();
   }
 }

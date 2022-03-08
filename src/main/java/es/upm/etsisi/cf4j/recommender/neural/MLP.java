@@ -59,13 +59,13 @@ public class MLP extends Recommender {
      * @param params Model's hyper-parameters values
      */
     public MLP(DataModel datamodel, Map<String, Object> params) {
-        this(
-                datamodel,
-                (int) params.get("numFactors"),
-                (int) params.get("numEpochs"),
-                (double) params.get("learningRate"),
-                params.containsKey("layers") ? (int[]) params.get("layers") : new int[]{20, 10},
-                params.containsKey("seed") ? (long) params.get("seed") : System.currentTimeMillis());
+    this(
+        datamodel,
+        (int) params.get("numFactors"),
+        (int) params.get("numEpochs"),
+        (double) params.get("learningRate"),
+        params.containsKey("layers") ? (int[]) params.get("layers") : new int[] {20, 10},
+        params.containsKey("seed") ? (long) params.get("seed") : System.currentTimeMillis());
     }
 
     /**
