@@ -3,9 +3,11 @@ package es.upm.etsisi.cf4j.util.optimization;
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
-import es.upm.etsisi.cf4j.util.Maths;
 import org.apache.commons.math3.util.Pair;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -64,7 +66,7 @@ public class RandomSearch {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param numIters Number of samples of the development set to be evaluated
    */
@@ -94,7 +96,7 @@ public class RandomSearch {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param numIters Number of samples of the development set to be evaluated
    * @param seed Random seed for random numbers generation
@@ -118,7 +120,7 @@ public class RandomSearch {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
    *     and values (value)
@@ -151,7 +153,7 @@ public class RandomSearch {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param coverage Percentage of samples of the development set to be evaluated
    */
@@ -181,7 +183,7 @@ public class RandomSearch {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
    *     and values (value)
@@ -214,7 +216,7 @@ public class RandomSearch {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param coverage Percentage of samples of the development set to be evaluated
    * @param seed Random seed for random numbers generation
@@ -238,7 +240,7 @@ public class RandomSearch {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
    *     and values (value)
@@ -273,7 +275,7 @@ public class RandomSearch {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param numIters Number of samples of the development set to be evaluated
    * @param lowerIsBetter True if the quality measure is better the lower its value, false
@@ -306,7 +308,7 @@ public class RandomSearch {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param numIters Number of samples of the development set to be evaluated
    * @param lowerIsBetter True if the quality measure is better the lower its value, false
@@ -333,7 +335,7 @@ public class RandomSearch {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
    *     and values (value)
@@ -369,7 +371,7 @@ public class RandomSearch {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param coverage Percentage of samples of the development set to be evaluated
    * @param lowerIsBetter True if the quality measure is better the lower its value, false
@@ -402,7 +404,7 @@ public class RandomSearch {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
    *     and values (value)
@@ -438,7 +440,7 @@ public class RandomSearch {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param coverage Percentage of samples of the development set to be evaluated
    * @param lowerIsBetter True if the quality measure is better the lower its value, false
@@ -473,7 +475,7 @@ public class RandomSearch {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
    *     and values (value)
@@ -511,7 +513,7 @@ public class RandomSearch {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
    *     and values (value)
@@ -605,7 +607,11 @@ public class RandomSearch {
     }
   }
 
-  /** Get the best result params. By default, the quality measure is better the lower its value. */
+  /**
+   * Get the best result params. By default, the quality measure is better the lower its value.
+   *
+   * @return Map with best params
+   */
   public Map<String, Object> getBestParams() {
     Map<String, Object> bestParams = null;
     Double bestScore = (this.lowerIsBetter) ? Double.MAX_VALUE : Double.MIN_VALUE;
@@ -619,8 +625,12 @@ public class RandomSearch {
     return bestParams;
   }
 
-  /** Get the best result score. By default, the quality measure is better the lower its value. */
-  public Double getBestScore() {
+  /**
+   * Get the best result score. By default, the quality measure is better the lower its value.
+   *
+   * @return double value with best score
+   */
+  public double getBestScore() {
     double bestScore = results.get(getBestParams());
     return bestScore;
   }
@@ -725,6 +735,88 @@ public class RandomSearch {
 
     // Print results
     System.out.println("\n" + sb.toString());
+  }
+
+  /**
+   * Exports results of RandomSerach in csv format
+   *
+   * @param filename File name
+   * @throws IOException When file is not found or is locked.
+   */
+  public void exportResults(String filename) throws IOException {
+    exportResults(filename, true);
+  }
+
+  /**
+   * Exports results of RandomSerach in csv format
+   *
+   * @param filename File name
+   * @param includeHeader Include CSV header line. By default: true
+   * @throws IOException When file is not found or is locked.
+   */
+  public void exportResults(String filename, boolean includeHeader) throws IOException {
+    exportResults(filename, ",", includeHeader);
+  }
+
+  /**
+   * Exports results of RandomSerach in csv format
+   *
+   * @param filename File name
+   * @param separator CSV separator field. By default: colon character (,)
+   * @throws IOException When file is not found or is locked.
+   */
+  public void exportResults(String filename, String separator) throws IOException {
+    exportResults(filename, separator, true);
+  }
+
+  /**
+   * Exports results of RandomSerach in csv format
+   *
+   * @param filename File name
+   * @param separator CSV separator field. By default: colon character (,)
+   * @param includeHeader Include CSV header line. By default: true
+   * @throws IOException When file is not found or is locked.
+   */
+  public void exportResults(String filename, String separator, boolean includeHeader)
+      throws IOException {
+    File f = new File(filename);
+    File parent = f.getAbsoluteFile().getParentFile();
+    if (!parent.exists() && !parent.mkdirs()) {
+      throw new IOException("Unable to create directory " + parent);
+    }
+
+    String measure = this.qualityMeasureClass.getSimpleName().toLowerCase();
+
+    PrintWriter writer = new PrintWriter(f);
+
+    String[] paramsName = grid.getParamsName();
+
+    if (includeHeader) {
+
+      writer.print(measure);
+
+      for (String name : paramsName) {
+        writer.print(separator);
+        writer.print(name);
+      }
+
+      writer.println();
+    }
+
+    for (Map<String, Object> params : this.results.keySet()) {
+      double error = this.results.get(params);
+
+      writer.print(error);
+
+      for (String key : paramsName) {
+        writer.print(separator);
+        writer.print(params.get(key));
+      }
+
+      writer.println();
+    }
+
+    writer.close();
   }
 
   public Map<Map<String, Object>, Double> getResults() {

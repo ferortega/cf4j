@@ -33,8 +33,11 @@ public class NeuMF extends Recommender {
   /** Number of epochs * */
   private final int numEpochs;
 
-  /** Number of latent factors */
-  protected final int numFactors;
+  /** Number of GMF latent factors */
+  protected final int numFactorsGMF;
+
+  /** Number of MLP latent factors */
+  protected final int numFactorsMLP;
 
   /** Learning Rate */
   protected final double learningRate;
@@ -47,7 +50,10 @@ public class NeuMF extends Recommender {
    * contains the following keys:
    *
    * <ul>
-   *   <li><b>numFactors</b>: int value with the number of latent factors.
+   *   <li><b>numFactorsGMF</b> (optional): int value with the number of latent factors of GMF net.
+   *       If missing, default 10 GMF latent factors are used.
+   *   <li><b>numFactorsMLP</b> (optional): int value with the number of latent factors of MLP net.
+   *       If missing, default 10 MLP latent factors are used.
    *   <li><b>numEpochs</b>: int value with the number of epochs.
    *   <li><b>learningRate</b>: double value with the learning rate.
    *   <li><b>layers</b> (optional): Array of layers neurons. If missing, default [10] Array is
@@ -62,7 +68,8 @@ public class NeuMF extends Recommender {
   public NeuMF(DataModel datamodel, Map<String, Object> params) {
     this(
         datamodel,
-        (int) params.get("numFactors"),
+        params.containsKey("numFactorsGMF") ? (int) params.get("numFactorsGMF") : 10,
+        params.containsKey("numFactorsMLP") ? (int) params.get("numFactorsMLP") : 10,
         (int) params.get("numEpochs"),
         (double) params.get("learningRate"),
         params.containsKey("layers") ? (int[]) params.get("layers") : new int[] {10},
@@ -72,48 +79,116 @@ public class NeuMF extends Recommender {
   /**
    * Model constructor
    *
-   * @param numFactors Number of factors
+   * @param datamodel DataModel instance
+   * @param numFactorsGMF Number of factors of GMF net. 10 by default
+   * @param numFactorsMLP Number of factors of MLP net. 10 by default
    * @param datamodel DataModel instance
    * @param numEpochs Number of epochs
    * @param learningRate Learning rate
    */
-  public NeuMF(DataModel datamodel, int numFactors, int numEpochs, double learningRate) {
+  public NeuMF(
+      DataModel datamodel,
+      int numFactorsGMF,
+      int numFactorsMLP,
+      int numEpochs,
+      double learningRate) {
     this(
-        datamodel, numFactors, numEpochs, learningRate, new int[] {10}, System.currentTimeMillis());
+        datamodel,
+        numFactorsGMF,
+        numFactorsMLP,
+        numEpochs,
+        learningRate,
+        new int[] {10},
+        System.currentTimeMillis());
   }
 
   /**
    * Model constructor
    *
    * @param datamodel DataModel instance
-   * @param numFactors Number of factors
+   * @param numFactorsGMF Number of factors of GMF net. 10 by default
+   * @param numFactorsMLP Number of factors of MLP net. 10 by default
    * @param numEpochs Number of epochs
    * @param learningRate Learning rate
    * @param seed random seed for random numbers generation
    */
-  public NeuMF(DataModel datamodel, int numFactors, int numEpochs, double learningRate, long seed) {
-    this(datamodel, numFactors, numEpochs, learningRate, new int[] {10}, seed);
+  public NeuMF(
+      DataModel datamodel,
+      int numFactorsGMF,
+      int numFactorsMLP,
+      int numEpochs,
+      double learningRate,
+      long seed) {
+    this(datamodel, numFactorsGMF, numFactorsMLP, numEpochs, learningRate, new int[] {10}, seed);
   }
 
   /**
    * Model constructor
    *
    * @param datamodel DataModel instance
-   * @param numFactors Number of factors
+   * @param numFactorsGMF Number of factors of GMF net. 10 by default
+   * @param numFactorsMLP Number of factors of MLP net. 10 by default
    * @param numEpochs Number of epochs
    * @param learningRate Learning rate
    * @param layers Array of layers neurons. [10] by default.
    */
   public NeuMF(
-      DataModel datamodel, int numFactors, int numEpochs, double learningRate, int[] layers) {
-    this(datamodel, numFactors, numEpochs, learningRate, layers, System.currentTimeMillis());
+      DataModel datamodel,
+      int numFactorsGMF,
+      int numFactorsMLP,
+      int numEpochs,
+      double learningRate,
+      int[] layers) {
+    this(
+        datamodel,
+        numFactorsGMF,
+        numFactorsMLP,
+        numEpochs,
+        learningRate,
+        layers,
+        System.currentTimeMillis());
   }
 
   /**
    * Model constructor
    *
    * @param datamodel DataModel instance
-   * @param numFactors Number of factors
+   * @param datamodel DataModel instance
+   * @param numEpochs Number of epochs
+   * @param learningRate Learning rate
+   */
+  public NeuMF(DataModel datamodel, int numEpochs, double learningRate) {
+    this(datamodel, 10, 10, numEpochs, learningRate, new int[] {10}, System.currentTimeMillis());
+  }
+
+  /**
+   * Model constructor
+   *
+   * @param datamodel DataModel instance
+   * @param numEpochs Number of epochs
+   * @param learningRate Learning rate
+   * @param seed random seed for random numbers generation
+   */
+  public NeuMF(DataModel datamodel, int numEpochs, double learningRate, long seed) {
+    this(datamodel, 10, 10, numEpochs, learningRate, new int[] {10}, seed);
+  }
+
+  /**
+   * Model constructor
+   *
+   * @param datamodel DataModel instance
+   * @param numEpochs Number of epochs
+   * @param learningRate Learning rate
+   * @param layers Array of layers neurons. [10] by default.
+   */
+  public NeuMF(DataModel datamodel, int numEpochs, double learningRate, int[] layers) {
+    this(datamodel, 10, 10, numEpochs, learningRate, layers, System.currentTimeMillis());
+  }
+
+  /**
+   * Model constructor
+   *
+   * @param datamodel DataModel instance
    * @param numEpochs Number of epochs
    * @param learningRate Learning rate
    * @param layers Array of layers neurons. [10] by default.
@@ -121,7 +196,8 @@ public class NeuMF extends Recommender {
    */
   public NeuMF(
       DataModel datamodel,
-      int numFactors,
+      int numFactorsGMF,
+      int numFactorsMLP,
       int numEpochs,
       double learningRate,
       int[] layers,
@@ -129,7 +205,8 @@ public class NeuMF extends Recommender {
     super(datamodel);
 
     this.numEpochs = numEpochs;
-    this.numFactors = numFactors;
+    this.numFactorsGMF = numFactorsGMF;
+    this.numFactorsMLP = numFactorsMLP;
     this.learningRate = learningRate;
     this.layers = layers;
 
@@ -140,38 +217,38 @@ public class NeuMF extends Recommender {
             .graphBuilder()
             .addInputs("user", "item")
             .addLayer(
-                "userEmbeddingLayerMF",
+                "userEmbeddingLayerGMF",
                 new EmbeddingLayer.Builder()
                     .nIn(super.getDataModel().getNumberOfUsers())
-                    .nOut(this.numFactors)
+                    .nOut(this.numFactorsGMF)
                     .build(),
                 "user")
             .addLayer(
-                "itemEmbeddingLayerMF",
+                "itemEmbeddingLayerGMF",
                 new EmbeddingLayer.Builder()
                     .nIn(super.getDataModel().getNumberOfItems())
-                    .nOut(this.numFactors)
+                    .nOut(this.numFactorsGMF)
                     .build(),
                 "item")
             .addLayer(
                 "userEmbeddingLayerMLP",
                 new EmbeddingLayer.Builder()
                     .nIn(super.getDataModel().getNumberOfUsers())
-                    .nOut(this.numFactors)
+                    .nOut(this.numFactorsMLP)
                     .build(),
                 "user")
             .addLayer(
                 "itemEmbeddingLayerMLP",
                 new EmbeddingLayer.Builder()
                     .nIn(super.getDataModel().getNumberOfItems())
-                    .nOut(this.numFactors)
+                    .nOut(this.numFactorsMLP)
                     .build(),
                 "item")
             .addVertex(
                 "product",
                 new ElementWiseVertex(ElementWiseVertex.Op.Product),
-                "userEmbeddingLayerMF",
-                "itemEmbeddingLayerMF")
+                "userEmbeddingLayerGMF",
+                "itemEmbeddingLayerGMF")
             .addVertex(
                 "concat", new MergeVertex(), "userEmbeddingLayerMLP", "itemEmbeddingLayerMLP");
 
@@ -180,7 +257,7 @@ public class NeuMF extends Recommender {
       if (i == 0)
         builder.addLayer(
             "hiddenLayer" + i,
-            new DenseLayer.Builder().nIn(this.numFactors * 2).nOut(layers[i]).build(),
+            new DenseLayer.Builder().nIn(this.numFactorsMLP * 2).nOut(layers[i]).build(),
             "concat");
       else
         builder.addLayer(
@@ -194,7 +271,7 @@ public class NeuMF extends Recommender {
         .addLayer(
             "out",
             new OutputLayer.Builder(LossFunctions.LossFunction.MSE)
-                .nIn(layers[i - 1] + this.numFactors)
+                .nIn(layers[i - 1] + this.numFactorsGMF)
                 .nOut(1)
                 .activation(Activation.IDENTITY)
                 .build(),
@@ -273,6 +350,42 @@ public class NeuMF extends Recommender {
     return this.numEpochs;
   }
 
+  /**
+   * Returns the number of latent factors of GMF net.
+   *
+   * @return Number of latent factors of GMF net.
+   */
+  public int getGMFNumFactors() {
+    return this.numFactorsGMF;
+  }
+
+  /**
+   * Returns the number of latent factors of MLP net.
+   *
+   * @return Number of latent factors of MLP net.
+   */
+  public int getMLPNumFactors() {
+    return this.numFactorsMLP;
+  }
+
+  /**
+   * Returns learning rate.
+   *
+   * @return learning rate.
+   */
+  public double getLearningRate() {
+    return this.learningRate;
+  }
+
+  /**
+   * Returns net layers.
+   *
+   * @return net layers.
+   */
+  public int[] getLayers() {
+    return this.layers;
+  }
+
   @Override
   public String toString() {
     StringBuilder str =
@@ -280,8 +393,11 @@ public class NeuMF extends Recommender {
             .append("numEpochs=")
             .append(this.numEpochs)
             .append("; ")
-            .append("numFactors=")
-            .append(this.numFactors)
+            .append("numFactorsGMF=")
+            .append(this.numFactorsGMF)
+            .append("; ")
+            .append("numFactorsMLP=")
+            .append(this.numFactorsMLP)
             .append("; ")
             .append("learningRate=")
             .append(this.learningRate)

@@ -4,7 +4,6 @@ import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -30,7 +29,7 @@ public class GridSearchCV extends RandomSearchCV {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param cv Number of folds for the cross validation
    */
@@ -52,7 +51,7 @@ public class GridSearchCV extends RandomSearchCV {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param cv Number of folds for the cross validation
    * @param seed Random seed for random numbers generation
@@ -83,7 +82,7 @@ public class GridSearchCV extends RandomSearchCV {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
    *     and values (value)
@@ -115,7 +114,7 @@ public class GridSearchCV extends RandomSearchCV {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
    *     and values (value)
@@ -141,8 +140,6 @@ public class GridSearchCV extends RandomSearchCV {
         seed);
   }
 
-  /////////////////////////////////
-
   /**
    * GridSearchCV constructor
    *
@@ -152,7 +149,7 @@ public class GridSearchCV extends RandomSearchCV {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param cv Number of folds for the cross validation
    * @param lowerIsBetter True if the quality measure is better the lower its value, false
@@ -184,7 +181,7 @@ public class GridSearchCV extends RandomSearchCV {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param cv Number of folds for the cross validation
    * @param lowerIsBetter True if the quality measure is better the lower its value, false
@@ -219,7 +216,7 @@ public class GridSearchCV extends RandomSearchCV {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
    *     and values (value)
@@ -255,7 +252,7 @@ public class GridSearchCV extends RandomSearchCV {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
    *     and values (value)

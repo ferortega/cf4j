@@ -15,7 +15,6 @@ import org.nd4j.linalg.cpu.nativecpu.NDArray;
 import org.nd4j.linalg.learning.config.Adam;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
 
-import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -194,6 +193,24 @@ public class GMF extends Recommender {
    */
   public int getNumEpochs() {
     return this.numEpochs;
+  }
+
+  /**
+   * Returns the number of latent factors.
+   *
+   * @return Number of latent factors.
+   */
+  public int getNumFactors() {
+    return this.numFactors;
+  }
+
+  /**
+   * Returns learning rate.
+   *
+   * @return learning rate.
+   */
+  public double getLearningRate() {
+    return this.learningRate;
   }
 
   @Override

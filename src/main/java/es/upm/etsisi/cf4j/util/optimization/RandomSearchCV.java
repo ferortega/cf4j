@@ -71,7 +71,7 @@ public class RandomSearchCV {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param cv Number of fold for the cross validation
    * @param coverage Percentage of samples of the development set to be evaluated
@@ -103,7 +103,7 @@ public class RandomSearchCV {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param cv Number of fold for the cross validation
    * @param coverage Percentage of samples of the development set to be evaluated
@@ -138,7 +138,7 @@ public class RandomSearchCV {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
    *     and values (value)
@@ -174,7 +174,7 @@ public class RandomSearchCV {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
    *     and values (value)
@@ -212,7 +212,7 @@ public class RandomSearchCV {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param cv Number of fold for the cross validation
    * @param numIters Number of samples of the development set to be evaluated
@@ -244,7 +244,7 @@ public class RandomSearchCV {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param cv Number of fold for the cross validation
    * @param numIters Number of samples of the development set to be evaluated
@@ -270,7 +270,7 @@ public class RandomSearchCV {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
    *     and values (value)
@@ -306,7 +306,7 @@ public class RandomSearchCV {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param cv Number of fold for the cross validation
    * @param coverage Percentage of samples of the development set to be evaluated
@@ -341,7 +341,7 @@ public class RandomSearchCV {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param cv Number of fold for the cross validation
    * @param coverage Percentage of samples of the development set to be evaluated
@@ -379,7 +379,7 @@ public class RandomSearchCV {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
    *     and values (value)
@@ -418,7 +418,7 @@ public class RandomSearchCV {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
    *     and values (value)
@@ -459,7 +459,7 @@ public class RandomSearchCV {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param cv Number of fold for the cross validation
    * @param numIters Number of samples of the development set to be evaluated
@@ -494,7 +494,7 @@ public class RandomSearchCV {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param cv Number of fold for the cross validation
    * @param numIters Number of samples of the development set to be evaluated
@@ -532,7 +532,7 @@ public class RandomSearchCV {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
    *     and values (value)
@@ -571,7 +571,7 @@ public class RandomSearchCV {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
    *     and values (value)
@@ -662,7 +662,11 @@ public class RandomSearchCV {
     }
   }
 
-  /** Get the best result params. By default, the quality measure is better the lower its value. */
+  /**
+   * Get the best result params. By default, the quality measure is better the lower its value.
+   *
+   * @return Map with best params
+   */
   public Map<String, Object> getBestParams() {
     Map<String, Object> bestParams = null;
     Double bestScore = (this.lowerIsBetter) ? Double.MAX_VALUE : Double.MIN_VALUE;
@@ -680,8 +684,12 @@ public class RandomSearchCV {
     return bestParams;
   }
 
-  /** Get the best result score. By default, the quality measure is better the lower its value. */
-  public Double getBestScore() {
+  /**
+   * Get the best result score. By default, the quality measure is better the lower its value.
+   *
+   * @return double value with best score
+   */
+  public double getBestScore() {
     double bestScore = Maths.arrayAverage(results.get(getBestParams()));
     return bestScore;
   }
@@ -850,6 +858,8 @@ public class RandomSearchCV {
 
     PrintWriter writer = new PrintWriter(f);
 
+    String[] paramsName = grid.getParamsName();
+
     if (includeHeader) {
       for (int fold = 0; fold < this.cv; fold++) {
         writer.print(measure);
@@ -864,9 +874,13 @@ public class RandomSearchCV {
 
       writer.print(measure);
       writer.print("_std");
-      writer.print(separator);
 
-      writer.println("params");
+      for (String name : paramsName) {
+        writer.print(separator);
+        writer.print(name);
+      }
+
+      writer.println();
     }
 
     for (Map<String, Object> params : this.results.keySet()) {
@@ -883,15 +897,10 @@ public class RandomSearchCV {
       writer.print(separator);
 
       writer.print(std);
-      writer.print(separator);
 
-      if (separator.equals(",")) {
-        writer.print("\"");
-      }
-      writer.print(params);
-
-      if (separator.equals(",")) {
-        writer.print("\"");
+      for (String key : paramsName) {
+        writer.print(separator);
+        writer.print(params.get(key));
       }
 
       writer.println();

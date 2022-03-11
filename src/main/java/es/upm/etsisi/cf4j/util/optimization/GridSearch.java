@@ -3,12 +3,8 @@ package es.upm.etsisi.cf4j.util.optimization;
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
-import org.apache.commons.math3.util.Pair;
 
-import java.lang.reflect.InvocationTargetException;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.*;
+import java.util.Map;
 
 /**
  * Utility class to performs a grid search over a Recommender instance. The Recommender class used
@@ -49,7 +45,7 @@ public class GridSearch extends RandomSearch {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
    *     and values (value)
@@ -103,7 +99,7 @@ public class GridSearch extends RandomSearch {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
    *     and values (value)
