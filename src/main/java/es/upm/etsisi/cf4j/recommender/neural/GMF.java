@@ -15,13 +15,12 @@ import org.nd4j.linalg.cpu.nativecpu.NDArray;
 import org.nd4j.linalg.learning.config.Adam;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
 
-import java.util.Arrays;
 import java.util.Map;
 
 /**
- * Implements He, X., Liao, L., Zhang, H., Nie, L., Hu, X., &amp; Chua, T. S. (2017, April).
- * Neural collaborative filtering. In Proceedings of the 26th international conference on
- * world wide web (pp. 173-182).
+ * Implements He, X., Liao, L., Zhang, H., Nie, L., Hu, X., &amp; Chua, T. S. (2017, April). Neural
+ * collaborative filtering. In Proceedings of the 26th international conference on world wide web
+ * (pp. 173-182).
  */
 public class GMF extends Recommender {
 
@@ -54,11 +53,11 @@ public class GMF extends Recommender {
    */
   public GMF(DataModel datamodel, Map<String, Object> params) {
     this(
-            datamodel,
-            (int) params.get("numFactors"),
-            (int) params.get("numEpochs"),
-            (double) params.get("learningRate"),
-            params.containsKey("seed") ? (long) params.get("seed") : System.currentTimeMillis());
+        datamodel,
+        (int) params.get("numFactors"),
+        (int) params.get("numEpochs"),
+        (double) params.get("learningRate"),
+        params.containsKey("seed") ? (long) params.get("seed") : System.currentTimeMillis());
   }
 
   /**
@@ -69,7 +68,9 @@ public class GMF extends Recommender {
    * @param numEpochs Number of epochs
    * @param learningRate Learning rate
    */
-  public GMF(DataModel datamodel, int numFactors, int numEpochs, double learningRate) {this(datamodel, numFactors, numEpochs, learningRate, System.currentTimeMillis());}
+  public GMF(DataModel datamodel, int numFactors, int numEpochs, double learningRate) {
+    this(datamodel, numFactors, numEpochs, learningRate, System.currentTimeMillis());
+  }
 
   /**
    * Model constructor
@@ -87,25 +88,39 @@ public class GMF extends Recommender {
     this.numFactors = numFactors;
     this.learningRate = learningRate;
 
-    ComputationGraphConfiguration conf = new NeuralNetConfiguration.Builder()
+    ComputationGraphConfiguration conf =
+        new NeuralNetConfiguration.Builder()
             .seed(seed)
             .updater(new Adam(learningRate))
             .graphBuilder()
             .addInputs("user", "item")
-            .addLayer("userEmbeddingLayer", new EmbeddingLayer.Builder()
+            .addLayer(
+                "userEmbeddingLayer",
+                new EmbeddingLayer.Builder()
                     .nIn(super.getDataModel().getNumberOfUsers())
                     .nOut(this.numFactors)
-                    .build(), "user")
-            .addLayer("itemEmbeddingLayer", new EmbeddingLayer.Builder()
+                    .build(),
+                "user")
+            .addLayer(
+                "itemEmbeddingLayer",
+                new EmbeddingLayer.Builder()
                     .nIn(super.getDataModel().getNumberOfItems())
                     .nOut(this.numFactors)
-                    .build(), "item")
-            .addVertex("product",new ElementWiseVertex(ElementWiseVertex.Op.Product),"userEmbeddingLayer","itemEmbeddingLayer")
-            .addLayer("out", new OutputLayer.Builder(LossFunctions.LossFunction.MSE)
+                    .build(),
+                "item")
+            .addVertex(
+                "product",
+                new ElementWiseVertex(ElementWiseVertex.Op.Product),
+                "userEmbeddingLayer",
+                "itemEmbeddingLayer")
+            .addLayer(
+                "out",
+                new OutputLayer.Builder(LossFunctions.LossFunction.MSE)
                     .nIn(this.numFactors)
                     .nOut(1)
                     .activation(Activation.IDENTITY)
-                    .build(), "product")
+                    .build(),
+                "product")
             .setOutputs("out")
             .build();
 
@@ -124,7 +139,7 @@ public class GMF extends Recommender {
     double[][] items = new double[super.getDataModel().getNumberOfRatings()][1];
     double[][] ratings = new double[super.getDataModel().getNumberOfRatings()][1];
 
-    int i=0;
+    int i = 0;
     for (User user : super.datamodel.getUsers()) {
       for (int pos = 0; pos < user.getNumberOfRatings(); pos++) {
         int itemIndex = user.getItemAt(pos);
@@ -147,10 +162,9 @@ public class GMF extends Recommender {
     }
   }
 
-
   /**
-   * Returns the prediction of a rating of a certain user for a certain item,
-   * through these predictions the metrics of MAE, MSE and RMSE can be obtained.
+   * Returns the prediction of a rating of a certain user for a certain item, through these
+   * predictions the metrics of MAE, MSE and RMSE can be obtained.
    *
    * @param userIndex Index of the user in the array of Users of the DataModel instance
    * @param itemIndex Index of the item in the array of Items of the DataModel instance
@@ -174,20 +188,43 @@ public class GMF extends Recommender {
 
   /**
    * Returns the number of epochs.
+   *
    * @return Number of epochs.
    */
   public int getNumEpochs() {
     return this.numEpochs;
   }
 
+  /**
+   * Returns the number of latent factors.
+   *
+   * @return Number of latent factors.
+   */
+  public int getNumFactors() {
+    return this.numFactors;
+  }
+
+  /**
+   * Returns learning rate.
+   *
+   * @return learning rate.
+   */
+  public double getLearningRate() {
+    return this.learningRate;
+  }
+
   @Override
   public String toString() {
-    StringBuilder str = new StringBuilder("GMF(")
-            .append("numEpochs=").append(this.numEpochs)
+    StringBuilder str =
+        new StringBuilder("GMF(")
+            .append("numEpochs=")
+            .append(this.numEpochs)
             .append("; ")
-            .append("numFactors=").append(this.numFactors)
+            .append("numFactors=")
+            .append(this.numFactors)
             .append("; ")
-            .append("learningRate=").append(this.learningRate)
+            .append("learningRate=")
+            .append(this.learningRate)
             .append(")");
     return str.toString();
   }

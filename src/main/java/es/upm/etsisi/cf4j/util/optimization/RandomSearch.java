@@ -5,6 +5,9 @@ import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import org.apache.commons.math3.util.Pair;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -17,10 +20,10 @@ import java.util.*;
  * using the attributes defined in the Map object. The parameters used in the search process, i.e.
  * the development set, must be defined in a ParamsGrid instance. The random search is executed in
  * such a way that it minimizes (by default) or maximizes a QualityMeasure instance over the test
- * set of the DataModel instance. If the QualityMeasure requires parameters to work, it must contains
- * a constructor with the signature QualityMeasure::&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
- * that initializes the QualityMeasure using the attributes defined in the Map object. The search
- * is performed by selecting numIters parameters of the development set.
+ * set of the DataModel instance. If the QualityMeasure requires parameters to work, it must
+ * contains a constructor with the signature QualityMeasure::&lt;init&gt;(Recommender,
+ * Map&lt;String, Object&gt;) that initializes the QualityMeasure using the attributes defined in
+ * the Map object. The search is performed by selecting numIters parameters of the development set.
  */
 public class RandomSearch {
 
@@ -42,11 +45,17 @@ public class RandomSearch {
   /** Number of samples of the development set to be evaluated */
   private final int numIters;
 
-  /** Random seed for random numbers generation **/
+  /**
+   * Boolean value that takes true if the quality measure is better the lower its value. False
+   * otherwise
+   */
+  private final boolean lowerIsBetter;
+
+  /** Random seed for random numbers generation */
   private final long seed;
 
-  /** List to store grid search results */
-  private final List<Pair<String, Double>> results;
+  /** Map to store grid search results */
+  private final Map<Map<String, Object>, Double> results;
 
   /**
    * RandomSearch constructor
@@ -57,7 +66,7 @@ public class RandomSearch {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param numIters Number of samples of the development set to be evaluated
    */
@@ -67,7 +76,15 @@ public class RandomSearch {
       Class<? extends Recommender> recommenderClass,
       Class<? extends QualityMeasure> qualityMeasureClass,
       int numIters) {
-    this(datamodel, grid, recommenderClass, qualityMeasureClass, null, numIters, System.currentTimeMillis());
+    this(
+        datamodel,
+        grid,
+        recommenderClass,
+        qualityMeasureClass,
+        null,
+        numIters,
+        true,
+        System.currentTimeMillis());
   }
 
   /**
@@ -79,19 +96,19 @@ public class RandomSearch {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param numIters Number of samples of the development set to be evaluated
    * @param seed Random seed for random numbers generation
    */
   public RandomSearch(
-          DataModel datamodel,
-          ParamsGrid grid,
-          Class<? extends Recommender> recommenderClass,
-          Class<? extends QualityMeasure> qualityMeasureClass,
-          int numIters,
-          long seed) {
-    this(datamodel, grid, recommenderClass, qualityMeasureClass, null, numIters, seed);
+      DataModel datamodel,
+      ParamsGrid grid,
+      Class<? extends Recommender> recommenderClass,
+      Class<? extends QualityMeasure> qualityMeasureClass,
+      int numIters,
+      long seed) {
+    this(datamodel, grid, recommenderClass, qualityMeasureClass, null, numIters, true, seed);
   }
 
   /**
@@ -103,49 +120,28 @@ public class RandomSearch {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
    *     and values (value)
    * @param numIters Number of samples of the development set to be evaluated
    */
   public RandomSearch(
-          DataModel datamodel,
-          ParamsGrid grid,
-          Class<? extends Recommender> recommenderClass,
-          Class<? extends QualityMeasure> qualityMeasureClass,
-          Map<String, Object> qualityMeasureParams,
-          int numIters) {
-    this(datamodel, grid, recommenderClass, qualityMeasureClass, qualityMeasureParams, numIters, System.currentTimeMillis());
-  }
-
-  /**
-   * RandomSearch constructor
-   *
-   * @param datamodel DataModel instance
-   * @param grid ParamsGrid instance containing the development set
-   * @param recommenderClass Recommender class to be evaluated. This class must contains a
-   *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
-   *     Object&gt;)
-   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
-   *     Map&lt;String, Object&gt;)
-   * @param coverage Percentage of samples of the development set to be evaluated
-   */
-  public RandomSearch(
-          DataModel datamodel,
-          ParamsGrid grid,
-          Class<? extends Recommender> recommenderClass,
-          Class<? extends QualityMeasure> qualityMeasureClass,
-          double coverage) {
+      DataModel datamodel,
+      ParamsGrid grid,
+      Class<? extends Recommender> recommenderClass,
+      Class<? extends QualityMeasure> qualityMeasureClass,
+      Map<String, Object> qualityMeasureParams,
+      int numIters) {
     this(
-            datamodel,
-            grid,
-            recommenderClass,
-            qualityMeasureClass,
-            null,
-            coverage,
-            System.currentTimeMillis());
+        datamodel,
+        grid,
+        recommenderClass,
+        qualityMeasureClass,
+        qualityMeasureParams,
+        numIters,
+        true,
+        System.currentTimeMillis());
   }
 
   /**
@@ -157,50 +153,16 @@ public class RandomSearch {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
-   * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
-   *     and values (value)
    * @param coverage Percentage of samples of the development set to be evaluated
    */
   public RandomSearch(
-          DataModel datamodel,
-          ParamsGrid grid,
-          Class<? extends Recommender> recommenderClass,
-          Class<? extends QualityMeasure> qualityMeasureClass,
-          Map<String, Object> qualityMeasureParams,
-          double coverage) {
-    this(
-            datamodel,
-            grid,
-            recommenderClass,
-            qualityMeasureClass,
-            qualityMeasureParams,
-            coverage,
-            System.currentTimeMillis());
-  }
-
-  /**
-   * RandomSearch constructor
-   *
-   * @param datamodel DataModel instance
-   * @param grid ParamsGrid instance containing the development set
-   * @param recommenderClass Recommender class to be evaluated. This class must contains a
-   *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
-   *     Object&gt;)
-   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
-   *     Map&lt;String, Object&gt;)
-   * @param coverage Percentage of samples of the development set to be evaluated
-   * @param seed Random seed for random numbers generation
-   */
-  public RandomSearch(
-          DataModel datamodel,
-          ParamsGrid grid,
-          Class<? extends Recommender> recommenderClass,
-          Class<? extends QualityMeasure> qualityMeasureClass,
-          double coverage,
-          long seed) {
+      DataModel datamodel,
+      ParamsGrid grid,
+      Class<? extends Recommender> recommenderClass,
+      Class<? extends QualityMeasure> qualityMeasureClass,
+      double coverage) {
     this(
         datamodel,
         grid,
@@ -208,6 +170,99 @@ public class RandomSearch {
         qualityMeasureClass,
         null,
         coverage,
+        true,
+        System.currentTimeMillis());
+  }
+
+  /**
+   * RandomSearch constructor
+   *
+   * @param datamodel DataModel instance
+   * @param grid ParamsGrid instance containing the development set
+   * @param recommenderClass Recommender class to be evaluated. This class must contains a
+   *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
+   *     Object&gt;)
+   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
+   * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
+   *     and values (value)
+   * @param coverage Percentage of samples of the development set to be evaluated
+   */
+  public RandomSearch(
+      DataModel datamodel,
+      ParamsGrid grid,
+      Class<? extends Recommender> recommenderClass,
+      Class<? extends QualityMeasure> qualityMeasureClass,
+      Map<String, Object> qualityMeasureParams,
+      double coverage) {
+    this(
+        datamodel,
+        grid,
+        recommenderClass,
+        qualityMeasureClass,
+        qualityMeasureParams,
+        coverage,
+        true,
+        System.currentTimeMillis());
+  }
+
+  /**
+   * RandomSearch constructor
+   *
+   * @param datamodel DataModel instance
+   * @param grid ParamsGrid instance containing the development set
+   * @param recommenderClass Recommender class to be evaluated. This class must contains a
+   *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
+   *     Object&gt;)
+   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
+   * @param coverage Percentage of samples of the development set to be evaluated
+   * @param seed Random seed for random numbers generation
+   */
+  public RandomSearch(
+      DataModel datamodel,
+      ParamsGrid grid,
+      Class<? extends Recommender> recommenderClass,
+      Class<? extends QualityMeasure> qualityMeasureClass,
+      double coverage,
+      long seed) {
+    this(datamodel, grid, recommenderClass, qualityMeasureClass, null, coverage, true, seed);
+  }
+
+  /**
+   * RandomSearch constructor
+   *
+   * @param datamodel DataModel instance
+   * @param grid ParamsGrid instance containing the development set
+   * @param recommenderClass Recommender class to be evaluated. This class must contains a
+   *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
+   *     Object&gt;)
+   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
+   * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
+   *     and values (value)
+   * @param coverage Percentage of samples of the development set to be evaluated
+   * @param seed Random seed for random numbers generation
+   */
+  public RandomSearch(
+      DataModel datamodel,
+      ParamsGrid grid,
+      Class<? extends Recommender> recommenderClass,
+      Class<? extends QualityMeasure> qualityMeasureClass,
+      Map<String, Object> qualityMeasureParams,
+      double coverage,
+      long seed) {
+    this(
+        datamodel,
+        grid,
+        recommenderClass,
+        qualityMeasureClass,
+        qualityMeasureParams,
+        (int) (coverage * grid.getDevelopmentSetSize()),
+        true,
         seed);
   }
 
@@ -220,29 +275,28 @@ public class RandomSearch {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
-   * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
-   *     and values (value)
-   * @param coverage Percentage of samples of the development set to be evaluated
-   * @param seed Random seed for random numbers generation
+   * @param numIters Number of samples of the development set to be evaluated
+   * @param lowerIsBetter True if the quality measure is better the lower its value, false
+   *     otherwise. True by default.
    */
   public RandomSearch(
-          DataModel datamodel,
-          ParamsGrid grid,
-          Class<? extends Recommender> recommenderClass,
-          Class<? extends QualityMeasure> qualityMeasureClass,
-          Map<String, Object> qualityMeasureParams,
-          double coverage,
-          long seed) {
+      DataModel datamodel,
+      ParamsGrid grid,
+      Class<? extends Recommender> recommenderClass,
+      Class<? extends QualityMeasure> qualityMeasureClass,
+      int numIters,
+      boolean lowerIsBetter) {
     this(
-            datamodel,
-            grid,
-            recommenderClass,
-            qualityMeasureClass,
-            qualityMeasureParams,
-            (int) (coverage * grid.getDevelopmentSetSize()),
-            seed);
+        datamodel,
+        grid,
+        recommenderClass,
+        qualityMeasureClass,
+        null,
+        numIters,
+        lowerIsBetter,
+        System.currentTimeMillis());
   }
 
   /**
@@ -254,11 +308,218 @@ public class RandomSearch {
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
    * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constricutor with the signautre QualityMeasure.&lt;init&gt;(Recommender,
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
+   * @param numIters Number of samples of the development set to be evaluated
+   * @param lowerIsBetter True if the quality measure is better the lower its value, false
+   *     otherwise. True by default.
+   * @param seed Random seed for random numbers generation
+   */
+  public RandomSearch(
+      DataModel datamodel,
+      ParamsGrid grid,
+      Class<? extends Recommender> recommenderClass,
+      Class<? extends QualityMeasure> qualityMeasureClass,
+      int numIters,
+      boolean lowerIsBetter,
+      long seed) {
+    this(datamodel, grid, recommenderClass, qualityMeasureClass, null, numIters, seed);
+  }
+
+  /**
+   * RandomSearch constructor
+   *
+   * @param datamodel DataModel instance
+   * @param grid ParamsGrid instance containing the development set
+   * @param recommenderClass Recommender class to be evaluated. This class must contains a
+   *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
+   *     Object&gt;)
+   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
    *     and values (value)
    * @param numIters Number of samples of the development set to be evaluated
+   * @param lowerIsBetter True if the quality measure is better the lower its value, false
+   *     otherwise. True by default.
+   */
+  public RandomSearch(
+      DataModel datamodel,
+      ParamsGrid grid,
+      Class<? extends Recommender> recommenderClass,
+      Class<? extends QualityMeasure> qualityMeasureClass,
+      Map<String, Object> qualityMeasureParams,
+      int numIters,
+      boolean lowerIsBetter) {
+    this(
+        datamodel,
+        grid,
+        recommenderClass,
+        qualityMeasureClass,
+        qualityMeasureParams,
+        numIters,
+        lowerIsBetter,
+        System.currentTimeMillis());
+  }
+
+  /**
+   * RandomSearch constructor
+   *
+   * @param datamodel DataModel instance
+   * @param grid ParamsGrid instance containing the development set
+   * @param recommenderClass Recommender class to be evaluated. This class must contains a
+   *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
+   *     Object&gt;)
+   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
+   * @param coverage Percentage of samples of the development set to be evaluated
+   * @param lowerIsBetter True if the quality measure is better the lower its value, false
+   *     otherwise. True by default.
+   */
+  public RandomSearch(
+      DataModel datamodel,
+      ParamsGrid grid,
+      Class<? extends Recommender> recommenderClass,
+      Class<? extends QualityMeasure> qualityMeasureClass,
+      double coverage,
+      boolean lowerIsBetter) {
+    this(
+        datamodel,
+        grid,
+        recommenderClass,
+        qualityMeasureClass,
+        null,
+        coverage,
+        lowerIsBetter,
+        System.currentTimeMillis());
+  }
+
+  /**
+   * RandomSearch constructor
+   *
+   * @param datamodel DataModel instance
+   * @param grid ParamsGrid instance containing the development set
+   * @param recommenderClass Recommender class to be evaluated. This class must contains a
+   *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
+   *     Object&gt;)
+   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
+   * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
+   *     and values (value)
+   * @param coverage Percentage of samples of the development set to be evaluated
+   * @param lowerIsBetter True if the quality measure is better the lower its value, false
+   *     otherwise. True by default.
+   */
+  public RandomSearch(
+      DataModel datamodel,
+      ParamsGrid grid,
+      Class<? extends Recommender> recommenderClass,
+      Class<? extends QualityMeasure> qualityMeasureClass,
+      Map<String, Object> qualityMeasureParams,
+      double coverage,
+      boolean lowerIsBetter) {
+    this(
+        datamodel,
+        grid,
+        recommenderClass,
+        qualityMeasureClass,
+        qualityMeasureParams,
+        coverage,
+        lowerIsBetter,
+        System.currentTimeMillis());
+  }
+
+  /**
+   * RandomSearch constructor
+   *
+   * @param datamodel DataModel instance
+   * @param grid ParamsGrid instance containing the development set
+   * @param recommenderClass Recommender class to be evaluated. This class must contains a
+   *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
+   *     Object&gt;)
+   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
+   * @param coverage Percentage of samples of the development set to be evaluated
+   * @param lowerIsBetter True if the quality measure is better the lower its value, false
+   *     otherwise. True by default.
+   * @param seed Random seed for random numbers generation
+   */
+  public RandomSearch(
+      DataModel datamodel,
+      ParamsGrid grid,
+      Class<? extends Recommender> recommenderClass,
+      Class<? extends QualityMeasure> qualityMeasureClass,
+      double coverage,
+      boolean lowerIsBetter,
+      long seed) {
+    this(
+        datamodel,
+        grid,
+        recommenderClass,
+        qualityMeasureClass,
+        null,
+        coverage,
+        lowerIsBetter,
+        seed);
+  }
+
+  /**
+   * RandomSearch constructor
+   *
+   * @param datamodel DataModel instance
+   * @param grid ParamsGrid instance containing the development set
+   * @param recommenderClass Recommender class to be evaluated. This class must contains a
+   *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
+   *     Object&gt;)
+   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
+   * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
+   *     and values (value)
+   * @param coverage Percentage of samples of the development set to be evaluated
+   * @param lowerIsBetter True if the quality measure is better the lower its value, false
+   *     otherwise. True by default.
+   * @param seed Random seed for random numbers generation
+   */
+  public RandomSearch(
+      DataModel datamodel,
+      ParamsGrid grid,
+      Class<? extends Recommender> recommenderClass,
+      Class<? extends QualityMeasure> qualityMeasureClass,
+      Map<String, Object> qualityMeasureParams,
+      double coverage,
+      boolean lowerIsBetter,
+      long seed) {
+    this(
+        datamodel,
+        grid,
+        recommenderClass,
+        qualityMeasureClass,
+        qualityMeasureParams,
+        (int) (coverage * grid.getDevelopmentSetSize()),
+        lowerIsBetter,
+        seed);
+  }
+
+  /**
+   * RandomSearch constructor
+   *
+   * @param datamodel DataModel instance
+   * @param grid ParamsGrid instance containing the development set
+   * @param recommenderClass Recommender class to be evaluated. This class must contains a
+   *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
+   *     Object&gt;)
+   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
+   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
+   * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
+   *     and values (value)
+   * @param numIters Number of samples of the development set to be evaluated
+   * @param lowerIsBetter True if the quality measure is better the lower its value, false
+   *     otherwise. True by default.
    * @param seed Random seed for random numbers generation
    */
   public RandomSearch(
@@ -268,6 +529,7 @@ public class RandomSearch {
       Class<? extends QualityMeasure> qualityMeasureClass,
       Map<String, Object> qualityMeasureParams,
       int numIters,
+      boolean lowerIsBetter,
       long seed) {
     this.datamodel = datamodel;
     this.grid = grid;
@@ -275,8 +537,9 @@ public class RandomSearch {
     this.qualityMeasureClass = qualityMeasureClass;
     this.qualityMeasureParams = qualityMeasureParams;
     this.numIters = Math.min(numIters, grid.getDevelopmentSetSize());
+    this.lowerIsBetter = lowerIsBetter;
     this.seed = seed;
-    this.results = new ArrayList<>();
+    this.results = new HashMap<>();
   }
 
   /** Performs grid search */
@@ -339,17 +602,45 @@ public class RandomSearch {
 
       if (qm != null) {
         double score = qm.getScore();
-        results.add(new Pair<>(params.toString(), score));
+        results.put(params, score);
       }
     }
   }
 
   /**
-   * Prints the results of the random search. By default, the quality measure is better the lower its
-   * value.
+   * Get the best result params. By default, the quality measure is better the lower its value.
+   *
+   * @return Map with best params
+   */
+  public Map<String, Object> getBestParams() {
+    Map<String, Object> bestParams = null;
+    Double bestScore = (this.lowerIsBetter) ? Double.MAX_VALUE : Double.MIN_VALUE;
+    for (Map<String, Object> params : this.results.keySet()) {
+      double error = this.results.get(params);
+      if ((this.lowerIsBetter && error < bestScore) || (!this.lowerIsBetter && error > bestScore)) {
+        bestScore = error;
+        bestParams = params;
+      }
+    }
+    return bestParams;
+  }
+
+  /**
+   * Get the best result score. By default, the quality measure is better the lower its value.
+   *
+   * @return double value with best score
+   */
+  public double getBestScore() {
+    double bestScore = results.get(getBestParams());
+    return bestScore;
+  }
+
+  /**
+   * Prints the results of the random search. By default, the quality measure is better the lower
+   * its value.
    */
   public void printResults() {
-    this.printResults("0.000000", this.results.size(), true);
+    this.printResults("0.000000", this.results.size());
   }
 
   /**
@@ -358,27 +649,17 @@ public class RandomSearch {
    * @param topN Number of entries of the development set to be shown as the top ones
    */
   public void printResults(int topN) {
-    this.printResults("0.000000", topN, true);
+    this.printResults("0.000000", topN);
   }
 
   /**
-   * Prints the results of the random search. By default, the quality measure is better the lower its
-   * value.
+   * Prints the results of the random search. By default, the quality measure is better the lower
+   * its value.
    *
    * @param numberFormat Number format for the quality measure values
    */
   public void printResults(String numberFormat) {
-    this.printResults(numberFormat, this.results.size(), true);
-  }
-
-  /**
-   * Prints the results of the random search
-   *
-   * @param lowerIsBetter True if the quality measure is better the lower its value. False
-   *     otherwise.
-   */
-  public void printResults(boolean lowerIsBetter) {
-    this.printResults("0.000000", this.results.size(), lowerIsBetter);
+    this.printResults(numberFormat, this.results.size());
   }
 
   /**
@@ -388,43 +669,15 @@ public class RandomSearch {
    * @param topN Number of entries of the development set to be shown as the top ones
    */
   public void printResults(String numberFormat, int topN) {
-    this.printResults(numberFormat, topN, true);
-  }
 
-  /**
-   * Prints the results of the random search
-   *
-   * @param topN Number of entries of the development set to be shown as the top ones
-   * @param lowerIsBetter True if the quality measure is better the lower its value. False
-   *     otherwise.
-   */
-  public void printResults(int topN, boolean lowerIsBetter) {
-    this.printResults("0.000000", topN, lowerIsBetter);
-  }
-
-  /**
-   * Prints the results of the random search
-   *
-   * @param numberFormat Number format for the quality measure values
-   * @param lowerIsBetter True if the quality measure is better the lower its value. False
-   *     otherwise.
-   */
-  public void printResults(String numberFormat, boolean lowerIsBetter) {
-    this.printResults(numberFormat, this.results.size(), lowerIsBetter);
-  }
-
-  /**
-   * Prints the results of the random search
-   *
-   * @param numberFormat Number format for the quality measure values
-   * @param topN Number of entries of the development set to be shown as the top ones
-   * @param lowerIsBetter True if the quality measure is better the lower its value. False
-   *     otherwise.
-   */
-  public void printResults(String numberFormat, int topN, boolean lowerIsBetter) {
+    List<Pair<Map<String, Object>, Double>> resultsList = new ArrayList<>();
+    for (Map<String, Object> params : this.results.keySet()) {
+      double error = this.results.get(params);
+      resultsList.add(new Pair<>(params, error));
+    }
 
     // Sort results
-    Comparator<Pair<String, Double>> comparator =
+    Comparator<Pair<Map<String, Object>, Double>> comparator =
         Comparator.comparing(
             Pair::getValue,
             (d1, d2) -> {
@@ -443,7 +696,7 @@ public class RandomSearch {
       comparator = comparator.reversed();
     }
 
-    this.results.sort(comparator);
+    resultsList.sort(comparator);
 
     // Prepare printable results
     StringBuilder sb = new StringBuilder();
@@ -454,7 +707,7 @@ public class RandomSearch {
         .append(" recommender:\n\n");
 
     sb.append("Best parameters set found on development set:\n\n")
-        .append(this.results.get(0).getKey())
+        .append(resultsList.get(0).getKey())
         .append("\n\n");
 
     sb.append(this.qualityMeasureClass.getSimpleName());
@@ -464,7 +717,7 @@ public class RandomSearch {
     sb.append(" scores on development set:\n\n");
 
     for (int i = 0; i < Math.min(topN, this.results.size()); i++) {
-      Pair<String, Double> result = this.results.get(i);
+      Pair<Map<String, Object>, Double> result = resultsList.get(i);
 
       StringBuilder value = new StringBuilder();
 
@@ -484,7 +737,89 @@ public class RandomSearch {
     System.out.println("\n" + sb.toString());
   }
 
-  public List<Pair<String, Double>> getResults() {
+  /**
+   * Exports results of RandomSerach in csv format
+   *
+   * @param filename File name
+   * @throws IOException When file is not found or is locked.
+   */
+  public void exportResults(String filename) throws IOException {
+    exportResults(filename, true);
+  }
+
+  /**
+   * Exports results of RandomSerach in csv format
+   *
+   * @param filename File name
+   * @param includeHeader Include CSV header line. By default: true
+   * @throws IOException When file is not found or is locked.
+   */
+  public void exportResults(String filename, boolean includeHeader) throws IOException {
+    exportResults(filename, ",", includeHeader);
+  }
+
+  /**
+   * Exports results of RandomSerach in csv format
+   *
+   * @param filename File name
+   * @param separator CSV separator field. By default: colon character (,)
+   * @throws IOException When file is not found or is locked.
+   */
+  public void exportResults(String filename, String separator) throws IOException {
+    exportResults(filename, separator, true);
+  }
+
+  /**
+   * Exports results of RandomSerach in csv format
+   *
+   * @param filename File name
+   * @param separator CSV separator field. By default: colon character (,)
+   * @param includeHeader Include CSV header line. By default: true
+   * @throws IOException When file is not found or is locked.
+   */
+  public void exportResults(String filename, String separator, boolean includeHeader)
+      throws IOException {
+    File f = new File(filename);
+    File parent = f.getAbsoluteFile().getParentFile();
+    if (!parent.exists() && !parent.mkdirs()) {
+      throw new IOException("Unable to create directory " + parent);
+    }
+
+    String measure = this.qualityMeasureClass.getSimpleName().toLowerCase();
+
+    PrintWriter writer = new PrintWriter(f);
+
+    String[] paramsName = grid.getParamsName();
+
+    if (includeHeader) {
+
+      writer.print(measure);
+
+      for (String name : paramsName) {
+        writer.print(separator);
+        writer.print(name);
+      }
+
+      writer.println();
+    }
+
+    for (Map<String, Object> params : this.results.keySet()) {
+      double error = this.results.get(params);
+
+      writer.print(error);
+
+      for (String key : paramsName) {
+        writer.print(separator);
+        writer.print(params.get(key));
+      }
+
+      writer.println();
+    }
+
+    writer.close();
+  }
+
+  public Map<Map<String, Object>, Double> getResults() {
     return results;
   }
 }

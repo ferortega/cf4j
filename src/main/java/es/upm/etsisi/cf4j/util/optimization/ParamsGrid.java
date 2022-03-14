@@ -29,6 +29,20 @@ public class ParamsGrid {
     this.grid = new ArrayList<>();
   }
 
+  /**
+   * Returns String Array with the name of the params
+   *
+   * @return Name of params
+   */
+  public String[] getParamsName() {
+    String[] paramsName = new String[grid.size()];
+    int paramIndex = 0;
+    for (Pair<String, Object[]> param : grid) {
+      paramsName[paramIndex] = param.getFirst();
+      paramIndex++;
+    }
+    return paramsName;
+  }
 
   /**
    * Adds a variable parameter
@@ -178,7 +192,6 @@ public class ParamsGrid {
    * Returns the development set created from the grid parameters
    *
    * @param shuffle True if development set order must be shuffled
-   *
    * @return Development set
    */
   public Iterator<Map<String, Object>> getDevelopmentSetIterator(boolean shuffle) {
@@ -190,7 +203,6 @@ public class ParamsGrid {
    *
    * @param shuffle True if development set order must be shuffled
    * @param seed Random seed to allow reproducibility of the shuffle
-   *
    * @return Development set
    */
   public Iterator<Map<String, Object>> getDevelopmentSetIterator(boolean shuffle, long seed) {
