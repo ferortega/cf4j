@@ -148,28 +148,24 @@ public class GridSearchCV extends RandomSearchCV {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
-   *     Map&lt;String, Object&gt;)
+   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
+   *     classes must contain a constructor with the signature
+   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
    * @param cv Number of folds for the cross validation
-   * @param lowerIsBetter True if the quality measure is better the lower its value, false
-   *     otherwise. True by default.
    */
   public GridSearchCV(
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure> qualityMeasureClass,
-      int cv,
-      boolean lowerIsBetter) {
+      Class<? extends QualityMeasure>[] qualityMeasuresClasses,
+      int cv) {
     super(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasureClass,
+        qualityMeasuresClasses,
         cv,
-        grid.getDevelopmentSetSize(),
-        lowerIsBetter);
+        grid.getDevelopmentSetSize());
   }
 
   /**
@@ -180,30 +176,26 @@ public class GridSearchCV extends RandomSearchCV {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
-   *     Map&lt;String, Object&gt;)
+   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
+   *     classes must contain a constructor with the signature
+   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
    * @param cv Number of folds for the cross validation
-   * @param lowerIsBetter True if the quality measure is better the lower its value, false
-   *     otherwise. True by default.
    * @param seed Random seed for random numbers generation
    */
   public GridSearchCV(
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure> qualityMeasureClass,
+      Class<? extends QualityMeasure>[] qualityMeasuresClasses,
       int cv,
-      boolean lowerIsBetter,
       long seed) {
     super(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasureClass,
+        qualityMeasuresClasses,
         cv,
         grid.getDevelopmentSetSize(),
-        lowerIsBetter,
         seed);
   }
 
@@ -215,32 +207,28 @@ public class GridSearchCV extends RandomSearchCV {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
-   *     Map&lt;String, Object&gt;)
-   * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
-   *     and values (value)
+   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
+   *     classes must contain a constructor with the signature
+   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
+   * @param qualityMeasuresParams Maps objects containing the quality measure parameters names
+   *     (keys) and values (value)
    * @param cv Number of folds for the cross validation
-   * @param lowerIsBetter True if the quality measure is better the lower its value, false
-   *     otherwise. True by default.
    */
   public GridSearchCV(
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure> qualityMeasureClass,
-      Map<String, Object> qualityMeasureParams,
-      int cv,
-      boolean lowerIsBetter) {
+      Class<? extends QualityMeasure>[] qualityMeasuresClasses,
+      Map<String, Object>[] qualityMeasuresParams,
+      int cv) {
     super(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasureClass,
-        qualityMeasureParams,
+        qualityMeasuresClasses,
+        qualityMeasuresParams,
         cv,
-        grid.getDevelopmentSetSize(),
-        lowerIsBetter);
+        grid.getDevelopmentSetSize());
   }
 
   /**
@@ -251,34 +239,30 @@ public class GridSearchCV extends RandomSearchCV {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
-   *     Map&lt;String, Object&gt;)
-   * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
-   *     and values (value)
+   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
+   *     classes must contain a constructor with the signature
+   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
+   * @param qualityMeasuresParams Maps objects containing the quality measure parameters names
+   *     (keys) and values (value)
    * @param cv Number of folds for the cross validation
-   * @param lowerIsBetter True if the quality measure is better the lower its value, false
-   *     otherwise. True by default.
    * @param seed Random seed for random numbers generation
    */
   public GridSearchCV(
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure> qualityMeasureClass,
-      Map<String, Object> qualityMeasureParams,
+      Class<? extends QualityMeasure>[] qualityMeasuresClasses,
+      Map<String, Object>[] qualityMeasuresParams,
       int cv,
-      boolean lowerIsBetter,
       long seed) {
     super(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasureClass,
-        qualityMeasureParams,
+        qualityMeasuresClasses,
+        qualityMeasuresParams,
         cv,
         grid.getDevelopmentSetSize(),
-        lowerIsBetter,
         seed);
   }
 }
