@@ -221,7 +221,7 @@ public class XYPlot extends Plot {
       pointRenderer.setColor(PlotSettings.getColor(i));
       pointRenderer.setValueVisible(this.hasLabelsVisible.contains(name));
       pointRenderer.setValueColumn(2);
-      pointRenderer.setValueFont(PlotSettings.getSecondaryFont());
+      pointRenderer.setValueFont(PlotSettings.getPointsFont());
       pointRenderer.setValueAlignmentY(1);
       pointRenderer.setValueColor(PlotSettings.getColor(i));
     }
@@ -240,10 +240,10 @@ public class XYPlot extends Plot {
     AxisRenderer xAxisRenderer = plot.getAxisRenderer(de.erichseifert.gral.plots.XYPlot.AXIS_X);
 
     xAxisRenderer.setLabel(new Label(xLabel));
-    xAxisRenderer.getLabel().setFont(PlotSettings.getPrimaryFont());
+    xAxisRenderer.getLabel().setFont(PlotSettings.getLabelsFont());
     xAxisRenderer.setLabelDistance(PlotSettings.getxAxisLabelDistance());
 
-    xAxisRenderer.setTickFont(PlotSettings.getSecondaryFont());
+    xAxisRenderer.setTickFont(PlotSettings.getTicksFont());
     xAxisRenderer.setTickLabelFormat(NumberFormat.getInstance(Locale.US));
     xAxisRenderer.setTicksAutoSpaced(true);
 
@@ -251,11 +251,11 @@ public class XYPlot extends Plot {
     AxisRenderer yAxisRenderer = plot.getAxisRenderer(de.erichseifert.gral.plots.XYPlot.AXIS_Y);
 
     yAxisRenderer.setLabel(new Label(yLabel));
-    yAxisRenderer.getLabel().setFont(PlotSettings.getPrimaryFont());
+    yAxisRenderer.getLabel().setFont(PlotSettings.getLabelsFont());
     yAxisRenderer.getLabel().setRotation(90);
     yAxisRenderer.setLabelDistance(PlotSettings.getyAxisLabelDistance());
 
-    yAxisRenderer.setTickFont(PlotSettings.getSecondaryFont());
+    yAxisRenderer.setTickFont(PlotSettings.getTicksFont());
     yAxisRenderer.setTickLabelFormat(NumberFormat.getInstance(Locale.US));
     yAxisRenderer.setTicksAutoSpaced(true);
 
@@ -270,7 +270,7 @@ public class XYPlot extends Plot {
       plot.getLegend().setBorderStroke(null);
       plot.getLegend().setOrientation(Orientation.HORIZONTAL);
       plot.getLegend().setAlignmentX(0.5);
-      plot.getLegend().setFont(PlotSettings.getPrimaryFont());
+      plot.getLegend().setFont(PlotSettings.getLegendFont());
     }
 
     // Customize navigator settings
