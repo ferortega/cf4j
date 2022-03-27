@@ -114,10 +114,10 @@ public class ColumnPlot extends Plot {
     AxisRenderer xAxisRenderer = plot.getAxisRenderer(BarPlot.AXIS_X);
 
     xAxisRenderer.setLabel(new Label(xLabel));
-    xAxisRenderer.getLabel().setFont(PlotSettings.getPrimaryFont());
+    xAxisRenderer.getLabel().setFont(PlotSettings.getLabelsFont());
     xAxisRenderer.setLabelDistance(PlotSettings.getxAxisLabelDistance());
 
-    xAxisRenderer.setTickFont(PlotSettings.getSecondaryFont());
+    xAxisRenderer.setTickFont(PlotSettings.getTicksFont());
     xAxisRenderer.setTickSpacing(Double.MAX_VALUE); // Hack to avoid default tick labels
     xAxisRenderer.setMinorTicksVisible(false);
     xAxisRenderer.setTickAlignment(0);
@@ -137,11 +137,11 @@ public class ColumnPlot extends Plot {
     AxisRenderer yAxisRenderer = plot.getAxisRenderer(BarPlot.AXIS_Y);
 
     yAxisRenderer.setLabel(new Label(this.yLabel));
-    yAxisRenderer.getLabel().setFont(PlotSettings.getPrimaryFont());
+    yAxisRenderer.getLabel().setFont(PlotSettings.getLabelsFont());
     yAxisRenderer.getLabel().setRotation(90);
     yAxisRenderer.setLabelDistance(PlotSettings.getyAxisLabelDistance());
 
-    yAxisRenderer.setTickFont(PlotSettings.getSecondaryFont());
+    yAxisRenderer.setTickFont(PlotSettings.getTicksFont());
     yAxisRenderer.setTickLabelFormat(NumberFormat.getInstance(Locale.US));
     yAxisRenderer.setTicksAutoSpaced(true);
     yAxisRenderer.setIntersection(1.0);

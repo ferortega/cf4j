@@ -71,23 +71,16 @@ public class GridSearch extends RandomSearch {
    * @param datamodel DataModel instance
    * @param grid ParamsGrid instance containing the development set
    * @param recommenderClass Recommender class to be evaluated
-   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender
-   * @param lowerIsBetter True if the quality measure is better the lower its value, false
-   *     otherwise. True by default.
+   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
+   *     classes must contain a constructor with the signature
+   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
    */
   public GridSearch(
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure> qualityMeasureClass,
-      boolean lowerIsBetter) {
-    super(
-        datamodel,
-        grid,
-        recommenderClass,
-        qualityMeasureClass,
-        grid.getDevelopmentSetSize(),
-        lowerIsBetter);
+      Class<? extends QualityMeasure>[] qualityMeasuresClasses) {
+    super(datamodel, grid, recommenderClass, qualityMeasuresClasses, grid.getDevelopmentSetSize());
   }
 
   /**
@@ -98,28 +91,24 @@ public class GridSearch extends RandomSearch {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
-   *     Map&lt;String, Object&gt;)
-   * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
-   *     and values (value)
-   * @param lowerIsBetter True if the quality measure is better the lower its value, false
-   *     otherwise. True by default.
+   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
+   *     classes must contain a constructor with the signature
+   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
+   * @param qualityMeasuresParams Maps objects containing the quality measure parameters names
+   *     (keys) and values (value)
    */
   public GridSearch(
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure> qualityMeasureClass,
-      Map<String, Object> qualityMeasureParams,
-      boolean lowerIsBetter) {
+      Class<? extends QualityMeasure>[] qualityMeasuresClasses,
+      Map<String, Object>[] qualityMeasuresParams) {
     super(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasureClass,
-        qualityMeasureParams,
-        grid.getDevelopmentSetSize(),
-        lowerIsBetter);
+        qualityMeasuresClasses,
+        qualityMeasuresParams,
+        grid.getDevelopmentSetSize());
   }
 }

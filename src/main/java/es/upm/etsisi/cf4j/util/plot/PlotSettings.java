@@ -23,11 +23,17 @@ public class PlotSettings {
   /** Inset for clear borders */
   private static double clearInset;
 
-  /** Primary font */
-  private static Font primaryFont;
+  /** Labels font */
+  private static Font labelsFont;
 
-  /** Secondary font */
-  private static Font secondaryFont;
+  /** Ticks font */
+  private static Font ticksFont;
+
+  /** Legend font */
+  private static Font legendFont;
+
+  /** Points font */
+  private static Font pointsFont;
 
   /** Label distance in the x axis */
   private static double xAxisLabelDistance;
@@ -63,8 +69,10 @@ public class PlotSettings {
     yAxisInset = 102.0;
     xAxisInset = 85.0;
     clearInset = 20;
-    primaryFont = new Font("Dialog", Font.PLAIN, 20);
-    secondaryFont = new Font("Dialog", Font.PLAIN, 17);
+    labelsFont = new Font("Dialog", Font.PLAIN, 20);
+    ticksFont = new Font("Dialog", Font.PLAIN, 17);
+    legendFont = new Font("Dialog", Font.PLAIN, 18);
+    pointsFont = new Font("Dialog", Font.PLAIN, 15);
     xAxisLabelDistance = 0.8;
     yAxisLabelDistance = 1.8;
     legendDistance = 0.5;
@@ -196,39 +204,75 @@ public class PlotSettings {
   }
 
   /**
-   * Gets the primary font
+   * Gets the labels font
    *
-   * @return Primary font
+   * @return Labels font
    */
-  public static Font getPrimaryFont() {
-    return primaryFont;
+  public static Font getLabelsFont() {
+    return labelsFont;
   }
 
   /**
-   * Sets the primary font
+   * Sets the labels font
    *
-   * @param primaryFont Primary font
+   * @param labelsFont Labels font
    */
-  public static void setPrimaryFont(Font primaryFont) {
-    PlotSettings.primaryFont = primaryFont;
+  public static void setPrimaryFont(Font labelsFont) {
+    PlotSettings.labelsFont = labelsFont;
   }
 
   /**
-   * Gets the secondary font
+   * Gets the ticks font
    *
-   * @return Secondary font
+   * @return Ticks font
    */
-  public static Font getSecondaryFont() {
-    return secondaryFont;
+  public static Font getTicksFont() {
+    return ticksFont;
   }
 
   /**
-   * Sets the secondary font
+   * Sets the ticks font
    *
-   * @param secondaryFont Secondary font
+   * @param ticksFont Ticks font
    */
-  public static void setSecondaryFont(Font secondaryFont) {
-    PlotSettings.secondaryFont = secondaryFont;
+  public static void setTicksFont(Font ticksFont) {
+    PlotSettings.ticksFont = ticksFont;
+  }
+
+  /**
+   * Gets the legend font
+   *
+   * @return Legend font
+   */
+  public static Font getLegendFont() {
+    return legendFont;
+  }
+
+  /**
+   * Sets the legend font
+   *
+   * @param legendFont Legend font
+   */
+  public static void setLegendFont(Font legendFont) {
+    PlotSettings.legendFont = legendFont;
+  }
+
+  /**
+   * Gets the points font
+   *
+   * @return Points font
+   */
+  public static Font getPointsFont() {
+    return pointsFont;
+  }
+
+  /**
+   * Sets the points font
+   *
+   * @param pointsFont Points font
+   */
+  public static void setPointsFont(Font pointsFont) {
+    PlotSettings.pointsFont = pointsFont;
   }
 
   /**

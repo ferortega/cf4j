@@ -47,8 +47,8 @@ public class UserKNNGridSearch {
     precisionParams.put("relevantThreshold", 4.0);
 
     GridSearch gs =
-        new GridSearch(datamodel, grid, UserKNN.class, Precision.class, precisionParams, false);
+        new GridSearch(datamodel, grid, UserKNN.class, Precision.class, precisionParams);
     gs.fit();
-    gs.printResults(5);
+    gs.printResults(5, false);
   }
 }
