@@ -636,7 +636,7 @@ public class RandomSearchCV {
    */
   public Map<String, Object> getBestParams(int index, boolean lowerIsBetter) {
     Map<String, Object> bestParams = null;
-    Double bestScore = (lowerIsBetter) ? Double.MAX_VALUE : Double.MIN_VALUE;
+    double bestScore = (lowerIsBetter) ? Double.MAX_VALUE : Double.MIN_VALUE;
 
     for (Map<String, Object> params : this.results.keySet()) {
       Double[][] scores = this.results.get(params);
