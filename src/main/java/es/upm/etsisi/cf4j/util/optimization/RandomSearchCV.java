@@ -920,6 +920,10 @@ public class RandomSearchCV {
         writer.print(separator);
 
         writer.print(std);
+
+        if (q < this.qualityMeasuresClasses.length - 1) {
+          writer.print(separator);
+        }
       }
 
       for (String key : paramsName) {
