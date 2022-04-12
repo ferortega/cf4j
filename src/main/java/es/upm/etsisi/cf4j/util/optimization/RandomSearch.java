@@ -48,6 +48,9 @@ public class RandomSearch {
   /** Random seed for random numbers generation */
   private final long seed;
 
+  /** String prefix to be shown during fut */
+  private final String progressPrefix;
+
   /** Map to store grid search results */
   private final Map<Map<String, Object>, Double[]> results;
 
@@ -483,6 +486,35 @@ public class RandomSearch {
       Map<String, Object>[] qualityMeasuresParams,
       int numIters,
       long seed) {
+    this(datamodel, grid, recommenderClass, qualityMeasuresClasses, qualityMeasuresParams, numIters, seed, "");
+  }
+
+  /**
+   * RandomSearch constructor to be used inside es.upm.etsisi.cf4j.util.optimization package
+   *
+   * @param datamodel DataModel instance
+   * @param grid ParamsGrid instance containing the development set
+   * @param recommenderClass Recommender class to be evaluated. This class must contains a
+   *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
+   *     Object&gt;)
+   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
+   *     classes must contain a constructor with the signature
+   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
+   * @param qualityMeasuresParams Maps objects containing the quality measure parameters names
+   *     (keys) and values (value)
+   * @param numIters Number of samples of the development set to be evaluated
+   * @param seed Random seed for random numbers generation
+   * @param progressPrefix String prefix to be printed during fit
+   */
+  protected RandomSearch(
+          DataModel datamodel,
+          ParamsGrid grid,
+          Class<? extends Recommender> recommenderClass,
+          Class<? extends QualityMeasure>[] qualityMeasuresClasses,
+          Map<String, Object>[] qualityMeasuresParams,
+          int numIters,
+          long seed,
+          String progressPrefix) {
     this.datamodel = datamodel;
     this.grid = grid;
     this.recommenderClass = recommenderClass;
@@ -491,6 +523,7 @@ public class RandomSearch {
     this.numIters = Math.min(numIters, grid.getDevelopmentSetSize());
     this.seed = seed;
     this.results = new HashMap<>();
+    this.progressPrefix = progressPrefix;
   }
 
   /** Performs grid search */
@@ -498,10 +531,38 @@ public class RandomSearch {
 
     Iterator<Map<String, Object>> iter = grid.getDevelopmentSetIterator(true, seed);
 
+    Long ts = System.currentTimeMillis();
+
     int i = 0;
     while (i < this.numIters && iter.hasNext()) {
       Map<String, Object> params = iter.next();
       i++;
+
+      long eta = (this.numIters - i) * (System.currentTimeMillis() - ts) / (1000 * i); // in seconds
+      long s = eta % 3600 % 60;
+      double m = (int) (eta % 3600 / 60);
+      double h = (int) (eta / 3600);
+
+      StringBuilder progress = new StringBuilder();
+
+      if (!this.progressPrefix.isEmpty()) {
+        progress.append(this.progressPrefix).append(". ");
+      }
+      progress.append("Iter ").append(i).append(" of ").append(this.numIters)
+              .append(" (").append(new DecimalFormat("0.00").format(100.0 * i / this.numIters)).append("%).")
+              .append(" ETA=");
+
+      if (h > 0) {
+        progress.append(h).append("h ");
+      }
+
+      if (m > 0) {
+        progress.append(m).append("m ");
+      }
+
+      progress.append(s).append("s");
+
+      System.out.println("\n\n" + progress.toString());
 
       Recommender recommender = null;
 

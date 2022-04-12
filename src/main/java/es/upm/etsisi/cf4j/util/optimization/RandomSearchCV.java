@@ -588,7 +588,8 @@ public class RandomSearchCV {
               qualityMeasuresClasses,
               qualityMeasuresParams,
               numIters,
-              seed);
+              seed,
+              "Fold " + (fold+1) + " of " + this.cv);
       randomSearch.fit();
 
       Map<Map<String, Object>, Double[]> randomSearchResults = randomSearch.getResults();
