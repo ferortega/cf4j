@@ -3,6 +3,7 @@ package es.upm.etsisi.cf4j.util.optimization;
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.math3.util.Pair;
 
 import java.io.File;
@@ -531,38 +532,34 @@ public class RandomSearch {
 
     Iterator<Map<String, Object>> iter = grid.getDevelopmentSetIterator(true, seed);
 
-    Long ts = System.currentTimeMillis();
+    Long init = System.currentTimeMillis();
 
     int i = 0;
     while (i < this.numIters && iter.hasNext()) {
       Map<String, Object> params = iter.next();
       i++;
 
-      long eta = (this.numIters - i) * (System.currentTimeMillis() - ts) / (1000 * i); // in seconds
-      long s = eta % 3600 % 60;
-      double m = (int) (eta % 3600 / 60);
-      double h = (int) (eta / 3600);
-
-      StringBuilder progress = new StringBuilder();
+      System.out.print("\n\n");
 
       if (!this.progressPrefix.isEmpty()) {
-        progress.append(this.progressPrefix).append(". ");
-      }
-      progress.append("Iter ").append(i).append(" of ").append(this.numIters)
-              .append(" (").append(new DecimalFormat("0.00").format(100.0 * i / this.numIters)).append("%).")
-              .append(" ETA=");
-
-      if (h > 0) {
-        progress.append(h).append("h ");
+        System.out.print(this.progressPrefix + ". ");
       }
 
-      if (m > 0) {
-        progress.append(m).append("m ");
+      System.out.print("Iter " + i + " of " + this.numIters);
+
+      String completePercent = new DecimalFormat("0.00").format(100.0 * i / this.numIters);
+      System.out.print(" (" + completePercent + "%). ");
+
+      long now = System.currentTimeMillis();
+      long elapsedTime = now - init;
+      System.out.print("Elapsed time: " + DurationFormatUtils.formatDurationWords(elapsedTime, true, false));
+
+      if (i > 1) {
+        long eta = (this.numIters - i + 1) * elapsedTime / (i - 1);
+        System.out.print(". ETA: " + DurationFormatUtils.formatDurationWords(eta, true, false));
       }
 
-      progress.append(s).append("s");
-
-      System.out.println("\n\n" + progress.toString());
+      System.out.println();
 
       Recommender recommender = null;
 
