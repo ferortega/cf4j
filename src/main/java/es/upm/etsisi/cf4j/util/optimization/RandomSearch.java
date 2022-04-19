@@ -532,7 +532,7 @@ public class RandomSearch {
 
     Iterator<Map<String, Object>> iter = grid.getDevelopmentSetIterator(true, seed);
 
-    Long init = System.currentTimeMillis();
+    long init = System.currentTimeMillis();
 
     int i = 0;
     while (i < this.numIters && iter.hasNext()) {
