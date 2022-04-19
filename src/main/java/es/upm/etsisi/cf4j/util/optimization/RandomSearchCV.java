@@ -588,7 +588,8 @@ public class RandomSearchCV {
               qualityMeasuresClasses,
               qualityMeasuresParams,
               numIters,
-              seed);
+              seed,
+              "Fold " + (fold+1) + " of " + this.cv);
       randomSearch.fit();
 
       Map<Map<String, Object>, Double[]> randomSearchResults = randomSearch.getResults();
@@ -642,8 +643,8 @@ public class RandomSearchCV {
       Double[][] scores = this.results.get(params);
       double averageError =
           Maths.arrayAverage(Stream.of(scores[index]).mapToDouble(Double::doubleValue).toArray());
-      if ((lowerIsBetter && averageError < bestScore)
-          || (!lowerIsBetter && averageError > bestScore)) {
+      if (!Double.isNaN(averageError) &&
+              ((lowerIsBetter && averageError < bestScore) || (!lowerIsBetter && averageError > bestScore))) {
         bestScore = averageError;
         bestParams = params;
       }

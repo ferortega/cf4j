@@ -3,6 +3,7 @@ package es.upm.etsisi.cf4j.util.optimization;
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.math3.util.Pair;
 
 import java.io.File;
@@ -47,6 +48,9 @@ public class RandomSearch {
 
   /** Random seed for random numbers generation */
   private final long seed;
+
+  /** String prefix to be shown during fut */
+  private final String progressPrefix;
 
   /** Map to store grid search results */
   private final Map<Map<String, Object>, Double[]> results;
@@ -483,6 +487,35 @@ public class RandomSearch {
       Map<String, Object>[] qualityMeasuresParams,
       int numIters,
       long seed) {
+    this(datamodel, grid, recommenderClass, qualityMeasuresClasses, qualityMeasuresParams, numIters, seed, "");
+  }
+
+  /**
+   * RandomSearch constructor to be used inside es.upm.etsisi.cf4j.util.optimization package
+   *
+   * @param datamodel DataModel instance
+   * @param grid ParamsGrid instance containing the development set
+   * @param recommenderClass Recommender class to be evaluated. This class must contains a
+   *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
+   *     Object&gt;)
+   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
+   *     classes must contain a constructor with the signature
+   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
+   * @param qualityMeasuresParams Maps objects containing the quality measure parameters names
+   *     (keys) and values (value)
+   * @param numIters Number of samples of the development set to be evaluated
+   * @param seed Random seed for random numbers generation
+   * @param progressPrefix String prefix to be printed during fit
+   */
+  protected RandomSearch(
+          DataModel datamodel,
+          ParamsGrid grid,
+          Class<? extends Recommender> recommenderClass,
+          Class<? extends QualityMeasure>[] qualityMeasuresClasses,
+          Map<String, Object>[] qualityMeasuresParams,
+          int numIters,
+          long seed,
+          String progressPrefix) {
     this.datamodel = datamodel;
     this.grid = grid;
     this.recommenderClass = recommenderClass;
@@ -491,6 +524,7 @@ public class RandomSearch {
     this.numIters = Math.min(numIters, grid.getDevelopmentSetSize());
     this.seed = seed;
     this.results = new HashMap<>();
+    this.progressPrefix = progressPrefix;
   }
 
   /** Performs grid search */
@@ -498,10 +532,34 @@ public class RandomSearch {
 
     Iterator<Map<String, Object>> iter = grid.getDevelopmentSetIterator(true, seed);
 
+    long init = System.currentTimeMillis();
+
     int i = 0;
     while (i < this.numIters && iter.hasNext()) {
       Map<String, Object> params = iter.next();
       i++;
+
+      System.out.print("\n\n");
+
+      if (!this.progressPrefix.isEmpty()) {
+        System.out.print(this.progressPrefix + ". ");
+      }
+
+      System.out.print("Iter " + i + " of " + this.numIters);
+
+      String completePercent = new DecimalFormat("0.00").format(100.0 * i / this.numIters);
+      System.out.print(" (" + completePercent + "%). ");
+
+      long now = System.currentTimeMillis();
+      long elapsedTime = now - init;
+      System.out.print("Elapsed time: " + DurationFormatUtils.formatDurationWords(elapsedTime, true, false));
+
+      if (i > 1) {
+        long eta = (this.numIters - i + 1) * elapsedTime / (i - 1);
+        System.out.print(". ETA: " + DurationFormatUtils.formatDurationWords(eta, true, false));
+      }
+
+      System.out.println();
 
       Recommender recommender = null;
 
@@ -599,7 +657,7 @@ public class RandomSearch {
     for (Map<String, Object> params : this.results.keySet()) {
       Double[] scores = this.results.get(params);
       Double score = scores[index];
-      if ((lowerIsBetter && score < bestScore) || (!lowerIsBetter && score > bestScore)) {
+      if (!Double.isNaN(score) && ((lowerIsBetter && score < bestScore) || (!lowerIsBetter && score > bestScore))) {
         bestScore = score;
         bestParams = params;
       }
