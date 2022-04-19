@@ -657,7 +657,7 @@ public class RandomSearch {
     for (Map<String, Object> params : this.results.keySet()) {
       Double[] scores = this.results.get(params);
       Double score = scores[index];
-      if ((lowerIsBetter && score < bestScore) || (!lowerIsBetter && score > bestScore)) {
+      if (!Double.isNaN(score) && ((lowerIsBetter && score < bestScore) || (!lowerIsBetter && score > bestScore))) {
         bestScore = score;
         bestParams = params;
       }

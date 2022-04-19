@@ -643,8 +643,8 @@ public class RandomSearchCV {
       Double[][] scores = this.results.get(params);
       double averageError =
           Maths.arrayAverage(Stream.of(scores[index]).mapToDouble(Double::doubleValue).toArray());
-      if ((lowerIsBetter && averageError < bestScore)
-          || (!lowerIsBetter && averageError > bestScore)) {
+      if (!Double.isNaN(averageError) &&
+              ((lowerIsBetter && averageError < bestScore) || (!lowerIsBetter && averageError > bestScore))) {
         bestScore = averageError;
         bestParams = params;
       }
