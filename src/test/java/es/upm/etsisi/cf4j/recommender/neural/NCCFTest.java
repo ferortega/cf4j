@@ -24,7 +24,7 @@ public class NCCFTest {
         NCCF nccf = new NCCF(datamodel, numEpochs, seed);
         nccf.fit();
 
-        assertEquals(0.25135916471481323, nccf.predict(0, 0));
+        assertEquals(0.251359224319458, nccf.predict(0, 0));
         assertEquals(numEpochs, nccf.getNumEpochs());
     }
 }
