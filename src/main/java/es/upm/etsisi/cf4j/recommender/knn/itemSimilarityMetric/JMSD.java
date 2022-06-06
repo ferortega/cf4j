@@ -42,7 +42,7 @@ public class JMSD extends ItemSimilarityMetric {
     if (intersection == 0) return Double.NEGATIVE_INFINITY;
 
     // Return similarity
-    double union = item.getNumberOfRatings() + otherItem.getNumberOfRatings() - intersection;
+    double union = item.getNumberOfRatings() + (double) otherItem.getNumberOfRatings() - intersection;
     double jaccard = intersection / union;
     return jaccard * (1d - (msd / intersection));
   }

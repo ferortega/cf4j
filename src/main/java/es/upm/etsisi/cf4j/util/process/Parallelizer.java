@@ -43,6 +43,7 @@ public class Parallelizer {
       }
     } catch (InterruptedException ie) {
       System.err.println("ERROR: " + ie);
+      Thread.currentThread().interrupt();
     }
 
     // execute afterRun method once

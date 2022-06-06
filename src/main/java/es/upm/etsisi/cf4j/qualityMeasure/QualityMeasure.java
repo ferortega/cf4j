@@ -86,7 +86,9 @@ public abstract class QualityMeasure {
           count++;
         }
       }
-      score = sum / count;
+      if (count != 0) {
+        score = sum / count;
+      }
     }
   }
 }

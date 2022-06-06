@@ -74,6 +74,7 @@ public class Precision extends QualityMeasure {
       recommended++;
     }
 
+    if (recommended == 0) return Double.NEGATIVE_INFINITY;
     return (double) recommendedAndRelevant / (double) recommended;
   }
 }
