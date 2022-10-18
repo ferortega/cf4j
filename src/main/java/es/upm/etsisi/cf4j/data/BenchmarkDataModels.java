@@ -238,6 +238,31 @@ public class BenchmarkDataModels {
   }
 
   /**
+   * Loads a DataModel instance of BoardGameGeek dataset. The DataModel contains:
+   *
+   * <ul>
+   *   <li>Number of users: 411,375
+   *   <li>Number of test users: 57,459
+   *   <li>Number of items: 21,925
+   *   <li>Number of test items: 4,372
+   *   <li>Number of ratings: 18,273,394
+   *   <li>Number of test ratings: 63,6134
+   *   <li>Min rating: 1.0
+   *   <li>Max rating: 10.0
+   * </ul>
+   *
+   * <p>Visit <a
+   * href="https://www.kaggle.com/datasets/threnjen/board-games-database-from-boardgamegeek">https://www.kaggle.com/datasets/threnjen/board-games-database-from-boardgamegeek</a>
+   * for more information. The duplicated ratings have been removed keeping only the last one defined.
+   *
+   * @return A DataModel instance with BoardGameGeek dataset.
+   * @throws IOException When the DataModel can not be loaded.
+   */
+  public static DataModel BoardGameGeek() throws IOException {
+    return loadRemoteDataModel("https://cf4j.etsisi.upm.es/datamodels/bgg.cf4j");
+  }
+
+  /**
    * Loads a DataModel instance from a remote URL
    *
    * @param spec The String with the URL of the DataModel

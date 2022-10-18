@@ -377,5 +377,6 @@ The datasets included in CF4J are:
 | MyAnimeList   | 69,600          | 9,927           | 5,788,207         | 549,027                | 1 to 10      |
 | Jester        | 54,905          | 140             | 1,662,713         | 179,657                | -10 to 10    |
 | Netflix Prize | 480,189         | 17,770          | 99,945,049        | 535,458                | 1 to 5       |
+| BoardGameGeek | 411,375         | 21,925          | 18,273,394        | 63,6134                | 1 to 10      |
 
 **ALERT**: due to security changes on the server hosting the [`BenchmarkDataModels`](http://cf4j.etsisi.upm.es/apidocs/latest/es/upm/etsisi/cf4j/data/BenchmarkDataModels.html), these will no longer be available for versions lower than `2.3.0`. If you need to continue using the [`BenchmarkDataModels`](http://cf4j.etsisi.upm.es/apidocs/latest/es/upm/etsisi/cf4j/data/BenchmarkDataModels.html), please upgrade to version `2.3.0` or higher.
