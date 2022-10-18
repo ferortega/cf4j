@@ -1,5 +1,8 @@
 package es.upm.etsisi.cf4j.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /** This class contains useful math methods. */
 public class Maths {
 
@@ -85,5 +88,53 @@ public class Maths {
    */
   public static double logistic(double x) {
     return 1.0 / (1.0 + Math.exp(-x));
+  }
+
+  /**
+   * Returns an array of int values.
+   * @param start An integer value specifying at which position to start. Default 0.
+   * @param stop An integer value specifying at which position to stop.
+   * @param step An integer value specifying the incrementation. Default 1.
+   * @param endpoint If true, include the stop value. Otherwise, it is not included. Default true.
+   * @return Values of the range.
+   */
+  public static int[] range(int start, int stop, int step, boolean endpoint) {
+    List<Integer> l = new ArrayList<>();
+    int v = start;
+    while((!endpoint && v < stop) || (endpoint && v <= stop)) {
+      l.add(v);
+      v += step;
+    }
+    return l.stream().mapToInt(Integer::intValue).toArray();
+  }
+
+  /**
+   * Returns an array of int values.
+   * @param start An integer value specifying at which position to start. Default 0.
+   * @param stop An integer value specifying at which position to stop.
+   * @param step An integer value specifying the incrementation. Default 1.
+   * @return Values of the range.
+   */
+  public static int[] range(int start, int stop, int step) {
+    return range(start, stop, step, true);
+  }
+
+  /**
+   * Returns an array of int values.
+   * @param start An integer value specifying at which position to start. Default 0.
+   * @param stop An integer value specifying at which position to stop.
+   * @return Values of the range.
+   */
+  public static int[] range(int start, int stop) {
+    return range(start, stop, 1);
+  }
+
+  /**
+   * Returns an array of int values.
+   * @param stop An integer value specifying at which position to stop.
+   * @return Values of the range.
+   */
+  public static int[] range(int stop) {
+    return range(0, stop);
   }
 }
