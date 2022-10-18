@@ -137,4 +137,42 @@ public class Maths {
   public static int[] range(int stop) {
     return range(0, stop);
   }
+
+  /**
+   * Returns num evenly spaced samples.
+   * @param start The starting value. Default 0.0.
+   * @param stop The stop value.
+   * @param num Number of samples to generate.
+   * @param endpoint If true, stop is the last sample. Otherwise, it is not included. Default true.
+   * @return Double array with num evenly spaced samples.
+   */
+  public static double[] linespace(double start, double stop, int num, boolean endpoint) {
+    double inc = (stop - start) / (endpoint ? num - 1 : num);
+    double[] linespace = new double[num];
+    for (int i = 0; i < num; i++) {
+      linespace[i] = start + i * inc;
+    }
+    return linespace;
+  }
+
+  /**
+   * Returns num evenly spaced samples.
+   * @param start The starting value. Default 0.0.
+   * @param stop The stop value.
+   * @param num Number of samples to generate.
+   * @return Double array with num evenly spaced samples.
+   */
+  public static double[] linespace(double start, double stop, int num) {
+    return linespace(start, stop, num, true);
+  }
+
+  /**
+   * Returns num evenly spaced samples.
+   * @param stop The stop value.
+   * @param num Number of samples to generate.
+   * @return Double array with num evenly spaced samples.
+   */
+  public static double[] linespace(double stop, int num) {
+    return linespace(0, stop, num);
+  }
 }
