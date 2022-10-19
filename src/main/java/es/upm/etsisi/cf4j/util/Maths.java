@@ -175,4 +175,58 @@ public class Maths {
   public static double[] linespace(double stop, int num) {
     return linespace(0, stop, num);
   }
+
+  /**
+   * Return numbers spaced evenly on a log scale. The sequence starts at Math.pow(base, start).
+   * @param start Math.pow(base, start) is the starting value of the sequence.
+   * @param stop Math.pow(base, stop) is the last value of the sequence if endpoint is true.
+   * @param num Number of samples to generate.
+   * @param endpoint If true, stop is the last sample. Otherwise, it is not included. Default true.
+   * @param base The base of the log space. Default 10.
+   * @return Double array with num evenly spaced samples on a log scale.
+   */
+  public static double[] logspace(
+      double start, double stop, int num, boolean endpoint, double base) {
+    double[] exp = linespace(start, stop, num, endpoint);
+    double[] logspace = new double[num];
+    for (int i = 0; i < num; i++) {
+      logspace[i] = Math.pow(base, exp[i]);
+    }
+    return logspace;
+  }
+
+  /**
+   * Return numbers spaced evenly on a log scale. The sequence starts at Math.pow(base, start).
+   * @param start Math.pow(base, start) is the starting value of the sequence.
+   * @param stop Math.pow(base, stop) is the last value of the sequence if endpoint is true.
+   * @param num Number of samples to generate.
+   * @param endpoint If true, stop is the last sample. Otherwise, it is not included. Default true.
+   * @return Double array with num evenly spaced samples on a log scale.
+   */
+  public static double[] logspace(double start, double stop, int num, boolean endpoint) {
+    return logspace(start, stop, num, endpoint, 10);
+  }
+
+  /**
+   * Return numbers spaced evenly on a log scale. The sequence starts at Math.pow(base, start).
+   * @param start Math.pow(base, start) is the starting value of the sequence.
+   * @param stop Math.pow(base, stop) is the last value of the sequence if endpoint is true.
+   * @param num Number of samples to generate.
+   * @param base The base of the log space. Default 10.
+   * @return Double array with num evenly spaced samples on a log scale.
+   */
+  public static double[] logspace(double start, double stop, int num, double base) {
+    return logspace(start, stop, num, true, base);
+  }
+
+  /**
+   * Return numbers spaced evenly on a log scale. The sequence starts at Math.pow(base, start).
+   * @param start Math.pow(base, start) is the starting value of the sequence.
+   * @param stop Math.pow(base, stop) is the last value of the sequence if endpoint is true.
+   * @param num Number of samples to generate.
+   * @return Double array with num evenly spaced samples on a log scale.
+   */
+  public static double[] logspace(double start, double stop, int num) {
+    return logspace(start, stop, num, true, 10);
+  }
 }

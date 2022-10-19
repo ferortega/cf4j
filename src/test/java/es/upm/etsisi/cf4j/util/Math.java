@@ -21,4 +21,12 @@ public class Math {
         Assertions.assertArrayEquals(Maths.linespace(0, 1, 2, false), new double[]{0.0, 0.5});
         Assertions.assertArrayEquals(Maths.linespace(0, 1, 3, true), new double[]{0.0, 0.5, 1.0});
     }
+
+    @Test
+    void logspace() {
+        Assertions.assertArrayEquals(new double[]{0.001, 0.01, 0.1, 1.0}, Maths.logspace(-3, 0, 4));
+        Assertions.assertArrayEquals(new double[]{2, 4, 8, 16}, Maths.logspace(1, 4, 4, 2));
+        Assertions.assertArrayEquals(new double[]{1, 10, 100}, Maths.logspace(0, 3, 3, false));
+        Assertions.assertArrayEquals(new double[]{3, 27}, Maths.logspace(1, 3, 2, true, 3));
+    }
 }
