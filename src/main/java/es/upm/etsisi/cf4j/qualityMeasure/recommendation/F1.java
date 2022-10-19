@@ -82,10 +82,13 @@ public class F1 extends QualityMeasure {
     }
 
     // Precision y Recall
+    if (recommended == 0) return Double.NEGATIVE_INFINITY;
     double precision = (double) recommendedAndRelevant / (double) recommended;
+    if (relevant == 0) return Double.NEGATIVE_INFINITY;
     double recall = (double) recommendedAndRelevant / (double) relevant;
 
     // F1 score
+    if ((precision + recall) == 0) return Double.NEGATIVE_INFINITY;
     return 2 * precision * recall / (precision + recall);
   }
 }

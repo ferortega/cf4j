@@ -82,6 +82,7 @@ public class Recall extends QualityMeasure {
       }
     }
 
+    if (relevant == 0) return Double.NEGATIVE_INFINITY;
     return (double) recommendedAndRelevant / (double) relevant;
   }
 }

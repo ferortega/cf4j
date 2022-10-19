@@ -7,6 +7,38 @@
 
 A Java's Collaborative Filtering library to carry out experiments in research on Collaborative Filtering based Recommender Systems. The library has been designed from researchers to researchers.
 
+## Cite us
+
+If you enjoy cf4j, please cite us:
+
+> Ortega, F., Mayor, J., López-Fernández, D., & Lara-Cabrera, R. (2021). **CF4J 2.0: Adapting Collaborative Filtering for Java to new challenges of collaborative filtering based recommender systems**. *Knowledge-Based Systems*, 215, 106629.
+
+```
+@article{ortega2021cf4j,
+  title={CF4J 2.0: Adapting Collaborative Filtering for Java to new challenges of collaborative filtering based recommender systems},
+  author={Ortega, Fernando and Mayor, Jes{\'u}s and L{\'o}pez-Fern{\'a}ndez, Daniel and Lara-Cabrera, Ra{\'u}l},
+  journal={Knowledge-Based Systems},
+  volume={215},
+  pages={106629},
+  year={2021},
+  publisher={Elsevier}
+}
+```
+
+> Ortega, F., Zhu, B., Bobadilla, J., & Hernando, A. (2018). **CF4J: Collaborative filtering for Java**. *Knowledge-Based Systems*, 152, 94-99.
+
+```
+@article{ortega2018cf4j,
+  title={CF4J: Collaborative filtering for Java},
+  author={Ortega, Fernando and Zhu, Bo and Bobadilla, Jes{\'u}s and Hernando, Antonio},
+  journal={Knowledge-Based Systems},
+  volume={152},
+  pages={94--99},
+  year={2018},
+  publisher={Elsevier}
+}
+```
+
 ## Index
 
 1. [Installation](#installation)
