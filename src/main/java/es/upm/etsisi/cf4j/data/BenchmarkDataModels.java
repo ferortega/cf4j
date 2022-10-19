@@ -5,8 +5,12 @@ import java.io.ObjectInputStream;
 import java.net.URL;
 
 /**
- * This class allows final users to work with benchmark DataModel instances. These instances has
+ * This class allows final users to work with benchmark DataModel instances. These instances have
  * been split into train and test subsets.
+ *
+ * <b>ALERT</b>: due to security changes on the server hosting the BenchmarkDataModels, these will
+ * no longer be available for versions lower than 2.3.0. If you need to continue using the
+ * BenchmarkDataModels, please upgrade to version 2.3.0 or higher.
  */
 public class BenchmarkDataModels {
 
@@ -32,7 +36,7 @@ public class BenchmarkDataModels {
    * @throws IOException When the DataModel can not be loaded.
    */
   public static DataModel MovieLens100K() throws IOException {
-    return loadRemoteDataModel("http://cf4j.etsisi.upm.es/datamodels/ml100k.cf4j");
+    return loadRemoteDataModel("https://cf4j.etsisi.upm.es/datamodels/ml100k.cf4j");
   }
 
   /**
@@ -57,7 +61,7 @@ public class BenchmarkDataModels {
    * @throws IOException When the DataModel can not be loaded.
    */
   public static DataModel MovieLens1M() throws IOException {
-    return loadRemoteDataModel("http://cf4j.etsisi.upm.es/datamodels/ml1m.cf4j");
+    return loadRemoteDataModel("https://cf4j.etsisi.upm.es/datamodels/ml1m.cf4j");
   }
 
   /**
@@ -82,7 +86,7 @@ public class BenchmarkDataModels {
    * @throws IOException When the DataModel can not be loaded.
    */
   public static DataModel MovieLens10M() throws IOException {
-    return loadRemoteDataModel("http://cf4j.etsisi.upm.es/datamodels/ml10m.cf4j");
+    return loadRemoteDataModel("https://cf4j.etsisi.upm.es/datamodels/ml10m.cf4j");
   }
 
   /**
@@ -103,7 +107,7 @@ public class BenchmarkDataModels {
    * @throws IOException When the DataModel can not be loaded.
    */
   public static DataModel FilmTrust() throws IOException {
-    return loadRemoteDataModel("http://cf4j.etsisi.upm.es/datamodels/ft.cf4j");
+    return loadRemoteDataModel("https://cf4j.etsisi.upm.es/datamodels/ft.cf4j");
   }
 
   /**
@@ -129,7 +133,7 @@ public class BenchmarkDataModels {
    * @throws IOException When the DataModel can not be loaded.
    */
   public static DataModel BookCrossing() throws IOException {
-    return loadRemoteDataModel("http://cf4j.etsisi.upm.es/datamodels/bx.cf4j");
+    return loadRemoteDataModel("https://cf4j.etsisi.upm.es/datamodels/bx.cf4j");
   }
 
   /**
@@ -154,7 +158,7 @@ public class BenchmarkDataModels {
    * @throws IOException When the DataModel can not be loaded.
    */
   public static DataModel LibimSeTi() throws IOException {
-    return loadRemoteDataModel("http://cf4j.etsisi.upm.es/datamodels/libimseti.cf4j");
+    return loadRemoteDataModel("https://cf4j.etsisi.upm.es/datamodels/libimseti.cf4j");
   }
 
   /**
@@ -180,7 +184,7 @@ public class BenchmarkDataModels {
    * @throws IOException When the DataModel can not be loaded.
    */
   public static DataModel MyAnimeList() throws IOException {
-    return loadRemoteDataModel("http://cf4j.etsisi.upm.es/datamodels/myanimelist.cf4j");
+    return loadRemoteDataModel("https://cf4j.etsisi.upm.es/datamodels/myanimelist.cf4j");
   }
 
   /**
@@ -205,7 +209,7 @@ public class BenchmarkDataModels {
    * @throws IOException When the DataModel can not be loaded.
    */
   public static DataModel Jester() throws IOException {
-    return loadRemoteDataModel("http://cf4j.etsisi.upm.es/datamodels/jester.cf4j");
+    return loadRemoteDataModel("https://cf4j.etsisi.upm.es/datamodels/jester.cf4j");
   }
 
   /**
@@ -230,7 +234,32 @@ public class BenchmarkDataModels {
    * @throws IOException When the DataModel can not be loaded.
    */
   public static DataModel NetflixPrize() throws IOException {
-    return loadRemoteDataModel("http://cf4j.etsisi.upm.es/datamodels/netflix.cf4j");
+    return loadRemoteDataModel("https://cf4j.etsisi.upm.es/datamodels/netflix.cf4j");
+  }
+
+  /**
+   * Loads a DataModel instance of BoardGameGeek dataset. The DataModel contains:
+   *
+   * <ul>
+   *   <li>Number of users: 411,375
+   *   <li>Number of test users: 57,459
+   *   <li>Number of items: 21,925
+   *   <li>Number of test items: 4,372
+   *   <li>Number of ratings: 18,273,394
+   *   <li>Number of test ratings: 63,6134
+   *   <li>Min rating: 1.0
+   *   <li>Max rating: 10.0
+   * </ul>
+   *
+   * <p>Visit <a
+   * href="https://www.kaggle.com/datasets/threnjen/board-games-database-from-boardgamegeek">https://www.kaggle.com/datasets/threnjen/board-games-database-from-boardgamegeek</a>
+   * for more information. The duplicated ratings have been removed keeping only the last one defined.
+   *
+   * @return A DataModel instance with BoardGameGeek dataset.
+   * @throws IOException When the DataModel can not be loaded.
+   */
+  public static DataModel BoardGameGeek() throws IOException {
+    return loadRemoteDataModel("https://cf4j.etsisi.upm.es/datamodels/bgg.cf4j");
   }
 
   /**

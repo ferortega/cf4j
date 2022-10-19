@@ -2,9 +2,9 @@ package es.upm.etsisi.cf4j.examples.recommender;
 
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
 import es.upm.etsisi.cf4j.util.plot.LinePlot;
+import es.upm.etsisi.cf4j.util.Maths;
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.recommender.Recommender;
-import es.upm.etsisi.cf4j.util.Range;
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.qualityMeasure.prediction.RMSE;
 import es.upm.etsisi.cf4j.recommender.matrixFactorization.*;
@@ -17,7 +17,7 @@ import java.io.IOException;
  */
 public class MatrixFactorizationComparison {
 
-  private static final int[] NUM_FACTORS = Range.ofIntegers(5, 5, 5);
+  private static final int[] NUM_FACTORS = Maths.range(5, 25, 5);
 
   private static final int NUM_ITERS = 50;
 

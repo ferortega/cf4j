@@ -59,46 +59,46 @@ For Maven:
 <dependency>
   <groupId>es.upm.etsisi</groupId>
   <artifactId>cf4j</artifactId>
-  <version>2.2.7</version>
+  <version>2.3.0</version>
 </dependency>
 ```
 
 For Gradle:
 
 ```
-compile group: 'es.upm.etsisi', name: 'cf4j', version: '2.2.7'
+compile group: 'es.upm.etsisi', name: 'cf4j', version: '2.3.0'
 ```
 
 For SBT:
 
 ```
-libraryDependencies += "es.upm.etsisi" % "cf4j" % "2.2.7"
+libraryDependencies += "es.upm.etsisi" % "cf4j" % "2.3.0"
 ```
 
 For Ivy:
 
 ```xml
-<dependency org="es.upm.etsisi" name="cf4j" rev="2.2.7"/>
+<dependency org="es.upm.etsisi" name="cf4j" rev="2.3.0"/>
 ```
 
 For Grape:
 
 ```
 @Grapes(
-    @Grab(group='es.upm.etsisi', module='cf4j', version='2.2.7')
+    @Grab(group='es.upm.etsisi', module='cf4j', version='2.3.0')
 )
 ```
 
 For Leiningen:
 
 ```
-[es.upm.etsisi/cf4j "2.2.7"]
+[es.upm.etsisi/cf4j "2.3.0"]
 ```
 
 For Buildr:
 
 ```
-'es.upm.etsisi:cf4j:jar:2.2.7'
+'es.upm.etsisi:cf4j:jar:2.3.0'
 ```
 
 You can find additional information about these dependencies in [https://mvnrepository.com/artifact/es.upm.etsisi/cf4j](https://mvnrepository.com/artifact/es.upm.etsisi/cf4j)
@@ -409,3 +409,6 @@ The datasets included in CF4J are:
 | MyAnimeList   | 69,600          | 9,927           | 5,788,207         | 549,027                | 1 to 10      |
 | Jester        | 54,905          | 140             | 1,662,713         | 179,657                | -10 to 10    |
 | Netflix Prize | 480,189         | 17,770          | 99,945,049        | 535,458                | 1 to 5       |
+| BoardGameGeek | 411,375         | 21,925          | 18,273,394        | 63,6134                | 1 to 10      |
+
+**ALERT**: due to security changes on the server hosting the [`BenchmarkDataModels`](http://cf4j.etsisi.upm.es/apidocs/latest/es/upm/etsisi/cf4j/data/BenchmarkDataModels.html), these will no longer be available for versions lower than `2.3.0`. If you need to continue using the [`BenchmarkDataModels`](http://cf4j.etsisi.upm.es/apidocs/latest/es/upm/etsisi/cf4j/data/BenchmarkDataModels.html), please upgrade to version `2.3.0` or higher.

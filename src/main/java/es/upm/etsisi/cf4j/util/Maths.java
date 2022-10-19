@@ -1,5 +1,8 @@
 package es.upm.etsisi.cf4j.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /** This class contains useful math methods. */
 public class Maths {
 
@@ -85,5 +88,145 @@ public class Maths {
    */
   public static double logistic(double x) {
     return 1.0 / (1.0 + Math.exp(-x));
+  }
+
+  /**
+   * Returns an array of int values.
+   * @param start An integer value specifying at which position to start. Default 0.
+   * @param stop An integer value specifying at which position to stop.
+   * @param step An integer value specifying the incrementation. Default 1.
+   * @param endpoint If true, include the stop value. Otherwise, it is not included. Default true.
+   * @return Values of the range.
+   */
+  public static int[] range(int start, int stop, int step, boolean endpoint) {
+    List<Integer> l = new ArrayList<>();
+    int v = start;
+    while((!endpoint && v < stop) || (endpoint && v <= stop)) {
+      l.add(v);
+      v += step;
+    }
+    return l.stream().mapToInt(Integer::intValue).toArray();
+  }
+
+  /**
+   * Returns an array of int values.
+   * @param start An integer value specifying at which position to start. Default 0.
+   * @param stop An integer value specifying at which position to stop.
+   * @param step An integer value specifying the incrementation. Default 1.
+   * @return Values of the range.
+   */
+  public static int[] range(int start, int stop, int step) {
+    return range(start, stop, step, true);
+  }
+
+  /**
+   * Returns an array of int values.
+   * @param start An integer value specifying at which position to start. Default 0.
+   * @param stop An integer value specifying at which position to stop.
+   * @return Values of the range.
+   */
+  public static int[] range(int start, int stop) {
+    return range(start, stop, 1);
+  }
+
+  /**
+   * Returns an array of int values.
+   * @param stop An integer value specifying at which position to stop.
+   * @return Values of the range.
+   */
+  public static int[] range(int stop) {
+    return range(0, stop);
+  }
+
+  /**
+   * Returns num evenly spaced samples.
+   * @param start The starting value. Default 0.0.
+   * @param stop The stop value.
+   * @param num Number of samples to generate.
+   * @param endpoint If true, stop is the last sample. Otherwise, it is not included. Default true.
+   * @return Double array with num evenly spaced samples.
+   */
+  public static double[] linespace(double start, double stop, int num, boolean endpoint) {
+    double inc = (stop - start) / (endpoint ? num - 1 : num);
+    double[] linespace = new double[num];
+    for (int i = 0; i < num; i++) {
+      linespace[i] = start + i * inc;
+    }
+    return linespace;
+  }
+
+  /**
+   * Returns num evenly spaced samples.
+   * @param start The starting value. Default 0.0.
+   * @param stop The stop value.
+   * @param num Number of samples to generate.
+   * @return Double array with num evenly spaced samples.
+   */
+  public static double[] linespace(double start, double stop, int num) {
+    return linespace(start, stop, num, true);
+  }
+
+  /**
+   * Returns num evenly spaced samples.
+   * @param stop The stop value.
+   * @param num Number of samples to generate.
+   * @return Double array with num evenly spaced samples.
+   */
+  public static double[] linespace(double stop, int num) {
+    return linespace(0, stop, num);
+  }
+
+  /**
+   * Return numbers spaced evenly on a log scale. The sequence starts at Math.pow(base, start).
+   * @param start Math.pow(base, start) is the starting value of the sequence.
+   * @param stop Math.pow(base, stop) is the last value of the sequence if endpoint is true.
+   * @param num Number of samples to generate.
+   * @param endpoint If true, stop is the last sample. Otherwise, it is not included. Default true.
+   * @param base The base of the log space. Default 10.
+   * @return Double array with num evenly spaced samples on a log scale.
+   */
+  public static double[] logspace(
+      double start, double stop, int num, boolean endpoint, double base) {
+    double[] exp = linespace(start, stop, num, endpoint);
+    double[] logspace = new double[num];
+    for (int i = 0; i < num; i++) {
+      logspace[i] = Math.pow(base, exp[i]);
+    }
+    return logspace;
+  }
+
+  /**
+   * Return numbers spaced evenly on a log scale. The sequence starts at Math.pow(base, start).
+   * @param start Math.pow(base, start) is the starting value of the sequence.
+   * @param stop Math.pow(base, stop) is the last value of the sequence if endpoint is true.
+   * @param num Number of samples to generate.
+   * @param endpoint If true, stop is the last sample. Otherwise, it is not included. Default true.
+   * @return Double array with num evenly spaced samples on a log scale.
+   */
+  public static double[] logspace(double start, double stop, int num, boolean endpoint) {
+    return logspace(start, stop, num, endpoint, 10);
+  }
+
+  /**
+   * Return numbers spaced evenly on a log scale. The sequence starts at Math.pow(base, start).
+   * @param start Math.pow(base, start) is the starting value of the sequence.
+   * @param stop Math.pow(base, stop) is the last value of the sequence if endpoint is true.
+   * @param num Number of samples to generate.
+   * @param base The base of the log space. Default 10.
+   * @return Double array with num evenly spaced samples on a log scale.
+   */
+  public static double[] logspace(double start, double stop, int num, double base) {
+    return logspace(start, stop, num, true, base);
+  }
+
+  /**
+   * Return numbers spaced evenly on a log scale. The sequence starts at Math.pow(base, start).
+   * @param start Math.pow(base, start) is the starting value of the sequence.
+   * @param stop Math.pow(base, stop) is the last value of the sequence if endpoint is true.
+   * @param num Number of samples to generate.
+   * @return Double array with num evenly spaced samples on a log scale.
+   */
+  public static double[] logspace(double start, double stop, int num) {
+    return logspace(start, stop, num, true, 10);
   }
 }

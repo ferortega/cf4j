@@ -4,7 +4,7 @@
 	<groupId>es.upm.etsisi</groupId>
 	<artifactId>cf4j</artifactId>
 	<packaging>jar</packaging>
-	<version>2.2.7</version>
+	<version>2.3.0</version>
 
 	<name>cf4j</name>
 	<description>A Java's Collaborative Filtering library to carry out experiments in research of Collaborative Filtering based Recommender Systems.</description>
@@ -33,6 +33,10 @@
 		<developer>
 			<id>Daniel López</id>
 			<email>daniel.lopez@upm.es</email>
+		</developer>
+		<developer>
+			<id>Diego Pérez</id>
+			<email>diego.perezl@alumnos.upm.es</email>
 		</developer>
 	</developers>
 
