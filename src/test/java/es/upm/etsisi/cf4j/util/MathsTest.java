@@ -3,7 +3,7 @@ package es.upm.etsisi.cf4j.util;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class Math {
+public class MathsTest {
 
     @Test
     void range() {
