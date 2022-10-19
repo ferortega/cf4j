@@ -34,6 +34,10 @@
 			<id>Daniel López</id>
 			<email>daniel.lopez@upm.es</email>
 		</developer>
+		<developer>
+			<id>Diego Pérez</id>
+			<email>diego.perezl@alumnos.upm.es</email>
+		</developer>
 	</developers>
 
 	<scm>
