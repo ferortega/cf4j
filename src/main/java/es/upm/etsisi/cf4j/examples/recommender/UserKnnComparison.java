@@ -1,13 +1,13 @@
 package es.upm.etsisi.cf4j.examples.recommender;
 
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
+import es.upm.etsisi.cf4j.util.Maths;
 import es.upm.etsisi.cf4j.util.plot.LinePlot;
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.qualityMeasure.recommendation.Precision;
 import es.upm.etsisi.cf4j.qualityMeasure.recommendation.Recall;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.recommender.knn.UserKNN;
-import es.upm.etsisi.cf4j.util.Range;
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.qualityMeasure.prediction.Coverage;
 import es.upm.etsisi.cf4j.qualityMeasure.prediction.MAE;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class UserKnnComparison {
 
-  private static final int[] numNeighbors = Range.ofIntegers(100, 50, 5);
+  private static final int[] numNeighbors = Maths.range(100, 300, 50);
 
   private static final UserKNN.AggregationApproach AGGREGATION_APPROACH =
       UserKNN.AggregationApproach.DEVIATION_FROM_MEAN;

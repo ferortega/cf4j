@@ -1,12 +1,12 @@
 package es.upm.etsisi.cf4j.examples.recommender;
 
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
+import es.upm.etsisi.cf4j.util.Maths;
 import es.upm.etsisi.cf4j.util.plot.LinePlot;
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.qualityMeasure.recommendation.NDCG;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.recommender.knn.ItemKNN;
-import es.upm.etsisi.cf4j.util.Range;
 import es.upm.etsisi.cf4j.data.DataModel;
 import es.upm.etsisi.cf4j.qualityMeasure.prediction.MSLE;
 import es.upm.etsisi.cf4j.recommender.knn.itemSimilarityMetric.*;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
  */
 public class ItemKnnComparison {
 
-  private static final int[] NUM_NEIGHBORS = Range.ofIntegers(100, 50, 5);
+  private static final int[] NUM_NEIGHBORS = Maths.range(100, 300, 50);
 
   private static final ItemKNN.AggregationApproach AGGREGATION_APPROACH =
       ItemKNN.AggregationApproach.MEAN;
