@@ -1,6 +1,7 @@
 package es.upm.etsisi.cf4j.examples;
 
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
+import es.upm.etsisi.cf4j.util.Maths;
 import es.upm.etsisi.cf4j.util.plot.LinePlot;
 import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
 import es.upm.etsisi.cf4j.qualityMeasure.prediction.MSE;
@@ -19,9 +20,7 @@ public class GettingStartedExample {
 
     DataModel datamodel = BenchmarkDataModels.MovieLens100K();
 
-    double[] regValues = {
-      0.000, 0.025, 0.05, 0.075, 0.100, 0.125, 0.150, 0.175, 0.200, 0.225, 0.250
-    };
+    double[] regValues = Maths.linespace(0,0.25, 11);
     LinePlot plot = new LinePlot(regValues, "regularization", "MSE");
 
     plot.addSeries("PMF");
