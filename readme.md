@@ -124,7 +124,7 @@ Let's encode our first experiment with CF4J.
 2. Now, we need to create an object store the results of our experiment. CF4J includes some amazing tools to analyze the experimental results. You can find them in the [`es.upm.etsisi.plot`](http://cf4j.etsisi.upm.es/apidocs/latest/es/upm/etsisi/cf4j/plot/package-summary.html) package. In this case, we want to analyze how the Mean Squared Error (MSE) varies according to the value of the regularization term in Probabilistic Matrix Factorization ([`PMF`](http://cf4j.etsisi.upm.es/apidocs/latest/es/upm/etsisi/cf4j/recommender/matrixFactorization/PMF.html)) recommender, so we will use a [`LinePlot`](http://cf4j.etsisi.upm.es/apidocs/latest/es/upm/etsisi/cf4j/plot/LinePlot.html).
 
    ```java
-   double[] regValues = {0.000, 0.025, 0.05, 0.075, 0.100, 0.125, 0.150, 0.175, 0.200, 0.225, 0.250};
+   double[] regValues = Maths.linespace(0,0.25, 11);
    LinePlot plot = new LinePlot(regValues, "regularization", "MSE");
    ```
    
