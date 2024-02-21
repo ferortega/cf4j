@@ -10,12 +10,49 @@ public class Maths {
    * Calculates the average of an double array
    *
    * @param array Array of double from which to calculate the mean
+   * @param ignoreNaNs Ignore NaN values in the array
+   * @return Array mean
+   */
+  public static double arrayAverage(double[] array, boolean ignoreNaNs) {
+    double sum = 0d;
+    int count = 0;
+    for (int i = 0; i < array.length; i++) {
+      if (!Double.isNaN(array[i])) {
+        sum += array[i];
+        count++;
+      }
+    }
+    return sum / count;
+  }
+
+  /**
+   * Calculates the average of an double array
+   *
+   * @param array Array of double from which to calculate the mean
    * @return Array mean
    */
   public static double arrayAverage(double[] array) {
-    double average = 0f;
-    for (double d : array) average += d;
-    return average / (double) array.length;
+    return arrayAverage(array, true);
+  }
+
+  /**
+   * Calculates the standard deviation of an double array
+   *
+   * @param array Array of double from which to calculate the standard deviation
+   * @param ignoreNaNs Ignore NaN values in the array
+   * @return Standard deviation of the array
+   */
+  public static double arrayStandardDeviation(double[] array, boolean ignoreNaNs) {
+    double average = Maths.arrayAverage(array, ignoreNaNs);
+    double sum = 0d;
+    int count = 0;
+    for (int i = 0; i < array.length; i++) {
+      if (!Double.isNaN(array[i])) {
+        sum += Math.pow(array[i] - average, 2);
+        count++;
+      }
+    }
+    return Math.sqrt(sum / count);
   }
 
   /**
@@ -25,10 +62,7 @@ public class Maths {
    * @return Standard deviation of the array
    */
   public static double arrayStandardDeviation(double[] array) {
-    double average = Maths.arrayAverage(array);
-    double standard_deviation = 0f;
-    for (double d : array) standard_deviation += (d - average) * (d - average);
-    return Math.sqrt(standard_deviation / (double) array.length);
+    return arrayStandardDeviation(array, true);
   }
 
   /**
