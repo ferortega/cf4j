@@ -1,10 +1,10 @@
 package es.upm.etsisi.cf4j.examples;
 
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
+import es.upm.etsisi.cf4j.scorer.Scorer;
+import es.upm.etsisi.cf4j.scorer.prediction.MeanSquaredError;
 import es.upm.etsisi.cf4j.util.Maths;
 import es.upm.etsisi.cf4j.util.plot.LinePlot;
-import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
-import es.upm.etsisi.cf4j.qualityMeasure.prediction.MSE;
 import es.upm.etsisi.cf4j.recommender.matrixFactorization.PMF;
 import es.upm.etsisi.cf4j.data.DataModel;
 
@@ -29,9 +29,10 @@ public class GettingStartedExample {
       PMF pmf = new PMF(datamodel, 6, 50, reg, 0.01, 43);
       pmf.fit();
 
-      QualityMeasure mse = new MSE(pmf);
-      double mseScore = mse.getScore();
+      Scorer mse = new MeanSquaredError(pmf);
+      mse.fit();
 
+      double mseScore = mse.getScore();
       plot.setValue("PMF", reg, mseScore);
     }
 

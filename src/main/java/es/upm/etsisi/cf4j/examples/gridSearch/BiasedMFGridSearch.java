@@ -2,7 +2,7 @@ package es.upm.etsisi.cf4j.examples.gridSearch;
 
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
 import es.upm.etsisi.cf4j.data.DataModel;
-import es.upm.etsisi.cf4j.qualityMeasure.prediction.MAE;
+import es.upm.etsisi.cf4j.scorer.prediction.MeanAbsoluteError;
 import es.upm.etsisi.cf4j.recommender.matrixFactorization.BiasedMF;
 import es.upm.etsisi.cf4j.util.optimization.GridSearch;
 import es.upm.etsisi.cf4j.util.optimization.ParamsGrid;
@@ -28,7 +28,7 @@ public class BiasedMFGridSearch {
 
     grid.addFixedParam("seed", 43L);
 
-    GridSearch gs = new GridSearch(datamodel, grid, BiasedMF.class, MAE.class);
+    GridSearch gs = new GridSearch(datamodel, grid, BiasedMF.class, MeanAbsoluteError.class);
     gs.fit();
     gs.printResults(5);
   }

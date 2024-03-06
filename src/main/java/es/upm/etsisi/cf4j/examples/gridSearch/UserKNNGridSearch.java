@@ -2,7 +2,7 @@ package es.upm.etsisi.cf4j.examples.gridSearch;
 
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
 import es.upm.etsisi.cf4j.data.DataModel;
-import es.upm.etsisi.cf4j.qualityMeasure.recommendation.Precision;
+import es.upm.etsisi.cf4j.scorer.recommendation.Precision;
 import es.upm.etsisi.cf4j.recommender.knn.UserKNN;
 import es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetric.*;
 import es.upm.etsisi.cf4j.util.optimization.GridSearch;

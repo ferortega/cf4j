@@ -132,16 +132,17 @@ Let's encode our first experiment with CF4J.
    plot.addSeries("PMF");
    ```
    
-   And we iterate over the different regularization values fitting a new instance of ([`PMF`](http://cf4j.etsisi.upm.es/apidocs/latest/es/upm/etsisi/cf4j/recommender/matrixFactorization/PMF.html)) recommender for each of them, computing the [`MSE`](http://cf4j.etsisi.upm.es/apidocs/latest/es/upm/etsisi/cf4j/qualityMeasure/prediction/MSE.html) of the fitted recommender predictions and adding the MSE score to the plot data. Note that the remaining model's hyper-parameters has been fixed for this experiment (`numFactors=6`, `numIters=50`, `gamma=0.01` and `seed=43`):
+   And we iterate over the different regularization values fitting a new instance of ([`PMF`](http://cf4j.etsisi.upm.es/apidocs/latest/es/upm/etsisi/cf4j/recommender/matrixFactorization/PMF.html)) recommender for each of them, computing the [`MeanSquaredError`](http://cf4j.etsisi.upm.es/apidocs/latest/es/upm/etsisi/cf4j/scorer/prediction/MeanSquaredError.html) of the fitted recommender predictions and adding the MSE score to the plot data. Note that the remaining model's hyper-parameters has been fixed for this experiment (`numFactors=6`, `numIters=50`, `gamma=0.01` and `seed=43`):
    
    ```java
    for (double reg : regValues) {
      PMF pmf = new PMF(datamodel, 6, 50, reg, 0.01, 43);
      pmf.fit();
 
-     QualityMeasure mse = new MSE(pmf);
+     Score mse = new MeanSquaredError(pmf);
+     mse.fit();
+   
      double mseScore = mse.getScore();
-
      plot.setValue("PMF", reg, mseScore);
    }
    ``` 
@@ -234,14 +235,14 @@ This package contains several implementations of collaborative filtering algorit
 
 Each `Recommender` must be created from a `DataModel` instance and will be fitted to it.
 
-### `es.upm.etsisi.cf4j.qualityMeasure` package
+### `es.upm.etsisi.cf4j.scorer` package
 
-This package contains the implementation of different quality measures for collaborative filtering based recommender systems. These quality measures are used to evaluate the performance of a `Recommender` instance. Included quality measures has been classified into two categories:
+This package contains the implementation of different scores for collaborative filtering based recommender systems. These scores are used to evaluate the performance of a `Recommender` instance. Included scores has been classified into two categories:
 
-- Quality measures for predictions, allocated into `es.upm.etsisi.cf4j.qualityMeasures.prediction` package.
-- Quality measures for recommendations, allocated into `es.upm.etsisi.cf4j.qualityMeasures.recommendation` package.
+- Scores for predictions, allocated into `es.upm.etsisi.cf4j.scorer.prediction` package.
+- Scores for recommendations, allocated into `es.upm.etsisi.cf4j.scorer.recommendation` package.
 
-Each quality measure included in CF4J extends `QualityMeasure` abstract class. This class simplifies the computation of a quality measure from the test ratings. It contains the `getScore()` method that computes the score of the quality measure for each test user and returns the averaged score. The computation of the quality measure score for each test user is performed in parallel.
+Each score included in CF4J extends `Scorer` abstract class. This class simplifies the computation of a score from the test ratings. It contains the `getUserScore()` avstract method that computes the score for each test user and the `getScore()` method that returns the averaged score. The computation of the quality measure score for each test user is performed in parallel.
 
 ### `es.upm.etsisi.cf4j.util` package
 
@@ -346,7 +347,7 @@ In this section we include the full list of algorithms implemented in the librar
  
 * Quality measures:
 
-  + For prediction (`es.upm.etsisi.cf4j.qualityMeasure.prediction` package):
+  + For prediction (`es.upm.etsisi.cf4j.scorer.prediction` package):
     - Coverage (`Coverage`)
     - Mean Absolute Error (`MAE`)
     - Max User Error (`Max`)
@@ -356,7 +357,7 @@ In this section we include the full list of algorithms implemented in the librar
     - Coefficient of determination R2 (`R2`)
     - Root Mean Squared Error (`RMSE`)
     
-  + For recommendation (`es.upm.etsisi.cf4j.qualityMeasure.recommendation` package):
+  + For recommendation (`es.upm.etsisi.cf4j.scorer.recommendation` package):
     - Precision (`Precision`)
     - Recall (`Recall`)
     - F1 (`F1`)

@@ -1,14 +1,14 @@
 package es.upm.etsisi.cf4j.examples.recommender;
 
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
+import es.upm.etsisi.cf4j.scorer.Scorer;
+import es.upm.etsisi.cf4j.scorer.prediction.MeanSquaredLogError;
 import es.upm.etsisi.cf4j.util.Maths;
 import es.upm.etsisi.cf4j.util.plot.LinePlot;
-import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
-import es.upm.etsisi.cf4j.qualityMeasure.recommendation.NDCG;
+import es.upm.etsisi.cf4j.scorer.recommendation.NDCG;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.recommender.knn.ItemKNN;
 import es.upm.etsisi.cf4j.data.DataModel;
-import es.upm.etsisi.cf4j.qualityMeasure.prediction.MSLE;
 import es.upm.etsisi.cf4j.recommender.knn.itemSimilarityMetric.*;
 
 import java.io.IOException;
@@ -58,11 +58,13 @@ public class ItemKnnComparison {
         Recommender knn = new ItemKNN(datamodel, k, metric, AGGREGATION_APPROACH);
         knn.fit();
 
-        QualityMeasure msle = new MSLE(knn);
+        Scorer msle = new MeanSquaredLogError(knn);
+        msle.fit();
         double msleScore = msle.getScore();
         mslePlot.setValue(metricName, k, msleScore);
 
-        QualityMeasure ndcg = new NDCG(knn, 10);
+        Scorer ndcg = new NDCG(knn, 10);
+        ndcg.fit();
         double ndcgScore = ndcg.getScore();
         ndcgPlot.setValue(metricName, k, ndcgScore);
       }

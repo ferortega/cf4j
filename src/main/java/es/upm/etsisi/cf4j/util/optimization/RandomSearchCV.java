@@ -2,7 +2,7 @@ package es.upm.etsisi.cf4j.util.optimization;
 
 import es.upm.etsisi.cf4j.data.*;
 import es.upm.etsisi.cf4j.data.types.DataSetEntry;
-import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
+import es.upm.etsisi.cf4j.scorer.Scorer;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.util.Maths;
 import org.apache.commons.math3.util.Pair;
@@ -39,11 +39,11 @@ public class RandomSearchCV {
   /** Recommender class to be evaluated */
   private final Class<? extends Recommender> recommenderClass;
 
-  /** QualityMeasure classes used to evaluate the Recommender */
-  private final Class<? extends QualityMeasure>[] qualityMeasuresClasses;
+  /** Scorer classes used to evaluate the Recommender */
+  private final Class<? extends Scorer>[] scorerClasses;
 
-  /** Maps objects containing the quality measures parameters names (keys) and values (value) */
-  private final Map<String, Object>[] qualityMeasuresParams;
+  /** Maps objects containing the scorers parameters names (keys) and values (value) */
+  private final Map<String, Object>[] scorersParams;
 
   /** Number of folds for the cross validation */
   private final int cv;
@@ -65,8 +65,8 @@ public class RandomSearchCV {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contain a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
+   * @param scorerClass Scorer class used to evaluate the Recommender. This class
+   *     must contain a constructor with the signature Scorer.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param cv Number of fold for the cross validation
    * @param coverage Percentage of samples of the development set to be evaluated
@@ -75,14 +75,14 @@ public class RandomSearchCV {
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure> qualityMeasureClass,
+      Class<? extends Scorer> scorerClass,
       int cv,
       double coverage) {
     this(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasureClass,
+        scorerClass,
         null,
         cv,
         (int) (coverage * grid.getDevelopmentSetSize()),
@@ -97,8 +97,8 @@ public class RandomSearchCV {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contain a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
+   * @param scorerClass Scorer class used to evaluate the Recommender. This class
+   *     must contain a constructor with the signature Scorer.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param cv Number of fold for the cross validation
    * @param coverage Percentage of samples of the development set to be evaluated
@@ -108,7 +108,7 @@ public class RandomSearchCV {
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure> qualityMeasureClass,
+      Class<? extends Scorer> scorerClass,
       int cv,
       double coverage,
       long seed) {
@@ -116,7 +116,7 @@ public class RandomSearchCV {
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasureClass,
+        scorerClass,
         null,
         cv,
         (int) (coverage * grid.getDevelopmentSetSize()),
@@ -131,8 +131,8 @@ public class RandomSearchCV {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contain a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
+   * @param scorerClass Scorer class used to evaluate the Recommender. This class
+   *     must contain a constructor with the signature Scorer.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
    * @param cv Number of fold for the cross validation
    * @param numIters Number of samples of the development set to be evaluated
@@ -141,14 +141,14 @@ public class RandomSearchCV {
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure> qualityMeasureClass,
+      Class<? extends Scorer> scorerClass,
       int cv,
       int numIters) {
     this(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasureClass,
+        scorerClass,
         null,
         cv,
         numIters,
@@ -163,10 +163,10 @@ public class RandomSearchCV {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contain a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
+   * @param scorerClass Scorer class used to evaluate the Recommender. This class
+   *     must contain a constructor with the signature Scorer.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
-   * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
+   * @param scorerParams Map object containing the scorer parameters names (keys)
    *     and values (value)
    * @param cv Number of fold for the cross validation
    * @param coverage Percentage of samples of the development set to be evaluated
@@ -175,16 +175,16 @@ public class RandomSearchCV {
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure> qualityMeasureClass,
-      Map<String, Object> qualityMeasureParams,
+      Class<? extends Scorer> scorerClass,
+      Map<String, Object> scorerParams,
       int cv,
       double coverage) {
     this(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasureClass,
-        qualityMeasureParams,
+        scorerClass,
+        scorerParams,
         cv,
         (int) (coverage * grid.getDevelopmentSetSize()),
         System.currentTimeMillis());
@@ -198,10 +198,10 @@ public class RandomSearchCV {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contain a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
+   * @param scorerClass Scorer class used to evaluate the Recommender. This class
+   *     must contain a constructor with the signature Scorer.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
-   * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
+   * @param scorerParams Map object containing the scorer parameters names (keys)
    *     and values (value)
    * @param cv Number of fold for the cross validation
    * @param coverage Percentage of samples of the development set to be evaluated
@@ -211,8 +211,8 @@ public class RandomSearchCV {
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure> qualityMeasureClass,
-      Map<String, Object> qualityMeasureParams,
+      Class<? extends Scorer> scorerClass,
+      Map<String, Object> scorerParams,
       int cv,
       double coverage,
       long seed) {
@@ -220,8 +220,8 @@ public class RandomSearchCV {
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasureClass,
-        qualityMeasureParams,
+        scorerClass,
+        scorerParams,
         cv,
         (int) (coverage * grid.getDevelopmentSetSize()),
         seed);
@@ -235,10 +235,10 @@ public class RandomSearchCV {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contain a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
+   * @param scorerClass Scorer class used to evaluate the Recommender. This class
+   *     must contain a constructor with the signature Scorer.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
-   * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
+   * @param scorerParams Map object containing the scorer parameters names (keys)
    *     and values (value)
    * @param cv Number of fold for the cross validation
    * @param numIters Number of samples of the development set to be evaluated
@@ -247,16 +247,16 @@ public class RandomSearchCV {
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure> qualityMeasureClass,
-      Map<String, Object> qualityMeasureParams,
+      Class<? extends Scorer> scorerClass,
+      Map<String, Object> scorerParams,
       int cv,
       int numIters) {
     this(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasureClass,
-        qualityMeasureParams,
+        scorerClass,
+        scorerParams,
         cv,
         numIters,
         System.currentTimeMillis());
@@ -270,10 +270,10 @@ public class RandomSearchCV {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contain a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
+   * @param scorerClass Scorer class used to evaluate the Recommender. This class
+   *     must contain a constructor with the signature Scorer.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
-   * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
+   * @param scorerParams Map object containing the scorer parameters names (keys)
    *     and values (value)
    * @param cv Number of fold for the cross validation
    * @param numIters Number of samples of the development set to be evaluated
@@ -283,8 +283,8 @@ public class RandomSearchCV {
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure> qualityMeasureClass,
-      Map<String, Object> qualityMeasureParams,
+      Class<? extends Scorer> scorerClass,
+      Map<String, Object> scorerParams,
       int cv,
       int numIters,
       long seed) {
@@ -292,8 +292,8 @@ public class RandomSearchCV {
         datamodel,
         grid,
         recommenderClass,
-        new Class[] {qualityMeasureClass},
-        new Map[] {qualityMeasureParams},
+        new Class[] {scorerClass},
+        new Map[] {scorerParams},
         cv,
         numIters,
         seed);
@@ -307,9 +307,9 @@ public class RandomSearchCV {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
+   * @param scorerClasses Scorer classes used to evaluate the Recommender. These
    *     classes must contain a constructor with the signature
-   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
+   *     Scorer.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
    * @param cv Number of fold for the cross validation
    * @param coverage Percentage of samples of the development set to be evaluated
    */
@@ -317,14 +317,14 @@ public class RandomSearchCV {
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure>[] qualityMeasuresClasses,
+      Class<? extends Scorer>[] scorerClasses,
       int cv,
       double coverage) {
     this(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasuresClasses,
+        scorerClasses,
         null,
         cv,
         (int) (coverage * grid.getDevelopmentSetSize()),
@@ -339,9 +339,9 @@ public class RandomSearchCV {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
+   * @param scorerClasses Scorer classes used to evaluate the Recommender. These
    *     classes must contain a constructor with the signature
-   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
+   *     Scorer.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
    * @param cv Number of fold for the cross validation
    * @param coverage Percentage of samples of the development set to be evaluated
    * @param seed Random seed for random numbers generation
@@ -350,7 +350,7 @@ public class RandomSearchCV {
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure>[] qualityMeasuresClasses,
+      Class<? extends Scorer>[] scorerClasses,
       int cv,
       double coverage,
       long seed) {
@@ -358,7 +358,7 @@ public class RandomSearchCV {
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasuresClasses,
+        scorerClasses,
         null,
         cv,
         (int) (coverage * grid.getDevelopmentSetSize()),
@@ -373,9 +373,9 @@ public class RandomSearchCV {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
+   * @param scorerClasses Scorer classes used to evaluate the Recommender. These
    *     classes must contain a constructor with the signature
-   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
+   *     Scorer.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
    * @param cv Number of fold for the cross validation
    * @param numIters Number of samples of the development set to be evaluated
    */
@@ -383,14 +383,14 @@ public class RandomSearchCV {
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure>[] qualityMeasuresClasses,
+      Class<? extends Scorer>[] scorerClasses,
       int cv,
       int numIters) {
     this(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasuresClasses,
+        scorerClasses,
         null,
         cv,
         numIters,
@@ -405,10 +405,10 @@ public class RandomSearchCV {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
+   * @param scorerClasses Scorer classes used to evaluate the Recommender. These
    *     classes must contain a constructor with the signature
-   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
-   * @param qualityMeasuresParams Maps objects containing the quality measure parameters names
+   *     Scorer.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
+   * @param scorersParams Maps objects containing the scorer parameters names
    *     (keys) and values (value)
    * @param cv Number of fold for the cross validation
    * @param coverage Percentage of samples of the development set to be evaluated
@@ -417,16 +417,16 @@ public class RandomSearchCV {
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure>[] qualityMeasuresClasses,
-      Map<String, Object>[] qualityMeasuresParams,
+      Class<? extends Scorer>[] scorerClasses,
+      Map<String, Object>[] scorersParams,
       int cv,
       double coverage) {
     this(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasuresClasses,
-        qualityMeasuresParams,
+        scorerClasses,
+        scorersParams,
         cv,
         (int) (coverage * grid.getDevelopmentSetSize()),
         System.currentTimeMillis());
@@ -440,10 +440,10 @@ public class RandomSearchCV {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
+   * @param scorerClasses Scorer classes used to evaluate the Recommender. These
    *     classes must contain a constructor with the signature
-   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
-   * @param qualityMeasuresParams Maps objects containing the quality measure parameters names
+   *     Scorer.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
+   * @param scorersParams Maps objects containing the scorer parameters names
    *     (keys) and values (value)
    * @param cv Number of fold for the cross validation
    * @param coverage Percentage of samples of the development set to be evaluated
@@ -453,8 +453,8 @@ public class RandomSearchCV {
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure>[] qualityMeasuresClasses,
-      Map<String, Object>[] qualityMeasuresParams,
+      Class<? extends Scorer>[] scorerClasses,
+      Map<String, Object>[] scorersParams,
       int cv,
       double coverage,
       long seed) {
@@ -462,8 +462,8 @@ public class RandomSearchCV {
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasuresClasses,
-        qualityMeasuresParams,
+        scorerClasses,
+        scorersParams,
         cv,
         (int) (coverage * grid.getDevelopmentSetSize()),
         seed);
@@ -477,10 +477,10 @@ public class RandomSearchCV {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
+   * @param scorerClasses Scorer classes used to evaluate the Recommender. These
    *     classes must contain a constructor with the signature
-   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
-   * @param qualityMeasuresParams Maps objects containing the quality measure parameters names
+   *     Scorer.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
+   * @param scorersParams Maps objects containing the scorer parameters names
    *     (keys) and values (value)
    * @param cv Number of fold for the cross validation
    * @param numIters Number of samples of the development set to be evaluated
@@ -489,16 +489,16 @@ public class RandomSearchCV {
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure>[] qualityMeasuresClasses,
-      Map<String, Object>[] qualityMeasuresParams,
+      Class<? extends Scorer>[] scorerClasses,
+      Map<String, Object>[] scorersParams,
       int cv,
       int numIters) {
     this(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasuresClasses,
-        qualityMeasuresParams,
+        scorerClasses,
+        scorersParams,
         cv,
         numIters,
         System.currentTimeMillis());
@@ -512,10 +512,10 @@ public class RandomSearchCV {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
+   * @param scorerClasses Scorer classes used to evaluate the Recommender. These
    *     classes must contain a constructor with the signature
-   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
-   * @param qualityMeasuresParams Maps objects containing the quality measure parameters names
+   *     Scorer.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
+   * @param scorersParams Maps objects containing the scorer parameters names
    *     (keys) and values (value)
    * @param cv Number of fold for the cross validation
    * @param numIters Number of samples of the development set to be evaluated
@@ -525,8 +525,8 @@ public class RandomSearchCV {
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure>[] qualityMeasuresClasses,
-      Map<String, Object>[] qualityMeasuresParams,
+      Class<? extends Scorer>[] scorerClasses,
+      Map<String, Object>[] scorersParams,
       int cv,
       int numIters,
       long seed) {
@@ -534,8 +534,8 @@ public class RandomSearchCV {
     this.grid = grid;
     this.cv = cv;
     this.recommenderClass = recommenderClass;
-    this.qualityMeasuresClasses = qualityMeasuresClasses;
-    this.qualityMeasuresParams = qualityMeasuresParams;
+    this.scorerClasses = scorerClasses;
+    this.scorersParams = scorersParams;
     this.numIters = numIters;
     this.seed = seed;
     this.results = new HashMap<>();
@@ -585,8 +585,8 @@ public class RandomSearchCV {
               validationDatamodel,
               grid,
               recommenderClass,
-              qualityMeasuresClasses,
-              qualityMeasuresParams,
+              scorerClasses,
+              scorersParams,
               numIters,
               seed,
               "Fold " + (fold+1) + " of " + this.cv);
@@ -595,11 +595,11 @@ public class RandomSearchCV {
       Map<Map<String, Object>, Double[]> randomSearchResults = randomSearch.getResults();
       for (Map<String, Object> params : randomSearchResults.keySet()) {
         Double[][] scores =
-            (fold == 0) ? new Double[qualityMeasuresClasses.length][cv] : this.results.get(params);
+            (fold == 0) ? new Double[scorerClasses.length][cv] : this.results.get(params);
 
-        Double[] readomSearchScores = randomSearchResults.get(params);
-        for (int q = 0; q < readomSearchScores.length; q++) {
-          scores[q][fold] = readomSearchScores[q];
+        Double[] randomSearchScores = randomSearchResults.get(params);
+        for (int s = 0; s < randomSearchScores.length; s++) {
+          scores[s][fold] = randomSearchScores[s];
         }
 
         this.results.put(params, scores);
@@ -736,24 +736,16 @@ public class RandomSearchCV {
       Double[][] scores = this.results.get(params);
       double averageError =
           Maths.arrayAverage(Stream.of(scores[index]).mapToDouble(Double::doubleValue).toArray());
-      cvResults.add(new Pair<>(params, averageError));
+
+      if (!Double.isNaN(averageError)) {
+        cvResults.add(new Pair<>(params, averageError));
+      }
     }
+
 
     // Sort results
     Comparator<Pair<Map<String, Object>, Double>> comparator =
-        Comparator.comparing(
-            Pair::getValue,
-            (d1, d2) -> {
-              if (Double.isNaN(d1) && Double.isNaN(d2)) {
-                return 0;
-              } else if (Double.isNaN(d1)) {
-                return -1;
-              } else if (Double.isNaN(d2)) {
-                return 1;
-              } else {
-                return Double.compare(d1, d2);
-              }
-            });
+        Comparator.comparing(Pair::getValue, Comparator.comparingDouble(d -> d));
 
     if (!lowerIsBetter) {
       comparator = comparator.reversed();
@@ -776,10 +768,10 @@ public class RandomSearchCV {
     sb.append("Top ")
         .append(topN)
         .append(" ")
-        .append(this.qualityMeasuresClasses[index].getSimpleName());
+        .append(this.scorerClasses[index].getSimpleName());
 
-    if (this.qualityMeasuresParams != null && this.qualityMeasuresParams[index] != null) {
-      sb.append(this.qualityMeasuresParams[index].toString());
+    if (this.scorersParams != null && this.scorersParams[index] != null) {
+      sb.append(this.scorersParams[index].toString());
     }
 
     sb.append(" scores on development set:\n\n");
@@ -791,7 +783,7 @@ public class RandomSearchCV {
       Double[][] scores = this.results.get(params);
       Double averageScore = result.getValue();
 
-      sb.append(this.qualityMeasuresClasses[index].getSimpleName().toLowerCase())
+      sb.append(this.scorerClasses[index].getSimpleName().toLowerCase())
           .append('=')
           .append(Arrays.toString(scores[index]))
           .append(", avg=");
@@ -872,24 +864,24 @@ public class RandomSearchCV {
     String[] paramsName = grid.getParamsName();
 
     if (includeHeader) {
-      for (int q = 0; q < this.qualityMeasuresClasses.length; q++) {
-        String qualityMeasureName = this.qualityMeasuresClasses[q].getSimpleName().toLowerCase();
+      for (int s = 0; s < this.scorerClasses.length; s++) {
+        String scorerName = this.scorerClasses[s].getSimpleName().toLowerCase();
 
         for (int fold = 0; fold < this.cv; fold++) {
-          writer.print(qualityMeasureName);
+          writer.print(scorerName);
           writer.print("_fold_");
           writer.print(fold);
           writer.print(separator);
         }
 
-        writer.print(qualityMeasureName);
+        writer.print(scorerName);
         writer.print("_avg");
         writer.print(separator);
 
-        writer.print(qualityMeasureName);
+        writer.print(scorerName);
         writer.print("_std");
 
-        if (q < this.qualityMeasuresClasses.length - 1) {
+        if (s < this.scorerClasses.length - 1) {
           writer.print(separator);
         }
       }
@@ -903,17 +895,17 @@ public class RandomSearchCV {
     }
 
     for (Map<String, Object> params : this.results.keySet()) {
-      for (int q = 0; q < this.qualityMeasuresClasses.length; q++) {
+      for (int s = 0; s < this.scorerClasses.length; s++) {
         Double[][] scores = this.results.get(params);
 
         double avg =
-            Maths.arrayAverage(Stream.of(scores[q]).mapToDouble(Double::doubleValue).toArray());
+            Maths.arrayAverage(Stream.of(scores[s]).mapToDouble(Double::doubleValue).toArray());
         double std =
             Maths.arrayStandardDeviation(
-                Stream.of(scores[q]).mapToDouble(Double::doubleValue).toArray());
+                Stream.of(scores[s]).mapToDouble(Double::doubleValue).toArray());
 
         for (int fold = 0; fold < this.cv; fold++) {
-          writer.print(scores[q][fold]);
+          writer.print(scores[s][fold]);
           writer.print(separator);
         }
 
@@ -922,7 +914,7 @@ public class RandomSearchCV {
 
         writer.print(std);
 
-        if (q < this.qualityMeasuresClasses.length - 1) {
+        if (s < this.scorerClasses.length - 1) {
           writer.print(separator);
         }
       }

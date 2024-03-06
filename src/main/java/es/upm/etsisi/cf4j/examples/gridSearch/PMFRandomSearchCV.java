@@ -2,12 +2,8 @@ package es.upm.etsisi.cf4j.examples.gridSearch;
 
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
 import es.upm.etsisi.cf4j.data.DataModel;
-import es.upm.etsisi.cf4j.qualityMeasure.prediction.MAE;
-import es.upm.etsisi.cf4j.qualityMeasure.prediction.MSE;
-import es.upm.etsisi.cf4j.recommender.matrixFactorization.BiasedMF;
+import es.upm.etsisi.cf4j.scorer.prediction.MeanSquaredError;
 import es.upm.etsisi.cf4j.recommender.matrixFactorization.PMF;
-import es.upm.etsisi.cf4j.util.optimization.GridSearch;
-import es.upm.etsisi.cf4j.util.optimization.GridSearchCV;
 import es.upm.etsisi.cf4j.util.optimization.ParamsGrid;
 import es.upm.etsisi.cf4j.util.optimization.RandomSearchCV;
 
@@ -32,7 +28,7 @@ public class PMFRandomSearchCV {
 
     paramsGrid.addFixedParam("seed", 42L);
 
-    RandomSearchCV randomSearchCV = new RandomSearchCV(ml100k, paramsGrid, PMF.class, MSE.class, 5, 0.25);
+    RandomSearchCV randomSearchCV = new RandomSearchCV(ml100k, paramsGrid, PMF.class, MeanSquaredError.class, 5, 0.25);
     randomSearchCV.fit();
 
     randomSearchCV.printResults(10);

@@ -1,16 +1,16 @@
 package es.upm.etsisi.cf4j.examples.recommender;
 
 import es.upm.etsisi.cf4j.data.BenchmarkDataModels;
+import es.upm.etsisi.cf4j.scorer.Scorer;
+import es.upm.etsisi.cf4j.scorer.prediction.MeanAbsoluteError;
+import es.upm.etsisi.cf4j.scorer.prediction.PredictionCoverage;
 import es.upm.etsisi.cf4j.util.Maths;
 import es.upm.etsisi.cf4j.util.plot.LinePlot;
-import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
-import es.upm.etsisi.cf4j.qualityMeasure.recommendation.Precision;
-import es.upm.etsisi.cf4j.qualityMeasure.recommendation.Recall;
+import es.upm.etsisi.cf4j.scorer.recommendation.Precision;
+import es.upm.etsisi.cf4j.scorer.recommendation.Recall;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import es.upm.etsisi.cf4j.recommender.knn.UserKNN;
 import es.upm.etsisi.cf4j.data.DataModel;
-import es.upm.etsisi.cf4j.qualityMeasure.prediction.Coverage;
-import es.upm.etsisi.cf4j.qualityMeasure.prediction.MAE;
 import es.upm.etsisi.cf4j.recommender.knn.userSimilarityMetric.*;
 
 import java.io.IOException;
@@ -66,19 +66,23 @@ public class UserKnnComparison {
         Recommender knn = new UserKNN(datamodel, k, metric, AGGREGATION_APPROACH);
         knn.fit();
 
-        QualityMeasure mae = new MAE(knn);
+        Scorer mae = new MeanAbsoluteError(knn);
+        mae.fit();
         double maeScore = mae.getScore();
         maePlot.setValue(metricName, k, maeScore);
 
-        QualityMeasure coverage = new Coverage(knn);
+        Scorer coverage = new PredictionCoverage(knn);
+        coverage.fit();
         double coverageScore = mae.getScore();
         coveragePlot.setValue(metricName, k, coverageScore);
 
-        QualityMeasure precision = new Precision(knn, 10, 4);
+        Scorer precision = new Precision(knn, 10, 4);
+        precision.fit();
         double precisionScore = mae.getScore();
         precisionPlot.setValue(metricName, k, precisionScore);
 
-        QualityMeasure recall = new Recall(knn, 10, 4);
+        Scorer recall = new Recall(knn, 10, 4);
+        recall.fit();
         double recallScore = mae.getScore();
         recallPlot.setValue(metricName, k, recallScore);
       }

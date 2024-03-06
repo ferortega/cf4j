@@ -1,7 +1,7 @@
 package es.upm.etsisi.cf4j.util.optimization;
 
 import es.upm.etsisi.cf4j.data.DataModel;
-import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
+import es.upm.etsisi.cf4j.scorer.Scorer;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.math3.util.Pair;
@@ -20,11 +20,11 @@ import java.util.*;
  * Recommender::&lt;init&gt;(DataModel, Map&lt;String, Object&gt;) that initializes the Recommender
  * using the attributes defined in the Map object. The parameters used in the search process, i.e.
  * the development set, must be defined in a ParamsGrid instance. The random search is executed in
- * such a way that it minimizes (by default) or maximizes a QualityMeasure instance over the test
- * set of the DataModel instance. If the QualityMeasure requires parameters to work, it must
- * contains a constructor with the signature QualityMeasure::&lt;init&gt;(Recommender,
- * Map&lt;String, Object&gt;) that initializes the QualityMeasure using the attributes defined in
- * the Map object. The search is performed by selecting numIters parameters of the development set.
+ * such a way that it minimizes (by default) or maximizes a Scorer instance over the test set of
+ * the DataModel instance. If the Scorer requires parameters to work, it must contains a constructor
+ * with the signature Scorer::&lt;init&gt;(Recommender, Map&lt;String, Object&gt;) that initializes
+ * the Scorer using the attributes defined inthe Map object. The search is performed by selecting
+ * numIters parameters of the development set.
  */
 public class RandomSearch {
 
@@ -37,11 +37,11 @@ public class RandomSearch {
   /** Recommender class to be evaluated */
   private final Class<? extends Recommender> recommenderClass;
 
-  /** QualityMeasure classes used to evaluate the Recommender */
-  private final Class<? extends QualityMeasure>[] qualityMeasuresClasses;
+  /** Scorer classes used to evaluate the Recommender */
+  private final Class<? extends Scorer>[] scorerClasses;
 
-  /** Maps objects containing the quality measure parameters names (keys) and values (value) */
-  private final Map<String, Object>[] qualityMeasuresParams;
+  /** Maps objects containing the scorers parameters names (keys) and values (value) */
+  private final Map<String, Object>[] scorersParams;
 
   /** Number of samples of the development set to be evaluated */
   private final int numIters;
@@ -49,7 +49,7 @@ public class RandomSearch {
   /** Random seed for random numbers generation */
   private final long seed;
 
-  /** String prefix to be shown during fut */
+  /** String prefix to be shown during fit */
   private final String progressPrefix;
 
   /** Map to store grid search results */
@@ -63,22 +63,22 @@ public class RandomSearch {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasureClass QualityMeasure classes used to evaluate the Recommender. These
-   *     classes must contain a constructor with the signature
-   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
+   * @param scorerClass Scorer class used to evaluate the Recommender. This class
+   *     must contain a constructor with the signature Scorer.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
    * @param coverage Percentage of samples of the development set to be evaluated
    */
   public RandomSearch(
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure> qualityMeasureClass,
+      Class<? extends Scorer> scorerClass,
       double coverage) {
     this(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasureClass,
+        scorerClass,
         null,
         (int) (coverage * grid.getDevelopmentSetSize()),
         System.currentTimeMillis());
@@ -92,9 +92,9 @@ public class RandomSearch {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasureClass QualityMeasure classes used to evaluate the Recommender. These
-   *     classes must contain a constructor with the signature
-   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
+   * @param scorerClass Scorer class used to evaluate the Recommender. This class
+   *     must contain a constructor with the signature Scorer.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
    * @param coverage Percentage of samples of the development set to be evaluated
    * @param seed Random seed for random numbers generation
    */
@@ -102,14 +102,14 @@ public class RandomSearch {
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure> qualityMeasureClass,
+      Class<? extends Scorer> scorerClass,
       double coverage,
       long seed) {
     this(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasureClass,
+        scorerClass,
         null,
         (int) (coverage * grid.getDevelopmentSetSize()),
         seed);
@@ -123,22 +123,22 @@ public class RandomSearch {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasureClass QualityMeasure classes used to evaluate the Recommender. These
-   *     classes must contain a constructor with the signature
-   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
+   * @param scorerClass Scorer class used to evaluate the Recommender. This class
+   *     must contain a constructor with the signature Scorer.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
    * @param numIters Number of samples of the development set to be evaluated
    */
   public RandomSearch(
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure> qualityMeasureClass,
+      Class<? extends Scorer> scorerClass,
       int numIters) {
     this(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasureClass,
+        scorerClass,
         null,
         numIters,
         System.currentTimeMillis());
@@ -152,26 +152,26 @@ public class RandomSearch {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contain a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
+   * @param scorerClass Scorer class used to evaluate the Recommender. This class
+   *     must contain a constructor with the signature Scorer.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
-   * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
-   *     and values (value)
+   * @param scorerParams Map object containing the scorer parameters names (keys) and values
+   *     (value)
    * @param coverage Percentage of samples of the development set to be evaluated
    */
   public RandomSearch(
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure> qualityMeasureClass,
-      Map<String, Object> qualityMeasureParams,
+      Class<? extends Scorer> scorerClass,
+      Map<String, Object> scorerParams,
       double coverage) {
     this(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasureClass,
-        qualityMeasureParams,
+            scorerClass,
+            scorerParams,
         (int) (coverage * grid.getDevelopmentSetSize()),
         System.currentTimeMillis());
   }
@@ -184,11 +184,11 @@ public class RandomSearch {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contain a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
+   * @param scorerClass Scorer class used to evaluate the Recommender. This class
+   *     must contain a constructor with the signature Scorer.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
-   * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
-   *     and values (value)
+   * @param scorerParams Map object containing the scorer parameters names (keys) and values
+   *     (value)
    * @param coverage Percentage of samples of the development set to be evaluated
    * @param seed Random seed for random numbers generation
    */
@@ -196,16 +196,16 @@ public class RandomSearch {
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure> qualityMeasureClass,
-      Map<String, Object> qualityMeasureParams,
+      Class<? extends Scorer> scorerClass,
+      Map<String, Object> scorerParams,
       double coverage,
       long seed) {
     this(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasureClass,
-        qualityMeasureParams,
+        scorerClass,
+        scorerParams,
         (int) (coverage * grid.getDevelopmentSetSize()),
         seed);
   }
@@ -218,26 +218,26 @@ public class RandomSearch {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contain a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
+   * @param scorerClass Scorer class used to evaluate the Recommender. This class
+   *     must contain a constructor with the signature Scorer.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
-   * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
-   *     and values (value)
+   * @param scorerParams Map object containing the scorer parameters names (keys) and values
+   *     (value)
    * @param numIters Number of samples of the development set to be evaluated
    */
   public RandomSearch(
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure> qualityMeasureClass,
-      Map<String, Object> qualityMeasureParams,
+      Class<? extends Scorer> scorerClass,
+      Map<String, Object> scorerParams,
       int numIters) {
     this(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasureClass,
-        qualityMeasureParams,
+            scorerClass,
+            scorerParams,
         numIters,
         System.currentTimeMillis());
   }
@@ -250,11 +250,11 @@ public class RandomSearch {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contain a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
+   * @param scorerClass Scorer class used to evaluate the Recommender. This class
+   *     must contain a constructor with the signature Scorer.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
-   * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
-   *     and values (value)
+   * @param scorerParams Map object containing the scorer parameters names (keys) and values
+   *     (value)
    * @param numIters Number of samples of the development set to be evaluated
    * @param seed Random seed for random numbers generation
    */
@@ -262,16 +262,16 @@ public class RandomSearch {
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure> qualityMeasureClass,
-      Map<String, Object> qualityMeasureParams,
+      Class<? extends Scorer> scorerClass,
+      Map<String, Object> scorerParams,
       int numIters,
       long seed) {
     this(
         datamodel,
         grid,
         recommenderClass,
-        new Class[] {qualityMeasureClass},
-        new Map[] {qualityMeasureParams},
+        new Class[] {scorerClass},
+        new Map[] {scorerParams},
         numIters,
         seed);
   }
@@ -284,22 +284,22 @@ public class RandomSearch {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
-   *     classes must contain a constructor with the signature
-   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
+   * @param scorerClasses Scorer classes used to evaluate the Recommender. These classes must
+   *     contain a constructor with the signature Scorer.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
    * @param coverage Percentage of samples of the development set to be evaluated
    */
   public RandomSearch(
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure>[] qualityMeasuresClasses,
+      Class<? extends Scorer>[] scorerClasses,
       double coverage) {
     this(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasuresClasses,
+        scorerClasses,
         null,
         (int) (coverage * grid.getDevelopmentSetSize()),
         System.currentTimeMillis());
@@ -313,9 +313,9 @@ public class RandomSearch {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
-   *     classes must contain a constructor with the signature
-   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
+   * @param scorerClasses Scorer classes used to evaluate the Recommender. These classes must
+   *     contain a constructor with the signature Scorer.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
    * @param coverage Percentage of samples of the development set to be evaluated
    * @param seed Random seed for random numbers generation
    */
@@ -323,14 +323,14 @@ public class RandomSearch {
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure>[] qualityMeasuresClasses,
+      Class<? extends Scorer>[] scorerClasses,
       double coverage,
       long seed) {
     this(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasuresClasses,
+        scorerClasses,
         null,
         (int) (coverage * grid.getDevelopmentSetSize()),
         seed);
@@ -344,22 +344,22 @@ public class RandomSearch {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
-   *     classes must contain a constructor with the signature
-   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
+   * @param scorerClasses Scorer classes used to evaluate the Recommender. These classes must
+   *     contain a constructor with the signature Scorer.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
    * @param numIters Number of samples of the development set to be evaluated
    */
   public RandomSearch(
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure>[] qualityMeasuresClasses,
+      Class<? extends Scorer>[] scorerClasses,
       int numIters) {
     this(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasuresClasses,
+        scorerClasses,
         null,
         numIters,
         System.currentTimeMillis());
@@ -373,26 +373,26 @@ public class RandomSearch {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
-   *     classes must contain a constructor with the signature
-   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
-   * @param qualityMeasuresParams Maps objects containing the quality measure parameters names
-   *     (keys) and values (value)
+   * @param scorerClasses Scorer classes used to evaluate the Recommender. These classes must
+   *     contain a constructor with the signature Scorer.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
+   * @param scorersParams Maps objects containing the scorer parameters names(keys) and
+   *     values (value)
    * @param coverage Percentage of samples of the development set to be evaluated
    */
   public RandomSearch(
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure>[] qualityMeasuresClasses,
-      Map<String, Object>[] qualityMeasuresParams,
+      Class<? extends Scorer>[] scorerClasses,
+      Map<String, Object>[] scorersParams,
       double coverage) {
     this(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasuresClasses,
-        qualityMeasuresParams,
+        scorerClasses,
+        scorersParams,
         (int) (coverage * grid.getDevelopmentSetSize()),
         System.currentTimeMillis());
   }
@@ -405,11 +405,11 @@ public class RandomSearch {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
-   *     classes must contain a constructor with the signature
-   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
-   * @param qualityMeasuresParams Maps objects containing the quality measure parameters names
-   *     (keys) and values (value)
+   * @param scorerClasses Scorer classes used to evaluate the Recommender. These classes must
+   *     contain a constructor with the signature Scorer.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
+   * @param scorersParams Maps objects containing the scorer parameters names(keys) and
+   *     values (value)
    * @param coverage Percentage of samples of the development set to be evaluated
    * @param seed Random seed for random numbers generation
    */
@@ -417,16 +417,16 @@ public class RandomSearch {
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure>[] qualityMeasuresClasses,
-      Map<String, Object>[] qualityMeasuresParams,
+      Class<? extends Scorer>[] scorerClasses,
+      Map<String, Object>[] scorersParams,
       double coverage,
       long seed) {
     this(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasuresClasses,
-        qualityMeasuresParams,
+        scorerClasses,
+        scorersParams,
         (int) (coverage * grid.getDevelopmentSetSize()),
         seed);
   }
@@ -439,26 +439,26 @@ public class RandomSearch {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
-   *     classes must contain a constructor with the signature
-   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
-   * @param qualityMeasuresParams Maps objects containing the quality measure parameters names
-   *     (keys) and values (value)
+   * @param scorerClasses Scorer classes used to evaluate the Recommender. These classes must
+   *     contain a constructor with the signature Scorer.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
+   * @param scorersParams Maps objects containing the scorer parameters names(keys) and
+   *     values (value)
    * @param numIters Number of samples of the development set to be evaluated
    */
   public RandomSearch(
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure>[] qualityMeasuresClasses,
-      Map<String, Object>[] qualityMeasuresParams,
+      Class<? extends Scorer>[] scorerClasses,
+      Map<String, Object>[] scorersParams,
       int numIters) {
     this(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasuresClasses,
-        qualityMeasuresParams,
+        scorerClasses,
+        scorersParams,
         numIters,
         System.currentTimeMillis());
   }
@@ -471,11 +471,11 @@ public class RandomSearch {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
-   *     classes must contain a constructor with the signature
-   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
-   * @param qualityMeasuresParams Maps objects containing the quality measure parameters names
-   *     (keys) and values (value)
+   * @param scorerClasses Scorer classes used to evaluate the Recommender. These classes must
+   *     contain a constructor with the signature Scorer.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
+   * @param scorersParams Maps objects containing the scorer parameters names(keys) and
+   *     values (value)
    * @param numIters Number of samples of the development set to be evaluated
    * @param seed Random seed for random numbers generation
    */
@@ -483,11 +483,11 @@ public class RandomSearch {
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure>[] qualityMeasuresClasses,
-      Map<String, Object>[] qualityMeasuresParams,
+      Class<? extends Scorer>[] scorerClasses,
+      Map<String, Object>[] scorersParams,
       int numIters,
       long seed) {
-    this(datamodel, grid, recommenderClass, qualityMeasuresClasses, qualityMeasuresParams, numIters, seed, "");
+    this(datamodel, grid, recommenderClass, scorerClasses, scorersParams, numIters, seed, "");
   }
 
   /**
@@ -498,11 +498,11 @@ public class RandomSearch {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
-   *     classes must contain a constructor with the signature
-   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
-   * @param qualityMeasuresParams Maps objects containing the quality measure parameters names
-   *     (keys) and values (value)
+   * @param scorerClasses Scorer classes used to evaluate the Recommender. These classes must
+   *     contain a constructor with the signature Scorer.&lt;init&gt;(Recommender,
+   *     Map&lt;String, Object&gt;)
+   * @param scorersParams Maps objects containing the scorer parameters names(keys) and
+   *     values (value)
    * @param numIters Number of samples of the development set to be evaluated
    * @param seed Random seed for random numbers generation
    * @param progressPrefix String prefix to be printed during fit
@@ -511,16 +511,16 @@ public class RandomSearch {
           DataModel datamodel,
           ParamsGrid grid,
           Class<? extends Recommender> recommenderClass,
-          Class<? extends QualityMeasure>[] qualityMeasuresClasses,
-          Map<String, Object>[] qualityMeasuresParams,
+          Class<? extends Scorer>[] scorerClasses,
+          Map<String, Object>[] scorersParams,
           int numIters,
           long seed,
           String progressPrefix) {
     this.datamodel = datamodel;
     this.grid = grid;
     this.recommenderClass = recommenderClass;
-    this.qualityMeasuresClasses = qualityMeasuresClasses;
-    this.qualityMeasuresParams = qualityMeasuresParams;
+    this.scorerClasses = scorerClasses;
+    this.scorersParams = scorersParams;
     this.numIters = Math.min(numIters, grid.getDevelopmentSetSize());
     this.seed = seed;
     this.results = new HashMap<>();
@@ -585,38 +585,40 @@ public class RandomSearch {
         recommender.fit();
       }
 
-      Double[] scores = new Double[this.qualityMeasuresClasses.length];
+      Double[] scores = new Double[this.scorerClasses.length];
 
-      for (int q = 0; q < this.qualityMeasuresClasses.length; q++) {
-        QualityMeasure qm = null;
+      for (int s = 0; s < this.scorerClasses.length; s++) {
+        Scorer scorer = null;
 
-        Class<? extends QualityMeasure> qualityMeasureClass = this.qualityMeasuresClasses[q];
+        Class<? extends Scorer> scorerClass = this.scorerClasses[s];
         Map<String, Object> qualityMeasureParams =
-            this.qualityMeasuresParams == null ? null : this.qualityMeasuresParams[q];
+            this.scorersParams == null ? null : this.scorersParams[s];
 
         try {
           if (qualityMeasureParams == null || qualityMeasureParams.isEmpty()) {
-            qm = qualityMeasureClass.getConstructor(Recommender.class).newInstance(recommender);
+            scorer = scorerClass.getConstructor(Recommender.class).newInstance(recommender);
           } else {
-            qm =
-                qualityMeasureClass
-                    .getConstructor(Recommender.class, Map.class)
+            scorer = scorerClass.getConstructor(Recommender.class, Map.class)
                     .newInstance(recommender, qualityMeasureParams);
           }
         } catch (NoSuchMethodException e) {
           System.err.println(
-              qualityMeasureClass.getCanonicalName()
+                  scorerClass.getCanonicalName()
                   + " does not seem to contain a constructor to be used in a grid search.");
           e.printStackTrace();
         } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
           System.err.println(
               "A problem has occurred during the "
-                  + qualityMeasureClass.getCanonicalName()
+                  + scorerClass.getCanonicalName()
                   + " instantiation.");
           e.printStackTrace();
         }
 
-        scores[q] = qm != null ? qm.getScore() : null;
+        if (scorer != null) {
+          scorer.fit();
+        }
+
+        scores[s] = scorer != null ? scorer.getScore() : null;
       }
 
       results.put(params, scores);
@@ -787,10 +789,10 @@ public class RandomSearch {
     sb.append("Top ")
         .append(topN)
         .append(" ")
-        .append(this.qualityMeasuresClasses[index].getSimpleName());
+        .append(this.scorerClasses[index].getSimpleName());
 
-    if (this.qualityMeasuresParams != null && this.qualityMeasuresParams[index] != null) {
-      sb.append(this.qualityMeasuresParams[index].toString());
+    if (this.scorersParams != null && this.scorersParams[index] != null) {
+      sb.append(this.scorersParams[index].toString());
     }
 
     sb.append(" scores on development set:\n\n");
@@ -869,10 +871,10 @@ public class RandomSearch {
     String[] paramsName = grid.getParamsName();
 
     if (includeHeader) {
-      for (int q = 0; q < this.qualityMeasuresClasses.length; q++) {
-        String qualityMeasureName = this.qualityMeasuresClasses[q].getSimpleName().toLowerCase();
+      for (int s = 0; s < this.scorerClasses.length; s++) {
+        String qualityMeasureName = this.scorerClasses[s].getSimpleName().toLowerCase();
         writer.print(qualityMeasureName);
-        if (q < this.qualityMeasuresClasses.length - 1) {
+        if (s < this.scorerClasses.length - 1) {
           writer.print(separator);
         }
       }
@@ -887,9 +889,9 @@ public class RandomSearch {
 
     for (Map<String, Object> params : this.results.keySet()) {
       Double[] scores = this.results.get(params);
-      for (int q = 0; q < scores.length; q++) {
-        writer.print(scores[q].doubleValue());
-        if (q < this.qualityMeasuresClasses.length - 1) {
+      for (int s = 0; s < scores.length; s++) {
+        writer.print(scores[s].doubleValue());
+        if (s < this.scorerClasses.length - 1) {
           writer.print(separator);
         }
       }

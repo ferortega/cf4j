@@ -1,7 +1,7 @@
 package es.upm.etsisi.cf4j.util.optimization;
 
 import es.upm.etsisi.cf4j.data.DataModel;
-import es.upm.etsisi.cf4j.qualityMeasure.QualityMeasure;
+import es.upm.etsisi.cf4j.scorer.Scorer;
 import es.upm.etsisi.cf4j.recommender.Recommender;
 
 import java.util.Map;
@@ -26,14 +26,14 @@ public class GridSearch extends RandomSearch {
    * @param datamodel DataModel instance
    * @param grid ParamsGrid instance containing the development set
    * @param recommenderClass Recommender class to be evaluated
-   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender
+   * @param scorerClass Scorer class used to evaluate the Recommender
    */
   public GridSearch(
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure> qualityMeasureClass) {
-    super(datamodel, grid, recommenderClass, qualityMeasureClass, grid.getDevelopmentSetSize());
+      Class<? extends Scorer> scorerClass) {
+    super(datamodel, grid, recommenderClass, scorerClass, grid.getDevelopmentSetSize());
   }
 
   /**
@@ -44,24 +44,24 @@ public class GridSearch extends RandomSearch {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasureClass QualityMeasure class used to evaluate the Recommender. This class
-   *     must contains a constructor with the signature QualityMeasure.&lt;init&gt;(Recommender,
+   * @param scorerClass Scorer class used to evaluate the Recommender. This class
+   *     must contains a constructor with the signature Scorer.&lt;init&gt;(Recommender,
    *     Map&lt;String, Object&gt;)
-   * @param qualityMeasureParams Map object containing the quality measure parameters names (keys)
+   * @param scorerParams Map object containing the scorer parameters names (keys)
    *     and values (value)
    */
   public GridSearch(
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure> qualityMeasureClass,
-      Map<String, Object> qualityMeasureParams) {
+      Class<? extends Scorer> scorerClass,
+      Map<String, Object> scorerParams) {
     super(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasureClass,
-        qualityMeasureParams,
+        scorerClass,
+        scorerParams,
         grid.getDevelopmentSetSize());
   }
 
@@ -71,16 +71,16 @@ public class GridSearch extends RandomSearch {
    * @param datamodel DataModel instance
    * @param grid ParamsGrid instance containing the development set
    * @param recommenderClass Recommender class to be evaluated
-   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
+   * @param scorerClasses Scorer classes used to evaluate the Recommender. These
    *     classes must contain a constructor with the signature
-   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
+   *     Score.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
    */
   public GridSearch(
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure>[] qualityMeasuresClasses) {
-    super(datamodel, grid, recommenderClass, qualityMeasuresClasses, grid.getDevelopmentSetSize());
+      Class<? extends Scorer>[] scorerClasses) {
+    super(datamodel, grid, recommenderClass, scorerClasses, grid.getDevelopmentSetSize());
   }
 
   /**
@@ -91,24 +91,24 @@ public class GridSearch extends RandomSearch {
    * @param recommenderClass Recommender class to be evaluated. This class must contains a
    *     constructor with the signature Recommender.&lt;init&gt;(DataModel, Map&lt;String,
    *     Object&gt;)
-   * @param qualityMeasuresClasses QualityMeasure classes used to evaluate the Recommender. These
+   * @param scorerClasses Scorer classes used to evaluate the Recommender. These
    *     classes must contain a constructor with the signature
-   *     QualityMeasure.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
-   * @param qualityMeasuresParams Maps objects containing the quality measure parameters names
+   *     Score.&lt;init&gt;(Recommender, Map&lt;String, Object&gt;)
+   * @param scorersParams Maps objects containing the scorer parameters names
    *     (keys) and values (value)
    */
   public GridSearch(
       DataModel datamodel,
       ParamsGrid grid,
       Class<? extends Recommender> recommenderClass,
-      Class<? extends QualityMeasure>[] qualityMeasuresClasses,
-      Map<String, Object>[] qualityMeasuresParams) {
+      Class<? extends Scorer>[] scorerClasses,
+      Map<String, Object>[] scorersParams) {
     super(
         datamodel,
         grid,
         recommenderClass,
-        qualityMeasuresClasses,
-        qualityMeasuresParams,
+        scorerClasses,
+        scorersParams,
         grid.getDevelopmentSetSize());
   }
 }
