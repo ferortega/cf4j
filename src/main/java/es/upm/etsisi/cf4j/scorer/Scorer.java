@@ -127,7 +127,7 @@ public abstract class Scorer {
       writer.print("userId");
       writer.print(separator);
 
-      String scorerName = this.getClass().getSimpleName().toLowerCase();
+      String scorerName = this.getClass().getSimpleName();
       writer.print(scorerName);
 
       writer.println();
