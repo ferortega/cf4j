@@ -22,6 +22,9 @@ public abstract class Scorer {
   /** Recommender instance for which the quality measure are going to be computed */
   protected Recommender recommender;
 
+  /** Stores de global score of the quality measures */
+  private double score;
+
   /** Stores the score of each test user */
   private double[] usersScores;
 
@@ -34,9 +37,8 @@ public abstract class Scorer {
     this.recommender = recommender;
   }
 
-  public Scorer fit() {
-    Parallelizer.exec(recommender.getDataModel().getTestUsers(), new EvaluateTestUsers());
-    return this;
+  public void fit() {
+    Parallelizer.exec(recommender.getDataModel().getTestUsers(), new EvaluateUsers());
   }
 
   protected abstract double getUserScore(TestUser testUser);
@@ -63,6 +65,7 @@ public abstract class Scorer {
   }
 
   private double getConfidenceIntervalMargin(double coef) {
+    double mean = this.getScoreMean();
     double standardDeviation = this.getScoreStandardDeviation();
     long sampleSize = Arrays.stream(this.usersScores).filter(score -> !Double.isNaN(score)).count();
     double standardError = standardDeviation / Math.sqrt(sampleSize);
@@ -148,7 +151,7 @@ public abstract class Scorer {
   }
 
   /** Private inner class used to parallelize the computation of the quality measures */
-  private class EvaluateTestUsers implements Partible<TestUser> {
+  private class EvaluateUsers implements Partible<TestUser> {
 
     @Override
     public void beforeRun() {
